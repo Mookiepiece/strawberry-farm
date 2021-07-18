@@ -20,6 +20,8 @@ export type I18nKeys =
   | 'SidebarStComponentSpin'
   | 'SidebarStComponentScroll'
   | 'SidebarStComponentSlider'
+  | 'SidebarStComponentPopper'
+  | 'SidebarStComponentSelect'
   | 'SidebarStDesignColor'
   | 'SidebarStDesignLayout';
 
@@ -101,6 +103,14 @@ const a: Record<
   SidebarStComponentSlider: {
     en: 'Slider 滑块',
     zh: 'Slider 滑块',
+  },
+  SidebarStComponentPopper: {
+    en: 'Popper 弹层',
+    zh: 'Popper 弹层',
+  },
+  SidebarStComponentSelect: {
+    en: 'Select 选择器',
+    zh: 'Select 选择器',
   },
   SidebarStDesignColor: {
     en: 'Color 色彩',

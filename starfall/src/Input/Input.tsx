@@ -5,20 +5,19 @@ type InputProps = {
   onChange?: (value: string) => void;
 } & Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'onChange'>;
 
-const Input: React.FC<InputProps> = ({ value, onChange }) => {
-  if (typeof value !== 'string' || !onChange) {
-    // form items will provide value and onChange handler, so they are optional
-    throw new Error('[St Input] missing prop `value` and `onChange`');
-  }
-
+const Input: React.ForwardRefExoticComponent<
+  React.RefAttributes<HTMLInputElement> & InputProps
+> = React.forwardRef(({ value, onChange, ...rest }, ref) => {
   return (
     <input
       className="st-input"
       type="text"
       value={value}
-      onChange={e => onChange(e.target.value)}
+      onChange={e => onChange?.(e.target.value)}
+      {...rest}
+      ref={ref}
     />
   );
-};
+});
 
 export default Input;

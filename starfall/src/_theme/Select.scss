@@ -1,0 +1,18 @@
+//
+.st-option {
+  transition: background-color 0.1s;
+
+  &:active {
+    background-color: var(--color-dark-fade-200);
+  }
+}
+.st-option--pending {
+  background-color: var(--color-dark-fade-100);
+}
+.st-option--selected {
+  font-weight: bold;
+  background-color: var(--color-primary-fade-100);
+}
+.st-option__inner {
+  padding: 10px;
+}

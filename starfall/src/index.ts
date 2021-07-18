@@ -21,3 +21,9 @@ export { default as Spin } from './Spin';
 export { default as ScrollView } from './ScrollView';
 
 export { default as Slider } from './Slider';
+
+export { default as Popper } from './Popper';
+
+export { default as Popover } from './Popover';
+
+export { default as Select } from './Select';

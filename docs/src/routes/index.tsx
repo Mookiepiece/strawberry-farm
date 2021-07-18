@@ -72,6 +72,8 @@ export default [
                 '/st-components/spin': 'SidebarStComponentSpin',
                 '/st-components/scroll-view': 'SidebarStComponentScroll',
                 '/st-components/slider': 'SidebarStComponentSlider',
+                '/st-components/popper': 'SidebarStComponentPopper',
+                '/st-components/select': 'SidebarStComponentSelect',
               },
             }}
           />
@@ -125,6 +127,14 @@ export default [
           {
             path: '/st-components/slider',
             component: loadable(() => import('@docs/pages/st-components/Slider')),
+          },
+          {
+            path: '/st-components/popper',
+            component: loadable(() => import('@docs/pages/st-components/Popper')),
+          },
+          {
+            path: '/st-components/select',
+            component: loadable(() => import('@docs/pages/st-components/Select')),
           },
         ],
       },
