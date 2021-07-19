@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Slider } from 'starfall';
 
 const BasicUsage: React.FC = () => {
+  const [state, setState] = useState(0);
+  const [state2, setState2] = useState(10);
+  const [state3, setState3] = useState(101);
+  const [state4, setState4] = useState(101);
   return (
     <>
       <div style={{ padding: 40 }}>
-        <Slider />
+        <Slider value={state} onChange={setState} />
       </div>
       <div style={{ padding: 40 }}>
         <Slider
+          value={state2}
+          onChange={setState2}
           min={10}
           max={20}
           step={2}
@@ -21,6 +27,8 @@ const BasicUsage: React.FC = () => {
       </div>
       <div style={{ padding: 40 }}>
         <Slider
+          value={state3}
+          onChange={setState3}
           min={101}
           max={201}
           step={2}
@@ -33,6 +41,8 @@ const BasicUsage: React.FC = () => {
       </div>{' '}
       <div style={{ padding: 40 }}>
         <Slider
+          value={state4}
+          onChange={setState4}
           min={101}
           max={201}
           step={null}

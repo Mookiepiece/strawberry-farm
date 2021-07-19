@@ -95,17 +95,26 @@ const useSlider = ({
 };
 
 type SliderProps = {
+  value?: number;
+  onChange?: (value: number) => void;
   min?: number;
   max?: number;
   step?: number | null;
   label?: { value: number; label?: React.ReactNode }[];
 };
 
+const noop = () => {};
 const EMPTY: [] = [];
 
-const Slider: React.FC<SliderProps> = ({ min = 0, max = 100, step = 1, label = EMPTY }) => {
-  const [valueNow, setValueNow] = useState<number>(min);
-  const percentage = ((valueNow - min) / (max - min)) * 100;
+const Slider: React.FC<SliderProps> = ({
+  value = 0,
+  onChange = noop,
+  min = 0,
+  max = 100,
+  step = 1,
+  label = EMPTY,
+}) => {
+  const percentage = ((value - min) / (max - min)) * 100;
 
   const clamp = useEventCallback((v: number, _min: number = min, _max: number = max) =>
     Math.max(_min, Math.min(v, _max))
@@ -121,7 +130,7 @@ const Slider: React.FC<SliderProps> = ({ min = 0, max = 100, step = 1, label = E
     }));
   }, [label, max, min]);
 
-  const onChange = useEventCallback(({ mouse: { x, y } }) => {
+  const handleSliderChange = useEventCallback(({ mouse: { x, y } }) => {
     if (!railRef.current) return;
 
     const { width, left } = railRef.current.getBoundingClientRect();
@@ -129,9 +138,9 @@ const Slider: React.FC<SliderProps> = ({ min = 0, max = 100, step = 1, label = E
 
     if (typeof step === 'number') {
       const v = clamp(step * Math.round((percentage * (max - min)) / step) + min);
-      setValueNow(v);
+      onChange(v);
     } else {
-      setValueNow(
+      onChange(
         labelWithPosition[
           findNearesetIndex(
             labelWithPosition.map(({ percentage }) => percentage),
@@ -144,7 +153,7 @@ const Slider: React.FC<SliderProps> = ({ min = 0, max = 100, step = 1, label = E
 
   const { active, handleStart } = useSlider({
     direction: BAR_MAP.horizontal,
-    onChange,
+    onChange: handleSliderChange,
   });
 
   const prev = () => {
@@ -153,11 +162,9 @@ const Slider: React.FC<SliderProps> = ({ min = 0, max = 100, step = 1, label = E
         labelWithPosition.map(({ percentage }) => percentage),
         percentage
       );
-      setValueNow(
-        labelWithPosition[clamp(currentIndex - 1, 0, labelWithPosition.length - 1)].value
-      );
+      onChange(labelWithPosition[clamp(currentIndex - 1, 0, labelWithPosition.length - 1)].value);
     } else {
-      setValueNow(clamp(valueNow - step));
+      onChange(clamp(value - step));
     }
   };
 
@@ -167,11 +174,9 @@ const Slider: React.FC<SliderProps> = ({ min = 0, max = 100, step = 1, label = E
         labelWithPosition.map(({ percentage }) => percentage),
         percentage
       );
-      setValueNow(
-        labelWithPosition[clamp(currentIndex + 1, 0, labelWithPosition.length - 1)].value
-      );
+      onChange(labelWithPosition[clamp(currentIndex + 1, 0, labelWithPosition.length - 1)].value);
     } else {
-      setValueNow(clamp(valueNow + step));
+      onChange(clamp(value + step));
     }
   };
 
@@ -197,7 +202,7 @@ const Slider: React.FC<SliderProps> = ({ min = 0, max = 100, step = 1, label = E
           <div
             className="st-slider__label-item"
             key={value}
-            onClick={() => setValueNow(value)}
+            onClick={() => onChange(value)}
             style={{ left: percentage + '%' }}
           >
             <div className="st-slider__label-item__inner">{label || value}</div>
@@ -219,7 +224,7 @@ const Slider: React.FC<SliderProps> = ({ min = 0, max = 100, step = 1, label = E
           }}
           onTouchStart={handleStart}
         >
-          <div className="st-slider__tooltip">{valueNow}</div>
+          <div className="st-slider__tooltip">{value}</div>
         </div>
       </div>
     </div>

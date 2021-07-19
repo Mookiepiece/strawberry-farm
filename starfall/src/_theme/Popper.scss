@@ -5,6 +5,11 @@
 }
 .st-popper__inner {
   opacity: 0;
+  pointer-events: initial;
+}
+
+.st-popper {
+  pointer-events: none;
 }
 
 // presets
