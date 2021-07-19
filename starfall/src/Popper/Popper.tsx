@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Modifier, Placement } from '@popperjs/core';
 import { usePopper } from 'react-popper';
 import { NotificationPortal, useEventCallback } from '@mookiepiece/starfall-utils';
-import { useEffect } from 'react';
 import clsx from 'clsx';
 import type { ClassValue } from 'clsx';
 import { CSSTransition } from 'react-transition-group';

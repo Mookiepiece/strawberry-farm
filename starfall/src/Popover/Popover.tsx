@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import { useRef } from 'react';
-import type { PopperProps } from '../Popper';
+import React, { useState, useEffect, useRef } from 'react';
 import Popper from '../Popper';
+import type { PopperProps } from '../Popper';
 
 export type PopoverProps = PopperProps & {
   trigger?: 'click' | 'hover' | 'focus';
