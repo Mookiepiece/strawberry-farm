@@ -24,6 +24,12 @@
 
 :::
 
+:::demo{cuscontrol}
+
+### 自定义控件
+
+:::
+
 :::demo{remote}
 
 ### 修改规则

@@ -201,7 +201,7 @@ const _Form = <T extends Record<string, unknown>>(props: FormProps<T>, ref: Reac
 };
 _Form.displayName = 'Form';
 
-const FormSubmitButton: typeof Button = props => {
+const FormSubmitButton: typeof Button = React.forwardRef((props, ref) => {
   const { formMitt } = useContext(FormContext);
 
   const [submitting, setSubmitting] = useState(false);
@@ -210,8 +210,8 @@ const FormSubmitButton: typeof Button = props => {
     return () => formMitt.off('SUBMITTING_CHANGE', setSubmitting);
   }, [formMitt]);
 
-  return <Button {...props} type="submit" loading={props.loading || submitting} />;
-};
+  return <Button {...props} type="submit" loading={props.loading || submitting} ref={ref} />;
+});
 
 const Form: (<T extends Record<string, unknown>>(
   props: FormProps<T> & React.RefAttributes<unknown>

@@ -157,12 +157,16 @@ const FormItem = <T extends any = any>({
       // we passing the parent's onChange to child item instead of it's own
       if (triggerPathes.length <= pathes.length) {
         if (state.model !== newValue) {
+          // A setState may bring forward the excution of useEffect, make sure ref mutations is before setState
+          // this happeneds when child component is class component and call this.setState in componentDidUpdate
+          // lead to a sync flush of all useEffects
+          // see https://zhuanlan.zhihu.com/p/395250453
+          nextTickToValidate.current = true;
           // state has been updated, cause a rerender in which we validate the new value in useEffect.
           setState(state => ({
             ...state,
             model: newValue,
           }));
-          nextTickToValidate.current = true;
         }
       }
     };

@@ -10,6 +10,7 @@ import nesting from '@docs/st-assets/Form/nesting.tsx?raw';
 import pass from '@docs/st-assets/Form/pass.tsx?raw';
 import remote from '@docs/st-assets/Form/remote.tsx?raw';
 import status from '@docs/st-assets/Form/status.tsx?raw';
+import cuscontrol from '@docs/st-assets/Form/cuscontrol.tsx?raw';
 
 const requireRaw = {
   basic,
@@ -18,6 +19,7 @@ const requireRaw = {
   pass,
   remote,
   status,
+  cuscontrol,
 };
 
 import zh from '@docs/st-assets/Form/index-zh.md?raw';
