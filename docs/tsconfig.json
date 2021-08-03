@@ -17,7 +17,8 @@
     "paths": {
       "@docs/*": ["./*"],
       "🦄": ["../../strawberry-fury/src/index"],
-      "starfall": ["../../starfall/src/index"]
+      "starfall": ["../../starfall/src/index"],
+      "starfall-utils": ["../../starfall-utils/src/index"]
     },
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true

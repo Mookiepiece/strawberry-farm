@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-labels */
 import { rollup } from 'rollup';
 import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { babel } from '@rollup/plugin-babel';
 import path from 'path';
@@ -23,6 +24,7 @@ const runBuild = async () => {
       ), // #1
       plugins: [
         peerDepsExternal(),
+        commonjs(),
         resolve({
           extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs'], // #2
         }),
