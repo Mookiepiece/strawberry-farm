@@ -2,22 +2,42 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useEventCallback, Mitt } from '@mookiepiece/starfall-utils';
 import type { Emitter } from '@mookiepiece/starfall-utils';
+import { AXIS_MAP, useSlider } from '../Slider/useSlider';
+import type { Direction } from '../Slider/useSlider';
+import { useImperativeHandle } from 'react';
 
 type ScrollViewMitt = Emitter<{
   SCROLL: [number, number];
   RESIZE: [string, string];
 }>;
 
-type ScrollViewProps = {
+export type ScrollViewProps = {
   wrapStyle?: React.CSSProperties;
+  containerStyle?: React.CSSProperties;
+  children?: React.ReactNode;
+};
+export type ScrollViewInstance = {
+  container: HTMLDivElement | null;
 };
 
-const ScrollView: React.FC<ScrollViewProps> = ({ children, wrapStyle }) => {
+const ScrollView: React.ForwardRefExoticComponent<
+  ScrollViewProps & React.RefAttributes<ScrollViewInstance>
+> = React.forwardRef(({ children, wrapStyle, containerStyle }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
 
   const [mitt] = useState<ScrollViewMitt>(Mitt);
 
+  useImperativeHandle(
+    ref,
+    () => ({
+      get container() {
+        return containerRef.current;
+      },
+    }),
+    []
+  );
+
+  // FEAT: scroll
   const handleScroll = useCallback(() => {
     if (!containerRef.current) return;
     mitt.emit('SCROLL', [
@@ -26,6 +46,7 @@ const ScrollView: React.FC<ScrollViewProps> = ({ children, wrapStyle }) => {
     ]);
   }, [mitt]);
 
+  // FEAT: resize
   useEffect(() => {
     if (!containerRef.current) return;
     const div = containerRef.current;
@@ -53,56 +74,29 @@ const ScrollView: React.FC<ScrollViewProps> = ({ children, wrapStyle }) => {
   }, [mitt]);
 
   return (
-    <div className="st-scroll-view-wrap" style={wrapStyle} ref={wrapRef}>
-      <div className="st-scroll-view" ref={containerRef} onScroll={handleScroll}>
+    <div className="st-scroll-view-wrap" style={wrapStyle}>
+      <div
+        className="st-scroll-view"
+        ref={containerRef}
+        onScroll={handleScroll}
+        style={containerStyle}
+      >
         {children}
       </div>
-      <Scrollbar containerRef={containerRef} wrapRef={wrapRef} mitt={mitt} />
-      <Scrollbar vertical containerRef={containerRef} wrapRef={wrapRef} mitt={mitt} />
+      <Scrollbar containerRef={containerRef} mitt={mitt} />
+      <Scrollbar vertical containerRef={containerRef} mitt={mitt} />
     </div>
   );
-};
-
-type Direction = {
-  offsetSize: 'offsetHeight' | 'offsetWidth';
-  scrollValue: 'scrollTop' | 'scrollLeft';
-  scrollSize: 'scrollHeight' | 'scrollWidth';
-  size: 'height' | 'width';
-  axis: 'X' | 'Y';
-  mouseEventClientValue: 'clientY' | 'clientX';
-  clientRectStart: 'top' | 'left';
-};
-// https://github.com/element-plus/element-plus/blob/a57727bfa41943bc4bf81a2bc31d6895362b5077/packages/scrollbar/src/util.ts#L1
-const BAR_MAP = {
-  vertical: {
-    offsetSize: 'offsetHeight',
-    scrollValue: 'scrollTop',
-    scrollSize: 'scrollHeight',
-    size: 'height',
-    axis: 'Y',
-    mouseEventClientValue: 'clientY',
-    clientRectStart: 'top',
-  } as Direction,
-  horizontal: {
-    offsetSize: 'offsetWidth',
-    scrollValue: 'scrollLeft',
-    scrollSize: 'scrollWidth',
-    size: 'width',
-    axis: 'X',
-    mouseEventClientValue: 'clientX',
-    clientRectStart: 'left',
-  } as Direction,
-};
+});
 
 type ScrollbarProps = {
   vertical?: boolean;
   containerRef: React.RefObject<HTMLDivElement>;
-  wrapRef: React.RefObject<HTMLDivElement>;
   mitt: ScrollViewMitt;
 };
 
-const Scrollbar: React.FC<ScrollbarProps> = ({ vertical, mitt, containerRef, wrapRef }) => {
-  const xy: Direction = BAR_MAP[vertical ? 'vertical' : 'horizontal'];
+const Scrollbar: React.FC<ScrollbarProps> = ({ vertical, mitt, containerRef }) => {
+  const xy: Direction = AXIS_MAP[vertical ? 'vertical' : 'horizontal'];
 
   const [size, setSize] = useState('0');
   const [move, setMove] = useState(0);
@@ -113,84 +107,48 @@ const Scrollbar: React.FC<ScrollbarProps> = ({ vertical, mitt, containerRef, wra
     mitt.on('SCROLL', e => setMove(e[index]));
   }, [mitt, vertical]);
 
-  // dragging the thumb will prevent the bar from disappear until mouseup so we use js instead of css hover
-  // this is complex but worth it because I just do copy those code from element-plus.
-  const cursorDown = useRef(false);
-  const cursorLeave = useRef(false);
-  const [visible, setVisible] = useState(false);
-  const show = useCallback(() => {
-    !visible && setVisible(true);
-  }, [visible]);
-  const hide = useCallback(() => {
-    visible && setVisible(false);
-  }, [visible]);
+  //   this is thumb
+  //   \                    \  this is thumbMouseOffset
+  //   \                    \
+  //   \   <- mouse click here
+  //   \
+  //
+  const thumbMouseOffsetRef = useRef<number>(0);
+
+  const onChange = ({ mouse }: { mouse: { x: number; y: number } }) => {
+    if (!barRef.current) return;
+    if (!containerRef.current) return;
+
+    const offset =
+      (mouse as any)[xy.axis.toLowerCase() as any] -
+      barRef.current.getBoundingClientRect()[xy.clientRectStart];
+
+    const scrolledPercentage =
+      ((offset - thumbMouseOffsetRef.current) * 100) / barRef.current[xy.offsetSize];
+    containerRef.current[xy.scrollValue] =
+      (scrolledPercentage / 100) * containerRef.current[xy.scrollSize];
+  };
+
+  const { active, handleStart } = useSlider({
+    onChange,
+  });
 
   const thumbRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
 
-  const startDrag = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>, thumbMouseOffset: number) => {
-      if (!thumbRef.current) return;
-
-      cursorDown.current = true;
-
-      const handleDocumentMouseMove = (e: MouseEvent) => {
-        if (!barRef.current) return;
-        if (!containerRef.current) return;
-
-        const offset =
-          e[xy.mouseEventClientValue] - barRef.current.getBoundingClientRect()[xy.clientRectStart];
-
-        const scrolledPercentage =
-          ((offset - thumbMouseOffset) * 100) / barRef.current[xy.offsetSize];
-        containerRef.current[xy.scrollValue] =
-          (scrolledPercentage / 100) * containerRef.current[xy.scrollSize];
-      };
-
-      const handleDocumentMouseUp = (e: Event) => {
-        document.removeEventListener('mousemove', handleDocumentMouseMove);
-        document.removeEventListener('mouseup', handleDocumentMouseUp);
-
-        cursorDown.current = false;
-        if (cursorLeave.current) {
-          hide();
-        }
-      };
-
-      document.addEventListener('mousemove', handleDocumentMouseMove);
-      document.addEventListener('mouseup', handleDocumentMouseUp);
-    },
-    [
-      xy.offsetSize,
-      xy.mouseEventClientValue,
-      xy.clientRectStart,
-      xy.scrollValue,
-      xy.scrollSize,
-      containerRef,
-      hide,
-    ]
-  );
-
   const handleThumbMouseDown = useEventCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    e.nativeEvent.stopImmediatePropagation();
-    e.stopPropagation();
-    if (e.ctrlKey || [1, 2].includes(e.button)) {
-      return;
-    }
+    if (e.target !== thumbRef.current) return;
 
     if (!thumbRef.current) return;
-    const thumbMouseOffset =
+
+    thumbMouseOffsetRef.current =
       e[xy.mouseEventClientValue] - thumbRef.current.getBoundingClientRect()[xy.clientRectStart];
-    startDrag(e, thumbMouseOffset);
+    handleStart(e);
   });
 
   const handleBarMouseDown = useEventCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    e.nativeEvent.stopImmediatePropagation();
-    e.stopPropagation();
-    // middle click and right click won't trigger drag
-    if (e.ctrlKey || [1, 2].includes(e.button)) {
-      return;
-    }
+    // thumb self
+    if (e.target !== barRef.current) return;
 
     if (!barRef.current) return;
     if (!thumbRef.current) return;
@@ -208,32 +166,9 @@ const Scrollbar: React.FC<ScrollbarProps> = ({ vertical, mitt, containerRef, wra
       (thumbPositionPercentage * containerRef.current[xy.scrollSize]) / 100;
 
     if (!thumbRef.current) return;
-    const thumbMouseOffset = thumbHalf;
-    startDrag(e, thumbMouseOffset);
+    thumbMouseOffsetRef.current = thumbHalf;
+    handleStart(e);
   });
-
-  useEffect(() => {
-    const handleWrapMouseMove = () => {
-      cursorLeave.current = false;
-      show();
-    };
-
-    const handleWrapMouseLeave = () => {
-      cursorLeave.current = true;
-      setVisible(cursorDown.current);
-    };
-
-    if (!wrapRef.current) return;
-    const wrap = wrapRef.current;
-
-    wrap.addEventListener('mousemove', handleWrapMouseMove);
-    wrap.addEventListener('mouseleave', handleWrapMouseLeave);
-
-    return () => {
-      wrap.removeEventListener('mousemove', handleWrapMouseMove);
-      wrap.removeEventListener('mouseleave', handleWrapMouseLeave);
-    };
-  }, [show, wrapRef]);
 
   const style = renderThumbStyle({ size, move, xy });
   return (
@@ -242,7 +177,7 @@ const Scrollbar: React.FC<ScrollbarProps> = ({ vertical, mitt, containerRef, wra
       className={clsx(
         'st-scrollbar',
         vertical ? 'st-scrollbar--vertical' : 'st-scrollbar--horizontal',
-        visible && 'st-scrollbar--visible'
+        active && 'st-scrollbar--active'
       )}
       ref={barRef}
     >

@@ -15,6 +15,11 @@ const BasicUsage: React.FC = () => {
       <br />
       <br />
       <ScrollView wrapStyle={{ height: 200, width: 200, fontSize: '18px' }}>
+        <div style={{ whiteSpace: 'nowrap' }}>{'not scrollable'}</div>
+      </ScrollView>
+      <br />
+      <br />
+      <ScrollView wrapStyle={{ height: 200, width: 200, fontSize: '18px' }}>
         <div>
           <div style={{ width: 400, height: 600, background: 'powderblue' }}></div>
         </div>

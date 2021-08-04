@@ -1,98 +1,7 @@
-import { useEventCallback } from '@mookiepiece/starfall-utils';
+import React, { useRef, useMemo } from 'react';
 import clsx from 'clsx';
-import React, { useRef, useState } from 'react';
-import { useMemo } from 'react';
-import { useUnmount } from 'react-use';
-type Direction = {
-  offsetSize: 'offsetHeight' | 'offsetWidth';
-  scrollValue: 'scrollTop' | 'scrollLeft';
-  scrollSize: 'scrollHeight' | 'scrollWidth';
-  size: 'height' | 'width';
-  axis: 'X' | 'Y';
-  mouseEventClientValue: 'clientY' | 'clientX';
-  clientRectStart: 'top' | 'left';
-};
-// https://github.com/element-plus/element-plus/blob/a57727bfa41943bc4bf81a2bc31d6895362b5077/packages/scrollbar/src/util.ts#L1
-const BAR_MAP = {
-  vertical: {
-    offsetSize: 'offsetHeight',
-    scrollValue: 'scrollTop',
-    scrollSize: 'scrollHeight',
-    size: 'height',
-    axis: 'Y',
-    mouseEventClientValue: 'clientY',
-    clientRectStart: 'top',
-  } as Direction,
-  horizontal: {
-    offsetSize: 'offsetWidth',
-    scrollValue: 'scrollLeft',
-    scrollSize: 'scrollWidth',
-    size: 'width',
-    axis: 'X',
-    mouseEventClientValue: 'clientX',
-    clientRectStart: 'left',
-  } as Direction,
-};
-const useSlider = ({
-  direction,
-  onChange,
-}: {
-  direction: Direction;
-  onChange: (prop: {
-    mouse: {
-      x: number;
-      y: number;
-    };
-  }) => void;
-}) => {
-  const [active, setActive] = useState(false);
-  const position = (
-    e: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent
-  ): {
-    x: number;
-    y: number;
-  } => {
-    return 'touches' in e
-      ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
-      : { x: e.clientX, y: e.clientY };
-  };
-
-  const handleDrag = useEventCallback(
-    (e: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent) => {
-      e.stopPropagation();
-      e.preventDefault();
-      const mouse = position(e);
-      onChange?.({ mouse });
-    }
-  );
-
-  const handleEnd = useEventCallback(() => {
-    setActive(false);
-    document.removeEventListener('mousemove', handleDrag);
-    document.removeEventListener('mouseup', handleEnd);
-    document.removeEventListener('touchmove', handleDrag);
-    document.removeEventListener('touchend', handleEnd);
-    document.removeEventListener('touchcancel', handleEnd);
-  });
-  const handleStart = useEventCallback((e: React.MouseEvent | React.TouchEvent) => {
-    setActive(true);
-    handleDrag(e.nativeEvent);
-    document.addEventListener('mousemove', handleDrag);
-    document.addEventListener('mouseup', handleEnd);
-    document.addEventListener('touchmove', handleDrag);
-    document.addEventListener('touchend', handleEnd);
-    document.addEventListener('touchcancel', handleEnd);
-  });
-
-  useUnmount(handleEnd); // component could unexpectly unmount during dragging.
-
-  return {
-    active,
-    handleStart,
-    handleDrag,
-    handleEnd,
-  };
-};
+import { useEventCallback } from '@mookiepiece/starfall-utils';
+import { useSlider } from './useSlider';
 
 type SliderProps = {
   value?: number;
@@ -152,7 +61,6 @@ const Slider: React.FC<SliderProps> = ({
   });
 
   const { active, handleStart } = useSlider({
-    direction: BAR_MAP.horizontal,
     onChange: handleSliderChange,
   });
 
@@ -222,7 +130,10 @@ const Slider: React.FC<SliderProps> = ({
           style={{
             left: percentage + '%',
           }}
-          onTouchStart={handleStart}
+          onTouchStart={e => {
+            e.stopPropagation();
+            handleStart(e);
+          }}
         >
           <div className="st-slider__tooltip">{value}</div>
         </div>

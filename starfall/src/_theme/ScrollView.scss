@@ -5,7 +5,7 @@
 
 .st-scroll-view {
   position: relative;
-  height: 100%;
+  max-height: 100%;
   overflow: auto;
 
   // not showing original scrollbar
@@ -28,16 +28,14 @@
   // set this to not create or modify current selection when dragging
   user-select: none;
 }
-.st-scrollbar--visible {
+
+.st-scroll-view-wrap:hover .st-scrollbar,
+.st-scrollbar--active {
   opacity: 1;
 }
 .st-scrollbar--vertical {
   top: 2px;
-  width: 10px;
-  transform: scaleX(0.6);
-  &:hover {
-    transform: scaleX(1);
-  }
+  width: 6px;
   > div {
     width: 100%;
   }
@@ -45,11 +43,7 @@
 
 .st-scrollbar--horizontal {
   left: 2px;
-  height: 10px;
-  transform: scaleY(0.6);
-  &:hover {
-    transform: scaleY(1);
-  }
+  height: 6px;
   > div {
     height: 100%;
   }
@@ -66,6 +60,6 @@
   transition: 0.3s background-color;
 
   &:hover {
-    background-color: #0003;
+    background-color: #0006;
   }
 }

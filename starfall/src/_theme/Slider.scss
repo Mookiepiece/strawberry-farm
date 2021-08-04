@@ -25,10 +25,11 @@
 }
 .st-slider__fill {
   position: absolute;
-  top: 14px;
+  top: 50%;
   height: 2px;
   background-color: var(--color-primary-fade-200);
   border-radius: 999px;
+  transform: translateY(-50%);
 }
 
 .st-slider__thumb {
@@ -72,6 +73,7 @@
   opacity: 0;
   transition: transform 0.1s, opacity 0.1s;
 }
+
 .st-slider__input-el:focus-visible + .st-slider__rail .st-slider__tooltip,
 .st-slider:hover .st-slider__tooltip,
 .st-slider--active .st-slider__tooltip {
