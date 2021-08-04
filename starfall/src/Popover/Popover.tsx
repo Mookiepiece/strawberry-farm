@@ -14,9 +14,11 @@ const Popover: React.FC<PopoverProps> = ({
   visible,
   onClose: _onClose,
   closeOnClickOutside,
+  popup,
   ...rest
 }) => {
   const [localVisible, setLocalVisible] = useState(false);
+
   useEffect(() => {
     if (!trigger) {
       if (typeof visible !== 'boolean') {
@@ -26,20 +28,26 @@ const Popover: React.FC<PopoverProps> = ({
     }
   }, [visible, trigger]);
 
+  // FEAT: hoving popup will also not close the popup.
+  const hovingRef = useRef(false);
+
+  // FRAT: show & hide, lazy hide
   const hideTimer = useRef<NodeJS.Timeout>();
   const clearHideTimer = () => hideTimer.current && clearTimeout(hideTimer.current);
   const show = () => {
     clearHideTimer();
     setLocalVisible(true);
   };
-  const hide = () =>
-    (hideTimer.current = setTimeout(
+  const hide = () => {
+    clearHideTimer();
+    hideTimer.current = setTimeout(
       () => {
         setLocalVisible(false);
         _onClose?.();
       },
-      trigger === 'hover' ? timeout || 200 : timeout || 0
-    ));
+      trigger === 'hover' ? timeout || 500 : timeout || 0
+    );
+  };
 
   // FEAT: preset triggers
   const onClick =
@@ -55,6 +63,7 @@ const Popover: React.FC<PopoverProps> = ({
     trigger === 'hover'
       ? (e: React.MouseEvent) => {
           show();
+          hovingRef.current = true;
           children.props.onMouseEnter?.(e);
         }
       : children.props.onMouseEnter;
@@ -62,20 +71,25 @@ const Popover: React.FC<PopoverProps> = ({
     trigger === 'hover'
       ? (e: React.MouseEvent) => {
           hide();
+          hovingRef.current = false;
           children.props.onMouseLeave?.(e);
         }
       : children.props.onMouseLeave;
   const onFocus =
-    trigger === 'focus'
+    trigger === 'focus' || trigger === 'hover'
       ? (e: React.FocusEvent) => {
           show();
           children.props.onFocus?.(e);
         }
       : undefined;
   const onBlur =
-    trigger === 'focus'
+    trigger === 'focus' || trigger === 'hover'
       ? (e: React.FocusEvent) => {
-          hide();
+          // NOTE: `blur` will trigger after `mouseEnter`, causing close the popup when click the popup.
+          // this is also where `hovingRef` takes into effect.
+          if (!(trigger === 'hover' && hovingRef.current === true)) {
+            hide();
+          }
           children.props.onBlur?.(e);
         }
       : undefined;
@@ -83,6 +97,28 @@ const Popover: React.FC<PopoverProps> = ({
   return (
     <Popper
       {...rest}
+      popup={
+        <div
+          onMouseEnter={
+            trigger === 'hover'
+              ? () => {
+                  hovingRef.current = true;
+                  clearHideTimer();
+                }
+              : undefined
+          }
+          onMouseLeave={
+            trigger === 'hover'
+              ? () => {
+                  hovingRef.current = false;
+                  hide();
+                }
+              : undefined
+          }
+        >
+          {popup}
+        </div>
+      }
       visible={localVisible}
       onClose={trigger ? hide : _onClose}
       closeOnClickOutside={

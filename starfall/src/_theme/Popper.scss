@@ -89,12 +89,12 @@
   .st-popper--default {
     transform: scale(1);
     opacity: 1;
-    transition: all 0.1s var(--bezier-wave);
+    transition: transform 0.1s var(--bezier-wave), opacity 0.1s var(--bezier-wave);
   }
   .st-popper--defaultt-zoom-y {
     transform: scaleY(1);
     opacity: 1;
-    transition: all 0.1s var(--bezier-wave);
+    transition: transform 0.1s var(--bezier-wave), opacity 0.1s var(--bezier-wave);
   }
 }
 .st-popper-enter-done {
@@ -124,12 +124,12 @@
   .st-popper--default {
     transform: scale(0);
     opacity: 0;
-    transition: all 0.1s var(--bezier-wave);
+    transition: transform 0.1s var(--bezier-wave), opacity 0.1s var(--bezier-wave);
   }
   .st-popper--zoom-y {
     transform: scaleY(0);
     opacity: 0;
-    transition: all 0.1s var(--bezier-wave);
+    transition: transform 0.1s var(--bezier-wave), opacity 0.1s var(--bezier-wave);
   }
 }
 .st-popper-exit-done {

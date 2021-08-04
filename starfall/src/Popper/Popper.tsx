@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import type { Modifier, Placement } from '@popperjs/core';
 import { usePopper } from 'react-popper';
-import { NotificationPortal, useEventCallback } from '@mookiepiece/starfall-utils';
+import { Portal, useEventCallback } from '@mookiepiece/starfall-utils';
 import clsx from 'clsx';
 import type { ClassValue } from 'clsx';
 import { CSSTransition } from 'react-transition-group';
-import { sameWidth, createOffsetModifier, arrow } from './modifiers';
+import { sameWidth, createOffsetModifier, arrow, preventOverflow } from './modifiers';
+import useClickAway from './useClickAway';
 
 export type PopperProps = {
   popup: React.ReactNode;
@@ -22,12 +23,15 @@ export type PopperProps = {
 const noop = () => {};
 const EMPTY: [] = [];
 
+const PopperModifiers = {
+  sameWidth,
+  createOffsetModifier,
+  arrow,
+  preventOverflow,
+};
+
 const Popper: React.FC<PopperProps> & {
-  modifiers: {
-    sameWidth: typeof sameWidth;
-    createOffsetModifier: typeof createOffsetModifier;
-    arrow: typeof arrow;
-  };
+  modifiers: typeof PopperModifiers;
 } = ({
   children,
   popup,
@@ -48,9 +52,7 @@ const Popper: React.FC<PopperProps> & {
     placement,
   });
 
-  // FEAT: state of popper will be ready the next render, and we just wait for it.
-  const [lazyVisible, setLazyVisible] = useState(visible);
-  useEffect(() => setLazyVisible(visible), [visible]);
+  useClickAway(closeOnClickOutside && visible ? [referenceElement, popperElement] : [], onClose);
 
   // FEAT: click outside to close
   const onCloseEc = useEventCallback(onClose);
@@ -73,19 +75,26 @@ const Popper: React.FC<PopperProps> & {
       }
   }, [referenceElement, popperElement, visible, onCloseEc, closeOnClickOutside]);
 
+  const [exited, setExited] = useState(false);
   return (
     <>
       {React.cloneElement(children, {
         ref: setReferenceElement,
       })}
-      <NotificationPortal>
-        <CSSTransition in={!!lazyVisible} timeout={100} classNames="st-popper">
+      <Portal>
+        <CSSTransition
+          in={!!visible}
+          timeout={100}
+          onEnter={() => setExited(false)}
+          onExited={() => setExited(true)}
+          classNames="st-popper"
+        >
           <div
             className={clsx('st-popper')}
-            style={styles.popper}
+            style={visible || !exited ? styles.popper : { display: 'none' }}
             {...attributes.popper}
             ref={setPopperElement}
-            aria-hidden={!lazyVisible}
+            aria-hidden={!visible}
           >
             <div className={clsx('st-popper__inner', popupClassName)} style={popupStyle}>
               {popup}
@@ -95,15 +104,11 @@ const Popper: React.FC<PopperProps> & {
             </div>
           </div>
         </CSSTransition>
-      </NotificationPortal>
+      </Portal>
     </>
   );
 };
 
-Popper.modifiers = {
-  sameWidth,
-  createOffsetModifier,
-  arrow,
-};
+Popper.modifiers = PopperModifiers;
 
 export default Popper;

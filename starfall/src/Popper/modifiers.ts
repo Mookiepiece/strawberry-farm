@@ -28,3 +28,7 @@ export const createOffsetModifier = (skidding = 0, distance = 10): Modifier<unkn
 export const arrow = {
   name: 'arrow',
 } as any;
+
+export const preventOverflow = {
+  name: 'preventOverflow',
+} as any;

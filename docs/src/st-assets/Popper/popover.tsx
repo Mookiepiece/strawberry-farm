@@ -28,8 +28,12 @@ const BasicUsage: React.FC = () => {
       <Popover popup={<p>asdsd</p>} popupClassName="st-popper--default" trigger="click">
         <Button primary>trigger=`click`</Button>
       </Popover>
-      <Popover popup={<p>asdsd</p>} popupClassName="st-popper--default" trigger="hover">
-        <Button primary>trigger=`hover`</Button>
+      <Popover
+        popup={<p>Note that this will also trigger on focus because i want it to be accessable</p>}
+        popupClassName="st-popper--default"
+        trigger="hover"
+      >
+        <Button primary>trigger=`hover` </Button>
       </Popover>
     </div>
   );

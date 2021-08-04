@@ -30,7 +30,7 @@ const BasicUsage: React.FC = () => {
         </Button>
       </Popper>
       <Popper
-        popup={<p>asdsd</p>}
+        popup={<p>asdsd asdsd asdsd asdsd</p>}
         popupClassName="st-popper--default"
         visible={visible2}
         onClose={() => setVisible2(false)}
@@ -49,7 +49,7 @@ const BasicUsage: React.FC = () => {
             }}
             onMouseLeave={() => (hideTimer.current = setTimeout(() => setVisible3(false), 200))}
           >
-            asdsd
+            asds dasd sdasdsd asdsd
           </p>
         }
         popupClassName="st-popper--default"
@@ -57,7 +57,7 @@ const BasicUsage: React.FC = () => {
         onClose={() => setVisible3(false)}
         closeOnClickOutside={false}
         modifiers={[offset]}
-        placement="right-start"
+        placement="right"
       >
         <Button
           primary
