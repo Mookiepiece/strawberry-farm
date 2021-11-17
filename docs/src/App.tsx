@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
-import { BrowserRouter as Router, useHistory } from 'react-router-dom';
+import { HashRouter as Router, useHistory } from 'react-router-dom';
 import { getCowboy, i18nContext, i18nStateContext, Language } from './utils/i18n';
 import '@docs/styles.scss';
 import routes from './routes';

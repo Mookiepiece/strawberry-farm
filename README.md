@@ -7,8 +7,6 @@
 
 [Visit HomePage（访问主页）https://mookiepiece.github.io/strawberry-fury](https://mookiepiece.github.io/strawberry-fury/#/index)
 
-主页没有使用 babel，请使用现代浏览器；主页使用 BrowserRouter,部署在 ghpages 下不能刷新页面。
-
 This project is created to see if this project skeleton of react components library works.
 Of course there are some interesting components included.
 
