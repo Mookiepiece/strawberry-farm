@@ -1,0 +1,152 @@
+/* stylelint-disable */
+/**
+ * https://github.com/PrismJS/prism-themes/blob/master/themes/prism-nord.css
+ *
+ * Nord Theme Originally by Arctic Ice Studio
+ * https://nordtheme.com
+ *
+ * Ported for PrismJS by Zane Hitchcoxc (@zwhitchcox) and Gabriel Ramos (@gabrieluizramos)
+ */
+
+code[class*='language-'],
+pre[class*='language-'] {
+  background: none;
+  font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+
+  /* color: #e6e6d5;
+  --nord-c: #636f88;
+  --nord-b: #81a1c1;
+  --nord-p: #b48ead;
+  --nord-r: #b17b7b;
+  --nord-g: #a3be8c;
+  --nord-s: #88c0d0;
+  --nord-y: #ebcb8b;
+
+  --nord-bg: #2e3440; */
+
+  color: #2e3440;
+  --nord-c: #636f88;
+  --nord-b: #1784f1;
+  --nord-p: #9c2184;
+  --nord-r: #cc7777;
+  --nord-g: #61a327;
+  --nord-s: #147a96;
+  --nord-y: #ebcb8b;
+
+  --nord-bg: #f7f7fc;
+}
+
+/* Code blocks */
+pre[class*='language-'] {
+  padding: 1em;
+  /* margin: 0.5em 0; */
+  margin: 0;
+  overflow: auto;
+  /* border-radius: 0.3em; */
+}
+
+:not(pre) > code[class*='language-'],
+pre[class*='language-'] {
+  background: var(--nord-bg);
+}
+
+/* Inline code */
+:not(pre) > code[class*='language-'] {
+  padding: 0.1em;
+  border-radius: 0.3em;
+  white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--nord-c);
+}
+
+.token.punctuation {
+  color: var(--nord-b);
+}
+
+.namespace {
+  opacity: 0.7;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: var(--nord-b);
+}
+
+.token.number {
+  color: var(--nord-r);
+}
+
+.token.boolean {
+  color: var(--nord-b);
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.inserted {
+  color: var(--nord-g);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string,
+.token.variable {
+  color: var(--nord-b);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.function {
+  color: var(--nord-s);
+}
+
+.token.keyword {
+  color: var(--nord-b);
+}
+
+.token.regex,
+.token.important {
+  color: var(--nord-y);
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.builtin,
+.token.class-name {
+  color: var(--nord-p);
+}

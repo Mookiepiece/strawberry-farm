@@ -1,6 +1,6 @@
 //
 .st-option {
-  transition: background-color 0.1s;
+  cursor: pointer;
 
   &:active {
     background-color: var(--color-dark-fade-200);

@@ -1,57 +1,86 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useUpdateEffect } from 'react-use';
+import type { RuleItem } from 'starfall';
 import { Form, Button, Input } from 'starfall';
 
-const Pass: React.FC = () => {
-  const [initialValue] = useState({
-    hair: '',
-    checkHair: '',
+type FormValue = {
+  hair: string;
+  checkHair: string;
+  hair2: string;
+  checkHair2: string;
+};
+
+const Demo: React.FC = () => {
+  const form = Form.useForm<FormValue>({
+    initialValue: {
+      hair: '',
+      checkHair: '',
+      hair2: '',
+      checkHair2: '',
+    },
+    useWatch(v) {
+      const { hair } = v;
+      useUpdateEffect(() => {
+        form.isTouched() && form.validate(['checkHair']);
+      }, [hair]);
+      return v;
+    },
+    action: async value => {
+      alert(`🎉${JSON.stringify(value, null, 4)}`);
+    },
   });
 
-  const formRef = Form.useRef<{
-    hair: string;
-    checkHair: string;
-  }>();
+  const rules = Form.defineRules({
+    checkHair: [
+      {
+        validator: (rules, value) => {
+          if (form.value.hair !== value) {
+            return ['value must equal'];
+          }
+          return [];
+        },
+      },
+      {
+        required: true,
+        whitespace: true,
+      },
+    ],
+    checkHair2: [
+      {
+        validator: (rules, value) => {
+          if (form.value.hair2 !== value) {
+            return ['value must equal'];
+          }
+          return [];
+        },
+      },
+      {
+        required: true,
+        whitespace: true,
+      },
+    ],
+    userHair: {
+      validator(rules, value) {
+        form.validate(['checkHair2']);
+        return [];
+      },
+    },
+  });
 
   return (
     <>
       <div style={{ maxWidth: 300 }}>
-        <Form<{ hair: string; checkHair: string }>
-          initialValue={initialValue}
-          ref={formRef}
-          action={async value => {
-            alert(`🎉${JSON.stringify(value, null, 4)}`);
-          }}
-        >
-          <Form.Item
-            label="User Hair"
-            name="hair"
-            rules={[
-              {
-                type: 'string',
-                validator: () => {
-                  formRef.current?.value.checkHair && formRef.current?.validate(['checkHair']);
-                  return [];
-                },
-              },
-            ]}
-          >
+        <Form form={form}>
+          <Form.Item label="User Hair" name="hair">
             <Input />
           </Form.Item>
-          <Form.Item
-            label="User Hair Plus"
-            name="checkHair"
-            rules={[
-              {
-                type: 'string',
-                validator: (rules, value) => {
-                  if (formRef.current?.value.hair !== value) {
-                    return ['value must equal'];
-                  }
-                  return [];
-                },
-              },
-            ]}
-          >
+          <Form.Item label="Repeat User Hair" name="checkHair" rules={rules.checkHair}>
+            <Input />
+          </Form.Item>
+          <Form.Item label="User Hair II" name="hair2" rules={rules.userHair}>
+            <Input />
+          </Form.Item>
+          <Form.Item label="Repeat User Hair II" name="checkHair2" rules={rules.checkHair2}>
             <Input />
           </Form.Item>
           <div>
@@ -64,4 +93,5 @@ const Pass: React.FC = () => {
     </>
   );
 };
-export default Pass;
+
+export default Demo;

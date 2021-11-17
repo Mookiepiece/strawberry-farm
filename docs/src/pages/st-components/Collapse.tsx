@@ -4,11 +4,9 @@ import PageWalker from '@docs/components/PageWalker';
 
 const requireDemo = import.meta.globEager('/src/st-assets/Collapse/*.tsx');
 
-import basic from '@docs/st-assets/Collapse/basic.tsx?raw';
 import individual from '@docs/st-assets/Collapse/individual.tsx?raw';
 
 const requireRaw = {
-  basic,
   individual,
 };
 

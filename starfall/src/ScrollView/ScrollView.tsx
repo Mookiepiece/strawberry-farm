@@ -46,6 +46,20 @@ const ScrollView: React.ForwardRefExoticComponent<
     ]);
   }, [mitt]);
 
+  // useEffect(() => {
+  //   handleScroll();
+  //   if (!containerRef.current) return;
+  //   const heightPercentage =
+  //     (containerRef.current.clientHeight * 100) / containerRef.current.scrollHeight;
+  //   const widthPercentage =
+  //     (containerRef.current.clientWidth * 100) / containerRef.current.scrollWidth;
+
+  //   mitt.emit('RESIZE', [
+  //     widthPercentage < 100 ? widthPercentage + '%' : '',
+  //     heightPercentage < 100 ? heightPercentage + '%' : '',
+  //   ]);
+  // }, [children, handleScroll, mitt]);
+
   // FEAT: resize
   useEffect(() => {
     if (!containerRef.current) return;
@@ -71,7 +85,7 @@ const ScrollView: React.ForwardRefExoticComponent<
     return () => {
       ro.unobserve(div);
     };
-  }, [mitt]);
+  }, [mitt, handleScroll]);
 
   return (
     <div className="st-scroll-view-wrap" style={wrapStyle}>

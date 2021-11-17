@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input } from 'starfall';
-import { RuleItem } from 'async-validator';
+import type { RuleItem } from 'starfall';
 
 const apiUser = (s: string) => {
   return new Promise((resolve, reject) => {
@@ -21,53 +21,50 @@ const apiUser = (s: string) => {
   });
 };
 
+type FormValue = {
+  name: string;
+};
+
 const BasicUsage: React.FC = () => {
-  const [initialValue] = useState({
-    name: '',
+  const [nameRule, setNameRule] = useState<RuleItem[]>([{ required: true }]);
+
+  const form = Form.useForm<FormValue>({
+    initialValue: {
+      name: '',
+    },
+    action: [
+      async v =>
+        apiUser(v.name)
+          .then(() => {
+            alert('🎉 ' + v.name);
+          })
+          .catch(async e => {
+            if (e.code === 666 && e.message) {
+              form.setError('name', e.message);
+              setNameRule([
+                { required: true },
+                {
+                  validator(r, value, callback) {
+                    if (value === v.name) {
+                      callback('our api seems not like this name, please pick another');
+                    }
+                    callback();
+                  },
+                },
+              ]);
+            } else {
+              alert('💢 server error');
+            }
+          }),
+      errors => {
+        alert('💢' + JSON.stringify(errors, null, 4));
+      },
+    ],
   });
 
-  const formRef = Form.useRef();
-
-  const [nameRule, setNameRule] = useState<RuleItem[]>([{ required: true }]);
   return (
     <>
-      <Form<{
-        name: string;
-      }>
-        initialValue={initialValue}
-        ref={formRef}
-        action={[
-          async v =>
-            apiUser(v.name)
-              .then(() => {
-                alert('🎉 ' + v.name);
-              })
-              .catch(async e => {
-                if (e.code === 666 && e.message) {
-                  formRef.current?.setValidateStatus('name', {
-                    state: 'error',
-                    message: e.message,
-                  });
-                  setNameRule([
-                    { required: true },
-                    {
-                      validator(r, value, callback) {
-                        if (value === v.name) {
-                          callback('our api seems to not like this name, please pick another');
-                        }
-                        callback();
-                      },
-                    },
-                  ]);
-                } else {
-                  alert('💢 server error');
-                }
-              }),
-          errors => {
-            alert('💢' + JSON.stringify(errors, null, 4));
-          },
-        ]}
-      >
+      <Form form={form}>
         <Form.Item label="User Name" name="name" rules={nameRule}>
           <Input />
         </Form.Item>

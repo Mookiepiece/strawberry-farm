@@ -8,21 +8,11 @@
 
 :::
 
-### 手风琴
-
-利用`React`的`Context`使`Collapse`和`Item`通讯。
-
-`Collapse.Summary`会利用`React.cloneElement`给其子元素附加`active`类，并复合其 onClick 事件，原有的 onClick 也会触发，但不支持阻止。
-
-示例只是偷懒用了按钮，设计上是要求另外写过
-
-::demo{basic}
-
 ### 接口索引
 
-| Collapse.Panel Property | Description                                            | Type      |
-| ----------------------- | ------------------------------------------------------ | --------- |
-| active:required         | visibility control, could omit if inside Collapse.Item | `boolean` |
+| Collapse.Panel Property | Description        | Type      |
+| ----------------------- | ------------------ | --------- |
+| active:required         | visibility control | `boolean` |
 
 \*除上述属性，折叠面板仍继承原生 `<div>` 属性
 

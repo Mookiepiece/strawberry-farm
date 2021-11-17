@@ -22,6 +22,9 @@ const Individual: React.FC = () => {
             architecto? Sunt, delectus mollitia quaerat ad ut laboriosam enim quis perspiciatis
             culpa beatae! Veritatis odio consequuntur iure magnam esse!
           </p>
+          <div style={{ height: 20, marginBottom: 100, background: 'aliceblue' }}>
+            <div style={{ height: 10, marginBottom: -90, background: 'pink' }}></div>
+          </div>
         </Collapse.Panel>
         <p>
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur libero facilis

@@ -87,7 +87,7 @@ In current version starfall dont treat starfall-utils as peerDependencies. but y
 
 #### Prior Art
 
-Those article may better than this one：
+Those article may better than this README：
 
 - [Creating a Library of React Components using Create React App](https://hackernoon.com/creating-a-library-of-react-components-using-create-react-app-without-ejecting-d182df690c6b)
 - [Creating a React Component Library using Rollup, Typescript, Sass and Storybook](https://github.com/HarveyD/react-component-library)
@@ -131,7 +131,5 @@ NO English translations for rest sections in this chapter
 官网是部署在 github pages 下的，国内网络不能访问
 
 如果连接不上 github，fatal: unable to access，尝试把 git remote [从 https 改成 ssh](https://www.zhihu.com/question/26954892)
-
-为了支持 `babel-plugin-import`，每个组件只能有一个默认导出，这也意味着不能使用 `export types` 或者 `export const` 导出，需要导出的方法得挂到默认导出的对象的属性里，所以 antd 不是暴露`FormInstanceType`而是暴露了`Form.useForm`方法这个方法返回值是 instanceType。
 
 starfall 和 strawberry 的 tsconfig 路径映射会和 docs 冲突，尽量命名不冲突的映射。

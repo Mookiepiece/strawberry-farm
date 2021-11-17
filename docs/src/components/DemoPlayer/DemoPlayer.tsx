@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
-import vs from 'react-syntax-highlighter/dist/esm/styles/prism/vs';
-import tsx from 'react-syntax-highlighter/dist/esm/languages/prism/tsx';
+import React, { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { Collapse } from 'starfall';
 import './styles.scss';
-
-// reduce bundle size
-// https://github.com/react-syntax-highlighter/react-syntax-highlighter#light-build
-SyntaxHighlighter.registerLanguage('tsx', tsx);
+import Prism from 'prismjs';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-tsx';
+import './prism.css';
 
 const DemoPlayer: React.FC<{
   src: {
@@ -18,6 +16,11 @@ const DemoPlayer: React.FC<{
 }> = ({ src: { demo, raw } }) => {
   const LiveDemo = demo.default;
   const [active, setActive] = useState(false);
+
+  const rawHTML = useMemo(() => {
+    return Prism.highlight(raw, Prism.languages.tsx, 'tsx');
+  }, [raw]);
+
   return (
     <div className="demo-player">
       <div className="demo-player-inner">
@@ -32,9 +35,7 @@ const DemoPlayer: React.FC<{
         </button>
         <div className="demo-code">
           <Collapse.Panel active={active}>
-            <SyntaxHighlighter language="tsx" style={vs}>
-              {raw}
-            </SyntaxHighlighter>
+            <pre dangerouslySetInnerHTML={{ __html: rawHTML }} className="language-tsx"></pre>
           </Collapse.Panel>
         </div>
       </div>

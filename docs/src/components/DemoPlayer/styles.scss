@@ -3,24 +3,26 @@
   overflow: hidden;
   border-radius: 4px;
   .demo-player-inner {
-    margin-top: 12px;
-    background-color: var(--color-dark-fade-100);
+    margin-top: 10px;
     border: 2px solid var(--color-dark-fade-200);
     border-radius: 2px;
   }
   .demo-live {
     position: relative;
-    padding: 24px;
+    padding: 20px;
     overflow: auto hidden;
     background-color: #fff;
     border-radius: 2px;
   }
   .demo-control {
+    position: relative;
     display: block;
     box-sizing: border-box;
     width: 100%;
     color: var(--color-dark);
     font-weight: 700;
+
+    // font-family: 'lucida console', Consolas, Monaco, 'andale mono', 'ubuntu mono', monospace;
     font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace;
     line-height: 36px;
     text-align: center;
@@ -49,11 +51,5 @@
     }
   }
   .demo-code {
-    pre {
-      margin: 0 !important;
-      background-color: transparent !important;
-      border: 0 !important;
-      border-radius: 0 0 12px 12px;
-    }
   }
 }

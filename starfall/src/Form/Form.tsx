@@ -1,201 +1,88 @@
-import { ErrorList } from 'async-validator';
-import React, {
-  useCallback,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  FormEvent,
-  useState,
-  useContext,
-  useEffect,
-} from 'react';
-import { useMount } from 'react-use';
-import { Mitt } from '@mookiepiece/starfall-utils';
-import type { Emitter } from '@mookiepiece/starfall-utils';
-import { useEventCallback } from '@mookiepiece/starfall-utils';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState, useEffect, useContext, useImperativeHandle } from 'react';
+import type { RuleItem } from 'async-validator';
 import Button from '../Button';
-import { FormContext, FormItemsRegisterProps } from './FormContext';
-import { FormItem, ValidateStatusParam } from './FormItem';
-import { getProp, setProp } from './getProp';
+import { FormContext, FormItemsRegistryProvider, FormValueContext } from './FormContext';
+import { FormItem } from './FormItem';
+import { FormList } from './FormList';
+import type { FormComponentInstance, FormInstance } from './useForm';
+import { useForm } from './useForm';
+import { get, set } from '@mookiepiece/starfall-utils';
+export type { FormComponentInstance, FormInstance } from './useForm';
+export type { RuleItem } from 'async-validator';
 
-type FormInstance<T extends Record<string, unknown>> = {
-  setInitialValue: (initialValue: T) => void;
-  validate: (names?: string[]) => Promise<T>;
-  reset: (names?: string[]) => void;
-  set: (callback: (value: T) => T) => void;
-  value: T;
-  setValidateStatus: (name: string, validateStatus: ValidateStatusParam) => void;
+type FormProps<T extends Record<string, any>> = {
+  form: FormInstance<T>;
+  children: React.ReactNode;
 };
 
-export type FormMitt = Emitter<{
-  CHANGE: { pathes: string[]; value: any };
-  UPDATE: { value: unknown; pathes: string[] };
-  SUBMITTING_CHANGE: boolean;
-}>;
+const _Form = <T extends Record<string, any>>(
+  { form, children }: FormProps<T>,
+  ref: React.ForwardedRef<FormComponentInstance>
+): // ref: React.ForwardedRef<FormComponentInstance>
+React.ReactElement => {
+  const useWatch = form.useWatch;
+  const initialValue = form.initialValue;
+  const formContextValue = form.formContextValue;
+  const { formMitt } = formContextValue;
 
-type FormProps<T extends Record<string, unknown>> = {
-  initialValue: T;
-  children?: React.ReactNode;
-  /** provide api and indicates the Form do internal submit, pick one from `action` and `onSubmit` */
-  action?:
-    | ((value: T) => Promise<void> | void)
-    | [(value: T) => Promise<void> | void, (errors: ErrorList) => Promise<void> | void];
-  /** should validate manually if using form in this way, pick one from `action` and `onSubmit` */
-  onSubmit?: () => void;
-};
+  const [state, setState] = useState(initialValue);
+  const value = useWatch(state);
 
-const _Form = <T extends Record<string, unknown>>(props: FormProps<T>, ref: React.Ref<unknown>) => {
-  if ((props.action && props.onSubmit) || (!props.action && !props.onSubmit)) {
-    throw new Error('[ST form] prop `action` and `onSubmit` conflicts or not be provided');
-  }
-
-  const initialValue = useRef(props.initialValue);
-  const valueRef = useRef<T>(initialValue.current);
-
-  const [formMitt] = useState(() => Mitt() as FormMitt);
-
-  // using Map will make things complicated because map could not support `multiple same name` without using array
-  const items = useRef<FormItemsRegisterProps[]>([]);
-
-  useMount(() => {
-    formMitt.on('CHANGE', ({ pathes, value: propValue }) => {
-      valueRef.current = setProp<T>(valueRef.current, pathes, propValue);
-      formMitt.emit('UPDATE', { value: valueRef.current, pathes });
-    });
-  });
-
-  const register = useEventCallback((i: FormItemsRegisterProps) => {
-    items.current = [...items.current, i];
-    i.reset(getProp(valueRef.current, i.pathes));
-  });
-  const unregister = useCallback(i => {
-    const index = items.current.findIndex(k => k === i);
-    if (index !== -1) {
-      items.current = [...items.current.slice(0, index), ...items.current.slice(index + 1)];
-    }
-  }, []);
-
-  const validate = useEventCallback(
-    async (names: string[] = []): Promise<T> => {
-      const i = names.length
-        ? items.current.filter(({ name }) => names.includes(name))
-        : items.current;
-
-      let t = 0;
-      const errors: ErrorList = [];
-      const value = valueRef.current;
-      return new Promise((resolve, reject) => {
-        const callback = (e?: { errors: ErrorList }) => {
-          if (e) {
-            errors.push(...e.errors);
-          }
-          if (++t === i.length) {
-            if (errors.length) {
-              reject(errors);
-            }
-            resolve(value);
-          }
-          return;
-        };
-        i.map(item => item.validate().then(() => callback(), callback));
-      });
-    }
-  );
-
-  const reset = useEventCallback(async (names: string[] = []) => {
-    const i = names.length
-      ? items.current.filter(({ name }) => names.includes(name))
-      : items.current;
-    i.forEach(item => {
-      const i = getProp(initialValue.current, item.pathes);
-      item.reset(i);
-      valueRef.current = setProp(valueRef.current, item.pathes, i);
-    });
-  });
-
-  const setValidateStatus = useCallback((name: string, validateStatus: ValidateStatusParam) => {
-    const i = items.current.filter(({ name: _ }) => _ === name);
-    i.forEach(item => {
-      item.setValidateStatus(validateStatus);
-    });
-  }, []);
-
-  const set = useCallback(
-    (callback: (value: T) => T) => {
-      formMitt.emit('UPDATE', {
-        value: (valueRef.current = callback(valueRef.current)),
-        pathes: [],
-      });
+  useImperativeHandle(form.formRef, () => ({
+    get value() {
+      return value;
     },
-    [formMitt]
-  );
+    get rawValue() {
+      return state;
+    },
+  }));
 
-  const formContextValue = useMemo(
-    () => ({
-      register,
-      unregister,
-      formMitt,
-    }),
-    [register, unregister, formMitt]
-  );
+  useEffect(() => {
+    const cb = ({ pathes, value }: { pathes: string[]; value: React.SetStateAction<any> }) => {
+      if (typeof value === 'function') {
+        setState(state => {
+          const prev = get(state, pathes);
+          return set(state, pathes, value(prev));
+        });
+      } else {
+        if (!pathes.length) {
+          setState(value);
+        } else {
+          setState(state => {
+            console.log(pathes.length, set(state, pathes, value));
 
-  useImperativeHandle(
-    ref,
-    (): FormInstance<T> => ({
-      setInitialValue(v) {
-        initialValue.current = v;
-      },
-      validate,
-      setValidateStatus,
-      set,
-      get value() {
-        return valueRef.current;
-      },
-      reset,
-    }),
-    [validate, setValidateStatus, set, reset]
-  );
-
-  const submitting = useRef(false);
-  const handleSubmit = useEventCallback(async (e: FormEvent) => {
-    e.preventDefault();
-    if (props.action) {
-      if (submitting.current) return;
-      // internal submit
-      const [successAction, failedAction] = Array.isArray(props.action)
-        ? props.action
-        : [props.action, () => {}];
-
-      formMitt.emit('SUBMITTING_CHANGE', (submitting.current = true));
-      const v = valueRef.current;
-      try {
-        await validate();
-
-        try {
-          await successAction(v);
-        } catch (_) {
-          void 0;
+            return set(state, pathes, value);
+          });
         }
-      } catch (e) {
-        failedAction(e);
-      } finally {
-        formMitt.emit('SUBMITTING_CHANGE', (submitting.current = false));
       }
-    } else {
-      // external submit
-      props.onSubmit?.();
-    }
-  });
+    };
+    formMitt.on('CHANGE', cb);
+    return () => formMitt.off('CHANGE', cb);
+  }, [formMitt]);
+
+  console.log(value);
+
+  const formValueContextValue = value;
 
   return (
     <form
-      onSubmit={handleSubmit}
-      onReset={(e: FormEvent) => {
+      onSubmit={e => {
         e.preventDefault();
-        reset();
+        form.submit();
+      }}
+      onReset={e => {
+        e.preventDefault();
+        form.reset();
       }}
     >
-      <FormContext.Provider value={formContextValue}>{props.children}</FormContext.Provider>
+      <FormItemsRegistryProvider itemsRef={form.items}>
+        <FormContext.Provider value={formContextValue}>
+          <FormValueContext.Provider value={formValueContextValue}>
+            {children}
+          </FormValueContext.Provider>
+        </FormContext.Provider>
+      </FormItemsRegistryProvider>
     </form>
   );
 };
@@ -213,16 +100,26 @@ const FormSubmitButton: typeof Button = React.forwardRef((props, ref) => {
   return <Button {...props} type="submit" loading={props.loading || submitting} ref={ref} />;
 });
 
-const Form: (<T extends Record<string, unknown>>(
+const defineRules = <T extends Record<string, RuleItem | RuleItem[] | undefined>>(a: T) => a;
+
+const Form: (<T extends Record<string, any>>(
   props: FormProps<T> & React.RefAttributes<unknown>
 ) => React.ReactElement) & {
   Item: typeof FormItem;
+  List: typeof FormList;
   SubmitButton: typeof Button;
-  useRef: <T extends Record<string, unknown>>() => React.RefObject<FormInstance<T>>;
-} = Object.assign(React.forwardRef(_Form), {
+
+  useForm: typeof useForm;
+
+  defineRules: typeof defineRules;
+} = Object.assign(_Form, {
   Item: FormItem,
+  List: FormList,
   SubmitButton: FormSubmitButton,
-  useRef: <T extends Record<string, unknown>>() => React.useRef<FormInstance<T>>(null),
+
+  useForm,
+
+  defineRules,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }) as any;
 

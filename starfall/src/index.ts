@@ -13,12 +13,14 @@ export { default as Col } from './Col';
 export { default as Notification } from './Notification';
 
 export { default as Form } from './Form';
+export type { RuleItem, FormComponentInstance, FormInstance } from './Form';
 
 export { default as Input } from './Input';
 
 export { default as Spin } from './Spin';
 
 export { default as ScrollView } from './ScrollView';
+export type { ScrollViewInstance, ScrollViewProps } from './ScrollView';
 
 export { default as Slider } from './Slider';
 

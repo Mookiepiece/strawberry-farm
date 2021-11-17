@@ -8,25 +8,44 @@
 
 `Form.Item`**仅主动输入时会自动触发校验**。**节流规则是连续输入时每次异步校验需等待上一次完成，在不提交仅输入的情况下同时只有一个异步校验在调用**。
 
-第一个表单传入`action`，自动校验自动提交，自动校验里面的 submit 按钮会自动切换到加载状态。
-
-第二个表单传入`onSubmit`，需要在外面主动校验主动为按钮切换加载状态。如果不在外面做节流就会像示例这样打两次回车提交两次。
+表单传入`action`，自动校验成功后自动提交，自动校验里面的 submit 按钮会自动切换到加载状态。
 
 这两个参数互斥
 
 :::
 
+:::demo{computed}
+
+### 计算属性
+
+`useWatch`内可以使用`useEffect`和`useMemo`，分别当做`watch`和`computed`。计算属性的好处是只需计算一次便可在表单的多个地方映射。
+
+`project`是一种轻量的`Form.Item`，仅仅是取值，没有校验功能。两者都基于表单内部的一个组件`Form.Subscription`。
+
+用法：利用示例中的`hairFieldVisible`这个计算属性按需渲染字段。也可以监听其变化清空字段值。
+
+注意：计算属性仍然会被提交。
+
+注意：计算属性无法在`form.set`等回调函数里访问到，如果函数有依赖于计算属性的行为，可以将这种函数也做成计算属性。
+
+这是因为表单内部有 value 和 state 两种模型；state 是 useWatch 的参数（Vue:`data`），value 是 useWatch 返回的结果（Vue:`data`+`computed`），故`value`无法被储存；而`form.set`是在修改`state`。
+:::
+
 :::demo{pass}
 
-### 重复密码
+### 监听
 
-表单项间通信，如果不是`element`有这个示例，差点就去挖坑显式监听接口了。
+以重复密码示例，`element-plus`在`validator`里做校验，也可以在`useWatch`里使用`useEffect`达到同样的效果。
+
+注意：放`validator`里校验那么在提交的时候会多校验一次（本身一次被别的 rules 触发又一次），是不够好的。
 
 :::
 
-:::demo{cuscontrol}
+:::demo{list}
 
-### 自定义控件
+### 列表
+
+列表 key 统一由`Form.List`管理，因为列表项仍然直接从 Form 取值所以如果在外边调用`form.set`重置列表值不会使 item 混淆，但可能因为值改变触发验证，详情参阅`React`文档关于列表 key 和`Recoil这单词很长后面忘了`的解释，里面有因为拿数组 index 做 key 导致混淆的例子。
 
 :::
 
@@ -38,58 +57,37 @@
 
 :::
 
-:::demo{list}
+:::demo{message}
 
-### 列表
+### 错误信息
 
-嵌套加循环
+错误信息可以改得很大
 
-:::
-
-:::demo{nesting}
-
-### 假的监听
-
-列表一节已经展示了嵌套，嵌套比起其它表单库的做法即主动用 ref 监听值更加容易，模型也更加简单。
-
-以下讲优化：
-
-常规情况下，你会想，这里有大小两个订阅，所以嵌套是会导致局部多次渲染的，大 Item 一次（外层的 Item），小 Item 一次（内层的 Item），导致渲染两次。就好比`react-redux hooks`一节提到的 [performance](https://github.com/reduxjs/react-redux/blame/master/docs/api/hooks.md#L410) 问题。这里`st-form`在小 Item 里触发的是大 Item 的 `onChange`，大 Item 的 `onChange` 只会更新大 Item，因为小 Item 的 `path` 比大 Item 深一层，小 Item 知道自己会‘被’刷新，所以拒绝主动刷新了。
-
-由于嵌套必须使用 render props 写，大 Item 的刷新自动带动了创建一个新的小 Item，于是小 Item 也是新的了。
-
-表单接管逻辑的同时也接管渲染结果，且字段都有一一对应的输入组件，使用这种嵌套策略合适。
-
-:::
-
-:::demo{status}
-
-### 校验状态
-
-`Form`之前是带有状态的，但是无缘无故去刷新状态就会渲染 3 次，多出来的两次是正在校验和校验成功状态。
-可是实际用异步校验`asyncValidator`的场景还是太少了，都是同步校验的。
-
-移除了多余重复渲染后，现在的校验状态只有没错误和错误两种，自然需要以更多的外部逻辑弥补。
+`alert`是特殊的折叠面板，默认 24px 高充当间距，当触发了 getter 后默认的`alert`会消失
 
 :::
 
 ### 接口索引
 
-| Form Property         | Description                                                      | Type                                                                                 |
-| --------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| initialValue:required | 初始值，只认首次渲染传进去的那个                                 | `Record<string, unknown>`                                                            |
-| action                | 表单验证成功后调用的方法                                         | `(value: T) => Promise<void> / void`                                                 |
-| action                | 也能传数组，第一个是 action，第二个是校验失败时执行              | ` [(value: T) => Promise<void> / void, (errors: ErrorList) => Promise<void> / void]` |
-| onSubmit              | 监听表单的提交，此时需要手动校验和提交和禁用按钮，和`action`互斥 | `(value: T) => void`                                                                 |
+| Form Property         | Description                                            | Type                                                                                 |
+| --------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| initialValue:required | 初始值，只认首次渲染传进去的那个                       | `T`                                                                                  |
+| useWatch              | 在 useWatch 里监听表单变化，甚至在每次变化时修改返回值 | `(value: T) => T`                                                                    |
+| action                | 表单验证成功后调用的方法                               | `(value: T) => Promise<void> / void`                                                 |
+| action                | 也能传数组 s，第一个是 action，第二个是校验失败时执行  | ` [(value: T) => Promise<void> / void, (errors: ErrorList) => Promise<void> / void]` |
 
-| Form Instance     | Description                    | Type                                                          |
-| ----------------- | ------------------------------ | ------------------------------------------------------------- |
-| setInitialValue   | 只能通过此种方式设置表单初始值 | `(initialValue?: T) => void`                                  |
-| validate          | 抢占地触发表单（项）的验证     | `(names?: string[]) => Promise<T>`                            |
-| reset             | 清空表单（项）的验证状态及数据 | `(names?: string[]) => void`                                  |
-| set               | 设置表单的值                   | `(callback: (value: T) => T) => void`                         |
-| value (getter)    | 获得表单的值                   | `T`                                                           |
-| setValidateStatus | 设置某表单项的验证状态         | `(name: string, validateStatus: ValidateStatusParam) => void` |
+| Form Instance   | Description                                                                | Type                                      |
+| --------------- | -------------------------------------------------------------------------- | ----------------------------------------- |
+| setInitialValue | 只能通过此种方式设置表单初始值                                             | `(initialValue: T) => void`               |
+| validate        | 抢占地触发表单（项）的验证                                                 | `(names?: string[]) => Promise<T>`        |
+| reset           | 清空表单（项）的验证状态及数据                                             | `(names?: string[]) => void`              |
+| set             | 设置表单的值                                                               | `React.Dispatch<React.SetStateAction<T>>` |
+| value (getter)  | 获得表单的值                                                               | `T`                                       |
+| setError        | 设置表单项的验证状态                                                       | `(error:string / null) => void`           |
+| isUntouched     | 表单值是不是等于 initialValue，在 FormItem 里作为是否要验证的依据（reset） |                                           |
+| isTouched       |                                                                            |                                           |
+| submit          | 校验并提交                                                                 |                                           |
+| project         | 值投影, 就功能而言完全可以从 Form 里导出，但是小驼峰看着别扭               |                                           |
 
 | Form.Item Property | Description                                             | Type                    |
 | ------------------ | ------------------------------------------------------- | ----------------------- |
@@ -97,9 +95,19 @@
 | label              |                                                         | `string`                |
 | rules              | 查阅`async-validator`，可变，但当规则改变时不会自动校验 | `RuleItem`/`RuleItem[]` |
 
+| Form.Item Render Props | Description | Type |
+| ---------------------- | ----------- | ---- |
+| control.value          |             |      |
+| control.onChange       |             |      |
+| meta.validate          |             |      |
+| meta.error             |             |      |
+| meta.setError          |             |      |
+| meta.cancelValidate    |             |      |
+| meta.alert             |             |      |
+
 ### 原理
 
-确实有人快一步分析市面上的表单，[React 表单源码阅读笔记 👍](https://zhuanlan.zhihu.com/p/352181528)。
+有人分析过市面上的表单，[React 表单源码阅读笔记 👍](https://zhuanlan.zhihu.com/p/352181528)。
 
 `material-ui` 和 `chakra-ui` `semantic-ui` `react-bootstrap`等大部分不具备表单验证功能，可选的验证工具是 [`formik`](https://github.com/formium/formik)， formik 使用 [`Yup`](https://formik.org/docs/tutorial#schema-validation-with-yup) 做 Schema 验证。
 
@@ -112,13 +120,11 @@
 - `antd` 默认局部刷新，因为每次更新会触发所有[Field 的回调](https://github.com/react-component/field-form/blob/e118381c2102b36c4ffe7e17a6415df091e772b7/src/Field.tsx#L216)让其各自比对新旧值判断是否需要更新，在使用[render props 模式](https://github.com/react-component/field-form/blob/e118381c2102b36c4ffe7e17a6415df091e772b7/docs/examples/renderProps.tsx#L17)此功能失效，表单整体刷新，所以文档里提示这个性能更差。
 - `formik` 默认整体刷新表单，额外的优化手段是 FastField 组件，该组件有 shouldComponentUpdate 方法各自比对新旧值，能够判断是否需要更新。
 
-[只要 vue 够快就不用优化](https://www.zhihu.com/question/453332049/answer/1844784032)。
+[ vue 够快就不用优化](https://www.zhihu.com/question/453332049/answer/1844784032)。
 
 表单核心和写折叠面板一样用传统的订阅模式就能解决。
 
 `muse-ui`的源码比较精简，推荐入门阅读，然后是`element/element-plus`。
-
-`starfall` 尝试过使用受控表单，感觉不合群，当遇到性能差的情况时在受控模式是没有解决办法避免的。还是希望它能适合任何场景。经过了大的重改，现在就是非受控了。所以`st-form`是高性能的。
 
 ### 可访问性
 
