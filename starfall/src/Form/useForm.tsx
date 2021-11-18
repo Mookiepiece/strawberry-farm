@@ -1,12 +1,11 @@
-import React from 'react';
+import type React from 'react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import type { FormContextValue, FormItemsRegisterProps } from './FormContext';
 import { Mitt, useEventCallback } from '@mookiepiece/starfall-utils';
 import type { ErrorList } from 'async-validator';
 import type { FormMitt } from './FormContext';
 import { project } from './project';
-
-void (<></>);
+import { recursiveTrim } from './recursiveTrim';
 
 export type FormInstance<T extends Record<string, unknown>> = {
   set: React.Dispatch<React.SetStateAction<T>>;
@@ -112,7 +111,7 @@ export const useForm = <T extends Record<string, any>>({
         const v = await validate();
 
         try {
-          await successAction(v);
+          await successAction(recursiveTrim(v));
         } catch (_) {
           void 0;
         }

@@ -49,6 +49,9 @@
     &:focus-visible {
       box-shadow: 0 0 0 4px #8cbaff80;
     }
+    ::before {
+      content: '<>';
+    }
   }
   .demo-code {
   }

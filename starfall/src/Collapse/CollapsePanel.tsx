@@ -55,7 +55,7 @@ const CollapsePanel: React.FC<CollapsePanelProps> = ({
                 ...({ pointerEvents: 'none', userSelect: 'none' } as any),
                 transition: 'all 0.3s',
               },
-              exited: { height: 0 },
+              exited: { height: 0, marginTop: 0, marginBottom: 0 },
               unmounted: { height: undefined, marginTop: 0, marginBottom: 0 },
             }[state],
             ...style,

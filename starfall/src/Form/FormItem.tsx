@@ -41,6 +41,13 @@ export const FormItem = <T extends any = any>({
 
   const rules = useMemo(() => (Array.isArray(_rules) ? _rules : [_rules]), [_rules]);
 
+  const validator = useMemo(() => {
+    const rules = Array.isArray(_rules) ? _rules : [_rules];
+    if (!rules.length) return;
+    const validator = new AsyncValidator({ [label || name]: rules });
+    return validator;
+  }, [_rules, label, name]);
+
   const pathes = useMemo(() => {
     return name.replace(/\[(\w+)\]/g, '.$1').split('.');
   }, [name]);
@@ -48,11 +55,14 @@ export const FormItem = <T extends any = any>({
   // validation
   const [error, setError] = useState<string | null>(null);
   const [_validate, cancelValidate] = useSingletonAsyncFn(async () => {
-    if (!rules.length) return;
+    if (!validator) return;
     if (!formSubscriptionRef.current) return;
 
-    const validator = new AsyncValidator({ [name]: rules });
-    await validator.validate({ [name]: formSubscriptionRef.current.value }, { firstFields: true });
+    let value = formSubscriptionRef.current.value;
+
+    if (typeof value === 'string') value = value.trim();
+
+    await validator.validate({ [label || name]: value }, { firstFields: true });
   });
 
   const validate = useCallback(async () => {

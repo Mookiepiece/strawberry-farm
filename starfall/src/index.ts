@@ -13,7 +13,7 @@ export { default as Col } from './Col';
 export { default as Notification } from './Notification';
 
 export { default as Form } from './Form';
-export type { RuleItem, FormComponentInstance, FormInstance } from './Form';
+export type { RuleItem, FormInstance } from './Form';
 
 export { default as Input } from './Input';
 

@@ -8,8 +8,6 @@ import { FormList } from './FormList';
 import type { FormComponentInstance, FormInstance } from './useForm';
 import { useForm } from './useForm';
 import { get, set } from '@mookiepiece/starfall-utils';
-export type { FormComponentInstance, FormInstance } from './useForm';
-export type { RuleItem } from 'async-validator';
 
 type FormProps<T extends Record<string, any>> = {
   form: FormInstance<T>;
