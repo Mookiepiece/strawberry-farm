@@ -15,6 +15,7 @@ export type FormItemFnChildren<T> = (
   control: {
     value: T;
     onChange: React.Dispatch<React.SetStateAction<T>>;
+    ref: React.RefObject<HTMLElement>;
   },
   meta: {
     validate(method: 'change' | 'force'): Promise<void>;
@@ -100,6 +101,10 @@ export const FormItem = <T extends any = any>({
           return validate();
         },
         cancelValidate,
+        focus() {
+          controlRef.current?.scrollIntoView({ behavior: 'smooth' });
+          setTimeout(() => controlRef.current?.focus(), 300);
+        },
       }),
       [cancelValidate, name, pathes, validate]
     )
@@ -108,6 +113,7 @@ export const FormItem = <T extends any = any>({
   const asterisk =
     !!(Array.isArray(rules) ? rules : [rules]).find(r => r.required) && 'st-label-asterisk';
 
+  const controlRef = useRef<HTMLElement>(null);
   const render = useCallback(
     (model: any) => {
       const control = {
@@ -115,6 +121,7 @@ export const FormItem = <T extends any = any>({
         onChange: (value: React.SetStateAction<T>) => {
           formMitt.emit('CHANGE', { pathes, value });
         },
+        ref: controlRef,
       };
 
       let errorMessageGetterTriggered = false;

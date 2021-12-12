@@ -16,6 +16,7 @@ export type FormItemsRegisterProps = {
   setError: (error: string | null) => void;
   validate: () => Promise<void>;
   cancelValidate: () => void;
+  focus(): void;
 };
 
 export const [

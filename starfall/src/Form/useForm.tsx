@@ -46,7 +46,10 @@ export const useForm = <T extends Record<string, any>>({
   useWatch?: (formValue: T) => T;
   action?:
     | ((value: T) => Promise<void> | void)
-    | [(value: T) => Promise<void> | void, (errors: ErrorList) => Promise<void> | void];
+    | [
+        (value: T) => Promise<void> | void,
+        (error: { firstItem: FormItemsRegisterProps; errors: ErrorList }) => Promise<void> | void
+      ];
 }): FormInstance<T> => {
   // Freeze initial value
   const initialValueRef = useRef<T>(_initialValue);
@@ -135,21 +138,45 @@ export const useForm = <T extends Record<string, any>>({
         : items.current;
 
       let t = 0;
+
+      const errorItems: FormItemsRegisterProps[] = [];
       const errors: ErrorList = [];
       const value = formRef.current.value;
       return new Promise((resolve, reject) => {
-        const callback = (e?: { errors: ErrorList }) => {
-          if (e) {
-            errors.push(...e.errors);
+        const callback = ({
+          item,
+          error,
+        }: {
+          item: FormItemsRegisterProps;
+          error?: { errors: ErrorList };
+        }) => {
+          if (error) {
+            errorItems.push(item);
+            errors.push(...error.errors);
           }
           if (++t === i.length) {
             if (errors.length) {
-              reject(errors);
+              reject({
+                firstItem: errorItems[0],
+                errors,
+              });
             }
             resolve(value);
           }
         };
-        i.map(item => item.validate().then(() => callback(), callback));
+        i.map(item =>
+          item.validate().then(
+            () =>
+              callback({
+                item,
+              }),
+            error =>
+              callback({
+                item,
+                error,
+              })
+          )
+        );
       });
     }
   );
@@ -170,8 +197,11 @@ export const useForm = <T extends Record<string, any>>({
         } catch (_) {
           void 0;
         }
-      } catch (e) {
-        failedAction(e as any);
+      } catch (e: any) {
+        if ('firstItem' in e) {
+          e.firstItem.focus();
+          failedAction(e as any);
+        }
       } finally {
         formMitt.emit('SUBMITTING_CHANGE', (submitting.current = false));
       }
