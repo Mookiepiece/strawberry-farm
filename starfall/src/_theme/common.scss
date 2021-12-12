@@ -136,6 +136,11 @@ $align-items: (
 }
 
 .st-not-interactive {
-  pointer-events: none;
   user-select: none;
+  pointer-events: none;
+}
+
+.st-focus-sentinel {
+  overflow: hidden;
+  outline: none;
 }

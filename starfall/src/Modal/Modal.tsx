@@ -3,6 +3,8 @@ import { CSSTransition } from 'react-transition-group';
 import clsx from 'clsx';
 import Button from '../Button';
 import { useEventCallback, Portal, Mitt, horizon } from '@mookiepiece/starfall-utils';
+import { FocusLock } from './useFocusLock';
+import { Keys } from './Keys';
 
 type ModalProps = {
   visible: boolean;
@@ -37,7 +39,7 @@ const Modal: React.FC<ModalProps> & {
   const {
     visible,
     title,
-    onClose,
+    onClose: _onClose,
     noHeader,
     closable = true,
     maskClosable = true,
@@ -51,6 +53,7 @@ const Modal: React.FC<ModalProps> & {
     onVisibilityChange,
     ...rest
   } = props;
+  const onClose = useEventCallback(_onClose || noop);
 
   const [id] = useState<number>(() => uuid++);
 
@@ -63,14 +66,19 @@ const Modal: React.FC<ModalProps> & {
     }
   }, [id, visible]);
 
-  const ecOnClose = useEventCallback(onClose || noop);
   useEffect(() => {
     const cb = (i: number) => {
-      if (i == id) ecOnClose();
+      if (i == id) onClose();
     };
     ModalMitt.on('REMOTE_CLOSE', cb);
     return () => ModalMitt.off('REMOTE_CLOSE', cb);
-  }, [ecOnClose, id]);
+  }, [onClose, id]);
+
+  const handleFocusLockKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === Keys.ESC) {
+      onClose();
+    }
+  };
 
   return (
     <Portal>
@@ -97,17 +105,23 @@ const Modal: React.FC<ModalProps> & {
             className="st-modal__mask"
             onClick={maskClosable && visible ? onClose : undefined}
           ></div>
-          <div className="st-modal">
-            <div className="st-modal__header">
-              <div className="st-modal__title">{title}</div>
-              {closable ? (
-                <Button textual className="st-modal__close" onClick={visible ? onClose : undefined}>
-                  ×
-                </Button>
-              ) : null}
+          <FocusLock disabled={!visible} onKeyDown={handleFocusLockKeyDown}>
+            <div className="st-modal">
+              <div className="st-modal__header">
+                <div className="st-modal__title">{title}</div>
+                {closable ? (
+                  <Button
+                    textual
+                    className="st-modal__close"
+                    onClick={visible ? onClose : undefined}
+                  >
+                    ×
+                  </Button>
+                ) : null}
+              </div>
+              <div className="st-modal__body">{children}</div>
             </div>
-            <div className="st-modal__body">{children}</div>
-          </div>
+          </FocusLock>
         </div>
       </CSSTransition>
     </Portal>

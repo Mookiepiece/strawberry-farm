@@ -1,3 +1,5 @@
+@import './mixins.scss';
+
 .st-modal-wrap {
   position: fixed;
   top: 0;
@@ -20,7 +22,9 @@
   background: #0003;
   transition: all 0.3s;
 }
+
 .st-modal {
+  @include focus-sentinel-slibing;
   position: relative;
   width: 520px;
   max-width: 100vw;
@@ -59,7 +63,7 @@
   .st-modal {
     transform: scale(1);
     opacity: 1;
-    transition: all .3s var(--bezier-ea);
+    transition: all 0.3s var(--bezier-ea);
   }
   .st-modal__mask {
     opacity: 1;
@@ -84,7 +88,7 @@
   .st-modal {
     transform: scale(0.95);
     opacity: 0;
-    transition: all .3s var(--bezier-wave);
+    transition: all 0.3s var(--bezier-wave);
   }
 
   .st-modal__mask {
