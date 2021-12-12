@@ -1,4 +1,5 @@
-import { RefObject, useEffect } from 'react';
+import { useEffect } from 'react';
+import type { RefObject } from 'react';
 import { useEventCallback } from '@mookiepiece/starfall-utils';
 
 const useClickAway = <K extends keyof DocumentEventMap = 'click'>(

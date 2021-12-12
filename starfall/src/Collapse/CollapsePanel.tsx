@@ -45,7 +45,7 @@ const CollapsePanel: React.FC<CollapsePanelProps> = ({
             ...{
               entering: {
                 height: ref.current?.scrollHeight,
-                transition: 'all 0.3s cubic-bezier(0.66, 0, 0, 1)',
+                transition: 'all 0.3s var(--bezier-wave)',
               },
               entered: { height: undefined },
               exiting: {
@@ -53,7 +53,7 @@ const CollapsePanel: React.FC<CollapsePanelProps> = ({
                 marginTop: 0,
                 marginBottom: 0,
                 ...({ pointerEvents: 'none', userSelect: 'none' } as any),
-                transition: 'all 0.3s',
+                transition: 'all 0.3s var(--bezier-wave)',
               },
               exited: { height: 0, marginTop: 0, marginBottom: 0 },
               unmounted: { height: undefined, marginTop: 0, marginBottom: 0 },

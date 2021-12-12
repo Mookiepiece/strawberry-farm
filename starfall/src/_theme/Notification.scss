@@ -3,15 +3,14 @@
 }
 .st-notification-item-enter-active {
   transform: translateX(0);
-  transition: all 0.3s;
+  transition: all 0.3s var(--bezier-ea);
 }
 .st-notification-item-exit {
   transform: translateX(0);
-  transition: all 0.3s;
 }
 .st-notification-item-exit-active {
   transform: translateX(-300px);
-  transition: all 0.3s;
+  transition: all 0.3s var(--bezier-wave);
 }
 .st-notification-item-exit-done {
   transform: translateX(-300px);

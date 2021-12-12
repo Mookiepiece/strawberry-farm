@@ -27,7 +27,6 @@
   background: white;
   border-radius: 3px;
   perspective-origin: top;
-  transition: all 0.3s;
 }
 .st-modal__header {
   display: flex;
@@ -60,6 +59,7 @@
   .st-modal {
     transform: scale(1);
     opacity: 1;
+    transition: all .3s var(--bezier-ea);
   }
   .st-modal__mask {
     opacity: 1;
@@ -84,6 +84,7 @@
   .st-modal {
     transform: scale(0.95);
     opacity: 0;
+    transition: all .3s var(--bezier-wave);
   }
 
   .st-modal__mask {
