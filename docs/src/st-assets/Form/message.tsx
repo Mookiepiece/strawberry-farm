@@ -56,9 +56,9 @@ const Demo: React.FC = () => {
                 {alert(
                   error && (
                     <div style={{ margin: '12px 0' }}>
-                      <span style={{ fontSize: 25 }}>哇塞！</span>
+                      <span style={{ fontSize: 25 }}>🍓</span>
                       <br />
-                      <span>这是一个很大的消息</span>
+                      <span>message就是用普通的Collapse实现的</span>
                     </div>
                   )
                 )}
@@ -66,7 +66,7 @@ const Demo: React.FC = () => {
                   <Collapse.Panel>
                     {error === 'hair is rrrrrrequired' && (
                       <div>
-                        <span>不止如此，还具</span>
+                        <span>比如这个</span>
                       </div>
                     )}
                   </Collapse.Panel>

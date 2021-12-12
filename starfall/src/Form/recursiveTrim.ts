@@ -1,14 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// https://stackoverflow.com/questions/5876332/how-can-i-differentiate-between-an-object-literal-other-javascript-objects
-function isPlainObject(obj: any) {
-  return (
-    typeof obj === 'object' && // separate from primitives
-    obj !== null && // is obvious
-    obj.constructor === Object && // separate instances (Array, DOM, ...)
-    Object.prototype.toString.call(obj) === '[object Object]'
-  ); // separate build-in like Math
-}
 
 export function recursiveTrim(v: any): any {
   if (typeof v === 'string') {
@@ -21,4 +12,14 @@ export function recursiveTrim(v: any): any {
       {}
     );
   } else return v;
+
+  // https://stackoverflow.com/questions/5876332/how-can-i-differentiate-between-an-object-literal-other-javascript-objects
+  function isPlainObject(obj: any) {
+    return (
+      typeof obj === 'object' && // separate from primitives
+      obj !== null && // is obvious
+      obj.constructor === Object && // separate instances (Array, DOM, ...)
+      Object.prototype.toString.call(obj) === '[object Object]'
+    ); // separate build-in like Math
+  }
 }

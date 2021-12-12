@@ -6,9 +6,8 @@ type FormValue = {
     name: string;
     hair: string;
     hair2: string;
-    /**
-     * @computed
-     */
+  };
+  computed: {
     hairFieldVisible: boolean;
   };
 };
@@ -20,6 +19,8 @@ const Demo: React.FC = () => {
         name: '',
         hair: '',
         hair2: '',
+      },
+      computed: {
         hairFieldVisible: false,
       },
     },
@@ -33,6 +34,8 @@ const Demo: React.FC = () => {
         ...v,
         user: {
           ...v.user,
+        },
+        computed: {
           hairFieldVisible,
         },
       };
@@ -59,7 +62,7 @@ const Demo: React.FC = () => {
           <Input />
         </Form.Item>
 
-        {project('user.hairFieldVisible', visible =>
+        {project('computed.hairFieldVisible', visible =>
           visible ? (
             <Form.Item label="User Hair" name="user.hair">
               <Input />

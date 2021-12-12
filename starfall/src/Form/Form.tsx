@@ -7,7 +7,6 @@ import { FormItem } from './FormItem';
 import { FormList } from './FormList';
 import type { FormComponentInstance, FormInstance } from './useForm';
 import { useForm } from './useForm';
-import { get, set } from '@mookiepiece/starfall-utils';
 
 type FormProps<T extends Record<string, any>> = {
   form: FormInstance<T>;
@@ -31,35 +30,11 @@ React.ReactElement => {
     get value() {
       return value;
     },
+    setState: setState as React.Dispatch<React.SetStateAction<Record<string, any>>>,
     get rawValue() {
       return state;
     },
   }));
-
-  useEffect(() => {
-    const cb = ({ pathes, value }: { pathes: string[]; value: React.SetStateAction<any> }) => {
-      if (typeof value === 'function') {
-        setState(state => {
-          const prev = get(state, pathes);
-          return set(state, pathes, value(prev));
-        });
-      } else {
-        if (!pathes.length) {
-          setState(value);
-        } else {
-          setState(state => {
-            console.log(pathes.length, set(state, pathes, value));
-
-            return set(state, pathes, value);
-          });
-        }
-      }
-    };
-    formMitt.on('CHANGE', cb);
-    return () => formMitt.off('CHANGE', cb);
-  }, [formMitt]);
-
-  console.log(value);
 
   const formValueContextValue = value;
 
@@ -118,7 +93,6 @@ const Form: (<T extends Record<string, any>>(
   useForm,
 
   defineRules,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }) as any;
 
 export default Form;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import AsyncValidator from 'async-validator';
 import type { RuleItem } from 'async-validator';
@@ -7,6 +8,8 @@ import { useSingletonAsyncFn } from './useSingletonAsyncFn';
 import type { FormSubscriptionInstance } from './FormSubscription';
 import { FormSubscription } from './FormSubscription';
 import { FormErrorMessage } from './FormErrorMessage';
+
+(AsyncValidator as any).warning = () => {};
 
 export type FormItemFnChildren<T> = (
   control: {
@@ -19,7 +22,6 @@ export type FormItemFnChildren<T> = (
     setError: React.Dispatch<React.SetStateAction<string | null>>;
     cancelValidate(): void;
     alert(node?: React.ReactNode): React.ReactNode;
-    alert(zero: 0, node?: React.ReactNode): React.ReactNode;
   }
 ) => React.ReactNode;
 
@@ -36,7 +38,7 @@ export const FormItem = <T extends any = any>({
   name,
   children,
 }: FormItemProps<T>): React.ReactElement => {
-  const { isUntouched, formMitt } = useContext(FormContext);
+  const { isUntouched, formMitt, silentValues, formRef } = useContext(FormContext);
   const formSubscriptionRef = useRef<FormSubscriptionInstance>(null);
 
   const rules = useMemo(() => (Array.isArray(_rules) ? _rules : [_rules]), [_rules]);
@@ -44,6 +46,7 @@ export const FormItem = <T extends any = any>({
   const validator = useMemo(() => {
     const rules = Array.isArray(_rules) ? _rules : [_rules];
     if (!rules.length) return;
+
     const validator = new AsyncValidator({ [label || name]: rules });
     return validator;
   }, [_rules, label, name]);
@@ -76,7 +79,7 @@ export const FormItem = <T extends any = any>({
   }, [_validate]);
 
   const handleUpdate = async () => {
-    if (!isUntouched()) {
+    if (!isUntouched() && !silentValues.current.has(formRef.current.rawValue)) {
       try {
         await validate();
       } catch {
@@ -156,16 +159,14 @@ export const FormItem = <T extends any = any>({
   );
 
   return (
-    <div>
-      <label className={clsx(typeof error === 'string' && 'st-form-item--error')}>
-        <span className={clsx('st-label', asterisk)}>{label}</span>
-        <FormSubscription
-          ref={formSubscriptionRef}
-          names={name}
-          onUpdate={handleUpdate}
-          render={render}
-        />
-      </label>
+    <div className={clsx(typeof error === 'string' && 'st-form-item--error')}>
+      <span className={clsx('st-label', asterisk)}>{label}</span>
+      <FormSubscription
+        ref={formSubscriptionRef}
+        names={name}
+        onUpdate={handleUpdate}
+        render={render}
+      />
     </div>
   );
 };

@@ -109,22 +109,20 @@
 
 有人分析过市面上的表单，[React 表单源码阅读笔记 👍](https://zhuanlan.zhihu.com/p/352181528)。
 
-`material-ui` 和 `chakra-ui` `semantic-ui` `react-bootstrap`等大部分不具备表单验证功能，可选的验证工具是 [`formik`](https://github.com/formium/formik)， formik 使用 [`Yup`](https://formik.org/docs/tutorial#schema-validation-with-yup) 做 Schema 验证。
+`material-ui` 和 `chakra-ui` `semantic-ui` `react-bootstrap`等大部分不具备表单验证功能，可选的验证工具是 [`formik`](https://github.com/formium/formik)， formik 使用 [`Yup`](https://formik.org/docs/tutorial#schema-validation-with-yup) 做 Schema 验证。 `antd` 即 `rc-field-form` 和 `element/element-plus` 使用[`async-validator`](https://github.com/yiminghe/async-validator) 做 Schema 验证。
 
-`antd` 即 `rc-field-form` 和 `element/element-plus` 使用[`async-validator`](https://github.com/yiminghe/async-validator) 做 Schema 验证。
-
-`antd` 和 `formik` 倾向使用非受控模式，即表单状态不放外边，这样的好处一个是输入时只有表单内部在重渲染。
-
-假如表单的值放外面，每次输入(即`setState`)都会引起持有该状态的组件（很可能是页面）的整体刷新。很多业务倾向于外部要访问到表单的值。比如用户输入了 a 就显示 b 输入框，这个在非受控模式是做不到的，因为外面获取不到表单里的状态。
+`antd` 和 `formik` 倾向使用非受控模式，即表单状态不放外边，这样的好处一个是输入时只有表单内部在重渲染。假如表单的值放外面，每次输入(即`setState`)都会引起持有该状态的组件（很可能是页面）的整体刷新。很多业务倾向于外部要访问到表单的值。比如用户输入了 a 就显示 b 输入框，这个在非受控模式是做不到的，因为外面获取不到表单里的状态。
 
 - `antd` 默认局部刷新，因为每次更新会触发所有[Field 的回调](https://github.com/react-component/field-form/blob/e118381c2102b36c4ffe7e17a6415df091e772b7/src/Field.tsx#L216)让其各自比对新旧值判断是否需要更新，在使用[render props 模式](https://github.com/react-component/field-form/blob/e118381c2102b36c4ffe7e17a6415df091e772b7/docs/examples/renderProps.tsx#L17)此功能失效，表单整体刷新，所以文档里提示这个性能更差。
 - `formik` 默认整体刷新表单，额外的优化手段是 FastField 组件，该组件有 shouldComponentUpdate 方法各自比对新旧值，能够判断是否需要更新。
 
-[ vue 够快就不用优化](https://www.zhihu.com/question/453332049/answer/1844784032)。
+[ vue 由于依赖自动收集所以不用优化](https://www.zhihu.com/question/453332049/answer/1844784032)。
 
 表单核心和写折叠面板一样用传统的订阅模式就能解决。
 
 `muse-ui`的源码比较精简，推荐入门阅读，然后是`element/element-plus`。
+
+想过能不能把核心策略抽象成无样式的基本hook这样如果别人想基于自身的业务实现一个就可以调，但表单策略本来就是很凸显作者的个人风格，从必填的星号，到validate的节流策略，到提交时自动将 string field 用`trim`修剪。有时间配置这些配置项已经不如源码拷过去写一个新的了。
 
 ### 可访问性
 

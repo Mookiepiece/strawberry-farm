@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type React from 'react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import type { FormContextValue, FormItemsRegisterProps } from './FormContext';
-import { Mitt, useEventCallback } from '@mookiepiece/starfall-utils';
+import { Mitt, useEventCallback, get, set as SET, THE_VOID } from '@mookiepiece/starfall-utils';
 import type { ErrorList } from 'async-validator';
 import type { FormMitt } from './FormContext';
 import { project } from './project';
@@ -9,7 +10,10 @@ import { recursiveTrim } from './recursiveTrim';
 
 export type FormInstance<T extends Record<string, unknown>> = {
   set: React.Dispatch<React.SetStateAction<T>>;
-  setInitialValue: React.Dispatch<React.SetStateAction<T>>;
+  setSilently: React.Dispatch<React.SetStateAction<T>>;
+  setField(pathOrName: string | string[], value: React.SetStateAction<T>): void;
+  setFieldSilently(pathOrName: string | string[], value: React.SetStateAction<T>): void;
+  setInitialValue(initialValue: T): void;
   validate: (names?: string[]) => Promise<T>;
   value: T;
   useWatch(formValue: T): T;
@@ -27,16 +31,16 @@ export type FormInstance<T extends Record<string, unknown>> = {
 
 export type FormComponentInstance = {
   value: any;
+  setState: React.Dispatch<React.SetStateAction<Record<string, any>>>;
   rawValue: any;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const useWatchDefault = (v: any) => v;
 
 export const useForm = <T extends Record<string, any>>({
   initialValue: _initialValue,
   useWatch: _useWatch = useWatchDefault,
-  action: action = () => Promise.resolve(),
+  action = () => Promise.resolve(),
 }: {
   initialValue: T;
   useWatch?: (formValue: T) => T;
@@ -45,21 +49,71 @@ export const useForm = <T extends Record<string, any>>({
     | [(value: T) => Promise<void> | void, (errors: ErrorList) => Promise<void> | void];
 }): FormInstance<T> => {
   // Freeze initial value
-  const [initialValue, setInitialValue] = useState(_initialValue);
+  const initialValueRef = useRef<T>(_initialValue);
   const [useWatch] = useState(() => _useWatch);
   // //
 
+  const silentValues = useRef<Set<any>>(new Set());
+
   const formRef = useRef<FormComponentInstance>({
-    value: initialValue,
-    rawValue: initialValue,
+    value: initialValueRef.current,
+    setState() {},
+    rawValue: initialValueRef.current,
   });
 
   //  Form Context\
   const isUntouched = useCallback(() => {
-    return formRef.current.rawValue === initialValue;
-  }, [initialValue]);
+    return formRef.current.rawValue === initialValueRef.current;
+  }, []);
 
-  const [formMitt] = useState<FormMitt>(Mitt);
+  const [formMitt] = useState<FormMitt>(() => {
+    const formMitt: FormMitt = Mitt();
+    const cb = ({
+      pathes,
+      value,
+      silent,
+    }: {
+      pathes: string[];
+      value: React.SetStateAction<any>;
+      silent?: boolean;
+    }) => {
+      const resultHandler = (result: any) => {
+        if (silent) {
+          silentValues.current.add(result);
+        } else {
+          silentValues.current.clear();
+        }
+        return result;
+      };
+
+      if (typeof value === 'function') {
+        formRef.current.setState(state => {
+          const prev = get(state, pathes);
+          const result = SET(state, pathes, value(prev));
+          return resultHandler(result);
+        });
+      } else {
+        if (!pathes.length) {
+          const result = value;
+          formRef.current.setState(resultHandler(result));
+        } else if (value === THE_VOID) {
+          formRef.current.setState(state => {
+            const result = SET(state, pathes, value);
+            const parent = get(result, pathes.slice(0, -1));
+            delete parent[pathes[pathes.length - 1]];
+            return resultHandler(result);
+          });
+        } else {
+          formRef.current.setState(state => {
+            const result = SET(state, pathes, value);
+            return resultHandler(result);
+          });
+        }
+      }
+    };
+    formMitt.on('CHANGE', cb);
+    return formMitt;
+  });
 
   const items = useRef<FormItemsRegisterProps[]>([]);
 
@@ -68,6 +122,7 @@ export const useForm = <T extends Record<string, any>>({
       isUntouched,
       formMitt,
       formRef,
+      silentValues,
     }),
     [isUntouched, formMitt]
   );
@@ -124,7 +179,7 @@ export const useForm = <T extends Record<string, any>>({
   });
 
   const reset = useEventCallback(async () => {
-    formMitt.emit('CHANGE', { pathes: [], value: initialValue });
+    formMitt.emit('CHANGE', { pathes: [], value: initialValueRef.current });
     items.current.forEach(({ cancelValidate, setError }) => {
       cancelValidate();
       setError(null);
@@ -148,8 +203,49 @@ export const useForm = <T extends Record<string, any>>({
     [formMitt]
   );
 
+  const setSilently = useCallback(
+    (value: React.SetStateAction<T>) => {
+      formMitt.emit('CHANGE', {
+        pathes: [],
+        value,
+        silent: true,
+      });
+    },
+    [formMitt]
+  );
+
+  const setField = useCallback(
+    (pathOrName: string | string[], value: React.SetStateAction<any>) => {
+      formMitt.emit('CHANGE', {
+        pathes: Array.isArray(pathOrName)
+          ? pathOrName
+          : pathOrName.replace(/\[(\w+)\]/g, '.$1').split('.'),
+        value,
+      });
+    },
+    [formMitt]
+  );
+
+  const setFieldSilently = useCallback(
+    (pathOrName: string | string[], value: React.SetStateAction<any>) => {
+      formMitt.emit('CHANGE', {
+        pathes: Array.isArray(pathOrName)
+          ? pathOrName
+          : pathOrName.replace(/\[(\w+)\]/g, '.$1').split('.'),
+        value,
+        silent: true,
+      });
+    },
+    [formMitt]
+  );
+
   return useMemo(
     () => ({
+      set,
+      setSilently,
+      setField,
+      setFieldSilently,
+
       get value() {
         return formRef.current.value;
       },
@@ -159,19 +255,34 @@ export const useForm = <T extends Record<string, any>>({
       },
       items,
 
-      setInitialValue,
+      get initialValue() {
+        return initialValueRef.current;
+      },
+      setInitialValue(v) {
+        initialValueRef.current = v;
+      },
       validate,
       useWatch,
       formRef,
-      initialValue,
       formContextValue,
       submit,
-      set,
       reset,
       setError,
 
       project,
     }),
-    [isUntouched, validate, useWatch, initialValue, formContextValue, submit, set, reset, setError]
+    [
+      set,
+      setSilently,
+      setField,
+      setFieldSilently,
+      isUntouched,
+      validate,
+      useWatch,
+      formContextValue,
+      submit,
+      reset,
+      setError,
+    ]
   );
 };

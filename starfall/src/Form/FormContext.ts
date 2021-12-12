@@ -5,7 +5,7 @@ import React from 'react';
 import type { FormComponentInstance } from './useForm';
 
 export type FormMitt = Emitter<{
-  CHANGE: { pathes: string[]; value: React.SetStateAction<any> };
+  CHANGE: { pathes: string[]; value: React.SetStateAction<any>; silent?: boolean };
   UPDATE: { value: unknown };
   SUBMITTING_CHANGE: boolean;
 }>;
@@ -27,12 +27,14 @@ export type FormContextValue = {
   isUntouched(): boolean;
   formMitt: FormMitt;
   formRef: React.MutableRefObject<FormComponentInstance>;
+  silentValues: React.MutableRefObject<Set<any>>;
 };
 
 export const FormContext = React.createContext<FormContextValue>({
   isUntouched: () => false,
   formMitt: { on() {}, off() {}, emit() {} },
   formRef: {} as any,
+  silentValues: { current: new Set() },
 });
 
 export const FormValueContext = React.createContext<any>({});
