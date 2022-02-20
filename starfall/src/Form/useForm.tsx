@@ -11,8 +11,8 @@ import { recursiveTrim } from './recursiveTrim';
 export type FormInstance<T extends Record<string, unknown>> = {
   set: React.Dispatch<React.SetStateAction<T>>;
   setSilently: React.Dispatch<React.SetStateAction<T>>;
-  setField(pathOrName: string | string[], value: React.SetStateAction<T>): void;
-  setFieldSilently(pathOrName: string | string[], value: React.SetStateAction<T>): void;
+  setField(pathOrName: string | string[], value: React.SetStateAction<any>): void;
+  setFieldSilently(pathOrName: string | string[], value: React.SetStateAction<any>): void;
   setInitialValue(initialValue: T): void;
   validate: (names?: string[]) => Promise<T>;
   value: T;

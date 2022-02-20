@@ -52,3 +52,57 @@ export const createRegistry = <T,>(): [
 
   return [RegistryProvider, useRegistry];
 };
+
+type CreateStateModeRegistry<T> = () => [
+  React.FC<{
+    model: [T[], React.Dispatch<React.SetStateAction<T[]>>];
+  }>,
+  (i: T | undefined) => void,
+  () => T[]
+];
+
+export const createStateModeRegistry = <T,>(): ReturnType<CreateStateModeRegistry<T>> => {
+  const RegistryContext = React.createContext<{
+    register(i: T): void;
+    unregister(i: T): void;
+  }>({
+    register() {},
+    unregister() {},
+  });
+
+  const RegistrySelectorContext = React.createContext<T[]>([]);
+
+  const RegistryProvider: React.FC<{
+    model: [T[], React.Dispatch<React.SetStateAction<T[]>>];
+  }> = ({ model: [items, setItems], children }) => {
+    const register = useCallback((i: T) => setItems(items => [...items, i]), [setItems]);
+
+    const unregister = useCallback(i => setItems(items => items.filter(k => k === i)), [setItems]);
+
+    const registerContextValue = useMemo(() => ({ register, unregister }), [register, unregister]);
+    const registerSelectorContextValue = items;
+
+    return (
+      <RegistryContext.Provider value={registerContextValue}>
+        <RegistrySelectorContext.Provider value={registerSelectorContextValue}>
+          {children}
+        </RegistrySelectorContext.Provider>
+      </RegistryContext.Provider>
+    );
+  };
+
+  const useRegistry = (i?: T | undefined): void => {
+    const { register, unregister } = useContext(RegistryContext);
+
+    useEffect(() => {
+      if (i !== undefined) {
+        register(i);
+        return () => unregister(i);
+      }
+    }, [i, register, unregister]);
+  };
+
+  const useRegistrySelector = () => useContext(RegistrySelectorContext);
+
+  return [RegistryProvider, useRegistry, useRegistrySelector];
+};

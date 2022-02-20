@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import clsx from 'clsx';
 import Button from '../Button';
+import FocusLock from '../FocusLock';
 import { useEventCallback, Portal, Mitt, horizon } from '@mookiepiece/starfall-utils';
-import { FocusLock } from './useFocusLock';
 import { Keys } from './Keys';
 
 type ModalProps = {

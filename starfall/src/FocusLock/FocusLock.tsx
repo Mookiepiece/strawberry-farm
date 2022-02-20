@@ -35,7 +35,7 @@ const useFocusLock = ({
   return;
 };
 
-export const FocusLock: React.FC<{
+const FocusLock: React.FC<{
   disabled?: boolean;
   onKeyDown?: (e: React.KeyboardEvent) => void;
 }> = ({ disabled, onKeyDown, children }) => {
@@ -87,3 +87,5 @@ export const FocusLock: React.FC<{
     </>
   );
 };
+
+export default FocusLock;

@@ -95,15 +95,16 @@
 | label              |                                                         | `string`                |
 | rules              | 查阅`async-validator`，可变，但当规则改变时不会自动校验 | `RuleItem`/`RuleItem[]` |
 
-| Form.Item Render Props | Description | Type |
-| ---------------------- | ----------- | ---- |
-| control.value          |             |      |
-| control.onChange       |             |      |
-| meta.validate          |             |      |
-| meta.error             |             |      |
-| meta.setError          |             |      |
-| meta.cancelValidate    |             |      |
-| meta.alert             |             |      |
+| Form.Item Render Props | Description                                         | Type |
+| ---------------------- | --------------------------------------------------- | ---- |
+| control.value          |                                                     |      |
+| control.onChange       |                                                     |      |
+| control.ref            | 提交失败能调用第一个控件的`scrollIntoView`和`focus` |      |
+| meta.validate          |                                                     |      |
+| meta.error             |                                                     |      |
+| meta.setError          |                                                     |      |
+| meta.cancelValidate    |                                                     |      |
+| meta.alert             |                                                     |      |
 
 ### 原理
 
@@ -122,9 +123,11 @@
 
 `muse-ui`的源码比较精简，推荐入门阅读，然后是`element/element-plus`。
 
-想过能不能把核心策略抽象成无样式的基本hook这样如果别人想基于自身的业务实现一个就可以调，但表单策略本来就是很凸显作者的个人风格，从必填的星号，到validate的节流策略，到提交时自动将 string field 用`trim`修剪。有时间配置这些配置项已经不如源码拷过去写一个新的了。
+想过能不能把核心策略抽象成无样式的基本 hook 这样如果别人想基于自身的业务实现一个就可以调，但表单策略本来就是很凸显作者的个人风格，从必填的星号，到 validate 的节流策略，到提交时自动将 string field 用`trim`修剪。有时间配置这些配置项已经不如源码拷过去写一个新的了。
 
 ### 可访问性
+
+提交失败能调用第一个控件的`scrollIntoView`和`focus`。
 
 - 依据表单规范，支持隐式提交
 

@@ -26,6 +26,8 @@
 
 ### 可访问性
 
+`Modal`使用`FocusLock`锁住焦点。
+
 可以支持浏览器回退和前进时先把已有的模态框关闭。步骤如下：
 
 在 App 下可设置一个`MyPrompt`管理整个应用的`Prompt`，使用`react-router-dom`时，可以使用其`history.block`接口，当使用浏览器回退和前进时界面若存在存在`Modal`，关闭`Modal`并返回 false 以阻止跳转。

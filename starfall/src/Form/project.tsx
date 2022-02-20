@@ -7,6 +7,7 @@ export const project = <T extends string, P extends T | T[]>(
   render: (model: any) => React.ReactNode,
   meta?: {
     onUpdate?: (newValue: any) => void;
+    greedy?: boolean;
   }
 ): React.ReactElement => {
   return <FormSubscription names={name} {...meta} render={render} />;
