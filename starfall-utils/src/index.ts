@@ -4,5 +4,6 @@ export * from './mitt';
 export * from './useAsync';
 export * from './useEventCallback';
 export * from './createRegistry';
+export * from './createPortalChannel';
 export * from './get';
 export * from './sleep';

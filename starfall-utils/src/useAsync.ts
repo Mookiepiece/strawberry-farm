@@ -1,6 +1,6 @@
-import _useAsyncFn from 'react-use/lib/useAsyncFn';
-import { AsyncFnReturn } from 'react-use/lib/useAsync';
-import { FunctionReturningPromise } from 'react-use/lib/misc/types';
+import type _useAsyncFn from 'react-use/lib/useAsyncFn';
+import type { AsyncFnReturn } from 'react-use/lib/useAsync';
+import type { FunctionReturningPromise } from 'react-use/lib/misc/types';
 
 // This hook imporves original "promise return trigger"
 // with type friendly "void return trigger"

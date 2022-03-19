@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/index';
 
 let starfallModalRoot: HTMLDivElement | null = null;
@@ -11,16 +12,19 @@ export const setup = (key: 'Modal' | 'Notification'): HTMLDivElement => {
     starfallModalRoot.style.position = 'fixed';
     starfallModalRoot.style.height = '0';
     starfallModalRoot.style.top = '0';
+    starfallModalRoot.classList.add('starfallModalRoot');
     document.body.appendChild(starfallModalRoot);
 
     starfallNotificationRoot = document.createElement('div');
     starfallNotificationRoot.style.position = 'fixed';
     starfallNotificationRoot.style.height = '0';
     starfallNotificationRoot.style.top = '0';
+    starfallNotificationRoot.classList.add('starfallNotificationRoot');
     document.body.appendChild(starfallNotificationRoot);
   }
 
   return {
+    BlankChannel: starfallNotificationRoot,
     Modal: starfallModalRoot,
     Notification: starfallNotificationRoot,
   }[key];
