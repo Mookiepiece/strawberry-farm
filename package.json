@@ -52,5 +52,6 @@
     "component"
   ],
   "author": "Mookiepiece",
-  "license": "WTFPL"
+  "license": "WTFPL",
+  "dependencies": {}
 }

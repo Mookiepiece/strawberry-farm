@@ -23,7 +23,7 @@ In current version starfall dont treat starfall-utils as peerDependencies. but y
 
 #### 建议的工具：
 
-- 编辑器：Visual Studio Code (需要安装 `extensions.json` 里推荐的扩展程序)
+- 编辑器：Visual Studio Code (需要安装 `extensions.json` 里推荐的扩展程序) ( `vscode-jest` 扩展要求 [Multi-root Workspaces](https://github.com/jest-community/vscode-jest#how-to-use-the-extension-with-monorepo-projects), 根目录 strawberry-fury 因为配置信息不足不能让 `vscode-jest` 跑测试所以在 `settings.json` 里屏蔽了)
 - 包管理器：Yarn （为了支持 monorepo/workspaces）
 - Node.js：>= v13 （为了支持直接执行.mjs 文件）
 
@@ -48,7 +48,7 @@ In current version starfall dont treat starfall-utils as peerDependencies. but y
 
 #### Recommended tools:
 
-- Code Editor: Visual Studio Code (with recommended extensions listed in `extensions.json` installed)
+- Code Editor: Visual Studio Code (with recommended extensions listed in `extensions.json` installed) (`vscode-jest` extension requires [Multi-root Workspaces](https://github.com/jest-community/vscode-jest#how-to-use-the-extension-with-monorepo-projects), root folder `strawberry-fury` cannot run any tests and was banned in `settings.json` due to lake of information of each indivisual packages)
 - Package Manager: Yarn (to support monorepo/workspaces)
 - Node.js: >= v13 (to support excute .mjs file directly)
 

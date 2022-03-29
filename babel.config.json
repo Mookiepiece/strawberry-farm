@@ -1,0 +1,25 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "modules": false
+      }
+    ],
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    [
+      "@babel/transform-runtime",
+      {
+        "corejs": 3
+      }
+    ]
+  ],
+  "env": {
+    "test": {
+      "presets": [["@babel/env"], "@babel/preset-react", "@babel/preset-typescript"]
+    }
+  }
+}

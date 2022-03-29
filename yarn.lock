@@ -1466,9 +1466,9 @@
     hoist-non-react-statics "^3.3.1"
     react-is "^16.12.0"
 
-"@mookiepiece/starfall-utils@git+ssh://git@github.com:Mookiepiece/strawberry-fury.git#stu@0.0.2-alpha.4":
-  version "0.0.2-alpha.4"
-  resolved "git+ssh://git@github.com:Mookiepiece/strawberry-fury.git#1c9dd521fde43103b51e294600461c6c7bc03403"
+"@mookiepiece/starfall-utils@git+ssh://git@github.com:Mookiepiece/strawberry-fury.git#stu@0.0.2-alpha.6":
+  version "0.0.2-alpha.6"
+  resolved "git+ssh://git@github.com:Mookiepiece/strawberry-fury.git#7171fda59dfbefccb98c7754dd4d812d48ab4cbc"
 
 "@mookiepiece/starfall@file:starfall":
   version "0.0.2-alpha.1"
