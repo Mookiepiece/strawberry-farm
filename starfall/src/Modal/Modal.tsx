@@ -5,6 +5,7 @@ import Button from '../Button';
 import FocusLock from '../FocusLock';
 import { useEventCallback, Portal, Mitt, horizon } from '@mookiepiece/starfall-utils';
 import { Keys } from './Keys';
+import { createLiteModal, useModals } from './useModals';
 
 type ModalProps = {
   visible: boolean;
@@ -15,7 +16,6 @@ type ModalProps = {
   maskClosable?: boolean;
   width?: string | number;
   maxWidth?: string | number;
-
   mountOnEnter?: boolean;
   unmountOnExit?: boolean;
   onVisibilityChange?: (visible: boolean) => void;
@@ -35,6 +35,8 @@ const noop = () => {};
 const Modal: React.FC<ModalProps> & {
   Mitt: typeof ModalMitt;
   registry: typeof registry;
+  createLiteModal: typeof createLiteModal;
+  useModals: typeof useModals;
 } = props => {
   const {
     visible,
@@ -49,7 +51,7 @@ const Modal: React.FC<ModalProps> & {
     children,
 
     mountOnEnter,
-    unmountOnExit,
+    unmountOnExit = true,
     onVisibilityChange,
     ...rest
   } = props;
@@ -59,7 +61,6 @@ const Modal: React.FC<ModalProps> & {
 
   useEffect(() => {
     if (visible) {
-      console.log('I am res', id);
       ModalMitt.emit('REGISTER', id);
     } else {
       ModalMitt.emit('UNREGISTER', id);
@@ -130,5 +131,7 @@ const Modal: React.FC<ModalProps> & {
 
 Modal.Mitt = ModalMitt;
 Modal.registry = registry;
+Modal.createLiteModal = createLiteModal;
+Modal.useModals = useModals;
 
 export default Modal;

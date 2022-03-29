@@ -7,14 +7,14 @@ const BasicUsage: React.FC = () => {
   return (
     <>
       <Button primary onClick={() => setState(true)}>
-        打开对话框
+        Open Modal
       </Button>
       <Modal title="标题" visible={state} onClose={() => setState(false)}>
-        内容
-        <Button onClick={() => setState2(true)}>打开第二个</Button>
+        Content
+        <Button onClick={() => setState2(true)}>Open another</Button>
       </Modal>
       <Modal title="标题" visible={state2} onClose={() => setState2(false)}>
-        第二个模态框
+        Second Modal
       </Modal>
     </>
   );

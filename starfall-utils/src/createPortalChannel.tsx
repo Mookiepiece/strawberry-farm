@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import type { setup } from '.';
 import { useMount } from 'react-use';
 import ReactDOM from 'react-dom';
 
@@ -8,7 +7,6 @@ export const createPortalChannel = <X,>({
   ConsumerComponent,
   displayName,
 }: {
-  portalName: Parameters<typeof setup>[0];
   ConsumerComponent: React.ComponentType<{
     model: [
       { id: number; payload: X }[],

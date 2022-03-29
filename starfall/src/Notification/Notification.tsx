@@ -1,49 +1,15 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import { useMount } from 'react-use';
-import { NotificationPortal, setup, useEventCallback } from '@mookiepiece/starfall-utils';
+import {
+  NotificationPortal,
+  useEventCallback,
+  createPortalChannel,
+} from '@mookiepiece/starfall-utils';
 import Collapse from '../Collapse';
 
 type Noti = {
   id: number;
-  content: React.ReactNode | React.ReactNode[];
-};
-
-let id = 0;
-let NotificationBoxMounted = false;
-
-const cache: Noti[] = [];
-let _push: (v: Noti) => void = v => {
-  cache.push(v);
-};
-
-const NotificationBox: React.FC = () => {
-  const [notis, setNotis] = useState<Noti[]>([]);
-  useMount(() => {
-    setNotis(cache);
-    _push = v => setNotis(a => [...a, v]);
-  });
-
-  const remove = useEventCallback((id: number) => {
-    setNotis(notis => {
-      const index = notis.findIndex(v => v.id === id);
-      if (index !== -1) {
-        return notis.slice(0, index).concat(notis.slice(index + 1));
-      }
-      return notis;
-    });
-  });
-
-  return (
-    <NotificationPortal>
-      <div>
-        {notis.map(value => (
-          <NotificationItem key={value.id} value={value} remove={remove} />
-        ))}
-      </div>
-    </NotificationPortal>
-  );
+  payload: React.ReactNode | React.ReactNode[];
 };
 
 const NotificationItem: React.FC<{ value: Noti; remove: (id: number) => void }> = ({
@@ -76,31 +42,36 @@ const NotificationItem: React.FC<{ value: Noti; remove: (id: number) => void }> 
     <CSSTransition in={visible[1]} timeout={300} classNames="st-notification-item">
       <Collapse.Panel active={visible[0]} className="st-notification-item">
         <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-          {value.content}
+          {value.payload}
         </div>
       </Collapse.Panel>
     </CSSTransition>
   );
 };
 
-const Notification: {
-  push: (children: React.ReactNode | React.ReactNode[]) => void;
-  setup: () => void;
-} = {
-  push(content) {
-    this.setup();
-    _push({
-      id: id++,
-      content,
+const Notification = createPortalChannel<Noti['payload']>({
+  displayName: 'NotificationPortalChannel',
+  ConsumerComponent: function NotificationConsumerComponent({ model: [notis, setNotis] }) {
+    const remove = useEventCallback((id: number) => {
+      setNotis(notis => {
+        const index = notis.findIndex(v => v.id === id);
+        if (index !== -1) {
+          return notis.slice(0, index).concat(notis.slice(index + 1));
+        }
+        return notis;
+      });
     });
+
+    return (
+      <NotificationPortal>
+        <div>
+          {notis.map(value => (
+            <NotificationItem key={value.id} value={value} remove={remove} />
+          ))}
+        </div>
+      </NotificationPortal>
+    );
   },
-  setup() {
-    const starfallNotificationRoot = setup('Notification');
-    if (!NotificationBoxMounted) {
-      NotificationBoxMounted = true;
-      ReactDOM.render(<NotificationBox />, starfallNotificationRoot);
-    }
-  },
-};
+});
 
 export default Notification;

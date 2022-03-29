@@ -4,6 +4,10 @@
 
 ::demo{basic}
 
+### 命令式接口
+
+::demo{imperative}
+
 ### 接口索引
 
 | Modal Static Property | Description                                              | Type                         |
