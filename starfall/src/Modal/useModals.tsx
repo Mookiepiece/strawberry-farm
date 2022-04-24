@@ -151,21 +151,18 @@ const EXComponent = ({
   const ref = useRef<LiteModalFCInstance<any, any>>(null);
 
   useMount(() => {
-    // setTimeout(() => {
-      if (ref.current) {
-debugger
-        ref.current
-          .open(args, {
-            onClose() {
-              onClose();
-            },
-          })
-          .then(v => {
-            resolve(v);
-          })
-          .catch(reject);
-      }
-    // }, 0);
+    if (ref.current) {
+      ref.current
+        .open(args, {
+          onClose() {
+            onClose();
+          },
+        })
+        .then(v => {
+          resolve(v);
+        })
+        .catch(reject);
+    }
   });
 
   return <Component ref={ref} />;
@@ -179,7 +176,7 @@ const Modalfication = createPortalChannel<PortalChannelModalInstance>({
     const handleClose = (id: number) => {
       setTimeout(() => {
         setModals(modals => modals.filter(m => m.id !== id));
-      }, 1000);
+      }, 300);
     };
     return (
       <div>

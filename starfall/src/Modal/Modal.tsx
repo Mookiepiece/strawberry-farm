@@ -89,6 +89,7 @@ const Modal: React.FC<ModalProps> & {
         classNames="st-modal-wrap"
         mountOnEnter={mountOnEnter}
         unmountOnExit={unmountOnExit}
+        appear
         onEnter={onVisibilityChange && (() => onVisibilityChange(true))}
         onExit={onVisibilityChange && (() => onVisibilityChange(false))}
       >

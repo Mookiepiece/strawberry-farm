@@ -20,7 +20,7 @@
   bottom: 0;
   left: 0;
   background: #0003;
-  transition: all 0.3s;
+  transition: all .3s;
 }
 
 .st-modal {
@@ -48,7 +48,7 @@
 }
 
 // ANIMATIONS
-.st-modal-wrap-enter {
+.st-modal-wrap-enter,.st-modal-wrap-appear {
   display: flex;
   .st-modal {
     transform: scale(0.95);
@@ -58,12 +58,12 @@
     opacity: 0;
   }
 }
-.st-modal-wrap-enter-active {
+.st-modal-wrap-enter-active,.st-modal-wrap-appear-active {
   display: flex;
   .st-modal {
     transform: scale(1);
     opacity: 1;
-    transition: all 0.3s var(--bezier-ea);
+    transition: all .3s var(--bezier-ea);
   }
   .st-modal__mask {
     opacity: 1;
@@ -88,7 +88,7 @@
   .st-modal {
     transform: scale(0.95);
     opacity: 0;
-    transition: all 0.3s var(--bezier-wave);
+    transition: all 3s var(--bezier-wave);
   }
 
   .st-modal__mask {
