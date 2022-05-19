@@ -27,13 +27,13 @@ const config = {
             [
               'import',
               {
-                libraryName: '@mookiepiece/strawberry-fury',
+                libraryName: '@mookiepiece/strawberry-farm',
                 customStyleName(name) {
-                  return `@mookiepiece/strawberry-fury/src/_theme/${name}.scss`;
+                  return `@mookiepiece/strawberry-farm/src/_theme/${name}.scss`;
                 },
                 camel2DashComponentName: false,
               },
-              '@mookiepiece/strawberry-fury',
+              '@mookiepiece/strawberry-farm',
             ],
             [
               'import',

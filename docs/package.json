@@ -4,9 +4,9 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git@github.com:Mookiepiece/strawberry-fury.git"
+    "url": "git@github.com:Mookiepiece/strawberry-farm.git"
   },
-  "homepage": "https://mookiepiece.github.io/strawberry-fury",
+  "homepage": "https://mookiepiece.github.io/strawberry-farm",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite --config vite.config.prod.ts build",

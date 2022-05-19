@@ -1,11 +1,11 @@
-<h1 align="center">Strawberry Fury - 草莓盛怒</h1>
+<h1 align="center">Strawberry Farm - 草莓农场</h1>
 <p align="center">
-  <img src="https://github.com/Mookiepiece/strawberry-fury/blob/dev/docs/src/strawberry-fury-LOGO.png" width="200px" alt="logo" />
+  <img src="https://github.com/Mookiepiece/strawberry-farm/blob/dev/docs/src/logo.png" width="200px" alt="logo" />
 </p>
-<p align="center">A vanilla react components library.</p>
-<p align="center">一款自然的 react.js 组件库</p>
+<p align="center">Unobtrusive park.</p>
+<p align="center">平播烟花，开垦乐园</p>
 
-[Visit HomePage（访问主页）https://mookiepiece.github.io/strawberry-fury](https://mookiepiece.github.io/strawberry-fury/#/index)
+[Visit HomePage（访问主页）https://mookiepiece.github.io/strawberry-farm](https://mookiepiece.github.io/strawberry-farm/#/index)
 
 This project is created to see if this project skeleton of react components library works.
 Of course there are some interesting components included.
@@ -23,7 +23,7 @@ In current version starfall dont treat starfall-utils as peerDependencies. but y
 
 #### 建议的工具：
 
-- 编辑器：Visual Studio Code (需要安装 `extensions.json` 里推荐的扩展程序) ( `vscode-jest` 扩展要求 [Multi-root Workspaces](https://github.com/jest-community/vscode-jest#how-to-use-the-extension-with-monorepo-projects), 根目录 strawberry-fury 因为配置信息不足不能让 `vscode-jest` 跑测试所以在 `settings.json` 里屏蔽了)
+- 编辑器：Visual Studio Code (需要安装 `extensions.json` 里推荐的扩展程序) ( `vscode-jest` 扩展要求 [Multi-root Workspaces](https://github.com/jest-community/vscode-jest#how-to-use-the-extension-with-monorepo-projects), 根目录 strawberry-farm 因为配置信息不足不能让 `vscode-jest` 跑测试所以在 `settings.json` 里屏蔽了)
 - 包管理器：Yarn （为了支持 monorepo/workspaces）
 - Node.js：>= v13 （为了支持直接执行.mjs 文件）
 
@@ -34,7 +34,7 @@ In current version starfall dont treat starfall-utils as peerDependencies. but y
   - src/components/PageWalker: 从 assets 读取数据并生成网页, 使用了 `react-markdown` 和 `require.context`
   - src/components/DemoPlayer: render examples, 使用了 `react-syntax-highlighter`
 - example: 本地测试打包后的文件是否正常运行
-- strawberry-fury: 工作目录
+- strawberry-farm: 工作目录
 
 #### 工作流程：
 
@@ -48,7 +48,7 @@ In current version starfall dont treat starfall-utils as peerDependencies. but y
 
 #### Recommended tools:
 
-- Code Editor: Visual Studio Code (with recommended extensions listed in `extensions.json` installed) (`vscode-jest` extension requires [Multi-root Workspaces](https://github.com/jest-community/vscode-jest#how-to-use-the-extension-with-monorepo-projects), root folder `strawberry-fury` cannot run any tests and was banned in `settings.json` due to lake of information of each indivisual packages)
+- Code Editor: Visual Studio Code (with recommended extensions listed in `extensions.json` installed) (`vscode-jest` extension requires [Multi-root Workspaces](https://github.com/jest-community/vscode-jest#how-to-use-the-extension-with-monorepo-projects), root folder `strawberry-farm` cannot run any tests and was banned in `settings.json` due to lake of information of each indivisual packages)
 - Package Manager: Yarn (to support monorepo/workspaces)
 - Node.js: >= v13 (to support excute .mjs file directly)
 
@@ -59,7 +59,7 @@ In current version starfall dont treat starfall-utils as peerDependencies. but y
   - src/components/PageWalker: read from assets and generate a component page, using `react-markdown` and `require.context`
   - src/components/DemoPlayer: render examples, using `react-syntax-highlighter`
 - example: for local testing if the build/bundled output files is transferred correctly.
-- strawberry-fury: working directory
+- strawberry-farm: working directory
 
 #### Workflow:
 

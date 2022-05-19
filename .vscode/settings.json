@@ -40,5 +40,5 @@
   "workbench.colorCustomizations": {
     "tab.activeBorderTop": "#f3538b"
   },
-  "jest.disabledWorkspaceFolders": ["strawberry-fury"]
+  "jest.disabledWorkspaceFolders": ["strawberry-farm"]
 }

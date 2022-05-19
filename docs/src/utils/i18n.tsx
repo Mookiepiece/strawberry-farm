@@ -33,8 +33,8 @@ const a: Record<
   }
 > = {
   IndexPageDesc: {
-    en: 'vanilla react.js components.',
-    zh: '自然的react.js组件库',
+    en: 'Unobtrusive park.',
+    zh: '平播烟花，开垦乐园',
   },
   IndexPageGetStarted: {
     en: 'GET STARTED',
@@ -45,8 +45,8 @@ const a: Record<
     zh: '家',
   },
   NavbarSfComponents: {
-    en: 'Strawberry Fury',
-    zh: 'Strawberry Fury',
+    en: 'Strawberry Farm',
+    zh: 'Strawberry Farm',
   },
   NavbarStComponents: {
     en: 'Starfall',

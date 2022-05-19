@@ -20,7 +20,7 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@docs/*": ["./*"],
-      "🦄": ["../../strawberry-fury/src/index"],
+      "🦄": ["../../strawberry-farm/src/index"],
       "starfall": ["../../starfall/src/index"],
       "starfall-utils": ["../../starfall-utils/src/index"]
     }

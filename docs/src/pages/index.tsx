@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { i18nContext } from '@docs/utils/i18n';
-import logo from '@docs/strawberry-fury-LOGO.png';
+import logo from '@docs/logo.png';
 import { useHistory } from 'react-router-dom';
 import { Button, Link } from 'starfall';
 
@@ -24,10 +24,10 @@ const Index: React.FC = () => {
             margin: 24,
           }}
         />
-        <h2>Strawberry Fury</h2>
+        <h2>Strawberry Farm</h2>
         <Link
           type="button"
-          href="https://github.com/Mookiepiece/strawberry-fury"
+          href="https://github.com/Mookiepiece/strawberry-farm"
           target="_blank"
           rel="noreferrer"
         >

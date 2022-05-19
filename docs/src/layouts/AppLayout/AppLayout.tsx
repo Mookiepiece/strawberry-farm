@@ -2,7 +2,7 @@ import React, { useContext, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavLink from '@docs/components/NavLink';
 
-import logo from '@docs/strawberry-fury-LOGO.png';
+import logo from '@docs/logo.png';
 import { i18nContext, i18nStateContext, Language } from '@docs/utils/i18n';
 import { RouteView } from '@docs/utils/RouterView';
 import { Button } from 'starfall';
@@ -20,7 +20,7 @@ const Nav: React.FC<{ i18nState: Language; setI18nState: () => void }> = ({
       <div>
         <NavLink className="doc-nav-logo-link" to="/">
           <img src={logo} alt="logo" />
-          {tablet ? <h3>Strawberry Fury</h3> : null}
+          {tablet ? <h3>Strawberry Farm</h3> : null}
         </NavLink>
         <div>
           <Button primary style={{ width: 120 }} onClick={setI18nState}>

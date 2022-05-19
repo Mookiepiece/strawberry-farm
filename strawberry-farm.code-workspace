@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": ".\\starfall"
+		},
+		{
+			"path": ".\\starfall-utils"
+		}
+	],
+	"settings": {
+		"workbench.colorCustomizations": {
+			"tab.activeBorderTop": "#f3538b"
+		},
+		"jest.disabledWorkspaceFolders": [
+			"."
+		]
+	}
+}

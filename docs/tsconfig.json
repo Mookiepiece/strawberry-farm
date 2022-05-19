@@ -16,13 +16,13 @@
     "baseUrl": "src",
     "paths": {
       "@docs/*": ["./*"],
-      "🦄": ["../../strawberry-fury/src/index"],
+      "🦄": ["../../strawberry-farm/src/index"],
       "starfall": ["../../starfall/src/index"],
       "starfall-utils": ["../../starfall-utils/src/index"]
     },
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["./src", "../../strawberry-fury/src/**/*.ts", "../../strawberry-fury/src/**/*.tsx"],
+  "include": ["./src", "../../strawberry-farm/src/**/*.ts", "../../strawberry-farm/src/**/*.tsx"],
   "exclude": ["node_modules"]
 }

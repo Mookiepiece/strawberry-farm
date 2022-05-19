@@ -1,5 +1,5 @@
 {
-  "name": "@mookiepiece/strawberry-fury",
+  "name": "@mookiepiece/strawberry-farm",
   "version": "0.0.1",
   "description": "vanilla react.js components.",
   "main": "lib/index.js",
@@ -41,9 +41,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Mookiepiece/strawberry-fury.git"
+    "url": "git@github.com:Mookiepiece/strawberry-farm.git"
   },
-  "homepage": "https://mookiepiece.github.io/strawberry-fury",
+  "homepage": "https://mookiepiece.github.io/strawberry-farm",
   "keywords": [
     "react",
     "component"

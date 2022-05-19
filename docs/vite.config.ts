@@ -8,7 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@docs': path.resolve(__dirname, './src'),
-      '🦄': path.resolve(__dirname, '../strawberry-fury/src'),
+      '🦄': path.resolve(__dirname, '../strawberry-farm/src'),
       starfall: path.resolve(__dirname, '../starfall/src'),
       'starfall-utils': path.resolve(__dirname, '../starfall-utils/src'),
     },

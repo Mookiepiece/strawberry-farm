@@ -1,5 +1,5 @@
 {
-  "name": "strawberry-fury",
+  "name": "strawberry-farm",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,7 +7,7 @@
     "docs:build": "yarn workspace docs build",
     "docs:serve": "yarn workspace docs serve",
     "docs:deploy": "yarn workspace docs deploy",
-    "sf:build": "yarn workspace @mookiepiece/strawberry-fury build",
+    "sf:build": "yarn workspace @mookiepiece/strawberry-farm build",
     "st:build": "yarn workspace @mookiepiece/starfall build",
     "st:test": "yarn workspace @mookiepiece/starfall test",
     "st:git-release": "yarn workspace @mookiepiece/starfall git-release",
@@ -19,7 +19,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "workspaces": [
-    "strawberry-fury",
+    "strawberry-farm",
     "starfall",
     "starfall-utils",
     "docs",
