@@ -1,0 +1,15 @@
+.docs-navlink {
+  padding: 10px;
+  color: var(--color-dark);
+  text-decoration: none;
+  border: 2px solid transparent;
+
+  &.active {
+    font-weight: 700;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--color-dark-fade-1);
+  }
+}

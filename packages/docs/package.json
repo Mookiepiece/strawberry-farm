@@ -1,0 +1,49 @@
+{
+  "name": "docs",
+  "version": "0.0.1",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Mookiepiece/strawberry-farm.git"
+  },
+  "homepage": "https://mookiepiece.github.io/strawberry-farm",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite --config vite.config.prod.ts build",
+    "serve": "vite preview",
+    "deploy": "gh-pages -d dist"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not IE > 0"
+  ],
+  "dependencies": {
+    "@vitejs/plugin-react": "^1.3.2",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-markdown": "^5.0.3",
+    "react-router-dom": "^5.2.0",
+    "react-transition-group": "^4.4.1",
+    "react-use": "^17.1.1",
+    "remark-gfm": "^1.0.0"
+  },
+  "devDependencies": {
+    "@loadable/component": "^5.14.1",
+    "@types/loadable__component": "^5.13.3",
+    "@types/node": "^14.14.31",
+    "@types/prismjs": "^1.16.6",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/react-syntax-highlighter": "^13.5.0",
+    "@types/react-transition-group": "^4.4.1",
+    "chokidar": "^3.5.3",
+    "clsx": "^1.1.1",
+    "core-js": "^3.9.1",
+    "prismjs": "^1.25.0",
+    "remark-directive": "^1.0.1",
+    "sass": "^1.32.8",
+    "typescript": "^4.2.2",
+    "vite": "^2.9.9"
+  }
+}

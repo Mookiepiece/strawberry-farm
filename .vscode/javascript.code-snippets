@@ -1,0 +1,12 @@
+{
+  "Divider Comment": {
+    "prefix": "comment",
+    "body": [
+      "//",
+      "// $1",
+      "// ----------------------------------------------------------------------"
+    ],
+    "description": "Divider Comment",
+    "scope": "javascript,javascriptreact,typescript,typescriptreact"
+  }
+}

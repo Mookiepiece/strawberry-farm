@@ -33,7 +33,6 @@
   "ignorePatterns": [
     "**/dist",
     "webpack.config.js",
-    "starfall/lib/**/*",
     "strawberry-farm/lib/**/*"
   ]
 }

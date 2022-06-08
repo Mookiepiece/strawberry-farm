@@ -3,16 +3,9 @@
   <img src="https://github.com/Mookiepiece/strawberry-farm/blob/dev/docs/src/logo.png" width="200px" alt="logo" />
 </p>
 <p align="center">Unobtrusive park.</p>
-<p align="center">平播烟花，开垦乐园</p>
+<p align="center">开垦乐园</p>
 
 [Visit HomePage（访问主页）https://mookiepiece.github.io/strawberry-farm](https://mookiepiece.github.io/strawberry-farm/#/index)
-
-This project is created to see if this project skeleton of react components library works.
-Of course there are some interesting components included.
-
-这个项目是为了测试这个组件库工程结构是可行的，当然也有一些有趣的组件
-
-In current version starfall dont treat starfall-utils as peerDependencies. but you have to install starfall-utils.
 
 ## Table of Contents - 目录
 
@@ -33,7 +26,6 @@ In current version starfall dont treat starfall-utils as peerDependencies. but y
   - src/assets: markdown 及示例
   - src/components/PageWalker: 从 assets 读取数据并生成网页, 使用了 `react-markdown` 和 `require.context`
   - src/components/DemoPlayer: render examples, 使用了 `react-syntax-highlighter`
-- example: 本地测试打包后的文件是否正常运行
 - strawberry-farm: 工作目录
 
 #### 工作流程：

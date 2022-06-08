@@ -1,0 +1,30 @@
+.sf-label {
+  display: block;
+  margin-right: 10px;
+  margin-bottom: 8px;
+  color: var(--color-dark);
+  font-size: 13.5px;
+  line-height: 20px;
+
+  &.sf-label-asterisk::after {
+    padding-left: 4px;
+    color: var(--color-danger);
+    font-size: small;
+    content: '*';
+  }
+}
+
+.sf-error-message {
+  display: block;
+  min-height: 24px;
+  color: var(--color-danger);
+  font-size: 13px;
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: all 0.3s;
+
+  &.sf-error-message--active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

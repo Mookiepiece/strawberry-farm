@@ -1,0 +1,148 @@
+.sf-farm {
+  padding: 20px;
+  border: 1px solid;
+}
+
+.sf-farm__wallet {
+  display: inline-block;
+  padding: 3px 6px;
+  color: white;
+  font-weight: 700;
+  background: #815513;
+  border: 2px solid #c07d18;
+  user-select: none;
+
+  &::before {
+    content: '💰';
+  }
+}
+
+.sf-farm__store {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin-top: 30px;
+  margin-bottom: -120px;
+  font-size: 24px;
+  background: #815513;
+  border: 2px solid #c07d18;
+  user-select: none;
+
+  &:not(.sf-farm__store--disabled) {
+    &:hover {
+      filter: brightness(0.9);
+    }
+
+    &:active {
+      filter: brightness(0.75);
+    }
+  }
+
+  &.sf-farm__store--disabled {
+    filter: brightness(0.5);
+  }
+}
+
+.sf-farm-field-set {
+  display: grid;
+  grid-template-rows: 100px 100px 100px;
+  grid-template-columns: 100px 100px 100px;
+  gap: 0;
+  width: 384px;
+  height: 364px;
+  margin: 0 auto;
+  padding: 20px;
+  background: no-repeat radial-gradient(rgb(153, 231, 172) 33%, transparent 70%) 80px 80px, #5fcf5f;
+  border-radius: 8px;
+  transform: scaleY(0.6) rotate(45deg);
+  filter: drop-shadow(1px 1px 0 #489748) drop-shadow(1px 1px 0 #489748);
+}
+
+.sf-field {
+  display: inline-block;
+  box-sizing: border-box;
+  background: #966216
+    repeating-linear-gradient(0deg, #0001 0, transparent 6px, transparent 14px, #0001 20px);
+  border: 2px solid #966216;
+  border-radius: 2px;
+  box-shadow: inset 5px 5px 25px 10px #815513;
+  filter: drop-shadow(2px 2px 0 #966216);
+
+  &:hover {
+    border-color: white;
+  }
+}
+
+.sf-field__inner {
+  font-size: 48px;
+  transform: rotate(-45deg) scaleY(1.6667);
+  filter: drop-shadow(2px 2px rgb(255, 253, 127));
+  user-select: none;
+}
+
+.sf-farm-bag {
+  display: flex;
+  gap: 3px;
+  height: 140px;
+  padding: 6px;
+  overflow: auto;
+  border: 1px solid;
+}
+
+.st-farm-plant-seed {
+  position: relative;
+  flex-shrink: 0;
+  width: 80px;
+  height: 105px;
+  overflow: hidden;
+  background: linear-gradient(30deg, blanchedalmond, rgb(250, 244, 189));
+  border: 2px solid rgb(238, 219, 193);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.1s;
+  user-select: none;
+
+  &:not(.st-farm-plant-seed--active):hover {
+    transform: translateY(-3px);
+  }
+
+  &.st-farm-plant-seed--active {
+    transform: translateY(-6px);
+  }
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 24px;
+    font-size: 17px;
+    background: linear-gradient(90deg, #fff 30%, transparent);
+    content: '🌱';
+  }
+
+  .st-farm-plant-seed__image {
+    position: relative;
+    top: 12px;
+    z-index: 1;
+    height: 60px;
+    font-size: 40px;
+    text-align: center;
+  }
+
+  .st-farm-plant-seed__title {
+    position: absolute;
+    bottom: 3px;
+    min-width: calc(100% - 6px);
+    margin: 3px;
+    font-size: 13px;
+    line-height: 1.35;
+    letter-spacing: 0.4px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #04a3;
+    border-radius: 6px;
+  }
+}
