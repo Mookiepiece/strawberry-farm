@@ -1,6 +1,6 @@
 <h1 align="center">Strawberry Farm - 草莓农场</h1>
 <p align="center">
-  <img src="https://github.com/Mookiepiece/strawberry-farm/blob/dev/docs/src/logo.png" width="200px" alt="logo" />
+  <img src="https://github.com/Mookiepiece/strawberry-farm/blob/dev/packages/docs/src/logo.png" width="200px" alt="logo" />
 </p>
 <p align="center">Unobtrusive park.</p>
 <p align="center">开垦乐园</p>
