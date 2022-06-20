@@ -1,7 +1,7 @@
 import React from 'react';
 import zustand, { StoreApi, Subscribe, UseBoundStore } from 'zustand';
-import { validator } from '../_utils/validator';
-import { get as GET, set as SET, unset } from '../_utils/get';
+import { validator } from '../utils/validator';
+import { get as GET, set as SET, unset } from '../utils/get';
 import { FormItemModel } from './FormContext';
 
 export type FormProps<T extends Record<string, any>> = {
@@ -111,19 +111,23 @@ export const CreateFormModel = <T extends Record<string, any>>({
 
     const i = items.current.filter(item => !names || names?.includes(item.name));
 
-    const array = await Promise.allSettled(i.map(item => item.validate()));
-    if (array.some(i => i.status === 'rejected')) {
-      const error = new AggregateError(
-        array.filter((i): i is PromiseRejectedResult => i.status === 'rejected').map(i => i.reason)
-      );
+    if (i.length) {
+      const array = await Promise.allSettled(i.map(item => item.validate()));
+      if (array.some(i => i.status === 'rejected')) {
+        const error = new AggregateError(
+          array
+            .filter((i): i is PromiseRejectedResult => i.status === 'rejected')
+            .map(i => i.reason)
+        );
 
-      const firstItem = i[array.findIndex(i => i.status === 'rejected')];
+        const firstItem = i[array.findIndex(i => i.status === 'rejected')];
 
-      return {
-        status: 'rejected',
-        reason: error,
-        firstItem,
-      };
+        return {
+          status: 'rejected',
+          reason: error,
+          firstItem,
+        };
+      }
     }
     return { status: 'fulfilled', value };
   };

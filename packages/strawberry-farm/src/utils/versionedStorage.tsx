@@ -20,7 +20,7 @@ type StorageModel<T extends STORAGE_VALUE> = {
 
 export type StorageModelUpgradeFn = Record<string, (legacyValue: any) => any>;
 
-export const createStorage = <T extends STORAGE_VALUE>({
+export const versionedStorage = <T extends STORAGE_VALUE>({
   root,
   initialValue,
   version,
@@ -39,7 +39,7 @@ export const createStorage = <T extends STORAGE_VALUE>({
   let versionBeforeUpgrade: number | undefined;
 
   try {
-    _obj = JSON.parse(sessionStorage.getItem(root) || 'throws an error');
+    _obj = JSON.parse(storage.getItem(root) || 'throws an error');
 
     if (_obj) {
       if (typeof _obj.meta.version !== 'number' || _obj.meta.version > version) throw new Error();
@@ -57,7 +57,7 @@ export const createStorage = <T extends STORAGE_VALUE>({
 
   const meta = { ..._obj.meta, version };
   let obj: T = { meta, ..._obj };
-  sessionStorage.setItem(root, JSON.stringify(obj));
+  storage.setItem(root, JSON.stringify(obj));
 
   return {
     meta: {
@@ -68,7 +68,7 @@ export const createStorage = <T extends STORAGE_VALUE>({
       return obj;
     },
     set(t: T) {
-      sessionStorage.setItem(root, JSON.stringify((obj = t)));
+      storage.setItem(root, JSON.stringify((obj = t)));
     },
   };
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { Modifier, Placement } from '@popperjs/core';
 import { usePopper } from 'react-popper';
-import { Portal, useEventCallback } from '../_utils';
+import { Portal, useEventCallback } from '../utils';
 import clsx from 'clsx';
 import type { ClassValue } from 'clsx';
 import { CSSTransition } from 'react-transition-group';

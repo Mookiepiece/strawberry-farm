@@ -1,17 +1,17 @@
-import type { STORAGE_VALUE } from '../createStorage';
-import { createStorage } from '../createStorage';
+import type { STORAGE_VALUE } from '../versionedStorage';
+import { versionedStorage } from '../versionedStorage';
 
 type MY_SESSION_STORAGE = STORAGE_VALUE & {
   a: number;
   b?: number;
 };
-describe('createStorage', () => {
+describe('versionedStorage', () => {
   beforeEach(() => {
     sessionStorage.clear();
   });
 
   it('creates storage model', () => {
-    const mySessionStorage = createStorage<MY_SESSION_STORAGE>({
+    const mySessionStorage = versionedStorage<MY_SESSION_STORAGE>({
       root: 'my',
       initialValue: { a: 0 },
       version: 14,
@@ -51,7 +51,7 @@ describe('createStorage', () => {
     );
 
     const spy = jest.fn();
-    const mySessionStorage0 = createStorage<MY_SESSION_STORAGE>({
+    const mySessionStorage0 = versionedStorage<MY_SESSION_STORAGE>({
       root: 'my',
       initialValue: { a: 1, b: 0 },
       version: 13,
@@ -66,7 +66,7 @@ describe('createStorage', () => {
     expect(mySessionStorage0.value.a).toBe(1);
     expect(spy).toBeCalledTimes(1);
 
-    const mySessionStorage1 = createStorage<MY_SESSION_STORAGE>({
+    const mySessionStorage1 = versionedStorage<MY_SESSION_STORAGE>({
       root: 'my',
       initialValue: { a: 1, b: 0 },
       version: 15,

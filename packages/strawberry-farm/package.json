@@ -1,15 +1,26 @@
 {
   "name": "@mookiepiece/strawberry-farm",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha.1",
   "description": "Unobtrusive park.",
   "main": "lib/index.js",
-  "module": "lib/index.esm.js",
+  "module": "es/index.js",
+  "exports": {
+    "./utils": {
+      "import": "./utils/es/utils/index.js",
+      "require": "./utils/lib/utils/index.js"
+    }
+  },
   "scripts": {
     "build": "pnpm clean && pnpm build:types && pnpm build:comp",
     "build:types": "tsc -p ./tsconfig.json",
-    "build:comp": "node ./scripts/build.components.mjs",
+    "build:comp": "node ./scripts/build.mjs",
     "test": "jest",
-    "clean": "rimraf lib"
+    "clean": "rimraf lib && rimraf es"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "./jest.setup.js"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
@@ -18,7 +29,8 @@
     "@babel/preset-react": "^7.12.13",
     "@babel/preset-typescript": "^7.13.0",
     "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-node-resolve": "^11.2.0",
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "@testing-library/dom": "^8.13.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
@@ -29,8 +41,6 @@
     "mitt": "^2.1.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "react-transition-group": "^4.4.1",
-    "react-use": "^17.1.1",
     "rollup": "^2.39.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "sass": "^1.32.8",
@@ -38,12 +48,16 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.5",
+    "react-use": "^17.1.1",
     "async-validator": "^4.0.7",
     "react-popper": "^2.3.0",
+    "react-transition-group": "^4.4.1",
     "zustand": "4.0.0-rc.1"
   },
   "peerDependencies": {
-    "@babel/runtime-corejs3": "^7.13.7"
+    "@babel/runtime-corejs3": "^7.13.7",
+    "react": "*",
+    "react-dom": "*"
   },
   "repository": {
     "type": "git",

@@ -3,10 +3,10 @@ import React, { useContext, useMemo, useRef, useState } from 'react';
 import { useUpdateEffect } from 'react-use';
 import clsx from 'clsx';
 import { FormContext, FormValueContext, useFormItemsRegistry } from './FormContext';
-import { useSingletonAsyncFn } from '../_utils/useSingletonAsyncFn';
+import { useSingletonAsyncFn } from '../utils/useSingletonAsyncFn';
 import { FormErrorMessage } from './FormErrorMessage';
-import { IRuleItem, validator } from '../_utils/validator';
-import { get as GET, has as HAS } from '../_utils/get';
+import { IRuleItem, validator } from '../utils/validator';
+import { get as GET, has as HAS } from '../utils/get';
 
 export type FormItemFnChildren<T> = (
   control: {
@@ -31,7 +31,7 @@ export type FormItemProps<T> = {
 };
 
 export const FormItem = <T extends any = any>({
-  rules: _rules = [],
+  rules,
   label,
   name,
   children,
@@ -41,11 +41,9 @@ export const FormItem = <T extends any = any>({
   const has = HAS(formValue, name);
   const value = GET(formValue, name);
 
-  const rules = Array.isArray(_rules) ? _rules : [_rules];
-
   const [error, setError] = useState<string | null>(null);
   const [validate, cancelValidate] = useSingletonAsyncFn(async () => {
-    if (!rules) return;
+    if (Array.isArray(rules) ? !rules.length : !rules) return;
 
     let value = GET(form.value, name);
     if (typeof value === 'string') value = value.trim();
@@ -96,7 +94,10 @@ export const FormItem = <T extends any = any>({
 
   const inputRef = useRef<HTMLElement | HTMLInputElement>(null);
 
-  const asterisk = rules.find(r => r.required) && 'sf-label-asterisk';
+  const asterisk =
+    (rules ? (Array.isArray(rules) ? rules : [rules]) : []).find(r => r.required) &&
+    'sf-label-asterisk';
+
   return useMemo(() => {
     const render = () => {
       const control = {

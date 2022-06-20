@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Button from '../Button';
-import { IRuleItem } from '../_utils';
+import { IRuleItem } from '../utils';
 import { FormContext, FormItemsRegistryProvider, FormValueContext } from './FormContext';
 import { FormItem } from './FormItem';
 import { FormList } from './FormList';
@@ -58,17 +58,7 @@ const FormSubmitButton: typeof Button = React.forwardRef(function FormSubmitButt
 
 const defineRules = <T extends Record<string, IRuleItem | IRuleItem[] | undefined>>(a: T) => a;
 
-const Form: typeof _Form & {
-  Item: typeof FormItem;
-  List: typeof FormList;
-  SubmitButton: typeof Button;
-
-  useForm: typeof useForm;
-  FormContext: typeof FormContext;
-  FormValueContext: typeof FormValueContext;
-  defineRules: typeof defineRules;
-  project: typeof project;
-} = Object.assign(_Form, {
+const Form = Object.assign(_Form, {
   Item: FormItem,
   List: FormList,
   SubmitButton: FormSubmitButton,

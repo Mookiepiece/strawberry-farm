@@ -2,11 +2,13 @@
   flex-grow: 1;
   overflow: hidden;
   border-radius: 4px;
+
   .demo-player-inner {
     margin-top: 10px;
     border: 2px solid var(--color-dark-fade-200);
     border-radius: 2px;
   }
+
   .demo-live {
     position: relative;
     padding: 20px;
@@ -14,6 +16,7 @@
     background-color: #fff;
     border-radius: 2px;
   }
+
   .demo-control {
     position: relative;
     display: block;
@@ -33,22 +36,27 @@
     cursor: pointer;
     transition: all 0.06s, box-shadow 0.2s;
     user-select: none;
+
     &.active {
-      border-radius: 2px 2px 2px 2px;
+      border-radius: 2px;
       box-shadow: 0 4px 2px -2px var(--color-contrasting);
     }
+
     &:hover,
     &:focus-visible {
       background: var(--color-contrasting-fade-100);
     }
+
     &:active {
       font-size: 14px;
       background: var(--color-contrasting-fade-100);
       transform: scaleY(0.92);
     }
+
     &:focus-visible {
       box-shadow: 0 0 0 4px #8cbaff80;
     }
+
     ::before {
       content: '<>';
     }

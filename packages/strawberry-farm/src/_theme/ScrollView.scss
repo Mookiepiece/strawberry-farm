@@ -25,6 +25,7 @@
   transform-origin: right bottom;
   opacity: 0;
   transition: opacity 0.5s, transform 0.1s;
+
   // set this to not create or modify current selection when dragging
   user-select: none;
 }
@@ -33,9 +34,11 @@
 .st-scrollbar--active {
   opacity: 1;
 }
+
 .st-scrollbar--vertical {
   top: 2px;
   width: 6px;
+
   > div {
     width: 100%;
   }
@@ -44,6 +47,7 @@
 .st-scrollbar--horizontal {
   left: 2px;
   height: 6px;
+
   > div {
     height: 100%;
   }

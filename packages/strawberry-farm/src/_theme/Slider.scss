@@ -4,10 +4,12 @@
   user-select: none;
   touch-action: pan-y;
 }
+
 .st-slider__input-el {
   position: absolute;
   opacity: 0;
 }
+
 .st-slider__rail {
   position: relative;
   width: 100%;
@@ -23,6 +25,7 @@
     content: '';
   }
 }
+
 .st-slider__fill {
   position: absolute;
   top: 50%;
@@ -60,6 +63,7 @@
 .st-slider__tooltip {
   position: absolute;
   top: -34px;
+
   // 16px thumb width, exclude 2px border
   left: 4px;
   display: inline-block;
@@ -85,10 +89,12 @@
   position: relative;
   transform: translateY(13px);
 }
+
 .st-slider__label-item {
   position: absolute;
   top: 0;
   transform: translateX(-50%);
+
   &::before {
     position: relative;
     left: 50%;
@@ -101,6 +107,7 @@
     content: '';
   }
 }
+
 .st-slider__label-item__inner {
   position: absolute;
   top: 15px;

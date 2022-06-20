@@ -6,17 +6,16 @@ export type I18nKeys =
   | 'IndexPageGetStarted'
   | 'NavbarHome'
   | 'NavbarSfComponents'
-  | 'SidebarSfComponentButton'
-  | 'SidebarComponentLink'
+  | 'SidebarComponentButton'
   | 'SidebarComponentBox'
-  | 'SidebarComponentSpin'
-  | 'SidebarSfComponentDialog'
+  | 'SidebarComponentCollapse'
+  | 'SidebarComponentDialog'
   | 'SidebarSfComponentFarm'
   | 'SidebarComponentForm'
-  | 'SidebarStComponentButton'
+  | 'SidebarUtilsVersionedStorage'
+  | 'SidebarComponentSpin'
   | 'SidebarStComponentDialog'
   | 'SidebarStComponentModal'
-  | 'SidebarComponentCollapse'
   | 'SidebarStComponentNotification'
   | 'SidebarStComponentScroll'
   | 'SidebarStComponentSlider'
@@ -48,12 +47,19 @@ const a: Record<
     en: 'Strawberry Farm',
     zh: 'Strawberry Farm',
   },
-
-  SidebarSfComponentButton: {
+  SidebarComponentBox: {
+    en: 'Box 波克斯',
+    zh: 'Box 波克斯',
+  },
+  SidebarComponentButton: {
     en: 'Button 按钮',
     zh: 'Button 按钮',
   },
-  SidebarSfComponentDialog: {
+  SidebarComponentCollapse: {
+    en: 'Collapse 折叠面板',
+    zh: 'Collapse 折叠面板',
+  },
+  SidebarComponentDialog: {
     en: 'Dialog 对话框',
     zh: 'Dialog 对话框',
   },
@@ -61,17 +67,13 @@ const a: Record<
     en: 'Farm 农场',
     zh: 'Farm 农场',
   },
-  SidebarStComponentButton: {
-    en: 'Button 按钮',
-    zh: 'Button 按钮',
+  SidebarComponentForm: {
+    en: 'Form 表单',
+    zh: 'Form 表单',
   },
-  SidebarComponentLink: {
-    en: 'Link 链接',
-    zh: 'Link 链接',
-  },
-  SidebarComponentBox: {
-    en: 'Box 波克斯',
-    zh: 'Box 波克斯',
+  SidebarUtilsVersionedStorage: {
+    en: 'VersionedStorage 版本储存',
+    zh: 'VersionedStorage 版本储存',
   },
   SidebarComponentSpin: {
     en: 'Spin 加载符',
@@ -85,17 +87,9 @@ const a: Record<
     en: 'Modal 模态框',
     zh: 'Modal 模态框',
   },
-  SidebarComponentCollapse: {
-    en: 'Collapse 折叠面板',
-    zh: 'Collapse 折叠面板',
-  },
-  SidebarComponentForm: {
-    en: 'Form 表单',
-    zh: 'Form 表单',
-  },
   SidebarStComponentNotification: {
-    en: 'Notification 通知提示',
-    zh: 'Notification 通知提示',
+    en: 'Notification 通知',
+    zh: 'Notification 通知',
   },
   SidebarStComponentScroll: {
     en: 'Scroll 滚动',

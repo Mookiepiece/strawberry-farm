@@ -8,6 +8,7 @@
   .st-focus-sentinel:focus-visible ~ & {
     outline: 2px dashed var(--color-primary);
   }
+
   & + .st-focus-sentinel:focus-visible {
     position: fixed;
     top: 10px;

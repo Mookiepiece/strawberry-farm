@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx, { ClassValue } from 'clsx';
-import { bem } from '../_utils/bem';
+import { bem } from '../utils/bem';
 
 const Box: React.FC<
   {

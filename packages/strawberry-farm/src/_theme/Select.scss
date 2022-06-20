@@ -6,13 +6,16 @@
     background-color: var(--color-dark-fade-200);
   }
 }
+
 .st-option--pending {
   background-color: var(--color-dark-fade-100);
 }
+
 .st-option--selected {
   color: var(--color-primary);
   font-weight: bold;
 }
+
 .st-option__inner {
   padding: 10px;
 }

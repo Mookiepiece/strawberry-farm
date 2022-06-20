@@ -1,4 +1,10 @@
-@import './mixins.scss';
+@import './mixins';
+
+html,
+body,
+#app {
+  height: 100%;
+}
 
 header,
 aside {

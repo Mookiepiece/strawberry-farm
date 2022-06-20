@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext, useMemo, useRef } from 'react';
-import { get } from '../_utils/get';
+import { get } from '../utils/get';
 import { FormContext } from './FormContext';
 import { FormSubscription } from './FormSubscription';
 

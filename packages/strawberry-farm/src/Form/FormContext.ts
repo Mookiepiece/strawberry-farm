@@ -1,5 +1,5 @@
 import React from 'react';
-import { createRegistry } from '../_utils/createRegistry';
+import { createRegistry } from '../utils/createRegistry';
 import { FormInstance } from './formModel';
 
 export type FormItemModel = {

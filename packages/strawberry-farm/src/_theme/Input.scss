@@ -1,4 +1,4 @@
-@import './mixins.scss';
+@import './mixins';
 
 input.st-input {
   box-sizing: border-box;
@@ -10,9 +10,9 @@ input.st-input {
   border: 1px solid var(--color-dark-fade-200);
   border-radius: 2px;
   outline: none;
-
   box-shadow: 0 0 0 0 var(--color-dark-fade-200);
   transition: all 0.3s;
+
   &:focus-visible {
     // border-color: var(--color-dark-fade-200);
     box-shadow: 0 0 0 3px var(--color-dark-fade-100);
@@ -22,10 +22,11 @@ input.st-input {
     color: var(--color-dark-fade-200);
   }
 }
-@include when-form-error() {
+@include when-form-error {
   input.st-input {
     border-color: var(--color-danger);
     box-shadow: 0 0 0 0 var(--color-danger-fade-200);
+
     &:focus-visible {
       box-shadow: 0 0 0 3px var(--color-danger-fade-100);
     }

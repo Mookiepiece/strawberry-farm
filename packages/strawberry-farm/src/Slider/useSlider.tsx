@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useEventCallback } from '../_utils';
+import { useEventCallback } from '../utils';
 import { useUnmount } from 'react-use';
 
 export type Direction = {

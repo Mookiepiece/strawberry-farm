@@ -54,7 +54,7 @@
   height: 364px;
   margin: 0 auto;
   padding: 20px;
-  background: no-repeat radial-gradient(rgb(153, 231, 172) 33%, transparent 70%) 80px 80px, #5fcf5f;
+  background: no-repeat radial-gradient(rgb(153 231 172) 33%, transparent 70%) 80px 80px, #5fcf5f;
   border-radius: 8px;
   transform: scaleY(0.6) rotate(45deg);
   filter: drop-shadow(1px 1px 0 #489748) drop-shadow(1px 1px 0 #489748);
@@ -78,7 +78,7 @@
 .sf-field__inner {
   font-size: 48px;
   transform: rotate(-45deg) scaleY(1.6667);
-  filter: drop-shadow(2px 2px rgb(255, 253, 127));
+  filter: drop-shadow(2px 2px rgb(255 253 127));
   user-select: none;
 }
 
@@ -97,8 +97,8 @@
   width: 80px;
   height: 105px;
   overflow: hidden;
-  background: linear-gradient(30deg, blanchedalmond, rgb(250, 244, 189));
-  border: 2px solid rgb(238, 219, 193);
+  background: linear-gradient(30deg, blanchedalmond, rgb(250 244 189));
+  border: 2px solid rgb(238 219 193);
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.1s;

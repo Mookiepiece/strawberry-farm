@@ -8,9 +8,10 @@
     "docs:build": "pnpm --filter docs build",
     "docs:serve": "pnpm --filter docs serve",
     "docs:deploy": "pnpm --filter docs deploy",
-    "sf:build": "pnpm --filter @mookiepiece/strawberry-farm build",
-    "sf:test": "pnpm --filter @mookiepiece/strawberry-farm test",
-    "sf:git-release": "pnpm --filter @mookiepiece/strawberry-farm git-release"
+    "build": "pnpm --filter @mookiepiece/strawberry-farm build",
+    "clean": "pnpm --filter @mookiepiece/strawberry-farm clean",
+    "test": "pnpm --filter @mookiepiece/strawberry-farm test",
+    "git-release": "pnpm --filter @mookiepiece/strawberry-farm git-release"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.16.1",

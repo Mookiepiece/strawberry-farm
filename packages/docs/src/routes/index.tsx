@@ -3,10 +3,9 @@ import React from 'react';
 import loadable from '@loadable/component';
 import type { DocRoute } from '@docs/utils/RouterView';
 
-import Index from '@docs/pages';
 import DocLayout from '@docs/layouts/DocLayout';
 
-import SfIndex from '@docs/pages/components';
+import SfIndex from '@docs/pages/docs';
 import AppLayout from '@docs/layouts/AppLayout';
 
 export default [
@@ -15,62 +14,69 @@ export default [
     component: AppLayout,
     children: [
       {
-        path: '/index',
+        path: '/home',
         exact: true,
-        component: Index,
+        component: loadable(() => import('@docs/pages/home')),
       },
       {
-        path: '/components',
+        path: '/docs',
         component: () => (
           <DocLayout
             nav={{
               Components: {
-                '/components/box': 'SidebarComponentBox',
-                '/components/button': 'SidebarSfComponentButton',
-                '/components/collapse': 'SidebarComponentCollapse',
-                '/components/dialog': 'SidebarSfComponentDialog',
-                '/components/farm': 'SidebarSfComponentFarm',
-                '/components/form': 'SidebarComponentForm',
+                '/docs/box': 'SidebarComponentBox',
+                '/docs/button': 'SidebarComponentButton',
+                '/docs/collapse': 'SidebarComponentCollapse',
+                '/docs/dialog': 'SidebarComponentDialog',
+                '/docs/farm': 'SidebarSfComponentFarm',
+                '/docs/form': 'SidebarComponentForm',
+              },
+              Utils: {
+                '/docs/versionedStorage': 'SidebarUtilsVersionedStorage',
               },
             }}
           />
         ),
         children: [
           {
-            path: '/components',
+            path: '/docs',
             exact: true,
             component: SfIndex,
           },
           {
-            path: '/components/box',
-            component: loadable(() => import('@docs/pages/components/Box')),
+            path: '/docs/box',
+            component: loadable(() => import('@docs/pages/docs/Box')),
           },
           {
-            path: '/components/button',
-            component: loadable(() => import('@docs/pages/components/Button')),
+            path: '/docs/button',
+            component: loadable(() => import('@docs/pages/docs/Button')),
           },
           {
-            path: '/components/collapse',
-            component: loadable(() => import('@docs/pages/components/Collapse')),
+            path: '/docs/collapse',
+            component: loadable(() => import('@docs/pages/docs/Collapse')),
           },
           {
-            path: '/components/dialog',
-            component: loadable(() => import('@docs/pages/components/Dialog')),
+            path: '/docs/dialog',
+            component: loadable(() => import('@docs/pages/docs/Dialog')),
           },
           {
-            path: '/components/farm',
-            component: loadable(() => import('@docs/pages/components/Farm')),
+            path: '/docs/farm',
+            component: loadable(() => import('@docs/pages/docs/Farm')),
           },
           {
-            path: '/components/form',
-            component: loadable(() => import('@docs/pages/components/Form')),
+            path: '/docs/form',
+            component: loadable(() => import('@docs/pages/docs/Form')),
+          },
+          {
+            path: '/docs/versionedStorage',
+            component: loadable(() => import('@docs/pages/docs/VersionedStorage')),
           },
         ],
       },
       {
         path: '/',
         exact: true,
-        redirect: '/index',
+        redirect: '/home',
       },
     ],
   },

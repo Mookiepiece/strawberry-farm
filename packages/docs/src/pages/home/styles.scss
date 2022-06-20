@@ -1,0 +1,33 @@
+.homepage {
+  position: relative;
+  height: calc(100% - 64px);
+  overflow: hidden;
+
+  --fixed-width: min(100vw, 200vh);
+
+  > header {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    max-width: calc(var(--fixed-width) * 2);
+    height: 100%;
+    margin: auto;
+
+    > img {
+      width: calc(var(--fixed-width) / 2.5);
+      height: calc(var(--fixed-width) / 2.5);
+    }
+
+    > div {
+      > h2 {
+        margin: 0.25em;
+        font-size: calc(var(--fixed-width) / 14);
+        line-height: 1;
+      }
+
+      padding: 10px;
+      border-radius: 30px;
+    }
+  }
+}

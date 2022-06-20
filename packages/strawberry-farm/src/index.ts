@@ -26,4 +26,4 @@ export { default as Notification } from './Notification';
 export { default as  Popper } from './Popper';
 export { default as Popover } from './Popover';
 
-export * from './_utils';
+export * from './utils';

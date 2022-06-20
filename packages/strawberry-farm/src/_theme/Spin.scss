@@ -10,6 +10,7 @@
   transition: width 0.3s;
   user-select: none;
   pointer-events: none;
+
   &::before {
     position: absolute;
     top: calc(7px - var(--st-spin-border));
@@ -69,12 +70,15 @@
 .st-spin-enter-active {
   width: 30px;
 }
+
 .st-spin-exit {
   width: 0;
 }
+
 .st-spin-exit-active {
   width: 0;
 }
+
 .st-spin-exit-done {
   width: 0;
 }
@@ -83,6 +87,7 @@
   0% {
     transform: rotate(0);
   }
+
   100% {
     transform: rotate(360deg);
   }

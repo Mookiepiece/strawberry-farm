@@ -31,8 +31,8 @@ const Nav: React.FC<{ i18nState: Language; setI18nState: () => void }> = ({
         </div>
       </div>
       <div>
-        <NavLink to="/index">{i18n.NavbarHome}</NavLink>
-        <NavLink to="/components">{i18n.NavbarSfComponents}</NavLink>
+        <NavLink to="/">{i18n.NavbarHome}</NavLink>
+        <NavLink to="/docs">{i18n.NavbarSfComponents}</NavLink>
       </div>
     </header>
   );

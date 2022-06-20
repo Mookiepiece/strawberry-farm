@@ -1,4 +1,4 @@
-@import '@docs/mixins.scss';
+@import '@docs/mixins';
 
 .page-walker-markdown {
   color: var(--color-dark);
@@ -53,26 +53,31 @@
     font-size: 14px;
     text-align: left;
     border-collapse: collapse;
+
     code {
       color: #666;
       background: var(--color-dark-fade-1);
     }
 
+    th {
+      border-bottom: 1px solid #ddd;
+    }
+
+    td {
+      border-bottom: 1px solid #fafafa;
+    }
+
     th,
     td {
       padding: 18px 8px;
+
       &:not(:last-child) {
         padding-right: 36px;
       }
     }
+
     tbody > tr:hover {
       background: #fafafa;
-    }
-    th {
-      border-bottom: 1px solid #ddd;
-    }
-    td {
-      border-bottom: 1px solid #fafafa;
     }
   }
 
@@ -80,6 +85,7 @@
   > h2 {
     font-size: 42px;
   }
+
   > h3 {
     margin: 0;
     padding: 12px;
@@ -107,12 +113,13 @@
     }
 
     &::after {
+      border-radius: 999px;
       box-shadow: -12px -8px 0 6px var(--color-contrasting-fade-100),
         2px -14px 0 6px var(--color-dark-fade-1);
       opacity: 0.5;
-      border-radius: 999px;
     }
 
+    /* stylelint-disable-next-line no-descending-specificity */
     a {
       position: relative;
       display: block;
@@ -176,6 +183,7 @@
     position: relative;
     display: flex;
     margin: 48px 0;
+
     &::before {
       position: absolute;
       top: -24px;
@@ -185,6 +193,7 @@
       border-top: 1px dotted #00000016;
       content: '';
     }
+
     &.container-directive-markdown-with-demo-section > div:first-child {
       @include laptop {
         flex: 388px 0 0;
