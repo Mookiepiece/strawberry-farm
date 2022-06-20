@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import Spin from '../Spin';
-import { bem } from '../utils/bem';
+import { bem } from '../shared/bem';
 type ButtonProps = {
   type?: 'button' | 'submit' | 'reset';
   height?: string | number;

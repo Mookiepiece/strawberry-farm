@@ -3,10 +3,10 @@ import React, { useContext, useMemo, useRef, useState } from 'react';
 import { useUpdateEffect } from 'react-use';
 import clsx from 'clsx';
 import { FormContext, FormValueContext, useFormItemsRegistry } from './FormContext';
-import { useSingletonAsyncFn } from '../utils/useSingletonAsyncFn';
+import { useSingletonAsyncFn } from '../shared/useSingletonAsyncFn';
 import { FormErrorMessage } from './FormErrorMessage';
-import { IRuleItem, validator } from '../utils/validator';
-import { get as GET, has as HAS } from '../utils/get';
+import { IRuleItem, validator } from '../shared/validator';
+import { get as GET, has as HAS } from '../shared/get';
 
 export type FormItemFnChildren<T> = (
   control: {

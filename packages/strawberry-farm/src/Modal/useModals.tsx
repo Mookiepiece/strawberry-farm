@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { createPortalChannel } from '../utils';
+import { createPortalChannel } from '../shared';
 import { useMount } from 'react-use';
 
 type LiteModalFC<T extends any, R extends any> = React.ForwardRefExoticComponent<

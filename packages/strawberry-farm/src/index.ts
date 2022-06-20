@@ -23,7 +23,7 @@ export { default as ScrollView } from './ScrollView';
 export { default as Modal } from './Modal';
 export { default as Notification } from './Notification';
 
-export { default as  Popper } from './Popper';
+export { default as Popper } from './Popper';
 export { default as Popover } from './Popover';
 
-export * from './utils';
+export * as shared from './shared';

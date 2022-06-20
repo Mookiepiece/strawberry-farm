@@ -4,7 +4,7 @@ import {
   NotificationPortal,
   useEventCallback,
   createPortalChannel,
-} from '../utils';
+} from '../shared';
 import Collapse from '../Collapse';
 
 type Noti = {

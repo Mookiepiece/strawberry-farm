@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import type { RefObject } from 'react';
-import { useEventCallback } from '../utils';
+import { useEventCallback } from '../shared';
 
 const useClickAway = <K extends keyof DocumentEventMap = 'click'>(
   _ref:

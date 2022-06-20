@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { useEventCallback, Mitt } from '../utils';
-import type { Emitter } from '../utils';
+import { useEventCallback, Mitt } from '../shared';
+import type { Emitter } from '../shared';
 import { AXIS_MAP, useSlider } from '../Slider/useSlider';
 import type { Direction } from '../Slider/useSlider';
 import { useImperativeHandle } from 'react';

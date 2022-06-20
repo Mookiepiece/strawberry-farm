@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext, useMemo } from 'react';
-import { get, has } from '../utils/get';
+import { get, has } from '../shared/get';
 import { FormValueContext } from './FormContext';
 
 export const FormSubscription: React.FC<{

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Button from '../Button';
-import { IRuleItem } from '../utils';
+import { IRuleItem } from '../shared';
 import { FormContext, FormItemsRegistryProvider, FormValueContext } from './FormContext';
 import { FormItem } from './FormItem';
 import { FormList } from './FormList';

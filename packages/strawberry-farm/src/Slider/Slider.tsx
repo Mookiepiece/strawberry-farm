@@ -1,6 +1,6 @@
 import React, { useRef, useMemo } from 'react';
 import clsx from 'clsx';
-import { useEventCallback } from '../utils';
+import { useEventCallback } from '../shared';
 import { useSlider } from './useSlider';
 
 type SliderProps = {

@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import clsx from 'clsx';
 import Button from '../Button';
 import FocusLock from '../FocusLock';
-import { useEventCallback, Portal, Mitt } from '../utils';
+import { useEventCallback, Portal, Mitt } from '../shared';
 import { Keys } from './Keys';
 import { createLiteModal, useModals } from './useModals';
 

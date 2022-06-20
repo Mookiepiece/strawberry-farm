@@ -1,7 +1,7 @@
 import React from 'react';
 import zustand, { StoreApi, Subscribe, UseBoundStore } from 'zustand';
-import { validator } from '../utils/validator';
-import { get as GET, set as SET, unset } from '../utils/get';
+import { validator } from '../shared/validator';
+import { get as GET, set as SET, unset } from '../shared/get';
 import { FormItemModel } from './FormContext';
 
 export type FormProps<T extends Record<string, any>> = {

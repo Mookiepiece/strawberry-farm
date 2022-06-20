@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Emitter } from '../utils';
+import type { Emitter } from '../shared';
 
 let seed = 0;
 export const uuid = (): number => seed++;
