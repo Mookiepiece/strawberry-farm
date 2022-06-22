@@ -1,4 +1,4 @@
-import{a as r}from"./index.7584e1e9.js";import{P as i}from"./PageWalker.e8fa03b5.js";const e=({title:u,children:n,warning:t})=>r("div",{style:{whiteSpace:"pre"},children:[`
+import{j as r}from"./index.3f4b3495.js";import{P as i}from"./PageWalker.5ae00577.js";const e=({title:u,children:n,warning:t})=>r("div",{style:{whiteSpace:"pre"},children:[`
 \uFF0F \uFFE3\uFFE3 \uFF3C\u3000
 |\u3000\u30FC\u3000\u30FC \\\u3000 \uFF0F\uFFE3\uFFE3\uFFE3\uFFE3\uFFE3\uFFE3\uFFE3\uFF3C
 |\u3000 \u25C9\u3000\u25C9 |   |\u3000   ${u}    \\

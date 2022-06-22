@@ -1,4 +1,4 @@
-import{B as r}from"./Box.539d8b87.js";import{j as a,F as e,a as o}from"./index.7584e1e9.js";import{P as u}from"./PageWalker.e8fa03b5.js";const n=()=>a(e,{children:[o("style",{children:`
+import{B as r}from"./Box.2e8a9cb0.js";import{a,F as e,j as o}from"./index.3f4b3495.js";import{P as u}from"./PageWalker.5ae00577.js";const n=()=>a(e,{children:[o("style",{children:`
     .\u{1F383}\u{1F38A}\u{1F9E7}{
       height: 110px;
       background: var(--color-contrasting-fade-100);
