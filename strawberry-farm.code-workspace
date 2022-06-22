@@ -4,16 +4,16 @@
       "path": "."
     },
     {
-      "path": ".\\docs"
+      "path": ".\\packages\\docs"
     },
     {
-      "path": ".\\strawberry-farm"
+      "path": ".\\packages\\strawberry-farm"
     }
   ],
   "settings": {
     "workbench.colorCustomizations": {
       "tab.activeBorderTop": "#f3538b"
     },
-    "jest.disabledWorkspaceFolders": ["."]
+    "jest.disabledWorkspaceFolders": [".", "docs"]
   }
 }

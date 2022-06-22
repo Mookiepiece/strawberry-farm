@@ -30,9 +30,5 @@
       "version": "detect"
     }
   },
-  "ignorePatterns": [
-    "**/dist",
-    "webpack.config.js",
-    "strawberry-farm/lib/**/*"
-  ]
+  "ignorePatterns": ["dist"]
 }

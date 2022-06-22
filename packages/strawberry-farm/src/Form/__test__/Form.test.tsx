@@ -42,7 +42,7 @@ describe('<Form>', () => {
     await waitFor(() => {
       expect($('span.sf-error-message')).toHaveTextContent('');
     });
-    expect($('input')?.value).toBe(2);
+    expect($('input')?.value).toBe('2');
   });
 
   // it('greedy projection', async () => {

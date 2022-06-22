@@ -36,9 +36,5 @@
   },
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "workbench.colorCustomizations": {
-    "tab.activeBorderTop": "#f3538b"
-  },
-  "jest.disabledWorkspaceFolders": ["strawberry-farm"]
+  }
 }

@@ -4,6 +4,11 @@
   "description": "Unobtrusive park.",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "files": [
+    "src/_theme",
+    "lib/",
+    "es/"
+  ],
   "exports": {
     "./utils": {
       "import": "./utils/es/utils/index.js",
@@ -17,11 +22,6 @@
     "test": "jest",
     "clean": "rimraf lib && rimraf es"
   },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "./jest.setup.js"
-    ]
-  },
   "devDependencies": {
     "@babel/core": "^7.13.8",
     "@babel/plugin-transform-runtime": "^7.13.7",
@@ -31,9 +31,6 @@
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
-    "@testing-library/dom": "^8.13.0",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
     "@types/react-transition-group": "^4.4.1",
@@ -48,10 +45,10 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.5",
-    "react-use": "^17.1.1",
     "async-validator": "^4.0.7",
     "react-popper": "^2.3.0",
     "react-transition-group": "^4.4.1",
+    "react-use": "^17.1.1",
     "zustand": "4.0.0-rc.1"
   },
   "peerDependencies": {
@@ -69,10 +66,5 @@
     "component"
   ],
   "author": "Mookiepiece",
-  "license": "WTFPL",
-  "files": [
-    "src/_theme",
-    "lib/",
-    "es/"
-  ]
+  "license": "WTFPL"
 }
