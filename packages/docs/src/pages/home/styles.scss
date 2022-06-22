@@ -27,6 +27,7 @@
       }
 
       padding: 10px;
+      padding-right: calc(var(--fixed-width) / 14);
       border-radius: 30px;
     }
   }
