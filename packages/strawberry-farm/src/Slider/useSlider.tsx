@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useEventCallback } from '../shared';
 import { useUnmount } from 'react-use';
+import { useEventCallback } from '../shared';
 
 export type Direction = {
   offsetSize: 'offsetHeight' | 'offsetWidth';

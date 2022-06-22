@@ -2,17 +2,20 @@
   "name": "@mookiepiece/strawberry-farm",
   "version": "0.0.1-alpha.1",
   "description": "Unobtrusive park.",
-  "main": "lib/index.js",
-  "module": "es/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
   "files": [
     "src/_theme",
-    "lib/",
-    "es/"
+    "dist/"
   ],
   "exports": {
-    "./utils": {
-      "import": "./utils/es/utils/index.js",
-      "require": "./utils/lib/utils/index.js"
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.js"
+    },
+    "./shared": {
+      "import": "./dist/shared/index.es.js",
+      "require": "./dist/shared/index.js"
     }
   },
   "scripts": {
@@ -20,7 +23,7 @@
     "build:types": "tsc -p ./tsconfig.json",
     "build:comp": "node ./scripts/build.mjs",
     "test": "jest",
-    "clean": "rimraf lib && rimraf es"
+    "clean": "rimraf dist"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
@@ -44,15 +47,15 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.5",
     "async-validator": "^4.0.7",
+    "@popperjs/core": "^2.11.5",
     "react-popper": "^2.3.0",
-    "react-transition-group": "^4.4.1",
-    "react-use": "^17.1.1",
     "zustand": "4.0.0-rc.1"
   },
   "peerDependencies": {
     "@babel/runtime-corejs3": "^7.13.7",
+    "react-transition-group": "^4.4.1",
+    "react-use": "^17.1.1",
     "react": "*",
     "react-dom": "*"
   },
