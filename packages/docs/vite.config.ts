@@ -9,6 +9,7 @@ export default defineConfig({
     alias: {
       '@docs': path.resolve(__dirname, './src'),
       '🦄': path.resolve(__dirname, '../strawberry-farm/src'),
+      '🦄/shared': path.resolve(__dirname, '../strawberry-farm/src/shared'),
     },
   },
   server: {

@@ -17,6 +17,7 @@
     "paths": {
       "@docs/*": ["./*"],
       "🦄": ["../../strawberry-farm/src/index"],
+      "🦄/shared": ["../../strawberry-farm/src/shared/index"],
     },
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true

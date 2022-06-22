@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input } from '🦄';
-import type { IRuleItem } from '🦄';
+import type { IRuleItem } from '🦄/shared';
 
 const apiUser = (s: string) => {
   return new Promise((resolve, reject) => {
