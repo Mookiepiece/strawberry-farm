@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import Button from '../Button';
 import FocusLock from '../FocusLock';
 import { useEventCallback, Portal, Mitt } from '../shared';
-import { Keys } from './Keys';
+import { Keys } from '../shared/keys';
 import { createLiteModal, useModals } from './useModals';
 
 type ModalProps = {
