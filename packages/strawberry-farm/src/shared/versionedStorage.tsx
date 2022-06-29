@@ -1,26 +1,28 @@
-// import useRequest from './useRequest';
+import React, { SetStateAction } from 'react';
+import { EqualityChecker, StateSelector } from 'zustand';
+import shallow from 'zustand/shallow';
+import { zustand, ZustandStore } from './zustand';
 
-import { SetStateAction, useCallback, useEffect, useMemo } from 'react';
-import { useGetSet } from 'react-use';
-
-export type STORAGE_VALUE = {
+export type STORAGE_META = {
   meta: {
     version: number;
   };
 };
 
-type StorageModel<T extends STORAGE_VALUE> = {
+type StorageModel<T extends Record<string, any>> = {
   meta: {
     version: number;
     versionBeforeUpgrade: number | undefined;
   };
-  value: T;
-  set(t: T): void;
+  get(): T;
+  set: React.Dispatch<React.SetStateAction<T>>;
+  subscribe: ZustandStore<T>['subscribe'];
+  useStore: ZustandStore<T>;
 };
 
 export type StorageModelUpgradeFn = Record<string, (legacyValue: any) => any>;
 
-export const versionedStorage = <T extends STORAGE_VALUE>({
+export const versionedStorage = <T extends Record<string, any>>({
   root,
   initialValue,
   version,
@@ -28,13 +30,12 @@ export const versionedStorage = <T extends STORAGE_VALUE>({
   storage,
 }: {
   root: string;
-  initialValue: Omit<T, 'meta'>;
+  initialValue: T;
   version: number;
   upgradeFn?: StorageModelUpgradeFn;
   storage: Storage;
 }): StorageModel<T> => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let _obj: any;
+  let _obj: T & STORAGE_META;
 
   let versionBeforeUpgrade: number | undefined;
 
@@ -52,48 +53,43 @@ export const versionedStorage = <T extends STORAGE_VALUE>({
         });
     }
   } catch (e) {
-    _obj = initialValue;
+    _obj = { meta: { version }, ...initialValue };
   }
 
-  const meta = { ..._obj.meta, version };
-  let obj: T = { meta, ..._obj };
-  storage.setItem(root, JSON.stringify(obj));
+  if (JSON.stringify(_obj) !== storage.getItem(root)) {
+    storage.setItem(root, JSON.stringify(_obj));
+  }
+
+  const { meta, ..._objRaw } = _obj as any;
+  const objRaw: T = _objRaw;
+
+  const useStore = zustand<T>(() => objRaw);
+
+  useStore.subscribe(t => {
+    storage.setItem(root, JSON.stringify({ meta: { version }, ...t }));
+  });
 
   return {
     meta: {
-      ...meta,
+      version,
       versionBeforeUpgrade,
     },
-    get value() {
-      return obj;
-    },
-    set(t: T) {
-      storage.setItem(root, JSON.stringify((obj = t)));
-    },
+    useStore,
+    get: useStore.getState,
+    set: useStore.setState,
+    subscribe: useStore.subscribe,
   };
 };
 
-export const useStorage = <T extends STORAGE_VALUE>(
-  storageModel: StorageModel<T>
-): [T, React.Dispatch<React.SetStateAction<T>>, () => T] => {
-  const [get, _set] = useGetSet(storageModel.value);
-  const v = get();
-
-  const set = useCallback(
-    (A: React.SetStateAction<T>) => {
-      if (typeof A === 'function') {
-        storageModel.set(A(storageModel.value));
-      } else {
-        storageModel.set(A);
-      }
-      _set(storageModel.value);
-    },
-    [_set, storageModel]
+export const useStorage = <S extends Record<string, any>, U = S>(
+  storageModel: StorageModel<S>,
+  selector?: StateSelector<S, U>,
+  equals?: EqualityChecker<U>
+): [U, React.Dispatch<React.SetStateAction<S>>] => {
+  const value = storageModel.useStore<U>(
+    selector as any,
+    (selector ? equals ?? shallow : undefined) as any
   );
 
-  useEffect(() => {
-    storageModel.set(v);
-  }, [storageModel, v]);
-
-  return useMemo(() => [get(), set, get], [get, set]);
+  return [value, storageModel.set];
 };

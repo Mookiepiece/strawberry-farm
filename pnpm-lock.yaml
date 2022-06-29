@@ -149,6 +149,7 @@ importers:
       react: ^16.14.0
       react-dom: ^16.14.0
       react-popper: ^2.3.0
+      react-transition-group: ^4.4.1
       react-use: ^17.1.1
       rollup: ^2.39.0
       rollup-plugin-peer-deps-external: ^2.2.4
@@ -177,6 +178,7 @@ importers:
       mitt: 2.1.0
       react: 16.14.0
       react-dom: 16.14.0_react@16.14.0
+      react-transition-group: 4.4.2_wcqkhtmu7mswc6yz4uyexck3ty
       react-use: 17.4.0_wcqkhtmu7mswc6yz4uyexck3ty
       rollup: 2.74.1
       rollup-plugin-peer-deps-external: 2.2.4_rollup@2.74.1
@@ -3326,7 +3328,6 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.0
       csstype: 3.1.0
-    dev: false
 
   /dom-serializer/0.2.2:
     resolution: {integrity: sha512-2/xPb3ORsQ42nHYiSunXkDjPLBaEj/xTwUO4B7XCZQTRk7EBtTOPaygh10YAAh2OI1Qrp6NWfpAhzswj0ydt9g==}
@@ -7096,7 +7097,6 @@ packages:
       prop-types: 15.8.1
       react: 16.14.0
       react-dom: 16.14.0_react@16.14.0
-    dev: false
 
   /react-universal-interface/0.6.2_react@16.14.0+tslib@2.4.0:
     resolution: {integrity: sha512-dg8yXdcQmvgR13RIlZbTRQOoUrDciFVoSBZILwjE2LFISxZZ8loVJKAkuzswl5js8BHda79bIb2b84ehU8IjXw==}

@@ -33,6 +33,7 @@ export default [
               },
               Utils: {
                 '/docs/versionedStorage': 'SidebarUtilsVersionedStorage',
+                '/docs/zustand': 'SidebarUtilsZustand',
               },
             }}
           />
@@ -70,6 +71,10 @@ export default [
           {
             path: '/docs/versionedStorage',
             component: loadable(() => import('@docs/pages/docs/VersionedStorage')),
+          },
+          {
+            path: '/docs/zustand',
+            component: loadable(() => import('@docs/pages/docs/Zustand')),
           },
         ],
       },

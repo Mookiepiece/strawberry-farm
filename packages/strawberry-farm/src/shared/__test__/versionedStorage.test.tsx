@@ -1,17 +1,21 @@
-import type { STORAGE_VALUE } from '../versionedStorage';
-import { versionedStorage } from '../versionedStorage';
+import { act, render } from '@testing-library/react';
+import React, { useEffect, useState } from 'react';
+import { useStorage, versionedStorage } from '../versionedStorage';
 
-type MY_SESSION_STORAGE = STORAGE_VALUE & {
+const $ = document.querySelector.bind(document);
+
+type MyStorageValue = {
   a: number;
   b?: number;
 };
-describe('versionedStorage', () => {
+
+describe('creates versioned storages', () => {
   beforeEach(() => {
     sessionStorage.clear();
   });
 
   it('creates storage model', () => {
-    const mySessionStorage = versionedStorage<MY_SESSION_STORAGE>({
+    const mySessionStorage = versionedStorage<MyStorageValue>({
       root: 'my',
       initialValue: { a: 0 },
       version: 14,
@@ -28,7 +32,7 @@ describe('versionedStorage', () => {
       })
     );
 
-    mySessionStorage.set({ ...mySessionStorage.value, a: 1 });
+    mySessionStorage.set({ ...mySessionStorage.get(), a: 1 });
     expect(sessionStorage.getItem('my')).toBe(
       JSON.stringify({
         meta: {
@@ -51,7 +55,7 @@ describe('versionedStorage', () => {
     );
 
     const spy = jest.fn();
-    const mySessionStorage0 = versionedStorage<MY_SESSION_STORAGE>({
+    const mySessionStorage0 = versionedStorage<MyStorageValue>({
       root: 'my',
       initialValue: { a: 1, b: 0 },
       version: 13,
@@ -63,10 +67,10 @@ describe('versionedStorage', () => {
       },
       storage: sessionStorage,
     });
-    expect(mySessionStorage0.value.a).toBe(1);
+    expect(mySessionStorage0.get().a).toBe(1);
     expect(spy).toBeCalledTimes(1);
 
-    const mySessionStorage1 = versionedStorage<MY_SESSION_STORAGE>({
+    const mySessionStorage1 = versionedStorage<MyStorageValue>({
       root: 'my',
       initialValue: { a: 1, b: 0 },
       version: 15,
@@ -84,7 +88,74 @@ describe('versionedStorage', () => {
       },
       storage: sessionStorage,
     });
-    expect(mySessionStorage1.value.a).toBe(21);
+    expect(mySessionStorage1.get().a).toBe(21);
     expect(spy).toBeCalledTimes(3);
+  });
+
+  it('fits react lifecycle with useSyncExternalStore', () => {
+    const mySessionStorage = versionedStorage<MyStorageValue>({
+      root: 'my',
+      initialValue: { a: 0 },
+      version: 14,
+      storage: sessionStorage,
+    });
+
+    const Child: React.FC<{
+      setState: React.Dispatch<React.SetStateAction<MyStorageValue>>;
+    }> = ({ setState }) => {
+      useEffect(() => {
+        setState(s => ({ a: s.a + 1 }));
+      }, []);
+      return <div></div>;
+    };
+
+    const Comp = () => {
+      const [state, setState] = useStorage(mySessionStorage);
+
+      useEffect(() => {
+        setState(s => ({ a: s.a * 2 }));
+      }, []);
+
+      return (
+        <>
+          <button id="a">{state.a}</button>
+          <Child setState={setState} />
+        </>
+      );
+    };
+
+    render(<Comp />);
+    const button = $('#a') as HTMLElement;
+
+    // (0 + 1) * 2 = 2
+    expect(button.innerHTML).toBe('2');
+  });
+
+  it('optimize reders by using zustand selectors', () => {
+    const mySessionStorage = versionedStorage<MyStorageValue>({
+      root: 'my',
+      initialValue: { a: 0 },
+      version: 14,
+      storage: sessionStorage,
+    });
+
+    const spy = jest.fn();
+
+    const Comp = () => {
+      const [a] = useStorage(mySessionStorage, s => [s.a]);
+
+      spy();
+
+      return <>{a[0]}</>;
+    };
+
+    render(<Comp />);
+
+    expect(spy).toBeCalledTimes(1);
+
+    act(() => mySessionStorage.set({ a: 0, b: 2 }));
+    expect(spy).toBeCalledTimes(1);
+    act(() => mySessionStorage.set({ a: 1, b: 2 }));
+    expect(spy).toBeCalledTimes(2);
   });
 });

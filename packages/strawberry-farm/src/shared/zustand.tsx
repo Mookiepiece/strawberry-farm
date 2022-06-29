@@ -11,7 +11,7 @@ import create, {
 
 /** Copy */
 type StoreApi<T extends State> = {
-  setState: (state: React.SetStateAction<T>) => void;
+  setState: React.Dispatch<React.SetStateAction<T>>;
   getState: GetState<T>;
   subscribe: Subscribe<T>;
   destroy: Destroy;

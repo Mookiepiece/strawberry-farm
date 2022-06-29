@@ -5,7 +5,7 @@
 <p align="center">Unobtrusive park.</p>
 <p align="center">开垦乐园</p>
 
-[Visit HomePage（访问主页）https://mookiepiece.github.io/strawberry-farm](https://mookiepiece.github.io/strawberry-farm/#/index)
+[Visit HomePage（访问主页）https://mookiepiece.github.io/strawberry-farm](https://mookiepiece.github.io/strawberry-farm)
 
 ## Table of Contents - 目录
 

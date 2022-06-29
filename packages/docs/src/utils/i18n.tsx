@@ -13,6 +13,7 @@ export type I18nKeys =
   | 'SidebarSfComponentFarm'
   | 'SidebarComponentForm'
   | 'SidebarUtilsVersionedStorage'
+  | 'SidebarUtilsZustand'
   | 'SidebarComponentSpin'
   | 'SidebarStComponentDialog'
   | 'SidebarStComponentModal'
@@ -74,6 +75,10 @@ const a: Record<
   SidebarUtilsVersionedStorage: {
     en: 'VersionedStorage 版本储存',
     zh: 'VersionedStorage 版本储存',
+  },
+  SidebarUtilsZustand: {
+    en: 'Zustand 状态',
+    zh: 'Zustand 状态',
   },
   SidebarComponentSpin: {
     en: 'Spin 加载符',

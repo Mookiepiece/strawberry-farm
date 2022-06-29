@@ -5,7 +5,7 @@ import '@docs/styles.scss';
 import routes from './routes';
 import { RouteView } from '@docs/utils/RouterView';
 
-import '🦄/_theme/index.scss';
+import '🦄/theme/index.scss';
 
 const App: React.FC = () => {
   const [i18nState, setI18nState] = useState<Language>('zh');
