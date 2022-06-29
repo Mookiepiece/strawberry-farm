@@ -1,22 +1,21 @@
 import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs-extra';
 import { rollup } from 'rollup';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import renameNodeModules from 'rollup-plugin-rename-node-modules';
 import { babel } from '@rollup/plugin-babel';
 
 const runBuild = async () => {
   const inputOptions = {
     input: 'src/index.ts',
     treeshake: false,
-    external: [
-      'async-validator',
-      "@popperjs/core",
-      "react-popper",
-      'zustand',
-    ],
+    external: ['async-validator', '@popperjs/core', 'react-popper', 'zustand'],
     plugins: [
-      commonjs({ include: /node_modules/ }),
+      renameNodeModules(),
+      commonjs(),
       peerDepsExternal(),
       resolve({
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs'],
@@ -24,33 +23,29 @@ const runBuild = async () => {
       babel({
         babelHelpers: 'runtime',
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs'],
-        exclude: /node_modules/
       }),
     ],
   };
   const outOptions = {
     dir: 'dist',
     format: 'esm',
-    chunkFileNames: '[name].es.js',
-    entryFileNames: '[name].es.js',
-    preserveModules: true,
-    preserveModulesRoot: 'src',
-  };
-  const outOptions2 = {
-    dir: 'dist',
-    format: 'commonjs',
     chunkFileNames: '[name].js',
     entryFileNames: '[name].js',
-    exports: 'named',
     preserveModules: true,
     preserveModulesRoot: 'src',
   };
 
   const bundle = await rollup(inputOptions);
   await bundle.write(outOptions);
-
-  const bundle2 = await rollup(inputOptions);
-  await bundle2.write(outOptions2);
 };
 
-runBuild();
+console.time();
+
+await runBuild();
+
+const root = path.resolve(fileURLToPath(import.meta.url), '../..');
+
+fs.copySync(path.resolve(root, 'src/theme'), path.resolve(root, 'dist/theme'));
+fs.copySync(path.resolve(root, 'package.json'), path.resolve(root, 'dist/package.json'));
+
+console.timeEnd();
