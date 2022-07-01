@@ -12,13 +12,6 @@ This is a basic dialog
 
 ### Warning State
 
-render a more eye-catching, inspiring and passionate dialog.
+render a eye-catching dialog.
 
 :::
-
-### API
-
-| Property        | Description   | Type      |
-| --------------- | ------------- | --------- |
-| title :required | title         | `string`  |
-| warning         | warning state | `boolean` |

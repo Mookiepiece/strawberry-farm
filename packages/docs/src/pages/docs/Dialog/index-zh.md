@@ -16,9 +16,3 @@
 
 :::
 
-### 接口索引
-
-| Property        | Description   | Type      |
-| --------------- | ------------- | --------- |
-| title :required | title         | `string`  |
-| warning         | warning state | `boolean` |

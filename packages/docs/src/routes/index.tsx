@@ -5,7 +5,6 @@ import type { DocRoute } from '@docs/utils/RouterView';
 
 import DocLayout from '@docs/layouts/DocLayout';
 
-import SfIndex from '@docs/pages/docs';
 import AppLayout from '@docs/layouts/AppLayout';
 
 export default [
@@ -35,6 +34,11 @@ export default [
                 '/docs/versionedStorage': 'SidebarUtilsVersionedStorage',
                 '/docs/zustand': 'SidebarUtilsZustand',
               },
+              About: {
+                '/docs/about/guide': 'SidebarAboutGuide',
+                '/docs/about/contribute': 'SidebarAboutDevelopmentGuide',
+
+              },
             }}
           />
         ),
@@ -42,7 +46,7 @@ export default [
           {
             path: '/docs',
             exact: true,
-            component: SfIndex,
+            redirect: '/docs/box',
           },
           {
             path: '/docs/box',
@@ -75,6 +79,14 @@ export default [
           {
             path: '/docs/zustand',
             component: loadable(() => import('@docs/pages/docs/Zustand')),
+          },
+          {
+            path: '/docs/about/guide',
+            component: loadable(() => import('@docs/pages/about/guide')),
+          },
+          {
+            path: '/docs/about/contribute',
+            component: loadable(() => import('@docs/pages/about/contribute')),
           },
         ],
       },
