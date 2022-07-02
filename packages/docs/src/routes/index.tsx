@@ -23,21 +23,21 @@ export default [
           <DocLayout
             nav={{
               Components: {
-                '/docs/box': 'SidebarComponentBox',
-                '/docs/button': 'SidebarComponentButton',
-                '/docs/collapse': 'SidebarComponentCollapse',
-                '/docs/dialog': 'SidebarComponentDialog',
-                '/docs/farm': 'SidebarSfComponentFarm',
-                '/docs/form': 'SidebarComponentForm',
+                '/docs/box': '🗺️SidebarComponentBox',
+                '/docs/button': '🗺️SidebarComponentButton',
+                '/docs/collapse': '🗺️SidebarComponentCollapse',
+                '/docs/dialog': '🗺️SidebarComponentDialog',
+                '/docs/farm': '🗺️SidebarSfComponentFarm',
+                '/docs/form': '🗺️SidebarComponentForm',
               },
               Utils: {
-                '/docs/versionedStorage': 'SidebarUtilsVersionedStorage',
-                '/docs/zustand': 'SidebarUtilsZustand',
+                '/docs/versionedStorage': '🗺️SidebarUtilsVersionedStorage',
+                '/docs/zustand': '🗺️SidebarUtilsZustand',
+                '/docs/useSingletonAsyncFn': '🗺️SidebarUtilsUseSingletonAsyncFn',
               },
               About: {
-                '/docs/about/guide': 'SidebarAboutGuide',
-                '/docs/about/contribute': 'SidebarAboutDevelopmentGuide',
-
+                '/docs/about/guide': '🗺️SidebarAboutGuide',
+                '/docs/about/contribute': '🗺️SidebarAboutDevelopmentGuide',
               },
             }}
           />
@@ -79,6 +79,10 @@ export default [
           {
             path: '/docs/zustand',
             component: loadable(() => import('@docs/pages/docs/Zustand')),
+          },
+          {
+            path: '/docs/useSingletonAsyncFn',
+            component: loadable(() => import('@docs/pages/docs/UseSingletonAsyncFn')),
           },
           {
             path: '/docs/about/guide',

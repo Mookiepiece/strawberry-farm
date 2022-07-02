@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { HashRouter as Router, useHistory } from 'react-router-dom';
-import { getCowboy, i18nContext, i18nStateContext, Language } from './utils/i18n';
+import { loadLang, i18nContext, i18nStateContext, Language } from './utils/i18n';
 import '@docs/styles.scss';
 import routes from './routes';
 import { RouteView } from '@docs/utils/RouterView';
@@ -9,10 +9,10 @@ import '🦄/theme/index.scss';
 
 const App: React.FC = () => {
   const [i18nState, setI18nState] = useState<Language>('zh');
-  const [i18n, setI18n] = useState(() => getCowboy('zh'));
+  const [i18n, setI18n] = useState(() => loadLang('zh'));
 
   useEffect(() => {
-    setI18n(getCowboy(i18nState));
+    setI18n(loadLang(i18nState));
   }, [i18nState]);
 
   const i18nStateContextValue = useMemo(() => {

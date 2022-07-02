@@ -7,7 +7,7 @@ import { RouteView } from '@docs/utils/RouterView';
 import './styles.scss';
 
 const SideBar: React.FC<{
-  nav: Record<string, Record<string, I18nKeys>>;
+  nav: Record<string, Record<string, I18nKeys | string>>;
 }> = ({ nav }) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const i18n = useContext(i18nContext);
@@ -40,7 +40,7 @@ const SideBar: React.FC<{
 };
 
 const DocLayout: React.FC<{
-  nav: Record<string, Record<string, I18nKeys>>;
+  nav: Record<string, Record<string, I18nKeys | string>>;
 }> = ({ nav }) => {
   return (
     <main className="doc-layout">
