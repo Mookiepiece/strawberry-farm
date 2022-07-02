@@ -1,6 +1,8 @@
 ## Collapse 折叠面板
 
-:::demo{individual}
+Animation Component
+
+:::demo{basic}
 
 ### 独立面板
 
@@ -14,9 +16,9 @@
 
 ### 原理
 
-若面板定高，`css transition`就可以了，否则要像这样利用`js`提前一帧设置高度。
+若面板定高，`css transition`就可以了，面板不定高要像这样利用`js`提前一帧设置高度。
 
-Bootstrap 和 W3Schools 使用了 `scrollHeight` ，它的值只和内部内容有关，哪怕折叠到一半突然折反，`scrollHeight` 能够正确知道动画返折的目标高度。
+Bootstrap 和 W3Schools 使用了 `scrollHeight` 。
 
 - [Bootstrap: collapse.js](https://github.com/twbs/bootstrap/blob/main/js/src/collapse.js#L202)
 - [W3schools: Collapse ](https://www.w3schools.com/howto/howto_js_collapsible.asp)

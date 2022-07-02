@@ -4,10 +4,10 @@ import PageWalker from '@docs/components/PageWalker';
 
 const requireDemo = import.meta.globEager('./*.tsx');
 
-import individual from './individual.tsx?raw';
+import basic from './basic.tsx?raw';
 
 const requireRaw = {
-  individual,
+  basic,
 };
 
 import zh from './index-zh.md?raw';

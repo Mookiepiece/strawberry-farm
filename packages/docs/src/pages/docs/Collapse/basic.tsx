@@ -20,7 +20,7 @@ const Individual: React.FC = () => {
         <Collapse>
           {active2 ? (
             <>
-              <p style={{ height:100, marginTop: 0, marginBottom: 0 }}>
+              <p style={{ height: 100 }}>
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur libero facilis
                 architecto? Sunt, delectus mollitia quaerat ad ut laboriosam enim quis perspiciatis
                 culpa beatae! Veritatis odio consequuntur iure magnam esse!
@@ -28,7 +28,7 @@ const Individual: React.FC = () => {
             </>
           ) : null}
         </Collapse>
-        <p>
+        <p style={{ margin: 0 }}>
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur libero facilis
           architecto? Sunt, delectus mollitia quaerat ad ut laboriosam enim quis perspiciatis culpa
           beatae! Veritatis odio consequuntur iure magnam esse!

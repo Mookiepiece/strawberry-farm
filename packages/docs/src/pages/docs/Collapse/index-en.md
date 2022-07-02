@@ -1,6 +1,8 @@
 ## Collapse
 
-:::demo{individual}
+Animation Component
+
+:::demo{basic}
 
 ### Individual Panel
 
@@ -14,9 +16,9 @@ Cache `children` nodes for `0.3s`, an alternative way to trigger animation is se
 
 ### Note
 
-If your panel has fixed height, then `css transition` is better, otherwise you need `js` -> this component.
+If your panel has fixed height, then `css transition` is better, otherwise you need to write `js` like this component.
 
-Bootstrap 和 W3Schools uses `scrollHeight` , It's value is only related to what content it contains.
+Bootstrap 和 W3Schools uses `scrollHeight`.
 
 - [Bootstrap: collapse.js](https://github.com/twbs/bootstrap/blob/main/js/src/collapse.js#L202)
 - [W3schools: Collapse ](https://www.w3schools.com/howto/howto_js_collapsible.asp)
