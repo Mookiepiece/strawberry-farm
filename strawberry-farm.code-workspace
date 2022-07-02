@@ -11,6 +11,11 @@
     }
   ],
   "settings": {
+    "search.exclude": {
+      "dist": true,
+    },
+    "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+    "stylelint.validate": ["css", "scss"],
     "workbench.colorCustomizations": {
       "tab.activeBorderTop": "#f3538b"
     },

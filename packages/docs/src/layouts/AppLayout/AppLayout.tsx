@@ -23,7 +23,7 @@ const Nav: React.FC<{ i18nState: Language; setI18nState: () => void }> = ({
           {tablet ? <h3>Strawberry Farm</h3> : null}
         </NavLink>
         <div>
-          <Button primary style={{ width: 120, transform: 'scale(0.8)' }} onClick={setI18nState}>
+          <Button textual style={{ width: 120 }} onClick={setI18nState}>
             <sup>文</sup>
             <sub>A</sub>
             <span>&nbsp;&nbsp;&nbsp;{i18nState}</span>
@@ -52,13 +52,15 @@ const AppLayout: React.FC = () => {
   const [i18nState, setI18nState] = useContext(i18nStateContext);
 
   return (
-    <ScrollToTop>
-      <Nav
-        i18nState={i18nState}
-        setI18nState={() => setI18nState(i18nState === 'zh' ? 'en' : 'zh')}
-      />
-      <RouteView />
-    </ScrollToTop>
+    <div className="app-layout">
+      <ScrollToTop>
+        <Nav
+          i18nState={i18nState}
+          setI18nState={() => setI18nState(i18nState === 'zh' ? 'en' : 'zh')}
+        />
+        <RouteView />
+      </ScrollToTop>
+    </div>
   );
 };
 

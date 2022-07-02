@@ -105,6 +105,7 @@ describe('creates versioned storages', () => {
     }> = ({ setState }) => {
       useEffect(() => {
         setState(s => ({ a: s.a + 1 }));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
       return <div></div>;
     };
@@ -114,6 +115,7 @@ describe('creates versioned storages', () => {
 
       useEffect(() => {
         setState(s => ({ a: s.a * 2 }));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
 
       return (

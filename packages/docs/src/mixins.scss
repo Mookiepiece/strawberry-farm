@@ -2,28 +2,13 @@
   @content;
 }
 
-@mixin tablet- {
-  @media (max-width: 575px) {
-    @content;
-  }
-}
 @mixin tablet {
   @media (min-width: 576px) {
     @content;
   }
 }
-@mixin laptop- {
-  @media (max-width: 1023px) {
-    @content;
-  }
-}
 @mixin laptop {
   @media (min-width: 1024px) {
-    @content;
-  }
-}
-@mixin desktop- {
-  @media (min-width: 1439px) {
     @content;
   }
 }

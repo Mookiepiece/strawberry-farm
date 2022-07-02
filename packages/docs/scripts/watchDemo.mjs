@@ -38,7 +38,7 @@ const makeWatcher = () => {
     .on('all', (event, filePath, stats) => {
       const pathes = path.relative(PAGES_DIR_PATH, filePath).split('\\');
 
-      if (stats.isDirectory()) {
+      if (stats?.isDirectory()) {
         // Find index-en.md and demos it requires.
         if (fs.readdirSync(filePath).some(i => i === 'index-en.md')) {
           const md = fs.readFileSync(path.resolve(filePath, 'index-en.md')).toString();

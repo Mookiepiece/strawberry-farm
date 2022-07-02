@@ -39,22 +39,22 @@
 
     &.active {
       border-radius: 2px;
-      box-shadow: 0 4px 2px -2px var(--color-contrasting);
+      box-shadow: 0 4px 2px -2px var(--color-primary);
     }
 
     &:hover,
     &:focus-visible {
-      background: var(--color-contrasting-fade-100);
+      background: var(--color-primary-fade-100);
     }
 
     &:active {
       font-size: 14px;
-      background: var(--color-contrasting-fade-100);
+      background: var(--color-primary-fade-100);
       transform: scaleY(0.92);
     }
 
     &:focus-visible {
-      box-shadow: 0 0 0 4px #8cbaff80;
+      box-shadow: 0 0 0 4px var(--color-primary-fade-200);
     }
 
     ::before {

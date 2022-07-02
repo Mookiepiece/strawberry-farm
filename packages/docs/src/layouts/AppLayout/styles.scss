@@ -1,11 +1,16 @@
 header.doc-nav {
-  position: relative;
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  background: white;
+  background-color: #fff8;
   border-bottom: 1px solid var(--color-dark-fade-100);
+  backdrop-filter: blur(10px);
 
   > div {
     display: flex;

@@ -38,10 +38,10 @@ const Home: React.FC = () => {
             </svg>
           </a>
           <p>{i18n.IndexPageDesc}</p>
-          <div style={{ transform: 'scale(1.25)' }}>
+          <div>
             <Button
               primary
-              style={{ marginTop: 24, width: 240 }}
+              style={{ transform: 'scale(1.5)', marginTop: 24, width: 240 }}
               onClick={() => history.push('/docs')}
             >
               {i18n.IndexPageGetStarted}
