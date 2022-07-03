@@ -43,12 +43,16 @@ const a: Record<
     zh: 'Form 表单',
   },
   SidebarUtilsVersionedStorage: {
-    en: 'VersionedStorage',
-    zh: 'VersionedStorage',
+    en: 'Versioned Storage',
+    zh: 'Versioned Storage',
   },
   SidebarUtilsZustand: {
     en: 'Zustand',
     zh: 'Zustand',
+  },
+  SidebarUtilsMitt: {
+    en: 'Mitt',
+    zh: 'Mitt',
   },
   SidebarUtilsUseSingletonAsyncFn: {
     en: 'useSingletonAsyncFn',

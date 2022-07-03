@@ -33,6 +33,7 @@ export default [
               Utils: {
                 '/docs/versionedStorage': '🗺️SidebarUtilsVersionedStorage',
                 '/docs/zustand': '🗺️SidebarUtilsZustand',
+                '/docs/mitt': '🗺️SidebarUtilsMitt',
                 '/docs/useSingletonAsyncFn': '🗺️SidebarUtilsUseSingletonAsyncFn',
               },
               About: {
@@ -79,6 +80,10 @@ export default [
           {
             path: '/docs/zustand',
             component: loadable(() => import('@docs/pages/docs/Zustand')),
+          },
+          {
+            path: '/docs/mitt',
+            component: loadable(() => import('@docs/pages/docs/Mitt')),
           },
           {
             path: '/docs/useSingletonAsyncFn',
