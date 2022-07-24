@@ -39,5 +39,5 @@ export type FarmMitt = Emitter<{
 export const FarmContext = React.createContext<{
   farmMitt: FarmMitt;
 }>({
-  farmMitt: { on() {}, off() {}, emit() {} },
+  farmMitt: { on: () => () => {}, off() {}, emit() {} },
 });
