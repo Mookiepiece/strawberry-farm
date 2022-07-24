@@ -11,8 +11,8 @@ const a: Record<
   }
 > = {
   IndexPageDesc: {
-    en: 'Unobtrusive park.',
-    zh: '开垦乐园',
+    en: '🍓🌱🌱🌱',
+    zh: '🍓🌱🌱🌱',
   },
   IndexPageGetStarted: {
     en: 'GET STARTED',
