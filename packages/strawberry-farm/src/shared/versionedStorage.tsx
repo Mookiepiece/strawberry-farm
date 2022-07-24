@@ -44,7 +44,11 @@ export const versionedStorage = <T extends Record<string, any>>({
 
     if (_obj) {
       if (typeof _obj.meta.version !== 'number' || _obj.meta.version > version) throw new Error();
+
       versionBeforeUpgrade = _obj.meta.version;
+
+      // stale version
+      if (Number(Object.keys(upgradeFn)[0] ?? version) > _obj.meta.version) throw new Error();
 
       Object.entries(upgradeFn)
         .filter(([ver]) => Number(ver) < version || Number(ver) > _obj.meta.version)

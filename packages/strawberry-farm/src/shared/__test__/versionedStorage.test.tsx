@@ -1,5 +1,5 @@
 import { act, render } from '@testing-library/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useStorage, versionedStorage } from '../versionedStorage';
 
 const $ = document.querySelector.bind(document);
@@ -43,6 +43,57 @@ describe('creates versioned storages', () => {
     );
   });
 
+  it('boom if version is stale', () => {
+    sessionStorage.setItem(
+      'my',
+      JSON.stringify({
+        meta: {
+          version: 10,
+        },
+        a: 0,
+      })
+    );
+    const mySessionStorage = versionedStorage<MyStorageValue>({
+      root: 'my',
+      initialValue: { a: 1 },
+      version: 14,
+      storage: sessionStorage,
+    });
+
+    expect(mySessionStorage.get().a).toBe(1);
+  });
+
+  it('boom if version is stale 2', () => {
+    sessionStorage.setItem(
+      'my',
+      JSON.stringify({
+        meta: {
+          version: 10,
+        },
+        a: 0,
+      })
+    );
+
+    const spy = jest.fn();
+
+    const mySessionStorage = versionedStorage<MyStorageValue>({
+      root: 'my',
+      initialValue: { a: 1 },
+      version: 14,
+      upgradeFn: {
+        '11': v => {
+          spy();
+          v.a += 1;
+          return v;
+        },
+      },
+      storage: sessionStorage,
+    });
+
+    expect(spy).not.toBeCalled();
+    expect(mySessionStorage.get().a).toBe(1);
+  });
+
   it('upgrade if needed', () => {
     sessionStorage.setItem(
       'my',
@@ -55,41 +106,27 @@ describe('creates versioned storages', () => {
     );
 
     const spy = jest.fn();
-    const mySessionStorage0 = versionedStorage<MyStorageValue>({
-      root: 'my',
-      initialValue: { a: 1, b: 0 },
-      version: 13,
-      upgradeFn: {
-        '10': () => {
-          spy();
-          throw new Error();
-        },
-      },
-      storage: sessionStorage,
-    });
-    expect(mySessionStorage0.get().a).toBe(1);
-    expect(spy).toBeCalledTimes(1);
 
-    const mySessionStorage1 = versionedStorage<MyStorageValue>({
+    const mySessionStorage = versionedStorage<MyStorageValue>({
       root: 'my',
       initialValue: { a: 1, b: 0 },
       version: 15,
       upgradeFn: {
-        '13': v => {
+        '10': v => {
           spy();
-          v.a += 10;
+          v.a += 1;
           return v;
         },
         '14': v => {
           spy();
-          v.a += 10;
+          v.a *= 2;
           return v;
         },
       },
       storage: sessionStorage,
     });
-    expect(mySessionStorage1.get().a).toBe(21);
-    expect(spy).toBeCalledTimes(3);
+    expect(mySessionStorage.get().a).toBe(2);
+    expect(spy).toBeCalledTimes(2);
   });
 
   it('fits react lifecycle with useSyncExternalStore', () => {
@@ -105,7 +142,7 @@ describe('creates versioned storages', () => {
     }> = ({ setState }) => {
       useEffect(() => {
         setState(s => ({ a: s.a + 1 }));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
       return <div></div>;
     };
