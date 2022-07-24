@@ -12,11 +12,11 @@
 
 #### 工作流程
 
-- yarn dev: 开发，启动文档。
-- yarn devw: 根据文档`pages`目录的`index-en.md`自动生成`index.tsx`。
-- yarn build: 构建
-  - build_types: 使用 typescript cli 生成 ts 声明文件，文件目录结构会被保留.
-  - build_comp: 执行 `build.mjs`, 使用 rollup 打包。
+- `yarn dev`: 开发，启动文档。
+- `yarn devw`: 根据文档`pages`目录的`index-en.md`自动生成`index.tsx`。
+- `yarn build`: 构建
+  - `build_types`: 使用 typescript cli 生成 ts 声明文件，文件目录结构会被保留.
+  - `build_comp`: 执行 `build.mjs`, 使用 rollup 打包。
 
 #### Rollup
 

@@ -1,4 +1,4 @@
-## Mitt 不是棒球手套
+## Mitt
 
 [mitt](https://www.npmjs.com/package/mitt) 是一个小型发布订阅器，`strawberry-farm` 为其添加以下功能。
 

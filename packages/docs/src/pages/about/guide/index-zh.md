@@ -2,6 +2,4 @@
 
 ### Strawberry Farm 简介
 
-`strawberry-farm`可以提供基于`react`的高效简单的工具函数。
-
-`strawberry-farm`同时也提供组件，考虑到组件无法定制，所以组件比较放飞自我。
+`strawberry-farm`可以提供用于构建`react`组件和应用的高效简单的工具函数和有用没有用的组件。

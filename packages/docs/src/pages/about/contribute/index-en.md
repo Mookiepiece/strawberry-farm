@@ -12,11 +12,11 @@
 
 #### Workflow
 
-- yarn dev: develop, run docs.
-- yarn devw: generate `index.tsx` for each `index-en.md` in `pages` folder.
-- yarn build:
-  - build_types: geneate d.ts.
-  - build_comp: excute `build.mjs`, bundle with rollup.
+- `yarn dev`: develop, run docs.
+- `yarn devw`: generate `index.tsx` for each `index-en.md` in `pages` folder.
+- `yarn build`:
+  - `build_types`: geneate d.ts.
+  - `build_comp`: excute `build.mjs`, bundle with rollup.
 
 #### Rollup
 
