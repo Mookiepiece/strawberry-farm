@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import type { Modifier, Placement } from '@popperjs/core';
-import { usePopper } from 'react-popper';
-import { Portal, useEventCallback } from '../shared';
+import React, { useState, useEffect, useRef, Children } from 'react';
+import { autoUpdate, computePosition, Middleware, Placement } from '@floating-ui/dom';
+import { EMPTY_ARRAY, noop, Portal } from '../shared';
 import clsx from 'clsx';
 import type { ClassValue } from 'clsx';
 import { CSSTransition } from 'react-transition-group';
-import { sameWidth, createOffsetModifier, arrow, preventOverflow } from './modifiers';
-import useClickAway from './useClickAway';
+import { useClickAway } from '../shared';
 
 export type PopperProps = {
   popup: React.ReactNode;
   visible?: boolean;
   onClose?: () => void;
-  modifiers?: Modifier<any, any>[];
+  middleware?: Middleware[];
   placement?: Placement;
   popupClassName?: ClassValue;
   popupStyle?: React.CSSProperties;
@@ -20,19 +18,7 @@ export type PopperProps = {
   children: React.ReactElement;
 };
 
-const noop = () => {};
-const EMPTY: [] = [];
-
-const PopperModifiers = {
-  sameWidth,
-  createOffsetModifier,
-  arrow,
-  preventOverflow,
-};
-
-const Popper: React.FC<PopperProps> & {
-  modifiers: typeof PopperModifiers;
-} = ({
+const Popper = ({
   children,
   popup,
   visible,
@@ -41,74 +27,57 @@ const Popper: React.FC<PopperProps> & {
   popupStyle,
   placement,
   closeOnClickOutside = true,
-  modifiers = EMPTY,
-}) => {
+  middleware = EMPTY_ARRAY,
+}: PopperProps): React.ReactElement => {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
 
-  // NOTE: usePopper is using react-fast-compare to compare options, no need to useMemo
-  const { styles, attributes } = usePopper(referenceElement, visible ? popperElement : null, {
-    modifiers,
-    placement,
-  });
+  const middlewareRef = useRef(middleware);
+  middlewareRef.current = middleware;
+
+  const [positionCalculated, setPositionCalculated] = useState(false);
+
+  useEffect(() => {
+    if (!visible || !referenceElement || !popperElement) {
+      return setPositionCalculated(false);
+    }
+
+    return autoUpdate(referenceElement, popperElement, () => {
+      computePosition(referenceElement, popperElement, {
+        middleware: middlewareRef.current,
+        placement,
+      }).then(({ x, y, middlewareData, placement }) => {
+        popperElement.style.setProperty('--x', x + 'px');
+        popperElement.style.setProperty('--y', y + 'px');
+
+        if (popperElement.getAttribute('data-popper-placement') !== placement) {
+          popperElement.setAttribute('data-popper-placement', placement);
+        }
+        setPositionCalculated(true);
+      });
+    });
+  }, [placement, popperElement, referenceElement, visible]);
 
   useClickAway(closeOnClickOutside && visible ? [referenceElement, popperElement] : [], onClose);
 
-  // FEAT: click outside to close
-  const onCloseEc = useEventCallback(onClose);
-  useEffect(() => {
-    if (closeOnClickOutside)
-      if (referenceElement && popperElement) {
-        if (visible) {
-          const handleClickOutside = (e: MouseEvent) => {
-            if (e.target instanceof Element) {
-              if (!referenceElement.contains(e.target) && !popperElement.contains(e.target)) {
-                onCloseEc();
-              }
-            }
-          };
-          document.addEventListener('click', handleClickOutside);
-          return () => {
-            document.removeEventListener('click', handleClickOutside);
-          };
-        }
-      }
-  }, [referenceElement, popperElement, visible, onCloseEc, closeOnClickOutside]);
-
-  const [exited, setExited] = useState(false);
   return (
     <>
       {React.cloneElement(children, {
         ref: setReferenceElement,
       })}
       <Portal>
-        <CSSTransition
-          in={!!visible}
-          timeout={100}
-          onEnter={() => setExited(false)}
-          onExited={() => setExited(true)}
-          classNames="st-popper"
-        >
+        <CSSTransition in={visible && positionCalculated} timeout={100} classNames="sf-popper">
           <div
-            className={clsx('st-popper')}
-            style={visible || !exited ? styles.popper : { display: 'none' }}
-            {...attributes.popper}
+            className={clsx('sf-popper', popupClassName)}
+            style={popupStyle}
             ref={setPopperElement}
-            aria-hidden={!visible}
           >
-            <div className={clsx('st-popper__inner', popupClassName)} style={popupStyle}>
-              {popup}
-              {modifiers.includes(arrow) ? (
-                <div style={styles.arrow} {...attributes.arrow} data-popper-arrow></div>
-              ) : null}
-            </div>
+            {popup}
           </div>
         </CSSTransition>
       </Portal>
     </>
   );
 };
-
-Popper.modifiers = PopperModifiers;
 
 export default Popper;

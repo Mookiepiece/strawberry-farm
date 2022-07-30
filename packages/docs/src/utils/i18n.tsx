@@ -42,6 +42,18 @@ const a: Record<
     en: 'Form',
     zh: 'Form 表单',
   },
+  SidebarComponentPopper: {
+    en: 'Popper',
+    zh: 'Popper 弹层',
+  },
+  SidebarComponentPopover: {
+    en: 'Popover',
+    zh: 'Popover 弹出',
+  },
+  SidebarComponentSelect: {
+    en: 'Select',
+    zh: 'Select 选择器',
+  },
   SidebarUtilsVersionedStorage: {
     en: 'Versioned Storage',
     zh: 'Versioned Storage',
@@ -57,6 +69,14 @@ const a: Record<
   SidebarUtilsUseSingletonAsyncFn: {
     en: 'useSingletonAsyncFn',
     zh: 'useSingletonAsyncFn',
+  },
+  SidebarUtilsUseEventCallback: {
+    en: 'useEventCallback',
+    zh: 'useEventCallback',
+  },
+  SidebarUtilsUseClickAway: {
+    en: 'useClickAway',
+    zh: 'useClickAway',
   },
   SidebarAboutGuide: {
     en: 'Guide',
@@ -90,14 +110,7 @@ const a: Record<
   //   en: 'Slider 滑块',
   //   zh: 'Slider 滑块',
   // },
-  // SidebarStComponentPopper: {
-  //   en: 'Popper 弹层',
-  //   zh: 'Popper 弹层',
-  // },
-  // SidebarStComponentSelect: {
-  //   en: 'Select 选择器',
-  //   zh: 'Select 选择器',
-  // },
+
   // SidebarStDesignColor: {
   //   en: 'Color 色彩',
   //   zh: 'Color 色彩',

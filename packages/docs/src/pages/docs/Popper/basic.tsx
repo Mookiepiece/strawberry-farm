@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useRef } from 'react';
 import { Button, Popper } from '🦄';
 
-const offset = Popper.modifiers.createOffsetModifier(0, 10);
-
 const BasicUsage: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
@@ -21,7 +19,7 @@ const BasicUsage: React.FC = () => {
     >
       <Popper
         popup={<p>asdsd</p>}
-        popupClassName="st-popper--default"
+        popupClassName="sf-popper--default"
         visible={visible}
         onClose={() => setVisible(false)}
       >
@@ -31,10 +29,9 @@ const BasicUsage: React.FC = () => {
       </Popper>
       <Popper
         popup={<p>asdsd asdsd asdsd asdsd</p>}
-        popupClassName="st-popper--default"
+        popupClassName="sf-popper--default"
         visible={visible2}
         onClose={() => setVisible2(false)}
-        modifiers={[offset, Popper.modifiers.arrow]}
       >
         <Button primary onClick={() => setVisible2(v => !v)}>
           onClick
@@ -52,11 +49,10 @@ const BasicUsage: React.FC = () => {
             asds dasd sdasdsd asdsd
           </p>
         }
-        popupClassName="st-popper--default"
+        popupClassName="sf-popper--default"
         visible={visible3}
         onClose={() => setVisible3(false)}
         closeOnClickOutside={false}
-        modifiers={[offset]}
         placement="right"
       >
         <Button

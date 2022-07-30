@@ -7,6 +7,7 @@ type SpinProps = {
   loading?: boolean;
   weight?: 1 | 2 | 3;
   lazy?: number;
+  children?: React.ReactNode;
 };
 
 const Spin: React.FC<SpinProps> & {

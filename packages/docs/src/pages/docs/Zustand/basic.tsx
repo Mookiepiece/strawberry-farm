@@ -1,13 +1,17 @@
 import React from 'react';
 import { Button } from '🦄';
-import { zustand, ZustandStore } from '🦄/shared';
+import { zustand } from '🦄/shared';
 
-const useStore = zustand(() => ({ a: 1 }));
+const useStore = zustand(() => ({ count: 1 }));
 
 const BasicUsage: React.FC = () => {
-  const { a } = useStore();
+  const { count } = useStore();
 
-  return <Button onClick={() => useStore.setState(s => ({ ...s, a: s.a + 1 }))}>Count: {a}</Button>;
+  return (
+    <Button onClick={() => useStore.setState(s => ({ ...s, count: s.count + 1 }))}>
+      Count: {count}
+    </Button>
+  );
 };
 
 export default BasicUsage;

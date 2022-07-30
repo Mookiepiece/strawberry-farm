@@ -1,171 +1,74 @@
-.st-popper__arrow {
-  width: 10px;
-  height: 10px;
-  background-color: powderblue;
+.sf-popper {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-.st-popper__inner {
-  opacity: 0;
-  pointer-events: initial;
+.sf-popper.sf-popper--default[data-popper-placement^='bottom'] {
+  transform-origin: top;
 }
 
-.st-popper {
-  pointer-events: none;
+.sf-popper.sf-popper--default[data-popper-placement^='top'] {
+  transform-origin: bottom;
 }
 
-// presets
-.st-popper--default {
+.sf-popper.sf-popper--default[data-popper-placement^='left'] {
+  transform-origin: right;
+}
+
+.sf-popper.sf-popper--default[data-popper-placement^='right'] {
+  transform-origin: left;
+}
+
+.sf-popper--default {
   background-color: white;
   border: 1px solid var(--color-dark-fade-100);
   border-radius: 2px;
   box-shadow: 0 2px 12px 0 #0001;
+  transform: translate(var(--x), var(--y));
+  opacity: 0;
 }
 
-.st-popper--default > [data-popper-arrow] {
-  z-index: -1;
-  width: 10px;
-  height: 10px;
-
-  &::after {
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    border-right: 1px solid var(--color-dark-fade-100);
-    border-bottom: 1px solid var(--color-dark-fade-100);
-    content: '';
-  }
-}
-
-.st-popper[data-popper-placement^='bottom'] .st-popper--default {
-  transform-origin: top;
-
-  & > [data-popper-arrow] {
-    top: -5px;
-
-    &::after {
-      transform: rotate(0.625turn);
-    }
-  }
-}
-
-.st-popper[data-popper-placement^='top'] .st-popper--default {
-  transform-origin: bottom;
-
-  & > [data-popper-arrow] {
-    bottom: -5px;
-
-    &::after {
-      transform: rotate(0.125turn);
-    }
-  }
-}
-
-.st-popper[data-popper-placement^='left'] .st-popper--default {
-  transform-origin: right;
-
-  & > [data-popper-arrow] {
-    right: -5px;
-
-    &::after {
-      transform: rotate(0.875turn);
-    }
-  }
-}
-
-.st-popper[data-popper-placement^='right'] .st-popper--default {
-  transform-origin: left;
-
-  & > [data-popper-arrow] {
-    left: -5px;
-
-    &::after {
-      transform: rotate(0.375turn);
-    }
-  }
-}
-
-.st-popper-enter {
-  .st-popper--default {
-    transform: scale(0);
-    opacity: 0;
-  }
-
-  .st-popper--zoom-y {
-    transform: scaleY(0);
+.sf-popper-enter {
+  &.sf-popper--default {
+    transform: translate(var(--x), var(--y)) scale(0);
     opacity: 0;
   }
 }
 
-.st-popper-enter-active {
-  visibility: unset;
-
-  .st-popper--default {
-    transform: scale(1);
-    opacity: 1;
-    transition: transform 0.1s var(--bezier-wave), opacity 0.1s var(--bezier-wave);
-  }
-
-  .st-popper--defaultt-zoom-y {
-    transform: scaleY(1);
+.sf-popper-enter-active {
+  &.sf-popper--default {
+    transform: translate(var(--x), var(--y)) scale(1);
     opacity: 1;
     transition: transform 0.1s var(--bezier-wave), opacity 0.1s var(--bezier-wave);
   }
 }
 
-.st-popper-enter-done {
-  visibility: unset;
-
-  .st-popper--default {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  .st-popper--zoom-y {
-    transform: scaleY(1);
+.sf-popper-enter-done {
+  &.sf-popper--default {
+    transform: translate(var(--x), var(--y)) scale(1);
     opacity: 1;
   }
 }
 
-.st-popper-exit {
-  visibility: unset;
-
-  .st-popper--default {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  .st-popper--zoom-y {
-    transform: scaleY(1);
+.sf-popper-exit {
+  &.sf-popper--default {
+    transform: translate(var(--x), var(--y)) scale(1);
     opacity: 1;
   }
 }
 
-.st-popper-exit-active {
-  visibility: unset;
-
-  .st-popper--default {
-    transform: scale(0);
-    opacity: 0;
-    transition: transform 0.1s var(--bezier-wave), opacity 0.1s var(--bezier-wave);
-  }
-
-  .st-popper--zoom-y {
-    transform: scaleY(0);
+.sf-popper-exit-active {
+  &.sf-popper--default {
+    transform: translate(var(--x), var(--y)) scale(0);
     opacity: 0;
     transition: transform 0.1s var(--bezier-wave), opacity 0.1s var(--bezier-wave);
   }
 }
 
-.st-popper-exit-done {
-  .st-popper--default {
-    transform: scale(0);
-    opacity: 0;
-  }
-
-  .st-popper--zoom-y {
-    transform: scaleY(0);
+.sf-popper-exit-done {
+  &.sf-popper--default {
+    transform: translate(var(--x), var(--y)) scale(0);
     opacity: 0;
   }
 }

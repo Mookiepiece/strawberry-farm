@@ -4,6 +4,7 @@ import React from 'react';
 type DialogProps = {
   title: string;
   warning?: boolean;
+  children?: React.ReactNode;
 };
 const Dialog: React.FC<DialogProps> = ({ title, children, warning }) => {
   return (

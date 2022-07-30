@@ -38,6 +38,7 @@ const useFocusLock = ({
 const FocusLock: React.FC<{
   disabled?: boolean;
   onKeyDown?: (e: React.KeyboardEvent) => void;
+  children?: React.ReactNode;
 }> = ({ disabled, onKeyDown, children }) => {
   const sentinelStartRef = useRef<HTMLDivElement>(null);
   const sentinelStartInnerRef = useRef<HTMLDivElement>(null);

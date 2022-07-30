@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import type { RefObject } from 'react';
-import { useEventCallback } from '../shared';
+import { useEventCallback } from './useEventCallback';
 
-const useClickAway = <K extends keyof DocumentEventMap = 'click'>(
+export const useClickAway = <K extends keyof DocumentEventMap = 'click'>(
   _ref:
     | (RefObject<HTMLElement> | HTMLElement | null)[]
     | RefObject<HTMLElement>
@@ -11,10 +11,12 @@ const useClickAway = <K extends keyof DocumentEventMap = 'click'>(
   callback: (event: DocumentEventMap[K]) => void,
   eventName: K = 'click' as K
 ): void => {
-  const refs = ((Array.isArray(_ref) ? [..._ref] : [_ref]).filter(Boolean) as (
-    | RefObject<HTMLElement>
-    | HTMLElement
-  )[])
+  const refs = (
+    (Array.isArray(_ref) ? [..._ref] : [_ref]).filter(Boolean) as (
+      | RefObject<HTMLElement>
+      | HTMLElement
+    )[]
+  )
     .map(el => ('current' in el ? el.current : el))
     .filter(Boolean) as HTMLElement[];
 
@@ -32,5 +34,3 @@ const useClickAway = <K extends keyof DocumentEventMap = 'click'>(
     }
   }, [eventName, handler, refs.length]);
 };
-
-export default useClickAway;

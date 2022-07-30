@@ -7,4 +7,6 @@
   <a href="https://mookiepiece.github.io/strawberry-farm">https://mookiepiece.github.io/strawberry-farm</a>
 </p>
 
-React Components and Toolkit.
+Toolkit for building react app.
+
+- Only ESM is bundled.

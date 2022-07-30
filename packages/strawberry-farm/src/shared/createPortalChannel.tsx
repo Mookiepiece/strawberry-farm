@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMount } from 'react-use';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createPortalChannel = <X,>({
@@ -55,7 +55,7 @@ export const createPortalChannel = <X,>({
         starfallBlankChannelRoot.style.display = 'none';
         starfallBlankChannelRoot.classList.add(displayName ?? 'st-channel');
         document.body.appendChild(starfallBlankChannelRoot);
-        ReactDOM.render(<PortalChannelComponent />, starfallBlankChannelRoot);
+        ReactDOM.createRoot(starfallBlankChannelRoot).render(<PortalChannelComponent />);
       }
     },
   };

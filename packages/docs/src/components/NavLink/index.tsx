@@ -6,6 +6,7 @@ import './styles.scss';
 type NavLinkProps = {
   to: string;
   className?: string;
+  children?: React.ReactNode;
 };
 
 const NavLink: React.FC<NavLinkProps> = ({ to, className, children }) => {

@@ -37,7 +37,7 @@ const Nav: React.FC<{ i18nState: Language; setI18nState: () => void }> = ({
     </header>
   );
 };
-const ScrollToTop: React.FC = ({ children }) => {
+const ScrollToTop: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const lastValue = useRef<string>('/');
   if (location.pathname !== lastValue.current) {

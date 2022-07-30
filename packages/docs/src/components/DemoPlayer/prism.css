@@ -36,17 +36,16 @@ pre[class*='language-'] {
   --nord-y: #ebcb8b;
 
   --nord-bg: #2e3440; */
+  color: #0d1d3d;
+  --nord-c: #0b389a;
+  --nord-b: #0b60b5;
+  --nord-p: #c80aa5;
+  --nord-r: #a60606;
+  --nord-g: #478d09;
+  --nord-s: #0894b8;
+  --nord-y: #c3860e;
 
-  color: #2e3440;
-  --nord-c: #636f88;
-  --nord-b: #1784f1;
-  --nord-p: #9c2184;
-  --nord-r: #cc7777;
-  --nord-g: #61a327;
-  --nord-s: #147a96;
-  --nord-y: #ebcb8b;
-
-  --nord-bg: #f7f7fc;
+  --nord-bg: #fafbfc;
 }
 
 /* Code blocks */

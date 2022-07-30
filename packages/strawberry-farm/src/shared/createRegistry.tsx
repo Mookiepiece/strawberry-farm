@@ -1,13 +1,14 @@
 import React, { useCallback, useContext, useEffect } from 'react';
 
 export const createRegistry = <T,>(): [
-  React.FC<{ itemsRef: React.MutableRefObject<T[]> }>,
+  React.FC<{ itemsRef: React.MutableRefObject<T[]>; children?: React.ReactNode }>,
   (i: T | undefined) => void
 ] => {
   const RegistryContext = React.createContext<(i: T) => () => void>(() => () => {});
 
   const RegistryProvider: React.FC<{
     itemsRef: React.MutableRefObject<T[]>;
+    children?: React.ReactNode;
   }> = ({ itemsRef: items, children }) => {
     const register = useCallback(
       (i: T) => {
@@ -18,7 +19,7 @@ export const createRegistry = <T,>(): [
           if (index !== -1) {
             items.current = [...items.current.slice(0, index), ...items.current.slice(index + 1)];
           } else {
-        throw new Error('[strawberry-farm] ')
+            throw new Error('[strawberry-farm] ');
           }
         };
       },
@@ -56,6 +57,7 @@ export const createStateModeRegistry = <T,>(): ReturnType<CreateStateModeRegistr
 
   const RegistryProvider: React.FC<{
     model: [T[], React.Dispatch<React.SetStateAction<T[]>>];
+    children?: React.ReactNode;
   }> = ({ model: [items, setItems], children }) => {
     const register = useCallback(
       (i: T) => {

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import Mitt from 'mitt';
+import { Mitt } from '../shared';
 import {
   FarmBagItem,
   FarmMitt,
@@ -14,7 +14,9 @@ import Field from './Field';
 import clsx from 'clsx';
 import { 帚 } from './utils';
 
-const Farm: React.FC = ({ children }) => {
+const Farm: React.FC<{
+  children?: React.ReactNode;
+}> = ({ children }) => {
   useEffect(() => {});
 
   const [state, setState] = useState<FarmState>(() => ({
@@ -124,7 +126,7 @@ const Farm: React.FC = ({ children }) => {
   );
 };
 
-const FieldSet: React.FC = ({ children }) => {
+const FieldSet: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   return <div className="sf-farm-field-set">{children}</div>;
 };
 

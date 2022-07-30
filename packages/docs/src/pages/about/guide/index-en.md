@@ -2,4 +2,5 @@
 
 ### Introduce Strawberry Farm
 
-`strawberry-farm` provides useful toolkits to `react` components and apps.
+Toolkit for building react app.
+

@@ -5,6 +5,7 @@ import Popper from '../Popper';
 import ScrollView from '../ScrollView';
 import { useRef } from 'react';
 import type { ScrollViewInstance } from '../ScrollView';
+import { shift } from '@floating-ui/dom';
 
 type SelectProps<T> = {
   value?: T;
@@ -34,6 +35,8 @@ const defaultFilter = (options: { value: any; label?: string }[], query: string)
     return (label || (value ? value.toString() : '')).startsWith(query);
   });
 };
+
+const shift10 = shift({ padding: 10 });
 
 const Select = <T extends undefined | null | Record<string, any> | boolean | number | string>({
   value,
@@ -137,8 +140,8 @@ const Select = <T extends undefined | null | Record<string, any> | boolean | num
             })}
           </ScrollView>
         }
-        modifiers={[Popper.modifiers.sameWidth, Popper.modifiers.preventOverflow]}
-        popupClassName="st-popper--default st-popper--zoom-y"
+        middleware={[shift10]}
+        popupClassName="sf-popper--default sf-popper--zoom-y"
         onClose={() => setVisible(false)}
       >
         <Input

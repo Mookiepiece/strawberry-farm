@@ -29,12 +29,17 @@ export default [
                 '/docs/dialog': '🗺️SidebarComponentDialog',
                 '/docs/farm': '🗺️SidebarSfComponentFarm',
                 '/docs/form': '🗺️SidebarComponentForm',
+                '/docs/popper': '🗺️SidebarComponentPopper',
+                '/docs/popover': '🗺️SidebarComponentPopover',
+                '/docs/select': '🗺️SidebarComponentSelect',
               },
               Utils: {
                 '/docs/versionedStorage': '🗺️SidebarUtilsVersionedStorage',
                 '/docs/zustand': '🗺️SidebarUtilsZustand',
                 '/docs/mitt': '🗺️SidebarUtilsMitt',
                 '/docs/useSingletonAsyncFn': '🗺️SidebarUtilsUseSingletonAsyncFn',
+                '/docs/useEventCallback': '🗺️SidebarUtilsUseEventCallback',
+                '/docs/useClickAway': '🗺️SidebarUtilsUseClickAway',
               },
               About: {
                 '/docs/about/guide': '🗺️SidebarAboutGuide',
@@ -74,6 +79,18 @@ export default [
             component: loadable(() => import('@docs/pages/docs/Form')),
           },
           {
+            path: '/docs/popper',
+            component: loadable(() => import('@docs/pages/docs/Popper')),
+          },
+          {
+            path: '/docs/popover',
+            component: loadable(() => import('@docs/pages/docs/Popover')),
+          },
+          {
+            path: '/docs/select',
+            component: loadable(() => import('@docs/pages/docs/Select')),
+          },
+          {
             path: '/docs/versionedStorage',
             component: loadable(() => import('@docs/pages/docs/VersionedStorage')),
           },
@@ -88,6 +105,14 @@ export default [
           {
             path: '/docs/useSingletonAsyncFn',
             component: loadable(() => import('@docs/pages/docs/UseSingletonAsyncFn')),
+          },
+          {
+            path: '/docs/useEventCallback',
+            component: loadable(() => import('@docs/pages/docs/UseEventCallback')),
+          },
+          {
+            path: '/docs/useClickAway',
+            component: loadable(() => import('@docs/pages/docs/UseClickAway')),
           },
           {
             path: '/docs/about/guide',

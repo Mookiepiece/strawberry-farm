@@ -7,7 +7,7 @@ const root = path.resolve(fileURLToPath(import.meta.url), '../..');
 ghpages.publish(
   path.resolve(root, 'dist'),
   {
-    branch: 'git-release-strawberry-farm',
+    branch: 'git-release',
   },
   err => {
     if (err) {

@@ -1,139 +1,170 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import Popper from '../Popper';
 import type { PopperProps } from '../Popper';
+import { useEventCallback } from '../shared';
 
-export type PopoverProps = PopperProps & {
+export type PopoverProps = Omit<PopperProps, 'onClose' | 'visible'> & {
   trigger?: 'click' | 'hover' | 'focus';
   timeout?: number;
 };
+
+/**
+ * ```txt
+ * Popover Signal
+ * ^        ^^
+ * ```
+ */
+enum PIG {
+  CLICK = 1,
+  HOVER = 1 << 1,
+  FOCUS = 1 << 2,
+  HOVER_POPUP = 1 << 3,
+}
 
 const Popover: React.FC<PopoverProps> = ({
   trigger,
   timeout,
   children,
-  visible,
-  onClose: _onClose,
   closeOnClickOutside,
   popup,
   ...rest
 }) => {
-  const [localVisible, setLocalVisible] = useState(false);
+  const [_visible, setVisible] = useState(0);
 
-  useEffect(() => {
-    if (!trigger) {
-      if (typeof visible !== 'boolean') {
-        throw new Error('[st-popover] visible muse be provide if trigger not provided');
+  const visible = !!_visible;
+
+  const [timers] = useState(() => new Map<PIG, NodeJS.Timeout>());
+  const clearHideTimer = useCallback(
+    (pig: PIG) => {
+      if (timers.has(pig)) {
+        clearTimeout(timers.get(pig));
+        timers.delete(pig);
       }
-      setLocalVisible(visible);
-    }
-  }, [visible, trigger]);
+    },
+    [timers]
+  );
 
-  // FEAT: hoving popup will also not close the popup.
-  const hovingRef = useRef(false);
-
-  // FRAT: show & hide, lazy hide
-  const hideTimer = useRef<NodeJS.Timeout>();
-  const clearHideTimer = () => hideTimer.current && clearTimeout(hideTimer.current);
-  const show = () => {
-    clearHideTimer();
-    setLocalVisible(true);
-  };
-  const hide = () => {
-    clearHideTimer();
-    hideTimer.current = setTimeout(
-      () => {
-        setLocalVisible(false);
-        _onClose?.();
-      },
-      trigger === 'hover' ? timeout || 500 : timeout || 0
+  const show = useEventCallback((pig: PIG) => {
+    clearHideTimer(pig);
+    timers.set(
+      pig,
+      setTimeout(
+        () => setVisible(v => v | pig),
+        pig === PIG.HOVER || pig === PIG.HOVER_POPUP ? timeout || 300 : timeout || 0
+      )
     );
-  };
+  });
+  const hide = useEventCallback((pig: PIG) => {
+    clearHideTimer(pig);
+    timers.set(
+      pig,
+      setTimeout(
+        () => setVisible(v => v & ~pig),
+        pig === PIG.HOVER || pig === PIG.HOVER_POPUP ? timeout || 300 : timeout || 0
+      )
+    );
+  });
+  const toggle = useEventCallback((pig: PIG) => (!visible ? show(pig) : hide(pig)));
 
-  // FEAT: preset triggers
-  const onClick =
-    trigger === 'click'
-      ? (e: React.MouseEvent) => {
-          localVisible ? hide() : show();
-          children.props.onClick?.(e);
-        }
-      : children.props.onClick;
-  // https://w3c.github.io/uievents/#event-type-mouseenter
-  // touch will trigger mouseenter events
-  const onMouseEnter =
-    trigger === 'hover'
-      ? (e: React.MouseEvent) => {
-          show();
-          hovingRef.current = true;
-          children.props.onMouseEnter?.(e);
-        }
-      : children.props.onMouseEnter;
-  const onMouseLeave =
-    trigger === 'hover'
-      ? (e: React.MouseEvent) => {
-          hide();
-          hovingRef.current = false;
-          children.props.onMouseLeave?.(e);
-        }
-      : children.props.onMouseLeave;
-  const onFocus =
-    trigger === 'focus' || trigger === 'hover'
-      ? (e: React.FocusEvent) => {
-          show();
-          children.props.onFocus?.(e);
-        }
-      : undefined;
-  const onBlur =
-    trigger === 'focus' || trigger === 'hover'
-      ? (e: React.FocusEvent) => {
-          // NOTE: `blur` will trigger after `mouseEnter`, causing close the popup when click the popup.
-          // this is also where `hovingRef` takes into effect.
-          if (!(trigger === 'hover' && hovingRef.current === true)) {
-            hide();
-          }
-          children.props.onBlur?.(e);
-        }
-      : undefined;
+  const { popupProps, referenceElProps } = useMemo(() => {
+    if (trigger === 'click') {
+      return strategyOfClick({ hide, show, toggle });
+    }
+    if (trigger === 'focus') {
+      return strategyOfFocus({ hide, show, toggle });
+    }
+    if (trigger === 'hover') {
+      return {
+        popupProps: {
+          ...strategyOfFocus({ hide, show, toggle }).popupProps,
+          ...strategyOfHover({ hide, show, toggle }).popupProps,
+        },
+        referenceElProps: {
+          ...strategyOfFocus({ hide, show, toggle }).referenceElProps,
+          ...strategyOfHover({ hide, show, toggle }).referenceElProps,
+        },
+      };
+    }
+    throw new Error();
+  }, [hide, show, toggle, trigger]);
 
   return (
     <Popper
       {...rest}
-      popup={
-        <div
-          onMouseEnter={
-            trigger === 'hover'
-              ? () => {
-                  hovingRef.current = true;
-                  clearHideTimer();
-                }
-              : undefined
-          }
-          onMouseLeave={
-            trigger === 'hover'
-              ? () => {
-                  hovingRef.current = false;
-                  hide();
-                }
-              : undefined
-          }
-        >
-          {popup}
-        </div>
-      }
-      visible={localVisible}
-      onClose={trigger ? hide : _onClose}
+      popup={<div {...popupProps}>{popup}</div>}
+      visible={visible}
+      onClose={() => setVisible(0)}
       closeOnClickOutside={
         typeof closeOnClickOutside === 'boolean' ? closeOnClickOutside : trigger !== 'hover'
       }
     >
       {React.cloneElement(children, {
-        onClick,
-        onMouseEnter,
-        onMouseLeave,
-        onFocus,
-        onBlur,
+        ...mergeNodeOriginalEventListeners(children, referenceElProps),
       })}
     </Popper>
   );
 };
 
 export default Popover;
+
+type PopoverStrategy = (args: {
+  hide(pig: PIG): void;
+  show(pig: PIG): void;
+  toggle(pig: PIG): void;
+}) => {
+  popupProps?: Partial<React.HTMLAttributes<HTMLElement>>;
+  referenceElProps: Partial<React.HTMLAttributes<HTMLElement>>;
+};
+
+const strategyOfClick: PopoverStrategy = ({ toggle }) => {
+  return {
+    referenceElProps: {
+      onClick: () => toggle(PIG.CLICK),
+    },
+  };
+};
+
+// https://w3c.github.io/uievents/#event-type-mouseenter
+// touch will trigger mouseenter events ???????
+const strategyOfHover: PopoverStrategy = ({ hide, show }) => {
+  return {
+    popupProps: {
+      onMouseEnter: () => show(PIG.HOVER_POPUP),
+      onMouseLeave: () => hide(PIG.HOVER_POPUP),
+    },
+    referenceElProps: {
+      onMouseEnter: () => show(PIG.HOVER),
+      onMouseLeave: () => hide(PIG.HOVER),
+    },
+  };
+};
+
+const strategyOfFocus: PopoverStrategy = ({ hide, show }) => {
+  return {
+    referenceElProps: {
+      onFocus: () => show(PIG.FOCUS),
+      onBlur: () => hide(PIG.FOCUS),
+    },
+  };
+};
+
+const mergeNodeOriginalEventListeners = <T extends (...args: any[]) => any>(
+  child: React.ReactElement,
+  props: React.HTMLAttributes<HTMLElement>
+): T => {
+  return Object.fromEntries(
+    Object.entries(props).map(([k, v]) => {
+      if (k.startsWith('on') && typeof v === 'function') {
+        return [
+          k,
+          (...args: any[]) => {
+            child.props[k]?.(...args);
+            v(...args);
+          },
+        ];
+      }
+
+      return [k, v];
+    })
+  ) as any as T;
+};

@@ -26,7 +26,7 @@ const Field: React.FC<{
         } else {
           const selectedItem = handleClick();
           if (selectedItem) {
-            farmMitt.emit('PLANT', undefined);
+            farmMitt.emit('PLANT');
             setPlant(selectedItem);
             setTimeout(() => {
               setOhhh(true);
