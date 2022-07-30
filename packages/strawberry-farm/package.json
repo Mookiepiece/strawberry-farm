@@ -8,12 +8,13 @@
   "exports": {
     ".": "./index.js",
     "./shared": "./shared/index.js",
-    "./theme/**": "./theme/**"
+    "./theme/*": "./theme/*"
   },
   "scripts": {
     "build": "pnpm clean && pnpm build:types && pnpm build:comp",
     "build:types": "tsc -p ./tsconfig.json",
     "build:comp": "node ./scripts/build.mjs",
+    "git-release": "node ./scripts/git-release.mjs",
     "test": "jest",
     "clean": "rimraf dist"
   },
