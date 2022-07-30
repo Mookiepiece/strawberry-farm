@@ -76,8 +76,8 @@ const Box: React.FC<
           stretched,
           reverse,
           wrap,
-          justify: justify === 'start' || justify === undefined ? undefined : `justify-${justify}`,
-          align: align === 'start' || align === undefined ? undefined : `align-${align}`,
+          [`justify-${justify}`]: justify,
+          [`align-${align}`]: align,
         })
       )}
       style={{
