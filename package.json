@@ -1,24 +1,21 @@
 {
-  "name": "@mookiepiece/starfall",
-  "version": "0.0.1-alpha.2",
-  "description": "react.js components for learning",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "scripts": {
-    "build": "yarn clean && yarn build:types && yarn build:comp",
-    "test": "jest",
-    "build:bundle": "rollup --config ../strawberry-fury/scripts/rollup.bundle.config.js",
-    "build:types": "tsc -p ./tsconfig.json",
-    "build:comp": "node ../strawberry-fury/scripts/build.components.mjs",
-    "clean": "rimraf lib && rimraf es"
+  "name": "@mookiepiece/strawberry-farm",
+  "version": "0.0.1-alpha.1",
+  "description": "Unobtrusive park.",
+  "type": "module",
+  "main": "index.js",
+  "module": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./shared": "./shared/index.js",
+    "./theme/**": "./theme/**"
   },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "./jest.setup.js"
-    ],
-    "moduleNameMapper": {
-      "@starfall/(.*)": "<rootDir>/src/$1"
-    }
+  "scripts": {
+    "build": "pnpm clean && pnpm build:types && pnpm build:comp",
+    "build:types": "tsc -p ./tsconfig.json",
+    "build:comp": "node ./scripts/build.mjs",
+    "test": "jest",
+    "clean": "rimraf dist"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
@@ -26,57 +23,44 @@
     "@babel/preset-env": "^7.13.5",
     "@babel/preset-react": "^7.12.13",
     "@babel/preset-typescript": "^7.13.0",
-    "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-commonjs": "^17.1.0",
-    "@rollup/plugin-node-resolve": "^11.2.0",
-    "@rollup/plugin-typescript": "^8.2.0",
-    "@types/enzyme": "^3.10.8",
-    "@types/jest": "^26.0.23",
-    "@types/react": "^17.0.2",
-    "@types/react-dom": "^17.0.1",
-    "@types/react-transition-group": "^4.4.1",
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "@floating-ui/dom": "^0.5.4",
     "clsx": "^1.1.1",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
-    "jest": "^26.6.3",
     "mitt": "^2.1.0",
-    "postcss": "^8.2.7",
-    "prettier": "^2.2.1",
-    "rimraf": "^3.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-transition-group": "^4.4.1",
+    "react-use": "^17.1.1",
     "rollup": "^2.39.0",
-    "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-postcss": "^4.0.0",
-    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-rename-node-modules": "^1.3.1",
     "sass": "^1.32.8",
-    "tslib": "^2.1.0",
-    "typescript": "^4.2.3"
+    "typescript": "^4.7.4"
   },
   "dependencies": {
-    "async-validator": "^3.5.1"
+    "async-validator": "^4.0.7",
+    "zustand": "4.0.0-rc.1"
   },
   "peerDependencies": {
     "@babel/runtime-corejs3": "^7.13.7",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "react-transition-group": "^4.4.1",
+    "react": "*",
+    "react-dom": "*",
+    "@headlessui/react": "^1.6.6",
     "react-use": "^17.1.1"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Mookiepiece/strawberry-fury.git"
+    "url": "git@github.com:Mookiepiece/strawberry-farm.git"
   },
-  "homepage": "https://mookiepiece.github.io/strawberry-fury",
+  "homepage": "https://mookiepiece.github.io/strawberry-farm",
   "keywords": [
     "react",
     "component"
   ],
   "author": "Mookiepiece",
-  "license": "WTFPL",
-  "files": [
-    "src/_theme",
-    "lib/",
-    "es/"
-  ]
+  "license": "WTFPL"
 }
