@@ -1229,6 +1229,8 @@ var Popper = function Popper(_ref) {
       placement = _ref.placement,
       _ref$closeOnClickOuts = _ref.closeOnClickOutside,
       closeOnClickOutside = _ref$closeOnClickOuts === void 0 ? true : _ref$closeOnClickOuts,
+      _ref$unmountOnExit = _ref.unmountOnExit,
+      unmountOnExit = _ref$unmountOnExit === void 0 ? true : _ref$unmountOnExit,
       _ref$middleware = _ref.middleware,
       middleware = _ref$middleware === void 0 ? EMPTY_ARRAY : _ref$middleware;
 
@@ -1281,7 +1283,8 @@ var Popper = function Popper(_ref) {
   }), /*#__PURE__*/React.createElement(Portal, null, /*#__PURE__*/React.createElement(CSSTransition, {
     "in": visible && positionCalculated,
     timeout: 100,
-    classNames: "sf-popper"
+    classNames: "sf-popper",
+    unmountOnExit: unmountOnExit
   }, /*#__PURE__*/React.createElement("div", {
     className: clsx('sf-popper', popupClassName),
     style: popupStyle,

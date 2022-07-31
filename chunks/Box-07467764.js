@@ -22,6 +22,8 @@ function ownKeys(object, enumerableOnly) { var keys = _Object$keys(object); if (
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var _context, _context2; var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? _forEachInstanceProperty(_context = ownKeys(Object(source), !0)).call(_context, function (key) { _defineProperty(target, key, source[key]); }) : _Object$getOwnPropertyDescriptors ? _Object$defineProperties(target, _Object$getOwnPropertyDescriptors(source)) : _forEachInstanceProperty(_context2 = ownKeys(Object(source))).call(_context2, function (key) { _Object$defineProperty(target, key, _Object$getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 var Box = function Box(_ref) {
+  var _bem;
+
   var grid = _ref.grid,
       stretched = _ref.stretched,
       horizontal = _ref.horizontal,
@@ -39,15 +41,13 @@ var Box = function Box(_ref) {
       rest = _objectWithoutProperties(_ref, _excluded);
 
   return /*#__PURE__*/React.createElement("div", _extends({
-    className: clsx(className, bem('sf-box', {
+    className: clsx(className, bem('sf-box', (_bem = {
       grid: !!grid,
       horizontal: horizontal,
       stretched: stretched,
       reverse: reverse,
-      wrap: wrap,
-      justify: justify === 'start' || justify === undefined ? undefined : "justify-".concat(justify),
-      align: align === 'start' || align === undefined ? undefined : "align-".concat(align)
-    })),
+      wrap: wrap
+    }, _defineProperty(_bem, "justify-".concat(justify), justify), _defineProperty(_bem, "align-".concat(align), align), _bem))),
     style: _objectSpread({
       gap: gap,
       flexGrow: typeof grow === 'boolean' ? grow ? 1 : 0 : grow,
