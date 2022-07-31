@@ -15,6 +15,7 @@ export type PopperProps = {
   popupClassName?: ClassValue;
   popupStyle?: React.CSSProperties;
   closeOnClickOutside?: boolean;
+  unmountOnExit?: boolean;
   children: React.ReactElement;
 };
 
@@ -27,6 +28,7 @@ const Popper = ({
   popupStyle,
   placement,
   closeOnClickOutside = true,
+  unmountOnExit = true,
   middleware = EMPTY_ARRAY,
 }: PopperProps): React.ReactElement => {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
@@ -66,7 +68,12 @@ const Popper = ({
         ref: setReferenceElement,
       })}
       <Portal>
-        <CSSTransition in={visible && positionCalculated} timeout={100} classNames="sf-popper">
+        <CSSTransition
+          in={visible && positionCalculated}
+          timeout={100}
+          classNames="sf-popper"
+          unmountOnExit={unmountOnExit}
+        >
           <div
             className={clsx('sf-popper', popupClassName)}
             style={popupStyle}
