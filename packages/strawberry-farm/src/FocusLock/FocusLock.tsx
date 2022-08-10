@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const activeElements: HTMLElement[] = [];
+const activeElements: Element[] = [];
 
 const pushActiveElements = activeElements.push.bind(activeElements);
 
@@ -13,42 +13,26 @@ const popActiveElements = () => {
   }
 };
 
-const useFocusLock = ({
-  disabled,
-  ref,
-}: {
-  disabled?: boolean;
-  ref: React.MutableRefObject<HTMLElement | null>;
-}) => {
-  useEffect(() => {
-    if (!disabled) {
-      const lastActiveElement = document.activeElement;
-      if (lastActiveElement instanceof HTMLElement) {
-        pushActiveElements(lastActiveElement);
-      }
-      ref.current?.focus();
-    } else {
-      popActiveElements()?.focus();
-    }
-  }, [disabled, ref]);
-
-  return;
-};
-
 const FocusLock: React.FC<{
   disabled?: boolean;
   onKeyDown?: (e: React.KeyboardEvent) => void;
   children?: React.ReactNode;
 }> = ({ disabled, onKeyDown, children }) => {
   const sentinelStartRef = useRef<HTMLDivElement>(null);
-  const sentinelStartInnerRef = useRef<HTMLDivElement>(null);
   const sentinelEndRef = useRef<HTMLDivElement>(null);
-  const sentinelEndInnerRef = useRef<HTMLDivElement>(null);
 
-  useFocusLock({
-    disabled,
-    ref: sentinelStartInnerRef,
-  });
+  useEffect(() => {
+    if (disabled) return;
+
+    const prevActiveElement = document.activeElement;
+    sentinelStartRef.current?.focus();
+    if (prevActiveElement) {
+      pushActiveElements(prevActiveElement);
+      return () => {
+        (popActiveElements() as any)?.focus?.();
+      };
+    }
+  }, [disabled]);
 
   return (
     <>
@@ -56,34 +40,28 @@ const FocusLock: React.FC<{
         ref={sentinelStartRef}
         aria-hidden="true"
         className="st-focus-sentinel"
-        onFocus={e => {
-          sentinelEndInnerRef.current?.focus();
+        tabIndex={0}
+        onKeyDown={e => {
+          if (e.shiftKey && e.key === 'Tab') {
+            e.preventDefault();
+            sentinelEndRef.current?.focus();
+          }
+          onKeyDown?.(e);
         }}
-        tabIndex={0}
-      ></div>
-      <div
-        ref={sentinelStartInnerRef}
-        aria-hidden="true"
-        className="st-focus-sentinel"
-        tabIndex={0}
-        onKeyDown={onKeyDown}
       ></div>
       {children}
-      <div
-        ref={sentinelEndInnerRef}
-        aria-hidden="true"
-        className="st-focus-sentinel"
-        tabIndex={0}
-        onKeyDown={onKeyDown}
-      ></div>
       <div
         ref={sentinelEndRef}
         aria-hidden="true"
         className="st-focus-sentinel"
-        onFocus={e => {
-          sentinelStartInnerRef.current?.focus();
-        }}
         tabIndex={0}
+        onKeyDown={e => {
+          if (!e.shiftKey && e.key === 'Tab') {
+            e.preventDefault();
+            sentinelStartRef.current?.focus();
+          }
+          onKeyDown?.(e);
+        }}
       ></div>
     </>
   );

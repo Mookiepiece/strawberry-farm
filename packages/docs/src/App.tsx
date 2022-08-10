@@ -4,7 +4,7 @@ import { loadLang, i18nContext, i18nStateContext, Language } from './utils/i18n'
 import '@docs/styles.scss';
 import routes from './routes';
 import { RouteView } from '@docs/utils/RouterView';
-
+import { Dialog } from '🦄';
 import '🦄/theme/index.scss';
 
 const App: React.FC = () => {
@@ -31,19 +31,27 @@ const App: React.FC = () => {
   );
 };
 
+const modalPrompts: number[] = [];
+
+Dialog.Mitt.on('REGISTER', id => modalPrompts.push(id));
+Dialog.Mitt.on('UNREGISTER', id => modalPrompts.splice(modalPrompts.indexOf(id), 1));
+
 const MyPrompt = () => {
   const history = useHistory();
 
-  // useEffect(() => {
-  //   const unlock = history.block((props, action) => {
-  //     if (action === 'POP' && Modal.registry.length) {
-  //       Modal.Mitt.emit('REMOTE_CLOSE', Modal.registry.slice(-1)[0]);
-  //       return false;
-  //     }
-  //   });
+  useEffect(() => {
+    const unlock = history.block((props, action) => {
+      if (modalPrompts.length) {
+        Dialog.Mitt.emit('SINGAL', {
+          id: modalPrompts.splice(modalPrompts.length - 1, 1)[0],
+          data: undefined,
+        });
+        return false;
+      }
+    });
 
-  //   return unlock;
-  // });
+    return unlock;
+  });
 
   return null;
 };

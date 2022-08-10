@@ -1,6 +1,6 @@
+import { Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
 import { useLazyLoading } from './useLazyLoading';
 
 type SpinProps = {
@@ -16,21 +16,21 @@ const Spin: React.FC<SpinProps> & {
   const loading = useLazyLoading(_loading, lazy);
 
   return (
-    <CSSTransition
-      in={loading === true || loading === undefined}
-      timeout={loading === undefined ? 0 : 300}
-      classNames="st-spin"
-      unmountOnExit
-    >
-      <div
-        className="st-spin"
-        style={
-          {
-            '--st-spin-border': weight + 'px',
-          } as React.CSSProperties
-        }
-      ></div>
-    </CSSTransition>
+    <Transition
+      show={loading === true || loading === undefined}
+      className="st-spin"
+      enterFrom="st-spin-out"
+      enter="st-spin-active"
+      enterTo="st-spin-in"
+      leaveFrom="st-spin-in"
+      leave="st-spin-active"
+      leaveTo="st-spin-out"
+      style={
+        {
+          '--st-spin-border': weight + 'px',
+        } as React.CSSProperties
+      }
+    ></Transition>
   );
 };
 

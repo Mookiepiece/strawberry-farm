@@ -5,7 +5,7 @@ import Popper from '../Popper';
 import ScrollView from '../ScrollView';
 import { useRef } from 'react';
 import type { ScrollViewInstance } from '../ScrollView';
-import { shift } from '@floating-ui/dom';
+import { shift, size } from '@floating-ui/dom';
 
 type SelectProps<T> = {
   value?: T;
@@ -140,7 +140,14 @@ const Select = <T extends undefined | null | Record<string, any> | boolean | num
             })}
           </ScrollView>
         }
-        middleware={[shift10]}
+        middleware={[
+          shift10,
+          size({
+            apply({ elements }) {
+              elements.floating.style.width = elements.reference.getBoundingClientRect().width + 'px';
+            },
+          }),
+        ]}
         popupClassName="sf-popper--default sf-popper--zoom-y"
         onClose={() => setVisible(false)}
       >

@@ -6,7 +6,7 @@ export const useLazyLoading = (
 ): boolean | undefined => {
   const [innerLoading, setInnerLoading] = useState<boolean | undefined>(false);
 
-  const timeout = useRef<undefined | NodeJS.Timeout>(undefined);
+  const timeout = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     if (!lazy) {

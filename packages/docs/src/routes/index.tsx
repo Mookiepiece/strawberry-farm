@@ -2,9 +2,7 @@
 import React from 'react';
 import loadable from '@loadable/component';
 import type { DocRoute } from '@docs/utils/RouterView';
-
 import DocLayout from '@docs/layouts/DocLayout';
-
 import AppLayout from '@docs/layouts/AppLayout';
 
 export default [
@@ -32,6 +30,8 @@ export default [
                 '/docs/popper': '🗺️SidebarComponentPopper',
                 '/docs/popover': '🗺️SidebarComponentPopover',
                 '/docs/select': '🗺️SidebarComponentSelect',
+                '/docs/notification': '🗺️SidebarComponentNotification',
+                '/docs/spin': '🗺️SidebarComponentSpin',
               },
               Utils: {
                 '/docs/versionedStorage': '🗺️SidebarUtilsVersionedStorage',
@@ -89,6 +89,14 @@ export default [
           {
             path: '/docs/select',
             component: loadable(() => import('@docs/pages/docs/Select')),
+          },
+          {
+            path: '/docs/notification',
+            component: loadable(() => import('@docs/pages/docs/Notification')),
+          },
+          {
+            path: '/docs/spin',
+            component: loadable(() => import('@docs/pages/docs/Spin')),
           },
           {
             path: '/docs/versionedStorage',

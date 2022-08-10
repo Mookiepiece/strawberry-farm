@@ -1,8 +1,15 @@
 import React from 'react';
-import { Dialog } from '🦄';
+import { Box, Dialog } from '🦄';
 
 const Demo: React.FC = () => {
-  return <Dialog title={'Hi Indian MI Fans'}>Are U OK Are U OK</Dialog>;
+  return (
+    <Dialog.Body>
+      <Box className="p-20">
+        <span>Hi Indian MI Fans</span>
+        <span>Are U OK Are U OK</span>
+      </Box>
+    </Dialog.Body>
+  );
 };
 
 export default Demo;

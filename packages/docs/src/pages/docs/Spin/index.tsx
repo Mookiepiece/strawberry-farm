@@ -5,13 +5,9 @@ import PageWalker from '@docs/components/PageWalker';
 const requireDemo = import.meta.globEager('./*.tsx');
 
 import basic from './basic.tsx?raw';
-import warning from './warning.tsx?raw';
-import portal from './portal.tsx?raw';
 
 const requireRaw = {
   basic,
-  warning,
-  portal,
 };
 
 import zh from './index-zh.md?raw';

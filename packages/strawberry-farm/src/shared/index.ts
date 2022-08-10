@@ -1,5 +1,6 @@
 export * from './bem';
 export * from './createRegistry';
+export * from './createComponentInstancesPool';
 export * from './get';
 export * from './mitt';
 export * from './useEventCallback';

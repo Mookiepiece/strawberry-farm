@@ -6,6 +6,11 @@ body,
   height: 100%;
 }
 
+#app {
+  position: relative;
+  z-index: 0;
+}
+
 header,
 aside {
   overflow: auto;

@@ -15,3 +15,9 @@ This is a basic dialog
 render a eye-catching dialog.
 
 :::
+
+:::demo{portal}
+
+### Openable
+
+:::

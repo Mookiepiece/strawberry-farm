@@ -1,77 +1,151 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
-import { CSSTransition } from 'react-transition-group';
-import {
-  NotificationPortal,
-  useEventCallback,
-  createPortalChannel,
-} from '../shared';
-import Collapse from '../Collapse';
+import React, { useCallback, useLayoutEffect, useRef } from 'react';
+import { NotificationPortal, useEventCallback, createPortalChannel } from '../shared';
+import clsx from 'clsx';
 
 type Noti = {
   id: number;
-  payload: React.ReactNode | React.ReactNode[];
+  payload: {
+    content: React.ReactNode;
+    el: HTMLDivElement | null;
+    offset: number;
+    leaving: boolean;
+  };
 };
 
-const NotificationItem: React.FC<{ value: Noti; remove: (id: number) => void }> = ({
-  value,
-  remove,
-}) => {
-  const [visible, setVisible] = useState([true, false]);
-  const mouseLeaveToRemoveRef = useRef<NodeJS.Timeout>();
+const NotificationItem: React.ForwardRefExoticComponent<
+  { value: Noti; remove: (id: number) => void } & React.RefAttributes<HTMLDivElement>
+> = React.forwardRef(({ value, remove }, ref) => {
+  const ourRef = useRef<HTMLDivElement | null>(null);
 
-  const close = useEventCallback(() => {
-    setVisible([false, false]);
-    setTimeout(() => remove(value.id), 300);
-  });
+  const mouseLeaveToRemoveRef = useRef<ReturnType<typeof setTimeout>>();
 
-  const handleMouseEnter = useEventCallback(() => {
+  const stopTimer = useEventCallback(() => {
     mouseLeaveToRemoveRef.current !== undefined && clearTimeout(mouseLeaveToRemoveRef.current);
   });
-  const handleMouseLeave = useEventCallback(() => {
+  const startTimer = useEventCallback(() => {
     mouseLeaveToRemoveRef.current = setTimeout(() => {
-      close();
+      remove(value.id);
     }, 3000);
   });
 
   useLayoutEffect(() => {
-    setVisible([true, true]);
-    handleMouseLeave();
-  }, [handleMouseLeave]);
+    startTimer();
+  }, [startTimer]);
 
+  console.log(value.payload.offset);
   return (
-    <CSSTransition in={visible[1]} timeout={300} classNames="st-notification-item">
-      <Collapse active={visible[0]} className="st-notification-item">
-        <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-          {value.payload}
-        </div>
-      </Collapse>
-    </CSSTransition>
+    <div
+      className="sf-notification-item"
+      onMouseEnter={stopTimer}
+      onMouseLeave={startTimer}
+      style={
+        {
+          '--y': value.payload.offset + 'px',
+        } as any
+      }
+      ref={useEventCallback((el: HTMLDivElement) => {
+        ref ? (typeof ref === 'function' ? ref(el) : (ref.current = el)) : void 0;
+        ourRef.current = el;
+      })}
+    >
+      <div
+        className={clsx(
+          'sf-notification-item__content',
+          value.payload.leaving
+            ? 'sf-notification-item__content-out'
+            : 'sf-notification-item__content-in'
+        )}
+      >
+        {value.payload.content}
+      </div>
+    </div>
   );
-};
+});
 
-const Notification = createPortalChannel<Noti['payload']>({
+const NotificationInner = createPortalChannel<Noti['payload']>({
   displayName: 'NotificationPortalChannel',
   ConsumerComponent: function NotificationConsumerComponent({ model: [notis, setNotis] }) {
-    const remove = useEventCallback((id: number) => {
-      setNotis(notis => {
-        const index = notis.findIndex(v => v.id === id);
-        if (index !== -1) {
-          return notis.slice(0, index).concat(notis.slice(index + 1));
-        }
-        return notis;
-      });
+    const remove = useCallback(
+      (id: number) => {
+        setNotis(notis => {
+          const index = notis.findIndex(v => v.id === id);
+          if (index !== -1) {
+            return [
+              ...notis.slice(0, index),
+              {
+                ...notis[index],
+                payload: {
+                  ...notis[index].payload,
+                  leaving: true,
+                },
+              },
+              ...notis.slice(index + 1),
+            ];
+          }
+          return notis;
+        });
+        setTimeout(() => {
+          setNotis(notis => {
+            const index = notis.findIndex(v => v.id === id);
+            if (index !== -1) {
+              return [...notis.slice(0, index), ...notis.slice(index + 1)];
+            }
+            return notis;
+          });
+        }, 300);
+      },
+      [setNotis]
+    );
+
+    const offsets = notis.map((noti, index) => {
+      return notis
+        .slice(index + 1)
+        .reduce((a, b) => a + (b.payload.leaving ? 0 : b.payload.offset), 0);
     });
+    console.log(offsets[0], notis[0]?.payload.offset, notis[0]?.payload.leaving);
 
     return (
       <NotificationPortal>
         <div>
-          {notis.map(value => (
-            <NotificationItem key={value.id} value={value} remove={remove} />
+          {notis.map((value, index) => (
+            <NotificationItem
+              ref={(el: HTMLDivElement | null) =>
+                el &&
+                (setNotis(notis => [
+                  ...notis.slice(0, index),
+                  {
+                    ...notis[index],
+                    payload: {
+                      ...notis[index].payload,
+                      el,
+                      offset: el.clientHeight,
+                    },
+                  },
+                  ...notis.slice(index + 1),
+                ]),
+                console.log(el, el.clientHeight))
+              }
+              key={value.id}
+              value={{ ...value, payload: { ...value.payload, offset: offsets[index] } }}
+              remove={remove}
+            />
           ))}
         </div>
       </NotificationPortal>
     );
   },
 });
+
+const Notification = {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  push(content: React.ReactNode) {
+    NotificationInner.push({
+      content,
+      leaving: false,
+      offset: 0,
+      el: null,
+    });
+  },
+};
 
 export default Notification;

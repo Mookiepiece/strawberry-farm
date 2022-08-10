@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useMount } from 'react-use';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { zustand } from './zustand';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createPortalChannel = <X,>({
@@ -19,11 +19,10 @@ export const createPortalChannel = <X,>({
 
   let id = 0;
   let BoxMounted = false;
-  const cache: T[] = [];
 
-  let _push: (v: T) => void = v => {
-    cache.push(v);
-  };
+  const useStore = zustand<T[]>(() => []);
+
+  const push = (item: T) => useStore.setState(s => [...s, item]);
 
   const Channel: {
     push: (children: X) => void;
@@ -31,31 +30,23 @@ export const createPortalChannel = <X,>({
   } = {
     push(payload: X) {
       this.setup();
-      _push({
-        id: id++,
-        payload,
-      });
+      push({ id: id++, payload });
     },
     setup() {
       if (!BoxMounted) {
         BoxMounted = true;
         const PortalChannelComponent: React.FC = () => {
-          const model = useState<T[]>([]);
-          const [, setItems] = model;
-          useMount(() => {
-            setItems(cache);
-            _push = v => setItems(a => [...a, v]);
-          });
+          const model = useStore();
 
-          return <ConsumerComponent model={model} />;
+          return <ConsumerComponent model={[model, useStore.setState]} />;
         };
         if (displayName) PortalChannelComponent.displayName = displayName;
 
-        const starfallBlankChannelRoot = document.createElement('div');
-        starfallBlankChannelRoot.style.display = 'none';
-        starfallBlankChannelRoot.classList.add(displayName ?? 'st-channel');
-        document.body.appendChild(starfallBlankChannelRoot);
-        ReactDOM.createRoot(starfallBlankChannelRoot).render(<PortalChannelComponent />);
+        const strawberryFarmBlankChannelRoot = document.createElement('div');
+        strawberryFarmBlankChannelRoot.style.display = 'none';
+        strawberryFarmBlankChannelRoot.classList.add(displayName ?? 'sf-channel');
+        document.body.appendChild(strawberryFarmBlankChannelRoot);
+        ReactDOM.createRoot(strawberryFarmBlankChannelRoot).render(<PortalChannelComponent />);
       }
     },
   };

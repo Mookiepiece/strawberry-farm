@@ -3,7 +3,7 @@ import { autoUpdate, computePosition, Middleware, Placement } from '@floating-ui
 import { EMPTY_ARRAY, noop, Portal } from '../shared';
 import clsx from 'clsx';
 import type { ClassValue } from 'clsx';
-import { CSSTransition } from 'react-transition-group';
+import { Transition } from '@headlessui/react';
 import { useClickAway } from '../shared';
 
 export type PopperProps = {
@@ -15,7 +15,7 @@ export type PopperProps = {
   popupClassName?: ClassValue;
   popupStyle?: React.CSSProperties;
   closeOnClickOutside?: boolean;
-  unmountOnExit?: boolean;
+  unmount?: boolean;
   children: React.ReactElement;
 };
 
@@ -28,7 +28,7 @@ const Popper = ({
   popupStyle,
   placement,
   closeOnClickOutside = true,
-  unmountOnExit = true,
+  unmount,
   middleware = EMPTY_ARRAY,
 }: PopperProps): React.ReactElement => {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
@@ -41,7 +41,7 @@ const Popper = ({
 
   useEffect(() => {
     if (!visible || !referenceElement || !popperElement) {
-      return setPositionCalculated(false);
+      return;
     }
 
     return autoUpdate(referenceElement, popperElement, () => {
@@ -55,7 +55,12 @@ const Popper = ({
         if (popperElement.getAttribute('data-popper-placement') !== placement) {
           popperElement.setAttribute('data-popper-placement', placement);
         }
-        setPositionCalculated(true);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setPositionCalculated(true);
+          });
+        });
       });
     });
   }, [placement, popperElement, referenceElement, visible]);
@@ -68,20 +73,24 @@ const Popper = ({
         ref: setReferenceElement,
       })}
       <Portal>
-        <CSSTransition
-          in={visible && positionCalculated}
-          timeout={100}
-          classNames="sf-popper"
-          unmountOnExit={unmountOnExit}
-        >
-          <div
+        {visible || positionCalculated ? (
+          <Transition
+            show={visible && positionCalculated}
             className={clsx('sf-popper', popupClassName)}
             style={popupStyle}
-            ref={setPopperElement}
+            enterFrom="sf-popper-out"
+            enter="sf-popper-active"
+            enterTo="sf-popper-in"
+            leaveFrom="sf-popper-in"
+            leave="sf-popper-active"
+            leaveTo="sf-popper-out"
+            ref={setPopperElement as any}
+            unmount={false}
+            afterLeave={() => setPositionCalculated(false)}
           >
             {popup}
-          </div>
-        </CSSTransition>
+          </Transition>
+        ) : null}
       </Portal>
     </>
   );

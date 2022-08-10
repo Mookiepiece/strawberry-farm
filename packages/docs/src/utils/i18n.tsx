@@ -54,6 +54,10 @@ const a: Record<
     en: 'Select',
     zh: 'Select 选择器',
   },
+  SidebarComponentNotification: {
+    en: 'Notification 通知',
+    zh: 'Notification 通知',
+  },
   SidebarUtilsVersionedStorage: {
     en: 'Versioned Storage',
     zh: 'Versioned Storage',
@@ -86,22 +90,15 @@ const a: Record<
     en: 'Development Guide',
     zh: '开发指南',
   },
-  // SidebarComponentSpin: {
-  //   en: 'Spin 加载符',
-  //   zh: 'Spin 加载符',
-  // },
+  SidebarComponentSpin: {
+    en: 'Spin 加载符',
+    zh: 'Spin 加载符',
+  },
   // SidebarStComponentDialog: {
   //   en: 'Dialog 对话框',
   //   zh: 'Dialog 对话框',
   // },
-  // SidebarStComponentModal: {
-  //   en: 'Modal 模态框',
-  //   zh: 'Modal 模态框',
-  // },
-  // SidebarStComponentNotification: {
-  //   en: 'Notification 通知',
-  //   zh: 'Notification 通知',
-  // },
+
   // SidebarStComponentScroll: {
   //   en: 'Scroll 滚动',
   //   zh: 'Scroll 滚动',

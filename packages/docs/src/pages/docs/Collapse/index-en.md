@@ -23,8 +23,7 @@ Bootstrap 和 W3Schools uses `scrollHeight`.
 - [Bootstrap: collapse.js](https://github.com/twbs/bootstrap/blob/main/js/src/collapse.js#L202)
 - [W3schools: Collapse ](https://www.w3schools.com/howto/howto_js_collapsible.asp)
 
-if child is set to `height: 0`, we still got normal `scrollHeight` which is wrong. and `margin` may does the same due to `margin collapse`。
-You should establish a new `BFC` for the collapse panel, TL;DR `overflow:hidden`.
+`height: 0` won't affect calculated `scrollHeight` and may cause glitches, same does `margin collapsing`.
 
 A tricky alternative way is use `max-height` instead of `height`
 

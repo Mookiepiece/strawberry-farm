@@ -33,7 +33,7 @@ const Popover: React.FC<PopoverProps> = ({
 
   const visible = !!_visible;
 
-  const [timers] = useState(() => new Map<PIG, NodeJS.Timeout>());
+  const [timers] = useState(() => new Map<PIG, ReturnType<typeof setTimeout>>());
   const clearHideTimer = useCallback(
     (pig: PIG) => {
       if (timers.has(pig)) {
