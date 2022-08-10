@@ -44,24 +44,37 @@ const Popper = ({
       return;
     }
 
-    return autoUpdate(referenceElement, popperElement, () => {
-      computePosition(referenceElement, popperElement, {
-        middleware: middlewareRef.current,
-        placement,
-      }).then(({ x, y, middlewareData, placement }) => {
-        popperElement.style.setProperty('--x', x + 'px');
-        popperElement.style.setProperty('--y', y + 'px');
+    let cleanup = noop;
+    let cleanupCalled = false;
+    // The first frame, height is 0
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (cleanupCalled) return;
 
-        if (popperElement.getAttribute('data-popper-placement') !== placement) {
-          popperElement.setAttribute('data-popper-placement', placement);
-        }
+        cleanup = autoUpdate(referenceElement, popperElement, () => {
+          computePosition(referenceElement, popperElement, {
+            middleware: middlewareRef.current,
+            placement,
+          }).then(({ x, y, middlewareData, placement }) => {
+            popperElement.style.setProperty('--x', x + 'px');
+            popperElement.style.setProperty('--y', y + 'px');
 
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            setPositionCalculated(true);
+            if (popperElement.firstElementChild) {
+              if (
+                popperElement.firstElementChild.getAttribute('data-popper-placement') !== placement
+              ) {
+                popperElement.firstElementChild.setAttribute('data-popper-placement', placement);
+              }
+            }
           });
+          setPositionCalculated(true);
         });
       });
+
+      return () => {
+        cleanupCalled = true;
+        cleanup();
+      };
     });
   }, [placement, popperElement, referenceElement, visible]);
 
@@ -74,22 +87,24 @@ const Popper = ({
       })}
       <Portal>
         {visible || positionCalculated ? (
-          <Transition
-            show={visible && positionCalculated}
-            className={clsx('sf-popper', popupClassName)}
-            style={popupStyle}
-            enterFrom="sf-popper-out"
-            enter="sf-popper-active"
-            enterTo="sf-popper-in"
-            leaveFrom="sf-popper-in"
-            leave="sf-popper-active"
-            leaveTo="sf-popper-out"
-            ref={setPopperElement as any}
-            unmount={false}
-            afterLeave={() => setPositionCalculated(false)}
-          >
-            {popup}
-          </Transition>
+          <div className="sf-popper-wrap" ref={setPopperElement as any}>
+            <Transition
+              show={visible && positionCalculated}
+              className={clsx('sf-popper', popupClassName)}
+              style={popupStyle}
+              enterFrom="sf-popper-out"
+              enter="sf-popper-active"
+              enterTo="sf-popper-in"
+              leaveFrom="sf-popper-in"
+              leave="sf-popper-active"
+              leaveTo="sf-popper-out"
+              // We'll manually handle unmount because we need position calculated with proper width and height
+              unmount={false}
+              afterLeave={() => setPositionCalculated(false)}
+            >
+              {popup}
+            </Transition>
+          </div>
         ) : null}
       </Portal>
     </>
