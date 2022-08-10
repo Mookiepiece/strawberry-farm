@@ -1,6 +1,6 @@
+import { Transition } from '@headlessui/react';
 import { c as clsx } from './clsx.m-1795d575.js';
 import React, { useState, useRef, useEffect } from 'react';
-import { C as CSSTransition } from './SwitchTransition-3c04c189.js';
 import _slicedToArray from '@babel/runtime-corejs3/helpers/slicedToArray';
 import _setTimeout from '@babel/runtime-corejs3/core-js-stable/set-timeout';
 
@@ -10,7 +10,7 @@ var useLazyLoading = function useLazyLoading(loading, lazy) {
       innerLoading = _useState2[0],
       setInnerLoading = _useState2[1];
 
-  var timeout = useRef(undefined);
+  var timeout = useRef();
   useEffect(function () {
     if (!lazy) {
       setInnerLoading(loading);
@@ -37,17 +37,19 @@ var Spin = function Spin(_ref) {
       weight = _ref$weight === void 0 ? 2 : _ref$weight,
       lazy = _ref.lazy;
   var loading = useLazyLoading(_loading, lazy);
-  return /*#__PURE__*/React.createElement(CSSTransition, {
-    "in": loading === true || loading === undefined,
-    timeout: loading === undefined ? 0 : 300,
-    classNames: "st-spin",
-    unmountOnExit: true
-  }, /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React.createElement(Transition, {
+    show: loading === true || loading === undefined,
     className: "st-spin",
+    enterFrom: "st-spin-out",
+    enter: "st-spin-active",
+    enterTo: "st-spin-in",
+    leaveFrom: "st-spin-in",
+    leave: "st-spin-active",
+    leaveTo: "st-spin-out",
     style: {
       '--st-spin-border': weight + 'px'
     }
-  }));
+  });
 };
 
 var SpinContainer = function SpinContainer(_ref2) {

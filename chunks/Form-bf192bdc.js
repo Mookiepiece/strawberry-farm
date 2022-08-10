@@ -1,7 +1,7 @@
 import _extends from '@babel/runtime-corejs3/helpers/extends';
 import _Object$assign from '@babel/runtime-corejs3/core-js-stable/object/assign';
 import React, { useContext, useState, useMemo, useRef } from 'react';
-import { B as Button } from './Button-3788b670.js';
+import { B as Button } from './Button-371d3425.js';
 import _slicedToArray from '@babel/runtime-corejs3/helpers/slicedToArray';
 import { c as createRegistry, h as has, g as get, b as useSingletonAsyncFn, s as set, u as unset } from './useSingletonAsyncFn-9ad3f8d4.js';
 import _defineProperty from '@babel/runtime-corejs3/helpers/defineProperty';
@@ -21,7 +21,7 @@ import _Object$defineProperties from '@babel/runtime-corejs3/core-js-stable/obje
 import _Object$defineProperty from '@babel/runtime-corejs3/core-js-stable/object/define-property';
 import { useUpdateEffect } from 'react-use';
 import { c as clsx } from './clsx.m-1795d575.js';
-import { C as Collapse } from './Collapse-95401147.js';
+import { C as Collapse } from './Collapse-2d5e0a16.js';
 import { v as validator } from './keys-73f87561.js';
 import _toConsumableArray from '@babel/runtime-corejs3/helpers/toConsumableArray';
 import _spliceInstanceProperty from '@babel/runtime-corejs3/core-js-stable/instance/splice';
@@ -50,8 +50,7 @@ var FormErrorMessage = function FormErrorMessage(_ref) {
   return /*#__PURE__*/React.createElement("span", {
     className: clsx('sf-error-message', children && 'sf-error-message--active')
   }, /*#__PURE__*/React.createElement(Collapse, {
-    active: !!children,
-    unmountOnExit: true
+    active: !!children
   }, children));
 };
 

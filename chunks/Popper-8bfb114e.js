@@ -28,22 +28,23 @@ import '@babel/runtime-corejs3/core-js-stable/object/from-entries';
 import '@babel/runtime-corejs3/core-js-stable/object/entries';
 import { c as clsx } from './clsx.m-1795d575.js';
 import '@babel/runtime-corejs3/core-js-stable/instance/find-index';
-import '@babel/runtime-corejs3/core-js-stable/array/is-array';
 import '@babel/runtime-corejs3/core-js-stable/map';
 import '@babel/runtime-corejs3/core-js-stable/instance/splice';
 import '@babel/runtime-corejs3/core-js-stable/instance/index-of';
 import './keys-73f87561.js';
-import { u as useClickAway, n as noop, E as EMPTY_ARRAY } from './constants-5032b34b.js';
+import '@babel/runtime-corejs3/core-js-stable/array/is-array';
+import { u as useClickAway } from './useClickAway-028134e7.js';
 import '@babel/runtime-corejs3/core-js-stable/promise';
 import { P as Portal } from './Portal-2ddabcda.js';
-import 'react-use';
 import 'react-dom/client';
 import 'zustand';
 import '@babel/runtime-corejs3/core-js-stable/json/stringify';
 import '@babel/runtime-corejs3/core-js-stable/object/is';
-import { C as CSSTransition } from './SwitchTransition-3c04c189.js';
+import { n as noop, E as EMPTY_ARRAY } from './constants-c79091c2.js';
+import { Transition } from '@headlessui/react';
 
-var _excluded4 = ["mainAxis", "crossAxis", "limiter"];
+var _excluded4 = ["mainAxis", "crossAxis", "limiter"],
+    _excluded5 = ["apply"];
 
 function ownKeys$1(object, enumerableOnly) { var keys = _Object$keys(object); if (_Object$getOwnPropertySymbols) { var symbols = _Object$getOwnPropertySymbols(object); enumerableOnly && (symbols = _filterInstanceProperty(symbols).call(symbols, function (sym) { return _Object$getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
@@ -570,6 +571,134 @@ var shift = function shift(options) {
             }
           }
         }, _callee7);
+      }))();
+    }
+  };
+};
+/**
+ * Provides data to change the size of the floating element. For instance,
+ * prevent it from overflowing its clipping boundary or match the width of the
+ * reference element.
+ * @see https://floating-ui.com/docs/size
+ */
+
+
+var size = function size(options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  return {
+    name: 'size',
+    options: options,
+    fn: function fn(middlewareArguments) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee8() {
+        var _context18, _context19;
+
+        var placement, rects, platform, elements, _options5, apply, detectOverflowOptions, overflow, side, alignment, heightSide, widthSide, xMin, xMax, yMin, yMax, dimensions, prevDimensions, nextDimensions;
+
+        return _regeneratorRuntime.wrap(function _callee8$(_context20) {
+          while (1) {
+            switch (_context20.prev = _context20.next) {
+              case 0:
+                placement = middlewareArguments.placement, rects = middlewareArguments.rects, platform = middlewareArguments.platform, elements = middlewareArguments.elements;
+                _options5 = options, apply = _options5.apply, detectOverflowOptions = _objectWithoutProperties(_options5, _excluded5);
+                _context20.next = 4;
+                return detectOverflow(middlewareArguments, detectOverflowOptions);
+
+              case 4:
+                overflow = _context20.sent;
+                side = getSide(placement);
+                alignment = getAlignment(placement);
+
+                if (!(side === 'top' || side === 'bottom')) {
+                  _context20.next = 26;
+                  break;
+                }
+
+                heightSide = side;
+                _context20.t0 = alignment;
+                _context20.next = 12;
+                return platform.isRTL == null ? void 0 : platform.isRTL(elements.floating);
+
+              case 12:
+                if (!_context20.sent) {
+                  _context20.next = 16;
+                  break;
+                }
+
+                _context20.t1 = 'start';
+                _context20.next = 17;
+                break;
+
+              case 16:
+                _context20.t1 = 'end';
+
+              case 17:
+                _context20.t2 = _context20.t1;
+
+                if (!(_context20.t0 === _context20.t2)) {
+                  _context20.next = 22;
+                  break;
+                }
+
+                _context20.t3 = 'left';
+                _context20.next = 23;
+                break;
+
+              case 22:
+                _context20.t3 = 'right';
+
+              case 23:
+                widthSide = _context20.t3;
+                _context20.next = 28;
+                break;
+
+              case 26:
+                widthSide = side;
+                heightSide = alignment === 'end' ? 'top' : 'bottom';
+
+              case 28:
+                xMin = max$1(overflow.left, 0);
+                xMax = max$1(overflow.right, 0);
+                yMin = max$1(overflow.top, 0);
+                yMax = max$1(overflow.bottom, 0);
+                dimensions = {
+                  availableHeight: rects.floating.height - (_includesInstanceProperty(_context18 = ['left', 'right']).call(_context18, placement) ? 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : max$1(overflow.top, overflow.bottom)) : overflow[heightSide]),
+                  availableWidth: rects.floating.width - (_includesInstanceProperty(_context19 = ['top', 'bottom']).call(_context19, placement) ? 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : max$1(overflow.left, overflow.right)) : overflow[widthSide])
+                };
+                _context20.next = 35;
+                return platform.getDimensions(elements.floating);
+
+              case 35:
+                prevDimensions = _context20.sent;
+                apply == null ? void 0 : apply(_objectSpread$1(_objectSpread$1({}, middlewareArguments), dimensions));
+                _context20.next = 39;
+                return platform.getDimensions(elements.floating);
+
+              case 39:
+                nextDimensions = _context20.sent;
+
+                if (!(prevDimensions.width !== nextDimensions.width || prevDimensions.height !== nextDimensions.height)) {
+                  _context20.next = 42;
+                  break;
+                }
+
+                return _context20.abrupt("return", {
+                  reset: {
+                    rects: true
+                  }
+                });
+
+              case 42:
+                return _context20.abrupt("return", {});
+
+              case 43:
+              case "end":
+                return _context20.stop();
+            }
+          }
+        }, _callee8);
       }))();
     }
   };
@@ -1228,10 +1357,9 @@ var Popper = function Popper(_ref) {
       popupStyle = _ref.popupStyle,
       placement = _ref.placement,
       _ref$closeOnClickOuts = _ref.closeOnClickOutside,
-      closeOnClickOutside = _ref$closeOnClickOuts === void 0 ? true : _ref$closeOnClickOuts,
-      _ref$unmountOnExit = _ref.unmountOnExit,
-      unmountOnExit = _ref$unmountOnExit === void 0 ? true : _ref$unmountOnExit,
-      _ref$middleware = _ref.middleware,
+      closeOnClickOutside = _ref$closeOnClickOuts === void 0 ? true : _ref$closeOnClickOuts;
+      _ref.unmount;
+      var _ref$middleware = _ref.middleware,
       middleware = _ref$middleware === void 0 ? EMPTY_ARRAY : _ref$middleware;
 
   var _useState = useState(null),
@@ -1254,7 +1382,7 @@ var Popper = function Popper(_ref) {
 
   useEffect(function () {
     if (!visible || !referenceElement || !popperElement) {
-      return setPositionCalculated(false);
+      return;
     }
 
     return autoUpdate(referenceElement, popperElement, function () {
@@ -1273,23 +1401,33 @@ var Popper = function Popper(_ref) {
           popperElement.setAttribute('data-popper-placement', placement);
         }
 
-        setPositionCalculated(true);
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            setPositionCalculated(true);
+          });
+        });
       });
     });
   }, [placement, popperElement, referenceElement, visible]);
   useClickAway(closeOnClickOutside && visible ? [referenceElement, popperElement] : [], onClose);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.cloneElement(children, {
     ref: setReferenceElement
-  }), /*#__PURE__*/React.createElement(Portal, null, /*#__PURE__*/React.createElement(CSSTransition, {
-    "in": visible && positionCalculated,
-    timeout: 100,
-    classNames: "sf-popper",
-    unmountOnExit: unmountOnExit
-  }, /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement(Portal, null, visible || positionCalculated ? /*#__PURE__*/React.createElement(Transition, {
+    show: visible && positionCalculated,
     className: clsx('sf-popper', popupClassName),
     style: popupStyle,
-    ref: setPopperElement
-  }, popup))));
+    enterFrom: "sf-popper-out",
+    enter: "sf-popper-active",
+    enterTo: "sf-popper-in",
+    leaveFrom: "sf-popper-in",
+    leave: "sf-popper-active",
+    leaveTo: "sf-popper-out",
+    ref: setPopperElement,
+    unmount: false,
+    afterLeave: function afterLeave() {
+      return setPositionCalculated(false);
+    }
+  }, popup) : null));
 };
 
-export { Popper as P, shift as s };
+export { Popper as P, shift as a, size as s };

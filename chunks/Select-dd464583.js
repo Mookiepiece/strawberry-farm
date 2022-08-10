@@ -6,8 +6,8 @@ import _mapInstanceProperty from '@babel/runtime-corejs3/core-js-stable/instance
 import React, { useState, useEffect, useRef } from 'react';
 import { c as clsx } from './clsx.m-1795d575.js';
 import { I as Input } from './Input-3e81c307.js';
-import { P as Popper, s as shift } from './Popper-ced6c9a6.js';
-import { S as ScrollView } from './ScrollView-6433e01c.js';
+import { P as Popper, s as size, a as shift } from './Popper-8bfb114e.js';
+import { S as ScrollView } from './ScrollView-40d67c21.js';
 import '@babel/runtime-corejs3/core-js-stable/object/keys';
 import '@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols';
 import '@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor';
@@ -170,7 +170,12 @@ var Select = function Select(_ref2) {
         className: "st-option__inner"
       }, label || iValue));
     })),
-    middleware: [shift10],
+    middleware: [shift10, size({
+      apply: function apply(_ref4) {
+        var elements = _ref4.elements;
+        elements.floating.style.width = elements.reference.getBoundingClientRect().width + 'px';
+      }
+    })],
     popupClassName: "sf-popper--default sf-popper--zoom-y",
     onClose: function onClose() {
       return setVisible(false);

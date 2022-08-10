@@ -7,7 +7,6 @@
   overflow: hidden;
   vertical-align: middle;
   border-radius: 6px;
-  transition: width 0.3s;
   user-select: none;
   pointer-events: none;
 
@@ -63,24 +62,16 @@
   pointer-events: none;
 }
 
-.st-spin-enter {
+.st-spin-out {
   width: 0;
 }
 
-.st-spin-enter-active {
+.st-spin-in {
   width: 30px;
 }
 
-.st-spin-exit {
-  width: 0;
-}
-
-.st-spin-exit-active {
-  width: 0;
-}
-
-.st-spin-exit-done {
-  width: 0;
+.st-spin-active {
+  transition: width 0.3s;
 }
 
 @keyframes fill {

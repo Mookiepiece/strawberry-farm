@@ -10,8 +10,8 @@ export declare type PopperProps = {
     popupClassName?: ClassValue;
     popupStyle?: React.CSSProperties;
     closeOnClickOutside?: boolean;
-    unmountOnExit?: boolean;
+    unmount?: boolean;
     children: React.ReactElement;
 };
-declare const Popper: ({ children, popup, visible, onClose, popupClassName, popupStyle, placement, closeOnClickOutside, unmountOnExit, middleware, }: PopperProps) => React.ReactElement;
+declare const Popper: ({ children, popup, visible, onClose, popupClassName, popupStyle, placement, closeOnClickOutside, unmount, middleware, }: PopperProps) => React.ReactElement;
 export default Popper;

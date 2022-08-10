@@ -9,6 +9,8 @@ import '@babel/runtime-corejs3/core-js-stable/object/entries';
 import '@babel/runtime-corejs3/helpers/toConsumableArray';
 import '@babel/runtime-corejs3/core-js-stable/instance/find-index';
 import '@babel/runtime-corejs3/core-js-stable/instance/slice';
+import { M as Mitt } from './mitt-640f195b.js';
+import { u as useEventCallback } from './keys-73f87561.js';
 import '@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols';
 import '@babel/runtime-corejs3/core-js-stable/instance/filter';
 import '@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor';
@@ -19,20 +21,17 @@ import '@babel/runtime-corejs3/core-js-stable/object/define-property';
 import '@babel/runtime-corejs3/helpers/typeof';
 import '@babel/runtime-corejs3/core-js-stable/array/is-array';
 import '@babel/runtime-corejs3/core-js-stable/object/keys';
-import { M as Mitt } from './mitt-640f195b.js';
-import { u as useEventCallback } from './keys-73f87561.js';
 import '@babel/runtime-corejs3/core-js-stable/instance/every';
 import '@babel/runtime-corejs3/helpers/asyncToGenerator';
 import '@babel/runtime-corejs3/regenerator';
 import '@babel/runtime-corejs3/core-js-stable/promise';
 import 'react-dom';
-import 'react-use';
 import 'react-dom/client';
 import 'zustand';
 import '@babel/runtime-corejs3/helpers/objectWithoutProperties';
 import '@babel/runtime-corejs3/core-js-stable/json/stringify';
 import '@babel/runtime-corejs3/core-js-stable/object/is';
-import { u as useSlider, A as AXIS_MAP } from './useSlider-3384c449.js';
+import { u as useSlider, A as AXIS_MAP } from './useSlider-e11cf4ab.js';
 
 var ScrollView = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
   var children = _ref.children,

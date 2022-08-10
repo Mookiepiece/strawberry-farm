@@ -2,7 +2,7 @@ import _extends from '@babel/runtime-corejs3/helpers/extends';
 import _objectWithoutProperties from '@babel/runtime-corejs3/helpers/objectWithoutProperties';
 import React from 'react';
 import { c as clsx } from './clsx.m-1795d575.js';
-import { S as Spin } from './Spin-c87dbd38.js';
+import { S as Spin } from './Spin-aa0041ea.js';
 import { b as bem } from './bem-ed3348cc.js';
 
 var _excluded = ["type", "primary", "textual", "block", "solid", "loading", "disabled", "haircut", "children", "className"];

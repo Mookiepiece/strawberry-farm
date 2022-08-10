@@ -1,21 +1,36 @@
-.st-notification-item-enter {
-  transform: translateX(-300px);
-}
-
-.st-notification-item-enter-active {
-  transform: translateX(0);
+.sf-notification-item {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  transform: translateY(var(--y));
+  transform-origin: top;
   transition: all 0.3s var(--bezier-ea);
 }
 
-.st-notification-item-exit {
-  transform: translateX(0);
+.sf-notification-item__content-in {
+  animation: sf-notification-item-in-da-you 0.3s var(--bezier-ea) forwards;
 }
 
-.st-notification-item-exit-active {
-  transform: translateX(-300px);
-  transition: all 0.3s var(--bezier-wave);
+.sf-notification-item__content-out {
+  animation: sf-notification-item-out-da-you 0.3s var(--bezier-ea) forwards;
+}
+@keyframes sf-notification-item-in-da-you {
+  from {
+    transform: translateY(0) scale(0);
+  }
+
+  to {
+    transform: translateY(0) scale(1);
+  }
 }
 
-.st-notification-item-exit-done {
-  transform: translateX(-300px);
+@keyframes sf-notification-item-out-da-you {
+  from {
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    transform: translateY(0) scale(0);
+  }
 }

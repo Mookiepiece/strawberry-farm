@@ -1,6 +1,5 @@
 import React from 'react';
 declare const Notification: {
-    push: (children: React.ReactNode | React.ReactNode[]) => void;
-    setup: () => void;
+    push(content: React.ReactNode): void;
 };
 export default Notification;

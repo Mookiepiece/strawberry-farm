@@ -34,7 +34,4 @@ var useClickAway = function useClickAway(_ref, callback) {
   }, [eventName, handler, refs.length]);
 };
 
-var noop = function noop() {};
-var EMPTY_ARRAY = [];
-
-export { EMPTY_ARRAY as E, noop as n, useClickAway as u };
+export { useClickAway as u };

@@ -26,49 +26,22 @@
   border-radius: 2px;
   box-shadow: 0 2px 12px 0 #0001;
   transform: translate(var(--x), var(--y));
-  opacity: 0;
 }
 
-.sf-popper-enter {
+.sf-popper-out {
   &.sf-popper--default {
     transform: translate(var(--x), var(--y)) scale(0);
-    opacity: 0;
   }
 }
 
-.sf-popper-enter-active {
+.sf-popper-in {
   &.sf-popper--default {
     transform: translate(var(--x), var(--y)) scale(1);
-    opacity: 1;
-    transition: transform 0.1s var(--bezier-wave), opacity 0.1s var(--bezier-wave);
   }
 }
 
-.sf-popper-enter-done {
+.sf-popper-active {
   &.sf-popper--default {
-    transform: translate(var(--x), var(--y)) scale(1);
-    opacity: 1;
-  }
-}
-
-.sf-popper-exit {
-  &.sf-popper--default {
-    transform: translate(var(--x), var(--y)) scale(1);
-    opacity: 1;
-  }
-}
-
-.sf-popper-exit-active {
-  &.sf-popper--default {
-    transform: translate(var(--x), var(--y)) scale(0);
-    opacity: 0;
-    transition: transform 0.1s var(--bezier-wave), opacity 0.1s var(--bezier-wave);
-  }
-}
-
-.sf-popper-exit-done {
-  &.sf-popper--default {
-    transform: translate(var(--x), var(--y)) scale(0);
-    opacity: 0;
+    transition: transform 0.1s var(--bezier-wave);
   }
 }

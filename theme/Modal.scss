@@ -19,7 +19,7 @@
   bottom: 0;
   left: 0;
   background: #0003;
-  transition: all .3s;
+  transition: all 0.3s;
 }
 
 .st-modal {
@@ -50,61 +50,14 @@
   padding: 20px;
 }
 
-// ANIMATIONS
-.st-modal-wrap-enter,.st-modal-wrap-appear {
-  display: flex;
-
-  .st-modal {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-
-  .st-modal__mask {
-    opacity: 0;
-  }
+.st-modal-in {
+  opacity: 0;
 }
 
-.st-modal-wrap-enter-active,.st-modal-wrap-appear-active {
-  display: flex;
-
-  .st-modal {
-    transform: scale(1);
-    opacity: 1;
-    transition: all .3s var(--bezier-ea);
-  }
-
-  .st-modal__mask {
-    opacity: 1;
-  }
+.st-modal-out {
+  opacity: 1;
 }
 
-.st-modal-wrap-enter-done {
-  display: flex;
-}
-
-.st-modal-wrap-exit {
-  display: flex;
-
-  .st-modal {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  .st-modal__mask {
-    opacity: 1;
-  }
-}
-
-.st-modal-wrap-exit-active {
-  display: flex;
-
-  .st-modal {
-    transform: scale(0.95);
-    opacity: 0;
-    transition: all 3s var(--bezier-wave);
-  }
-
-  .st-modal__mask {
-    opacity: 0;
-  }
+.st-modal-active {
+  transition: all 3s var(--bezier-wave);
 }

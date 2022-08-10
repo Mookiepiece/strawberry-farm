@@ -13,45 +13,7 @@ import _Object$entries from '@babel/runtime-corejs3/core-js-stable/object/entrie
 import _JSON$stringify from '@babel/runtime-corejs3/core-js-stable/json/stringify';
 import _typeof from '@babel/runtime-corejs3/helpers/typeof';
 import _Object$is from '@babel/runtime-corejs3/core-js-stable/object/is';
-import _concatInstanceProperty from '@babel/runtime-corejs3/core-js-stable/instance/concat';
-import zustand$1 from 'zustand';
-
-/** Copy */
-
-/**
- * `Strawberry Farm Zustand` VS `Vanilla Zustand`
- *
- * - setState always runs in `replace` mode
- */
-var zustand = function zustand(_initializer) {
-  var initializer = _initializer;
-
-  if (typeof _initializer === 'function') {
-    initializer = function initializer(_set) {
-      var _context;
-
-      for (var _len = arguments.length, rest = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        rest[_key - 1] = arguments[_key];
-      }
-
-      return _initializer.apply(void 0, _concatInstanceProperty(_context = [function set(value) {
-        var replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
-        _set(value, replace);
-      }]).call(_context, rest));
-    };
-  }
-
-  var store = zustand$1(initializer);
-  var _setState = store.setState;
-
-  store.setState = function (value) {
-    var replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-    return _setState(value, replace);
-  };
-
-  return store;
-};
+import { z as zustand } from './createPortalChannel-d343cd12.js';
 
 function shallow(objA, objB) {
   if (_Object$is(objA, objB)) {
@@ -160,4 +122,4 @@ var useStorage = function useStorage(storageModel, selector, equals) {
   return [value, storageModel.set];
 };
 
-export { useStorage as u, versionedStorage as v, zustand as z };
+export { useStorage as u, versionedStorage as v };
