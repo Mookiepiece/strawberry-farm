@@ -1,4 +1,4 @@
-import{j as r,g as a}from"./index.3f4b3495.js";import{P as e}from"./PageWalker.5ae00577.js";const n=()=>r(a,{});var t=Object.freeze(Object.defineProperty({__proto__:null,default:n},Symbol.toStringTag,{value:"Module"})),o=`import React from 'react';\r
+import{j as r,g as a}from"./index.085f51cf.js";import{P as e}from"./PageWalker.10e4a88d.js";const n=()=>r(a,{});var t=Object.freeze(Object.defineProperty({__proto__:null,default:n},Symbol.toStringTag,{value:"Module"})),o=`import React from 'react';\r
 import { Farm } from '\u{1F984}';\r
 \r
 const BasicUsage: React.FC = () => {\r
