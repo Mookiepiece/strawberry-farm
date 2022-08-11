@@ -1385,34 +1385,46 @@ var Popper = function Popper(_ref) {
       return;
     }
 
-    return autoUpdate(referenceElement, popperElement, function () {
-      computePosition(referenceElement, popperElement, {
-        middleware: middlewareRef.current,
-        placement: placement
-      }).then(function (_ref2) {
-        var x = _ref2.x,
-            y = _ref2.y;
-            _ref2.middlewareData;
-            var placement = _ref2.placement;
-        popperElement.style.setProperty('--x', x + 'px');
-        popperElement.style.setProperty('--y', y + 'px');
+    var cleanup = noop;
+    var cleanupCalled = false; // The first frame, height is 0
 
-        if (popperElement.getAttribute('data-popper-placement') !== placement) {
-          popperElement.setAttribute('data-popper-placement', placement);
-        }
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        if (cleanupCalled) return;
+        cleanup = autoUpdate(referenceElement, popperElement, function () {
+          computePosition(referenceElement, popperElement, {
+            middleware: middlewareRef.current,
+            placement: placement
+          }).then(function (_ref2) {
+            var x = _ref2.x,
+                y = _ref2.y;
+                _ref2.middlewareData;
+                var placement = _ref2.placement;
+            popperElement.style.setProperty('--x', x + 'px');
+            popperElement.style.setProperty('--y', y + 'px');
 
-        requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            setPositionCalculated(true);
+            if (popperElement.firstElementChild) {
+              if (popperElement.firstElementChild.getAttribute('data-popper-placement') !== placement) {
+                popperElement.firstElementChild.setAttribute('data-popper-placement', placement);
+              }
+            }
           });
+          setPositionCalculated(true);
         });
       });
+      return function () {
+        cleanupCalled = true;
+        cleanup();
+      };
     });
   }, [placement, popperElement, referenceElement, visible]);
   useClickAway(closeOnClickOutside && visible ? [referenceElement, popperElement] : [], onClose);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.cloneElement(children, {
     ref: setReferenceElement
-  }), /*#__PURE__*/React.createElement(Portal, null, visible || positionCalculated ? /*#__PURE__*/React.createElement(Transition, {
+  }), /*#__PURE__*/React.createElement(Portal, null, visible || positionCalculated ? /*#__PURE__*/React.createElement("div", {
+    className: "sf-popper-wrap",
+    ref: setPopperElement
+  }, /*#__PURE__*/React.createElement(Transition, {
     show: visible && positionCalculated,
     className: clsx('sf-popper', popupClassName),
     style: popupStyle,
@@ -1421,13 +1433,13 @@ var Popper = function Popper(_ref) {
     enterTo: "sf-popper-in",
     leaveFrom: "sf-popper-in",
     leave: "sf-popper-active",
-    leaveTo: "sf-popper-out",
-    ref: setPopperElement,
+    leaveTo: "sf-popper-out" // We'll manually handle unmount because we need position calculated with proper width and height
+    ,
     unmount: false,
     afterLeave: function afterLeave() {
       return setPositionCalculated(false);
     }
-  }, popup) : null));
+  }, popup)) : null));
 };
 
 export { Popper as P, shift as a, size as s };
