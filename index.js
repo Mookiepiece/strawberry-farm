@@ -2,7 +2,7 @@ export { B as Box } from './chunks/Box-07467764.js';
 export { B as Button } from './chunks/Button-371d3425.js';
 export { C as Collapse } from './chunks/Collapse-2d5e0a16.js';
 export { D as Dialog } from './chunks/Dialog-3e07731b.js';
-export { F as Farm } from './chunks/Farm-58dff978.js';
+export { F as Farm } from './chunks/Farm-114a541a.js';
 export { S as Spin } from './chunks/Spin-aa0041ea.js';
 export { I as Input } from './chunks/Input-3e81c307.js';
 export { F as Form } from './chunks/Form-bf192bdc.js';

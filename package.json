@@ -1,7 +1,7 @@
 {
   "name": "@mookiepiece/strawberry-farm",
   "version": "0.0.1-alpha.1",
-  "description": "Unobtrusive park.",
+  "description": "Strawberry Farm the react components and toolkits.",
   "type": "module",
   "main": "index.js",
   "module": "index.js",
