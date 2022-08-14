@@ -55,7 +55,7 @@ const a: Record<
     zh: 'Select 选择器',
   },
   SidebarComponentNotification: {
-    en: 'Notification 通知',
+    en: 'Notification',
     zh: 'Notification 通知',
   },
   SidebarUtilsVersionedStorage: {
@@ -91,7 +91,7 @@ const a: Record<
     zh: '开发指南',
   },
   SidebarComponentSpin: {
-    en: 'Spin 加载符',
+    en: 'Spin',
     zh: 'Spin 加载符',
   },
   // SidebarStComponentDialog: {
