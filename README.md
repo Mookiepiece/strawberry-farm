@@ -8,7 +8,7 @@ Strawberry Farm the react components and toolkits. (Not yet ready for production
 ## Screenshots
 
 <a href="https://mookiepiece.github.io/strawberry-farm/">
-  <img src="https://github.com/Mookiepiece/strawberry-farm/blob/dev/packages/docs/assets/screenshot.png" alt="screenshot" />
+  <img src="https://github.com/Mookiepiece/strawberry-farm/blob/dev/packages/docs/assets/screenshot.jpg" alt="screenshot" />
 </a>
 
 ## Docs

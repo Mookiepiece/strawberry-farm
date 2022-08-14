@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { i18nContext } from '@docs/utils/i18n';
-import logo from '@docs/logo.png';
+import logo from '@docs/../assets/logo.png';
 import { useHistory } from 'react-router-dom';
 import { Button } from '🦄';
 import './styles.scss';
