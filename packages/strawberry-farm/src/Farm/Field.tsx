@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { FarmBagItem, FarmContext } from './FarmContext';
+import { FarmBagItem, FarmContext } from './useFramStore';
 
 const Field: React.FC<{
   handleClick: () => FarmBagItem | undefined;
@@ -7,7 +7,7 @@ const Field: React.FC<{
   const [plant, setPlant] = useState<FarmBagItem | null>(null);
   const [ohhh, setOhhh] = useState(false);
 
-  const { farmMitt } = useContext(FarmContext);
+  const { harvest, plant:plantIt } = useContext(FarmContext);
 
   const inner = plant ? (ohhh ? plant.type : '🌱') : null;
 
@@ -17,7 +17,7 @@ const Field: React.FC<{
       onClick={() => {
         if (plant) {
           if (ohhh) {
-            farmMitt.emit('HARVEST', plant);
+            harvest(plant);
             setPlant(null);
             setOhhh(false);
           } else {
@@ -26,7 +26,7 @@ const Field: React.FC<{
         } else {
           const selectedItem = handleClick();
           if (selectedItem) {
-            farmMitt.emit('PLANT');
+            plantIt();
             setPlant(selectedItem);
             setTimeout(() => {
               setOhhh(true);

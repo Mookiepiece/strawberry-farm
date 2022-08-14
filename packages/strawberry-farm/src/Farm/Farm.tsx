@@ -1,91 +1,25 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { Mitt } from '../shared';
-import {
-  FarmBagItem,
-  FarmMitt,
-  FarmState,
-  FieldRegisterProps,
-  SeedString,
-  SEED_NAME_MAP,
-  FarmContext,
-  uuid,
-} from './FarmContext';
+import React, { useContext, useEffect } from 'react';
 import Field from './Field';
 import clsx from 'clsx';
-import { 帚 } from './utils';
+import { FarmBagItem, SeedString, SEED_NAME_MAP, FarmContext, useFarm } from './useFramStore';
 
 const Farm: React.FC<{
   children?: React.ReactNode;
 }> = ({ children }) => {
   useEffect(() => {});
 
-  const [state, setState] = useState<FarmState>(() => ({
-    fields: new Map<number, FieldRegisterProps>(),
-    selectedBagItem: null,
-    bag: [
-      {
-        id: uuid(),
-        type: '🍓',
-      },
-      {
-        id: uuid(),
-        type: '🍓',
-      },
-    ],
-    wallet: 300,
-  }));
+  const farmModel = useFarm();
 
-  const [farmMitt] = useState(() => {
-    const farmMitt = Mitt() as FarmMitt;
-    farmMitt.on('SELECT_BAG_ITEM', bagItem =>
-      setState(state => ({
-        ...state,
-        selectedBagItem: state.selectedBagItem?.id === bagItem.id ? null : bagItem,
-      }))
-    );
-    farmMitt.on('PLANT', () =>
-      setState(state => ({
-        ...state,
-        selectedBagItem: null,
-        bag: 帚.remove(state.bag, i => state.selectedBagItem?.id === i.id),
-      }))
-    );
-
-    farmMitt.on('HARVEST', item => {
-      setState(state => ({ ...state, wallet: state.wallet + SEED_NAME_MAP.get(item.type)!.value }));
-    });
-    return farmMitt;
-  });
-
-  const farmContextValue = useMemo(
-    () => ({
-      farmMitt,
-    }),
-    [farmMitt]
-  );
+  const { state, buy } = farmModel;
 
   return (
-    <FarmContext.Provider value={farmContextValue}>
+    <FarmContext.Provider value={farmModel}>
       <div className="sf-farm">
         <span className="sf-farm__wallet">{state.wallet}</span>
         <span
           className={clsx('sf-farm__store', state.wallet < 100 && 'sf-farm__store--disabled')}
           onClick={() => {
             if (state.wallet >= 100) {
-              const create = (type: SeedString) => {
-                setState(state => ({
-                  ...state,
-                  bag: [
-                    ...state.bag,
-                    {
-                      id: uuid(),
-                      type,
-                    },
-                  ],
-                  wallet: state.wallet - 100,
-                }));
-              };
-
               const m: Record<SeedString, number> = {
                 '🍓': 30,
                 '🍇': 30,
@@ -93,14 +27,14 @@ const Farm: React.FC<{
                 '🍟': 10,
               };
 
-              const s = Math.random() * 100;
-              console.log(s);
+              let s = Math.random() * 100;
+
               const e = [...Object.entries(m)] as [SeedString, number][];
-              for (let i = 0; i < e.length; i++) {
-                e[i][1] = e[i][1] + (e[i - 1]?.[1] ?? 0);
-                if (e[i][1] >= s) {
-                  return create(e[i][0]);
-                }
+              let i: typeof e[0] | undefined;
+              while ((i = e.shift())) {
+                const [seedName, weight] = i;
+                if (weight >= s) return buy(seedName);
+                s -= weight;
               }
             }
           }}
@@ -121,7 +55,7 @@ const Farm: React.FC<{
           ))}
         </FieldSet>
       </div>
-      <Bag selectedBagItem={state.selectedBagItem} bag={state.bag} />
+      <Bag />
     </FarmContext.Provider>
   );
 };
@@ -130,35 +64,30 @@ const FieldSet: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   return <div className="sf-farm-field-set">{children}</div>;
 };
 
-const Bag: React.FC<{
-  bag: FarmBagItem[];
-  selectedBagItem: FarmBagItem | null;
-}> = React.memo(({ bag, selectedBagItem }) => {
+const Bag: React.FC = () => {
+  const {
+    state: { bag, selectedBagItem },
+    selectItem,
+  } = useContext(FarmContext);
   return (
     <div className="sf-farm-bag">
-      {bag.map(({ id, type }) => (
-        <BagItem key={id} id={id} type={type} active={selectedBagItem?.id === id} />
-      ))}
+      {bag.map(bagItem => {
+        const { id, type } = bagItem;
+        const active = selectedBagItem?.id === id;
+
+        return (
+          <div
+            className={clsx('st-farm-plant-seed', active && 'st-farm-plant-seed--active')}
+            onClick={() => selectItem(bagItem)}
+            key={id}
+          >
+            <div className="st-farm-plant-seed__image">{type}</div>
+            <div className="st-farm-plant-seed__title">{SEED_NAME_MAP.get(type)?.name}</div>
+          </div>
+        );
+      })}
     </div>
   );
-});
-
-const BagItem: React.FC<{
-  id: number;
-  type: SeedString;
-  active: boolean;
-}> = React.memo(({ id, type, active }) => {
-  const farmContext = useContext(FarmContext);
-
-  return (
-    <div
-      className={clsx('st-farm-plant-seed', active && 'st-farm-plant-seed--active')}
-      onClick={() => farmContext.farmMitt.emit('SELECT_BAG_ITEM', { id, type })}
-    >
-      <div className="st-farm-plant-seed__image">{type}</div>
-      <div className="st-farm-plant-seed__title">{SEED_NAME_MAP.get(type)?.name}</div>
-    </div>
-  );
-});
+};
 
 export default Farm;
