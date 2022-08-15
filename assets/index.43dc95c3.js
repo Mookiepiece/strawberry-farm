@@ -1,4 +1,4 @@
-import{j as r,F as n,B as t,N as e}from"./index.085f51cf.js";import{P as a}from"./PageWalker.10e4a88d.js";const o=()=>r(n,{children:r(t,{primary:!0,onClick:()=>e.push(r("h1",{style:{fontSize:void 0},children:"abcdefg"})),children:"\u6253\u5F00\u5BF9\u8BDD\u6846"})});var i=Object.freeze(Object.defineProperty({__proto__:null,default:o},Symbol.toStringTag,{value:"Module"})),c=`import React, { useState } from 'react';\r
+import{j as r,F as n,B as t,N as e}from"./index.e42e054f.js";import{P as a}from"./PageWalker.8f5b2b25.js";const o=()=>r(n,{children:r(t,{primary:!0,onClick:()=>e.push(r("h1",{style:{fontSize:void 0},children:"abcdefg"})),children:"\u6253\u5F00\u5BF9\u8BDD\u6846"})});var i=Object.freeze(Object.defineProperty({__proto__:null,default:o},Symbol.toStringTag,{value:"Module"})),c=`import React, { useState } from 'react';\r
 import { Button, Notification } from '\u{1F984}';\r
 \r
 const BasicUsage: React.FC = () => {\r

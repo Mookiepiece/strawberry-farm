@@ -1,4 +1,4 @@
-import{r as n,m as a,j as s,B as c}from"./index.085f51cf.js";import{P as l}from"./PageWalker.10e4a88d.js";const i=()=>{const[t,u]=n.exports.useState(0),r=a(()=>(u(t+1),t)),o=n.exports.useRef(null);return n.exports.useEffect(()=>{const e=o.current;!e||(e.innerText=`Count: ${r()}`,e.addEventListener("click",()=>{e.innerText=`Count: ${r()}`}))},[]),s(c,{ref:o})};var f=Object.freeze(Object.defineProperty({__proto__:null,default:i},Symbol.toStringTag,{value:"Module"})),b=`import React, { useEffect, useRef, useState } from 'react';\r
+import{r as n,o as a,j as s,B as c}from"./index.e42e054f.js";import{P as l}from"./PageWalker.8f5b2b25.js";const i=()=>{const[t,u]=n.exports.useState(0),r=a(()=>(u(t+1),t)),o=n.exports.useRef(null);return n.exports.useEffect(()=>{const e=o.current;!e||(e.innerText=`Count: ${r()}`,e.addEventListener("click",()=>{e.innerText=`Count: ${r()}`}))},[]),s(c,{ref:o})};var f=Object.freeze(Object.defineProperty({__proto__:null,default:i},Symbol.toStringTag,{value:"Module"})),b=`import React, { useEffect, useRef, useState } from 'react';\r
 import { Button } from '\u{1F984}';\r
 import { useEventCallback } from '\u{1F984}/shared';\r
 \r
@@ -31,11 +31,11 @@ export default BasicUsage;\r
 ### \u57FA\u672C\u7528\u6CD5\r
 \r
 ::demo{basic}\r
-`,m=`## useSingletonAsyncFn\r
+`,C=`## useSingletonAsyncFn\r
 \r
 The offical solution before \`useEvent\` was filed.\r
 \r
 ### Basic\r
 \r
 ::demo{basic}\r
-`;const C={"./basic.tsx":f},v={basic:b},g={zh:d,en:m},E=()=>s(l,{requireDemo:C,requireRaw:v,requireMd:g});export{E as default};
+`;const m={"./basic.tsx":f},v={basic:b},g={zh:d,en:C},E=()=>s(l,{requireDemo:m,requireRaw:v,requireMd:g});export{E as default};
