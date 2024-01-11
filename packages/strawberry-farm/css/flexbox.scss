@@ -1,0 +1,122 @@
+@import './breakpoints.scss';
+
+@each $bp, $__ in $breakpoints {
+  @include up($bp) {
+    // Flex Display
+    :where(.#{w($bp)}\[X\], .#{w($bp)}\[Y\], .#{w($bp)}\[A\], .#{w($bp)}\[B\]) {
+      display: flex;
+    }
+
+    :where(.#{w($bp)}\[x\], .#{w($bp)}\[y\], .#{w($bp)}\[a\], .#{w($bp)}\[b\]) {
+      display: inilne-flex;
+    }
+
+    :where(.#{w($bp)}\[A\], .#{w($bp)}\[a\]) {
+      flex-direction: column;
+    }
+
+    :where(.#{w($bp)}\[B\], .#{w($bp)}\[b\]) {
+      flex-direction: row;
+    }
+
+    :where(.#{w($bp)}\[Y\], .#{w($bp)}\[y\]) {
+      flex-direction: column-reverse;
+    }
+
+    :where(.#{w($bp)}\[X\], .#{w($bp)}\[x\]) {
+      flex-direction: row-reverse;
+    }
+
+    // One-Column Alignment
+
+    $ALIGNITEMS: (
+      S: flex-start,
+      C: center,
+      E: flex-end,
+      F: stretch,
+      B: baseline,
+    );
+    $JUSTIFYCONTENT: (
+      S: flex-start,
+      C: center,
+      E: flex-end,
+      0: space-between,
+      1: space-around,
+      2: space-evenly,
+    );
+    @each $a, $b in $ALIGNITEMS {
+      :where(
+          .#{w($bp)}\[S#{$a}\],
+          .#{w($bp)}\[C#{$a}\],
+          .#{w($bp)}\[E#{$a}\],
+          .#{w($bp)}\[0#{$a}\],
+          .#{w($bp)}\[1#{$a}\],
+          .#{w($bp)}\[2#{$a}\]
+        ) {
+        align-items: #{$b};
+      }
+    }
+    @each $a, $b in $JUSTIFYCONTENT {
+      :where(
+          .#{w($bp)}\[#{$a}S\],
+          .#{w($bp)}\[#{$a}C\],
+          .#{w($bp)}\[#{$a}E\],
+          .#{w($bp)}\[#{$a}F\],
+          .#{w($bp)}\[#{$a}B\]
+        ) {
+        justify-content: #{$b};
+      }
+    }
+    // Multi-Column Alignment
+    :where(
+        .#{w($bp)}\[\[\]S\],
+        .#{w($bp)}\[\[\]C\],
+        .#{w($bp)}\[\[\]E\],
+        .#{w($bp)}\[\[\]0\],
+        .#{w($bp)}\[\[\]1\],
+        .#{w($bp)}\[\[\]2\],
+        .#{w($bp)}\[\[\]F\]
+      ) {
+      flex-wrap: wrap;
+    }
+    :where(
+        .#{w($bp)}\[S\[\]\],
+        .#{w($bp)}\[C\[\]\],
+        .#{w($bp)}\[E\[\]\],
+        .#{w($bp)}\[0\[\]\],
+        .#{w($bp)}\[1\[\]\],
+        .#{w($bp)}\[2\[\]\],
+        .#{w($bp)}\[F\[\]\]
+      ) {
+      flex-wrap: wrap-revere;
+    }
+
+    $ALGINCONTENT: (
+      S: flex-start,
+      C: center,
+      E: flex-end,
+      0: space-between,
+      1: space-around,
+      2: space-evenly,
+      F: stretch,
+    );
+    @each $a, $b in $ALGINCONTENT {
+      :where(.#{w($bp)}\[\[\]#{$a}\], .#{w($bp)}\[#{$a}\[\]\]) {
+        align-content: #{$b};
+      }
+    }
+  }
+}
+
+@each $bp, $__ in $breakpoints {
+  @include up($bp) {
+    @each $a in (0, 1, 2, 3, 4, 5) {
+      :where(.\[\+#{$a}\]) {
+        flex-grow: #{$a};
+      }
+      :where(.\[\-#{$a}\]) {
+        flex-shrink: #{$a};
+      }
+    }
+  }
+}

@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+body {
+  font-family: 'Inter var', 'Inter', 'Noto Sans SC', sans-serif;
+  background-color: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+}
+
+:root.dark {
+  color-scheme: dark;
+}
+
+.VPLink,
+.VPButton {
+  text-decoration: none;
+}
+
+:is(.VPNav, .VPLocalNav, .VPDocAside, .VPDocFooter) {
+  button {
+    border: 0;
+    background-color: transparent;
+  }
+  a {
+    text-decoration: none;
+  }
+}
+
+/* https://shikiji.netlify.app/guide/dual-themes */
+.shiki {
+  background-color: transparent !important;
+}
+html.dark .shiki,
+html.dark .shiki span {
+  color: var(--shiki-dark) !important;
+}
+
+:root {
+  --落霞: radial-gradient(#fe7, #0000 50%) 50% 100% / 400% 400% no-repeat,
+    linear-gradient(135deg, #fb9, #f9b);
+  --幻迷: repeating-radial-gradient(
+        transparent 0px,
+        transparent 5px,
+        #fafafa 6px,
+        #fafafa 11px
+      )
+      0 0 / 11px 11px,
+    repeating-radial-gradient(
+        transparent 0px,
+        transparent 5px,
+        #f8f8f8 6px,
+        #f8f8f8 10px
+      )
+      0 0 / 10px 10px,
+    linear-gradient(120deg, #acfe, #f9de);
+}
+
+.🩷 {
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow:
+    inset 1px 1px #fff,
+    inset 0 0 0 1px #ddd;
+  color: #334;
+  background: var(--落霞);
+}
+
+.dark .🩷 {
+  box-shadow: inset 1px 1px #fff8,
+  inset 0 0 0 1px #000;
+}
+
+.🦄 {
+  border-radius: 5px;
+  box-shadow: inset 1px 1px #fff;
+  color: #334;
+  background: var(--幻迷);
+}
+
+.🪟 {
+  background: repeating-linear-gradient(
+    120deg,
+    #0000 0px,
+    #0000 5px,
+    #f8f6f4 5px,
+    #f8f6f4 10px
+  );
+}
+.🪟 + .🪟 {
+  margin-top: 10px;
+}
+.dark .🪟 {
+  background: repeating-linear-gradient(
+    120deg,
+    #0000 0px,
+    #0000 5px,
+    #333 5px,
+    #333 10px
+  );
+}
+
+:where(samp) {
+  white-space: pre-wrap;
+  user-select: none;
+  pointer-events: none;
+  z-index: 10086;
+  position: relative;
+
+  color: #24a;
+  font: bold 15px monospace;
+  --back: #fff;
+  filter: drop-shadow(var(--back) 1px 1px) drop-shadow(var(--back) -1px -1px)
+    drop-shadow(var(--back) 0 2px);
+}

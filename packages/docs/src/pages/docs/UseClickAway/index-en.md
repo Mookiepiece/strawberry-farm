@@ -1,5 +1,0 @@
-## useClickAway
-
-### Basic
-
-::demo{basic}

@@ -1,0 +1,57 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%; // For images to not be able to exceed their container
+  max-height: 100%;
+  object-fit: contain;
+}
+
+video {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px; // iPhone 4/5
+  white-space: pre-wrap;
+  overflow-wrap: break-word; // CSS IS AWESOME
+  line-height: 1.2; // Default line height in Firefox, but different in Google Chrome
+}
+
+table {
+  border-collapse: collapse;
+}
+
+// Remove default margin
+:where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd) {
+  margin: 0;
+}
+
+:where(ul, ol) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// Restore default margin and list style inside an article element
+:where(article, [role='article'])
+  :where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd) {
+  margin-block: 1em;
+}
+
+:where(article, [role='article']) :where(ul) {
+  list-style: disc;
+  margin-block: 1em;
+  margin-inline-start: 40px;
+}
+
+:where(article, [role='article']) :where(ol) {
+  list-style: decimal;
+  margin-block: 1em;
+  margin-inline-start: 40px;
+}

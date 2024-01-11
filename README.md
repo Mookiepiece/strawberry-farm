@@ -3,7 +3,7 @@
   <img src="https://github.com/Mookiepiece/strawberry-farm/blob/dev/packages/docs/assets/logo.png" width="200px" alt="logo" />
 </p>
 
-Strawberry Farm the react components and toolkits. (Not yet ready for production).
+Strawberry Farm the js library. (Not yet ready for production).
 
 ## Screenshots
 

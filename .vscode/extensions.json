@@ -1,10 +1,10 @@
 {
   "recommendations": [
-    "editorconfig.editorconfig",
+    "EditorConfig.EditorConfig",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "stylelint.vscode-stylelint",
-    "dsznajder.es7-react-js-snippets",
-    "mrmlnc.vscode-scss"
+    "mrmlnc.vscode-scss",
+    "Vue.volar",
+    "Vue.vscode-typescript-vue-plugin"
   ]
 }
