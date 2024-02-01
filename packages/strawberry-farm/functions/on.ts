@@ -1,10 +1,10 @@
 // TODO: emit.bubbles
 
-interface SFCustomEventMap {}
+export interface SFCustomEventMap {}
 
 type EventMapExtended = HTMLElementEventMap &
   SFCustomEventMap &
-  Record<string, CustomEvent>;
+  Record<string, any>;
 
 type EventModifiers =
   | 'stop'
@@ -18,6 +18,7 @@ type KeyReconizerModifiers = 'key';
 type Modifiers = EventModifiers | SystemKeyModifiers | KeyReconizerModifiers;
 
 const systemModifiers = ['ctrl', 'shift', 'alt', 'meta'];
+
 type KeyedEvent = MouseEvent | KeyboardEvent | TouchEvent;
 /**
  * https://github.com/vuejs/core/blob/ee4cd78a06e6aa92b12564e527d131d1064c2cd0/packages/runtime-dom/src/directives/vOn.ts#L14
@@ -37,15 +38,16 @@ const modifierGuards: Record<
     systemModifiers.some(m => (e as KeyedEvent)[`${m}Key`] && !set.has(m)),
 };
 
-type ON<T extends EventTarget> = (target: T) => ON2;
+export type ON<T extends EventTarget> = (target: T) => ON2;
 
-type ON2 = {
+export type ON2 = {
   [K in keyof EventMapExtended]: ON3<K, EventMapExtended[K]>;
 };
 
-type ON3<N extends keyof EventMapExtended, E extends EventMapExtended[N]> = ((
-  listener: (ev: E) => void,
-) => () => void) & {
+export type ON3<
+  N extends keyof EventMapExtended,
+  E extends EventMapExtended[N],
+> = ((listener: (ev: E) => void) => () => void) & {
   [K in Modifiers]: ON3<N, E>;
 } & (E extends KeyboardEvent
     ? {
@@ -53,7 +55,7 @@ type ON3<N extends keyof EventMapExtended, E extends EventMapExtended[N]> = ((
       }
     : void);
 
-const on = <T extends EventTarget>(el: T) => {
+export const on = <T extends EventTarget>(el: T) => {
   let _modifiers: string[] = [];
 
   const polaris = new Proxy(() => {}, {
@@ -86,28 +88,24 @@ const on = <T extends EventTarget>(el: T) => {
         argArray[0](e instanceof CustomEvent ? e.detail : e);
       };
 
-      el.addEventListener(type, fn, {
-        capture,
-        once,
-        passive,
-      });
+      el.addEventListener(type, fn, { capture, once, passive });
       return () => el.removeEventListener(type, fn);
     },
   });
   return polaris as ON2;
 };
 
-on(document.body).keydown(keyboardevt => {});
-on(document.body).keydown.exact(keyboardevt => {});
-on(document.body).keydown.ctrl(keyboardevt => {});
-on(document.body).keydown.KeyK(keyboardevt => {});
-on(document.body).keypress.ctrl.KeyK(keyboardevt => {});
+// on(document.body).keydown(keyboardevt => {});
+// on(document.body).keydown.exact(keyboardevt => {});
+// on(document.body).keydown.ctrl(keyboardevt => {});
+// on(document.body).keydown.KeyK(keyboardevt => {});
+// on(document.body).keypress.ctrl.KeyK(keyboardevt => {});
 
-on(document.body).click.ctrl(mouse => {});
-on(document.body).click(mouse => {});
-on(document.body).pointercancel(pointer => {});
-on(document.body).wheel(wheel => {});
-on(document.body).touchmove(wheel => {});
-on(document.body).transitioncancel(po => {});
-on(document.body).exact(keyboardevt => {});
-on(document.body).customevents(keyboardevt => {});
+// on(document.body).click.ctrl(mouse => {});
+// on(document.body).click(mouse => {});
+// on(document.body).pointercancel(pointer => {});
+// on(document.body).wheel(wheel => {});
+// on(document.body).touchmove(wheel => {});
+// on(document.body).transitioncancel(po => {});
+// on(document.body).exact(keyboardevt => {});
+// on(document.body).customevents(keyboardevt => {});
