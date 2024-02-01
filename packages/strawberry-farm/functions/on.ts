@@ -2,7 +2,7 @@
 
 interface SFCustomEventMap {}
 
-type HTMLElementEventMapCustomized = HTMLElementEventMap &
+type EventMapExtended = HTMLElementEventMap &
   SFCustomEventMap &
   Record<string, CustomEvent>;
 
@@ -37,26 +37,15 @@ const modifierGuards: Record<
     systemModifiers.some(m => (e as KeyedEvent)[`${m}Key`] && !set.has(m)),
 };
 
-type ON<
-  T extends EventTarget,
-  N extends keyof HTMLElementEventMapCustomized,
-  E extends HTMLElementEventMapCustomized[N],
-> = (target: T) => ON2<N, E>;
+type ON<T extends EventTarget> = (target: T) => ON2;
 
-type ON2<
-  N extends keyof HTMLElementEventMapCustomized,
-  E extends HTMLElementEventMapCustomized[N],
-> = {
-  [K in keyof HTMLElementEventMapCustomized]: ON3<
-    K,
-    HTMLElementEventMapCustomized[K]
-  >;
+type ON2 = {
+  [K in keyof EventMapExtended]: ON3<K, EventMapExtended[K]>;
 };
 
-type ON3<
-  N extends keyof HTMLElementEventMapCustomized,
-  E extends HTMLElementEventMapCustomized[N],
-> = ((listener: (ev: E) => void) => void) & {
+type ON3<N extends keyof EventMapExtended, E extends EventMapExtended[N]> = ((
+  listener: (ev: E) => void,
+) => () => void) & {
   [K in Modifiers]: ON3<N, E>;
 } & (E extends KeyboardEvent
     ? {
@@ -64,13 +53,7 @@ type ON3<
       }
     : void);
 
-const on = <
-  T extends EventTarget,
-  N extends keyof HTMLElementEventMapCustomized,
-  E extends HTMLElementEventMapCustomized[N],
->(
-  el: T,
-) => {
+const on = <T extends EventTarget>(el: T) => {
   let _modifiers: string[] = [];
 
   const polaris = new Proxy(() => {}, {
@@ -100,7 +83,7 @@ const on = <
         }
         if (keyCode && keyCode !== (e as KeyboardEvent)[codeVsKey]) return;
 
-        argArray[0](e);
+        argArray[0](e instanceof CustomEvent ? e.detail : e);
       };
 
       el.addEventListener(type, fn, {
@@ -111,7 +94,7 @@ const on = <
       return () => el.removeEventListener(type, fn);
     },
   });
-  return polaris as ON2<N, E>;
+  return polaris as ON2;
 };
 
 on(document.body).keydown(keyboardevt => {});
