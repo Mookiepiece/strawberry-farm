@@ -20,4 +20,26 @@ class Validators {
 }
 ```
 
-可以看到其实能起作用的并不多
+### Type
+
+- `string`: Must be of type `string`. `This is the default type.`
+  - `string`: Custom error message.
+  - `number`: same as `[number, number]` below.
+  - `[number, number]`: Turple that repesents min(or minLength) and max(or minLength), passing undefined to skip one of them.
+  - `RegExp`: Match pattern.
+- `number`: Must be of type `number`.
+  - `string`: Custom error message.
+  - `number`: same as `[number, number]` below.
+  - `[number, number]`: Turple that repesents min(or minLength) and max(or minLength), passing undefined to skip one of them.
+- `boolean`: Must be of type `boolean`.
+  - `string`: Custom error message.
+- `array`: Must be an array as determined by `Array.isArray`.
+- `object`: Must be of type `object` and not   `Array.isArray`.
+- `enum`: Value must exist in the `enum`.
+  - `any[]`: 
+- `date`: Value must be valid as determined by `Date`
+- `url`: Must be of type `url`.
+- `hex`: Must be of type `hex`.
+- `email`: Must be of type `email`.
+- `any`: Can be any type.
+

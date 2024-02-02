@@ -15,8 +15,5 @@
   },
   "dependencies": {
     "clsx": "^2.0.0"
-  },
-  "devDependencies": {
-    "vitest": "^1.2.2"
   }
 }
