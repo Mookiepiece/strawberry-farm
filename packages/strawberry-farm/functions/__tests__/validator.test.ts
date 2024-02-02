@@ -1,14 +1,30 @@
 import { describe, it, expect } from 'vitest';
 import { Rules, validate } from '../validator';
 
+/**
+ * NN: Not Nullish
+ */
 const rr: Record<string, Rules> = {
-  any: [],
-  AnyNN: 'required',
+  Any1: [],
+  Any2: {},
+  Any3: { message: 'foo' },
+  AnyNN1: 'required',
   AnyNN2: ['required'],
   AnyNN3: { required: true },
+  AnyNN4: [{ required: true }, 'required', 'required'],
+  AnyNNC1: { required: 'foo' },
+  AnyNNC2: { required: true, message: 'foo' },
+  AnyNNC3: [{ required: true, message: 'foo' }, 'required', 'required'],
   //
-  'String Nullish Literal': 'string',
-  'String Literal': ['string', 'required'],
+  String1: 'string',
+  String2: ['string'],
+  String3: { string: true },
+  String4: [{ string: true }, 'string'],
+  StringNN1: ['string', 'required'],
+  StringNN2: [{ string: true, required: true }],
+  StringNN3: [{ string: true, required: true }, 'string', 'required'],
+  StringNN4: [{ required: true }, 'string'],
+  StringNN5: ['required', { string: true }],
   'String Custom Message': { string: true, message: 'message' },
   'String Custom Message Short': { string: 'true' },
   'String Not Nullish': { string: true, required: true },
@@ -47,18 +63,20 @@ const rr: Record<string, Rules> = {
 };
 
 describe('vadliator', () => {
-  const $ = (rules: Rules, ...turples: [any, string][]) => {
-    expect(rules).toBeTruthy();
-    turples.forEach(([v, exp]) => {
-      const [, message] = validate(v, rules, 'Dinner');
-      expect(message ?? 'ok').toBe(exp);
-    });
-  };
+  const $ =
+    (...rulesss: Rules[]) =>
+    (...turples: [any, string][]) => {
+      rulesss.forEach(rules =>
+        turples.forEach(([v, exp]) => {
+          expect(rules).toBeTruthy();
+          const { ok, message } = validate(v, rules, 'Dinner');
+          expect(ok ? 'ok' : message).toBe(exp);
+        }),
+      );
+    };
 
   it('validates any', () => {
-    $(
-      rr['any'],
-      //
+    $(rr['Any1'], rr['Any2'], rr['Any3'])(
       [0, 'ok'],
       [-1.1, 'ok'],
       [NaN, 'ok'],
@@ -79,41 +97,49 @@ describe('vadliator', () => {
     );
   });
 
-  it('Validates Any Not Nullish', () => {
-    const [ok] = validate(null, ['required'], 'Dinner');
+  it('validates not nullish', () => {
+    $(rr['AnyNN1'], rr['AnyNN2'], rr['AnyNN3'], rr['AnyNN4'])(
+      [0, 'ok'],
+      [false, 'ok'],
+      ['', 'Dinner 是必填项'],
+      [null, 'Dinner 是必填项'],
+      [undefined, 'Dinner 是必填项'],
+      [[], 'ok'],
+      [[[]], 'ok'],
+    );
+    $(rr['AnyNNC1'], rr['AnyNNC2'], rr['AnyNNC3'])(
+      [0, 'ok'],
+      [false, 'ok'],
+      ['', 'foo'],
+      [null, 'foo'],
+      [undefined, 'foo'],
+      [[], 'ok'],
+      [[[]], 'ok'],
+    );
+  });
 
-    $(
-      rr['AnyNN'],
-      //
-      [0, 'ok'],
-      [false, 'ok'],
-      ['', 'Dinner 必填'],
-      [null, 'Dinner 必填'],
-      [undefined, 'Dinner 必填'],
-      [[], 'Dinner 必填'],
-      [[[]], 'ok'],
+  it('validates string', () => {
+    $(rr['String1'], rr['String2'], rr['String3'], rr['String4'])(
+      [0, 'Dinner 必须为字符类型'],
+      [[], 'Dinner 必须为字符类型'],
+      ['', 'ok'],
+      ['  zoo', 'ok'],
+      [null, 'ok'],
+      [undefined, 'ok'],
     );
     $(
-      rr['AnyNN2'],
-      //
-      [0, 'ok'],
-      [false, 'ok'],
-      ['', 'Dinner 必填'],
-      [null, 'Dinner 必填'],
-      [undefined, 'Dinner 必填'],
-      [[], 'Dinner 必填'],
-      [[[]], 'ok'],
-    );
-    $(
-      rr['AnyNN3'],
-      //
-      [0, 'ok'],
-      [false, 'ok'],
-      ['', 'Dinner 必填'],
-      [null, 'Dinner 必填'],
-      [undefined, 'Dinner 必填'],
-      [[], 'Dinner 必填'],
-      [[[]], 'ok'],
+      rr['StringNN1'],
+      rr['StringNN2'],
+      rr['StringNN3'],
+      rr['StringNN4'],
+      rr['StringNN5'],
+    )(
+      [0, 'Dinner 必须为字符类型'],
+      [[], 'Dinner 必须为字符类型'],
+      ['', 'Dinner 是必填项'],
+      ['  zoo', 'ok'],
+      [null, 'Dinner 是必填项'],
+      [undefined, 'Dinner 是必填项'],
     );
   });
 });

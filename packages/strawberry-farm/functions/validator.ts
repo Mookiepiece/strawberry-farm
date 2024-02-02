@@ -2,7 +2,7 @@ const messages = {
   _field: '字段',
 
   default: '%s 不匹配格式',
-  required: '%s 必填',
+  required: '%s 是必填项',
   checked: '勾选 %s 以继续',
   enum: '%s 不在选项范围内',
 
@@ -61,6 +61,12 @@ const testRange = (
         : messages.ranges[messagegroup].max.replace(aRE, '' + max);
   }
 };
+
+const emptyRulers = new Map<string, any>(
+  Object.entries({
+    string: (s: string) => s === '',
+  }),
+);
 
 const validators = new Map<string, any>(
   Object.entries({
@@ -155,17 +161,10 @@ interface Validate {
     value: unknown,
     rules: Rules,
     name?: string,
-  ): [true, string] | [false, undefined];
-
-  // [boolean, string | undefined];
+  ): { ok: boolean; message: string };
 }
 
-const testEmpty = (value: unknown) => {
-  if (value === '') return true;
-  if (value === null) return true;
-  if (value === undefined) return true;
-  if (Array.isArray(value) && !value.length) return true;
-};
+const testNullish = (value: unknown) => value === null || value === undefined;
 
 export const validate: Validate = (value, rules, name = messages._field) => {
   if (!Array.isArray(rules)) rules = [rules];
@@ -175,7 +174,15 @@ export const validate: Validate = (value, rules, name = messages._field) => {
   for (let rule of rules) {
     if (typeof rule === 'string') rule = { [rule]: true };
 
-    if (!testEmpty(value)) {
+    const required = typeof rule.required === 'string' || rule.required;
+    const messageOfRequired = 
+      typeof rule.required === 'string'
+        ? rule.required
+        : rule.required
+          ? messages.required.replace(sRE, name)
+          : undefined;
+
+    if (!testNullish(value)) {
       for (const key in rule) {
         if (key === 'required') continue;
         if (key === 'validator') continue;
@@ -200,6 +207,11 @@ export const validate: Validate = (value, rules, name = messages._field) => {
           }
         }
 
+        const emptyRuler = emptyRulers.get(key);
+        if(required && emptyRuler && emptyRuler(value)) {
+          message = messageOfRequired
+        }
+
         if (key === 'validator') {
           const validator = rule[key as 'validator']!;
 
@@ -212,11 +224,9 @@ export const validate: Validate = (value, rules, name = messages._field) => {
           }
         }
       }
-    } else {
-      if (typeof rule.required === 'string') {
-        message = rule.required;
-      } else if (rule.required) {
-        message = messages.required.replace(sRE, name);
+    } else {     
+      if (required) {
+        message = messageOfRequired;
       }
     }
 
@@ -226,5 +236,5 @@ export const validate: Validate = (value, rules, name = messages._field) => {
     }
   }
 
-  return [typeof message !== 'string', message]  as [true, string] | [false, undefined];
+  return { ok: typeof message === 'string', message: message || '' };
 };
