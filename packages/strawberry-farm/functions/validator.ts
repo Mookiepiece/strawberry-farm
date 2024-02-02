@@ -15,7 +15,7 @@ const descriptor = {
   'String Max': { string: [, 10] },
   'String Range': { string: [3, 10] },
   'String Range With Custom Message': [{ string: [3, 10], message: 'message' }],
-  'String Individual Custom Message For Type And Range': [
+  'String Individual Custom Message For Type And Range Not Supported': [
     { string: true, message: 'S' },
     { string: [3, 10], message: 'OOM' },
   ],
@@ -40,27 +40,6 @@ const descriptor = {
   'Never Knot2': ['string', 'boolean', 'required'],
   'Complex Knot': { string: true, boolean: true, enum: [1, 2, 3] },
 };
-
-const formats = new Map(
-  Object.entries({
-    string: (value: unknown) => typeof value === 'string',
-    number: (value: unknown) =>
-      typeof value === 'number' &&
-      Number.isFinite(value) &&
-      !Number.isNaN(value),
-
-    enum: true,
-    required: true,
-    never: false,
-    /**
-     * Used: https://html.spec.whatwg.org/multipage/input.html#email-state-(type=email)
-     * Candidate: https://github.com/ajv-validator/ajv-formats/blob/4dd65447575b35d0187c6b125383366969e6267e/src/formats.ts#L64
-     * Candidate: https://emailregex.com/
-     */
-    email:
-      /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
-  }),
-);
 
 const messags = {
   default: '校验此字段时失败： %s',
@@ -109,6 +88,28 @@ const messags = {
     mismatch: '%s value %s does not match pattern %s',
   },
 } as const;
+
+const formats = new Map(
+  Object.entries({
+    string: (value: unknown) => typeof value === 'string',
+    number: (value: unknown) =>
+      typeof value === 'number' &&
+      Number.isFinite(value) &&
+      !Number.isNaN(value),
+    array: (value: unknown) => Array.isArray(value),
+    object: (value: unknown) =>
+      !!value && typeof value === 'object' && !Array.isArray(value),
+    enum: true,
+    date: (value: unknown) => !!value && value instanceof Date,
+    /**
+     * Used: https://html.spec.whatwg.org/multipage/input.html#email-state-(type=email)
+     * Candidate: https://github.com/ajv-validator/ajv-formats/blob/4dd65447575b35d0187c6b125383366969e6267e/src/formats.ts#L64
+     * Candidate: https://emailregex.com/
+     */
+    email:
+      /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+  }),
+);
 
 const configs = new Map(
   Object.entries({
@@ -181,5 +182,28 @@ const configs = new Map(
     },
   }),
 );
+
+interface Rule {
+  string?: boolean | string | number | (number | null | undefined)[] | RegExp;
+  number?: boolean | string | number | (number | null | undefined)[];
+  boolean?: boolean | string;
+  email?: boolean | string;
+  array?: boolean | string;
+  object?: boolean | string;
+  date?: boolean | string;
+  enum?:
+    | string
+    | number
+    | boolean
+    | null
+    | undefined
+    | (string | number | boolean | null | undefined)[];
+
+  required?:boolean
+}
+
+interface Validator {
+  (name: string, rules: Rule | Rule[]): string | null | undefined;
+}
 
 const validator = () => {};
