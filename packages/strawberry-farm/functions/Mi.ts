@@ -3,7 +3,7 @@ export type Emitter<T> = {
   on: <K extends keyof T>(event: K, callback: (payload: T[K]) => void) => () => void;
   off: <K extends keyof T>(event: K, callback: (payload: T[K]) => void) => void;
   emit: <K extends keyof T>(
-    ...args: T[K] extends undefined ? [event: K, payload?: T[K]] : [event: K, payload?: T[K]]
+    ...args: T[K] extends undefined ? [event: K, payload?: T[K]] : [event: K, payload: T[K]]
   ) => void;
 };
 

@@ -1,10 +1,9 @@
-// TODO: emit.bubbles
+export interface SFCustomEventMap {
+  sfvoid: { void: string };
+}
 
-export interface SFCustomEventMap {}
-
-type EventMapExtended = HTMLElementEventMap &
-  SFCustomEventMap &
-  Record<string, any>;
+export type SFEventMap = HTMLElementEventMap & SFCustomEventMap
+type SFEvents = SFEventMap & Record<string, any>;
 
 type EventModifiers =
   | 'stop'
@@ -17,7 +16,7 @@ type SystemKeyModifiers = 'ctrl' | 'alt' | 'shift' | 'meta' | 'exact';
 type KeyReconizerModifiers = 'key';
 type Modifiers = EventModifiers | SystemKeyModifiers | KeyReconizerModifiers;
 
-const systemModifiers = ['ctrl', 'shift', 'alt', 'meta'];
+const systemModifiers = ['ctrl', 'shift', 'alt', 'meta'] as const;
 
 type KeyedEvent = MouseEvent | KeyboardEvent | TouchEvent;
 /**
@@ -41,13 +40,12 @@ const modifierGuards: Record<
 export type ON<T extends EventTarget> = (target: T) => ON2;
 
 export type ON2 = {
-  [K in keyof EventMapExtended]: ON3<K, EventMapExtended[K]>;
+  [N in keyof SFEvents]: ON3<N, SFEvents[N]>;
 };
 
-export type ON3<
-  N extends keyof EventMapExtended,
-  E extends EventMapExtended[N],
-> = ((listener: (ev: E) => void) => () => void) & {
+export type ON3<N extends keyof SFEvents, E extends SFEvents[N]> = ((
+  listener: (ev: E) => void,
+) => () => void) & {
   [K in Modifiers]: ON3<N, E>;
 } & (E extends KeyboardEvent
     ? {
@@ -95,17 +93,18 @@ export const on = <T extends EventTarget>(el: T) => {
   return polaris as ON2;
 };
 
-// on(document.body).keydown(keyboardevt => {});
-// on(document.body).keydown.exact(keyboardevt => {});
-// on(document.body).keydown.ctrl(keyboardevt => {});
-// on(document.body).keydown.KeyK(keyboardevt => {});
-// on(document.body).keypress.ctrl.KeyK(keyboardevt => {});
+on(document.body).keydown(keyboardevt => {});
+on(document.body).keydown.exact(keyboardevt => {});
+on(document.body).keydown.ctrl(keyboardevt => {});
+on(document.body).keydown.KeyK(keyboardevt => {});
+on(document.body).keypress.ctrl.KeyK(keyboardevt => {});
 
-// on(document.body).click.ctrl(mouse => {});
-// on(document.body).click(mouse => {});
-// on(document.body).pointercancel(pointer => {});
-// on(document.body).wheel(wheel => {});
-// on(document.body).touchmove(wheel => {});
-// on(document.body).transitioncancel(po => {});
-// on(document.body).exact(keyboardevt => {});
-// on(document.body).customevents(keyboardevt => {});
+on(document.body).click.ctrl(mouse => {});
+on(document.body).click(mouse => {});
+on(document.body).pointercancel(pointer => {});
+on(document.body).wheel(wheel => {});
+on(document.body).touchmove(wheel => {});
+on(document.body).transitioncancel(po => {});
+on(document.body).exact(keyboardevt => {});
+on(document.body).customevents(keyboardevt => {});
+on(document.body).sfvoid(voidevent => {});

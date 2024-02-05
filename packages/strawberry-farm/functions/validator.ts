@@ -130,6 +130,81 @@ const validators = new Map<string, any>(
   }),
 );
 
+interface IRuleType {
+  string: number | number[] | RegExp;
+  number: number | number[];
+  enum: any[];
+  boolean: undefined;
+  checked: undefined;
+  email: undefined;
+  array: number | number[];
+  object: undefined;
+}
+
+interface IRule2 {
+  // string?: boolean | string | number | (number | null | undefined)[] | RegExp;
+  // number?: boolean | string | number | (number | null | undefined)[];
+  // boolean?: boolean | string;
+  // checked?: boolean | string;
+  // email?: boolean | string;
+  // array?: boolean | string;
+  // object?: boolean | string | {};
+  type?: keyof IRuleType | any;
+  // enum?:
+  //   | string
+  //   | number
+  //   | boolean
+  //   | null
+  //   | undefined
+  //   | (string | number | boolean | null | undefined)[];
+
+  // Meta fields
+  config?: any;
+  required?: boolean;
+  validator?(value: unknown): string | undefined | Promise<string | undefined>;
+  message?: string;
+}
+
+type RuleMini =
+  | IRule2
+  | keyof IRuleType
+  | `${keyof IRuleType} required`
+  | 'required';
+
+type EndWith<T> = [...T[], string];
+
+const a: RuleMini | RuleMini[] | EndWith<RuleMini> = [
+  'string',
+  'required',
+  'required',
+  'string required',
+  'qwer',
+  'checked'
+];
+
+// {
+//   string?: boolean | string | number | (number | null | undefined)[] | RegExp;
+//   number?: boolean | string | number | (number | null | undefined)[];
+//   boolean?: boolean | string;
+//   checked?: boolean | string;
+//   email?: boolean | string;
+//   array?: boolean | string;
+//   object?: boolean | string | {};
+//   type?: any;
+//   enum?:
+//     | string
+//     | number
+//     | boolean
+//     | null
+//     | undefined
+//     | (string | number | boolean | null | undefined)[];
+
+//   // Meta fields
+//   required?: string | boolean;
+//   validator?(value: unknown): string | undefined | Promise<string | undefined>;
+//   message?: string;
+// }
+
 interface IRule {
   string?: boolean | string | number | (number | null | undefined)[] | RegExp;
   number?: boolean | string | number | (number | null | undefined)[];
@@ -175,7 +250,7 @@ export const validate: Validate = (value, rules, name = messages._field) => {
     if (typeof rule === 'string') rule = { [rule]: true };
 
     const required = typeof rule.required === 'string' || rule.required;
-    const messageOfRequired = 
+    const messageOfRequired =
       typeof rule.required === 'string'
         ? rule.required
         : rule.required
@@ -208,8 +283,9 @@ export const validate: Validate = (value, rules, name = messages._field) => {
         }
 
         const emptyRuler = emptyRulers.get(key);
-        if(required && emptyRuler && emptyRuler(value)) {
-          message = messageOfRequired
+        if (required && emptyRuler && emptyRuler(value)) {
+          message = messageOfRequired;
+          break;
         }
 
         if (key === 'validator') {
@@ -224,7 +300,7 @@ export const validate: Validate = (value, rules, name = messages._field) => {
           }
         }
       }
-    } else {     
+    } else {
       if (required) {
         message = messageOfRequired;
       }
@@ -236,5 +312,5 @@ export const validate: Validate = (value, rules, name = messages._field) => {
     }
   }
 
-  return { ok: typeof message === 'string', message: message || '' };
+  return { ok: typeof message !== 'string', message: message || '' };
 };
