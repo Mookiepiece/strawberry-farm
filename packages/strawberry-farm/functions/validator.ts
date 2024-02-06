@@ -75,22 +75,22 @@ const messages: Record<keyof IRuleType | 'default' | 'required', string> & {
 
   ranges: {
     string: {
-      len: '%s 的长度必须为 %a',
-      min: '%s 的最小长度为 %a',
-      max: '%s 的最大长度为 %a',
-      range: '%s 的长度必须在 %a - %b',
+      len: '%s 的长度必须等于 %a',
+      min: '%s 的长度至少为 %a',
+      max: '%s 的长度至多为 %a',
+      range: '%s 的长度必须介于 %a - %b',
     },
     number: {
-      len: '%s 必须为 %a',
-      min: '%s 的最小值为 %a',
-      max: '%s 的最大值为 %a',
-      range: '%s 的值必须在 %a - %b',
+      len: '%s 必须等于 %a',
+      min: '%s 至少为 %a',
+      max: '%s 至多为 %a',
+      range: '%s 的值必须介于 %a - %b',
     },
     array: {
-      len: '%s 的长度必须为 %a',
-      min: '%s 的最小长度为 %a',
-      max: '%s 的最大长度为 %a',
-      range: '%s 的长度必须在 %a - %b',
+      len: '%s 的长度必须等于 %a',
+      min: '%s 的长度至少为 %a',
+      max: '%s 的长度至多为 %a',
+      range: '%s 的长度必须介于 %a - %b',
     },
   },
 } as const;
@@ -110,18 +110,22 @@ const testRange = (
     const [min, max] = range;
     if (typeof min === 'number' && value < min)
       return min === max
-        ? messages.ranges[messagegroup]!.range.replace(aRE, '' + min).replace(
-            bRE,
-            '' + max,
-          )
-        : messages.ranges[messagegroup]!.min.replace(aRE, '' + min);
+        ? messages.ranges[messagegroup]!.len.replace(aRE, '' + min)
+        : typeof max === 'number'
+          ? messages.ranges[messagegroup]!.range.replace(aRE, '' + min).replace(
+              bRE,
+              '' + max,
+            )
+          : messages.ranges[messagegroup]!.min.replace(aRE, '' + min);
     else if (typeof max === 'number' && value > max)
       return min === max
-        ? messages.ranges[messagegroup]!.range.replace(aRE, '' + min).replace(
-            bRE,
-            '' + max,
-          )
-        : messages.ranges[messagegroup]!.max.replace(aRE, '' + max);
+        ? messages.ranges[messagegroup]!.len.replace(aRE, '' + min)
+        : typeof min === 'number'
+          ? messages.ranges[messagegroup]!.range.replace(aRE, '' + min).replace(
+              bRE,
+              '' + max,
+            )
+          : messages.ranges[messagegroup]!.max.replace(aRE, '' + max);
   }
 };
 
@@ -184,7 +188,7 @@ validators2.set('array', {
 validators2.set('enum', {
   type: (value: unknown, config: unknown) => {
     const _config = Array.isArray(config) ? config : [config];
-    if (_config.length && !_config.some(item => Object.is(value, item))) {
+    if (!_config.some(item => Object.is(value, item))) {
       return messages.enum;
     }
   },
@@ -238,7 +242,7 @@ export const validate = <T extends keyof IRuleType>(
   const v = rule.type && validators2.get(rule.type);
 
   if (v?.extends) {
-    const message = validate(value, v.extends, name);
+    const message = validate(value, { ...rule, type: v.extends }, name);
     if (message) return message;
   }
 

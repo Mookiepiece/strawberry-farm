@@ -24,12 +24,14 @@ export const trackPointer = (
   }
 
   offs0.add(
-    on(el, 'pointerdown', async ev => {
+    on(el).pointerdown(async ev => {
       el.setPointerCapture(ev.pointerId);
 
-      const subscribe: (cb: (p2: { e: PointerEvent; done: boolean }) => void) => void = cb => {
+      const subscribe: (
+        cb: (p2: { e: PointerEvent; done: boolean }) => void,
+      ) => void = cb => {
         offs.add(
-          on(el, 'pointermove', ev => {
+          on(el).pointermove(ev => {
             cb({
               e: ev,
               done: false,
@@ -38,7 +40,7 @@ export const trackPointer = (
         );
 
         offs.add(
-          on(el, 'pointerup', ev => {
+          on(el).pointerup(ev => {
             cb({
               e: ev,
               done: true,

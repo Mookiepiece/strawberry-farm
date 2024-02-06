@@ -18,63 +18,6 @@ const rr = {
   AnyNN_3: d({}),
   AnyNN_4: d({ type: 'any' }),
   AnyNNC1: d({ message: 'foo' }),
-  //
-  // String___1: d('string'),
-  // String___2: d(['string']),
-  // String___3: d({ type: 'string' }),
-  // StringNN_1: d('string!'),
-  // StringNN_2: d(['string!']),
-  // StringNN_3: d({ type: 'string', required: true }),
-  // String__C1: d({ type: 'string', message: 'foo' }),
-  // StringNNC1: d({ type: 'string', required: true, message: 'foo' }),
-  // StringR__A: d(['string', 3]),
-  // StringR__B: d({ type: 'string', config: 3 }),
-  // StringR__C: d({ type: 'string', config: [3, 3] }),
-  // StringR__D: d({ type: 'string', config: [3] }),
-  // StringR__E: d({ type: 'string', config: [, 10] }),
-  // StringR__F: d({ type: 'string', config: [3, 10] }),
-  // StringRN_1: d(['string!', 3]),
-  // StringNN5: ['required', { string: true }],
-  // StringC: { type: 'string', message: 'foo' },
-  // StringNNC: { type: 'string', required: 'foo' },
-  // StringCNNC: { string: 'foo', required: 'bar' },
-  // StringExact: { string: 3 },
-  // StringExact2: { string: [3, 3] },
-  // StringMin: { string: [3] },
-  // StringMax: { string: [, 10] },
-  // StringRange1: { string: [3, 10] },
-  // StringRange2: { string: [-Infinity, Infinity] },
-  // StringRangeC1: { string: [3, 10], message: 'foo' },
-  // StringRangeC2: [
-  //   { string: true, message: 'foo' },
-  //   { string: [3, 10], message: 'bar' },
-  // ],
-  // StringRangeC3: [
-  //   { string: 'foo', required: 'duang' },
-  //   { string: [3, 10], message: 'bar' },
-  // ],
-  // //
-  // 'Number Nullish Literal': 'number',
-  // 'Number Type Required': ['number', 'required'],
-  // 'Number Min': { number: [3] },
-  // 'Number Max': { number: [, 10] },
-  // 'Number Range': { number: [3, 10] },
-  // //
-  // 'Formats Email': { email: true },
-  // 'Formats Email Literal': 'email',
-  // 'Formats Email Literal Required': ['email', 'required'],
-  // //
-  // 'Enum True2': { enum: [true] },
-  // 'Enum True Custom Message': { enum: [true], message: 'message' },
-  // //
-  // 'Type Restriction': { type: Date },
-  // //
-  // 'Never Enum': { enum: [] },
-  // 'Never Enum2': { enum: true },
-  // 'Never Empty': {},
-  // 'Never Knot': [{ string: true }, { boolean: true }, { required: true }],
-  // 'Never Knot2': ['string', 'boolean', 'required'],
-  // 'Complex Knot': { string: true, boolean: true, enum: [1, 2, 3] },
 };
 
 describe('vadliator', () => {
@@ -226,6 +169,190 @@ describe('vadliator', () => {
       [3, 'ok'],
       [null, 'Dinner 是必填项'],
       [undefined, 'Dinner 是必填项'],
+    );
+  });
+
+  it('validates boolean', () => {
+    $('boolean?')(
+      ['', 'Dinner 必须为布尔类型'],
+      [true, 'ok'],
+      [false, 'ok'],
+      [null, 'ok'],
+      [undefined, 'ok'],
+    );
+    $('boolean')(
+      ['', 'Dinner 必须为布尔类型'],
+      [true, 'ok'],
+      [false, 'ok'],
+      [null, 'Dinner 是必填项'],
+      [undefined, 'Dinner 是必填项'],
+    );
+  });
+
+  it('validates checked', () => {
+    $('checked?')(
+      ['1', '请先检阅 Dinner'],
+      [true, 'ok'],
+      [false, '请先检阅 Dinner'],
+      [null, 'ok'],
+      [undefined, 'ok'],
+    );
+    $('checked')(
+      ['1', '请先检阅 Dinner'],
+      [true, 'ok'],
+      [false, '请先检阅 Dinner'],
+      [null, 'Dinner 是必填项'],
+      [undefined, 'Dinner 是必填项'],
+    );
+  });
+
+  it('validates email', () => {
+    $('email?')(
+      ['', 'Dinner 不是有效的邮箱地址'],
+      ['@@', 'Dinner 不是有效的邮箱地址'],
+      ['a@qq.cc', 'ok'],
+      [null, 'ok'],
+      [undefined, 'ok'],
+    );
+    $('email')(
+      ['', 'Dinner 是必填项'],
+      ['@@', 'Dinner 不是有效的邮箱地址'],
+      ['a@qq.cc', 'ok'],
+      [null, 'Dinner 是必填项'],
+      [undefined, 'Dinner 是必填项'],
+    );
+  });
+
+  it('validates array', () => {
+    $('array?')(
+      [[], 'ok'],
+      [[[]], 'ok'],
+      [{}, 'Dinner 必须为列表类型'],
+      [null, 'ok'],
+      [undefined, 'ok'],
+    );
+    $('array')(
+      [[], 'ok'],
+      [[[]], 'ok'],
+      [{}, 'Dinner 必须为列表类型'],
+      [null, 'Dinner 是必填项'],
+      [undefined, 'Dinner 是必填项'],
+    );
+  });
+
+  it('validates type', () => {
+    $(['type?', Date])(
+      [new Date(), 'ok'],
+      [100, 'Dinner 不匹配格式'],
+      [null, 'ok'],
+      [undefined, 'ok'],
+    );
+    $(['type', Date])(
+      [new Date(), 'ok'],
+      [100, 'Dinner 不匹配格式'],
+      [null, 'Dinner 是必填项'],
+      [undefined, 'Dinner 是必填项'],
+    );
+  });
+
+  it('do range validations', () => {
+    $(['string?', [3, 3]])(
+      ['', 'ok'],
+      ['1', 'Dinner 的长度必须等于 3'],
+      [null, 'ok'],
+      [undefined, 'ok'],
+    );
+
+    $(['string', [3, 3]])(
+      ['', 'Dinner 是必填项'],
+      ['1', 'Dinner 的长度必须等于 3'],
+      [null, 'Dinner 是必填项'],
+      [undefined, 'Dinner 是必填项'],
+    );
+
+    $(['string', [3, 10]])(
+      ['1', 'Dinner 的长度必须介于 3 - 10'],
+      ['123', 'ok'],
+      ['123456789abc', 'Dinner 的长度必须介于 3 - 10'],
+    );
+    $(['string', 3])(['1', 'Dinner 的长度必须等于 3'], ['123', 'ok']);
+    $(['string', [3]])(['1', 'Dinner 的长度至少为 3'], ['123', 'ok']);
+    $(['string', [, 10]])(
+      ['1', 'ok'],
+      ['123456789abc', 'Dinner 的长度至多为 10'],
+    );
+
+    $(['number', [3, 10]])(
+      ['', 'Dinner 必须为数值类型'],
+      [1, 'Dinner 的值必须介于 3 - 10'],
+      [3, 'ok'],
+      [30, 'Dinner 的值必须介于 3 - 10'],
+    );
+    $(['number', 3])([1, 'Dinner 必须等于 3'], [3, 'ok']);
+    $(['number', [3]])([1, 'Dinner 至少为 3'], [3, 'ok']);
+    $(['number', [, 10]])([1, 'ok'], [30, 'Dinner 至多为 10']);
+
+    $(['array', [3]])([[,], 'Dinner 的长度至少为 3'], [[, , ,], 'ok']);
+  });
+
+  it('supports config', () => {
+    $(['string?', /\d\d\d/])(
+      ['', 'ok'],
+      ['000', 'ok'],
+      ['^_^', 'Dinner 不匹配格式'],
+    );
+  });
+
+  it('supports message', () => {
+    $({
+      type: 'string',
+      config: /\d\d\d/,
+      message: 'foo' 
+    })(
+      ['', 'foo'],
+      [null, 'foo'],
+      ['000', 'ok'],
+      ['^_^', 'foo'],
+    );
+  });
+
+  it('has many shortcuts', () => {
+    $(['string?', /\d\d\d/])(['', 'ok'], ['^_^', 'Dinner 不匹配格式']);
+    $({
+      type: 'string',
+      optional: true,
+      config: /\d\d\d/,
+    })(['', 'ok'], ['000', 'ok'], ['^_^', 'Dinner 不匹配格式']);
+  });
+
+  it('supports custom validators', () => {
+    $({
+      type: 'string',
+      optional: true,
+      config: /\d\d\d/,
+      validator(value) {
+        if (value !== '000') return '%s%s%s';
+      },
+      message:'%s'
+    })(
+      ['', 'ok'],
+      ['000', 'ok'],
+      ['123', '%s%s%s'],
+      ['^_^', '%s'],
+    );
+  });
+
+  it('supports only validator was provided', () => {
+    $({
+      config: /\d\d\d/,
+      validator(value) {
+        if (value !== '000') return '%s%s%s';
+      },
+    })(
+      ['', '%s%s%s'],
+      ['000', 'ok'],
+      ['123', '%s%s%s'],
+      ['^_^', '%s%s%s'],
     );
   });
 });
