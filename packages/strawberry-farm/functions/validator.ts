@@ -7,24 +7,23 @@ export interface IRuleType {
   checked: undefined;
   email: undefined;
   array: number | (number | null | undefined)[];
-  // object: undefined;
   type: any;
 }
 
-export interface IRule<T extends keyof IRuleType=  keyof IRuleType> {
+export interface IRule<T extends keyof IRuleType = keyof IRuleType> {
   type?: T;
   config?: IRuleType[T];
-  required?: boolean;
+  optional?: boolean;
   validator?(value: unknown): string | undefined | Promise<string | undefined>;
   message?: string;
 }
 
-export type RuleS<T extends keyof IRuleType=  keyof IRuleType> =
+export type RuleS<T extends keyof IRuleType = keyof IRuleType> =
   | IRule<T>
   | T
-  | `${T}!`
-  | [T | `${T}!`]
-  | [T | `${T}!`, IRuleType[T]];
+  | `${T}?`
+  | [T | `${T}?`]
+  | [T | `${T}?`, IRuleType[T]];
 
 const unpack = <T extends keyof IRuleType>(mini: RuleS<T>): IRule<T> => {
   if (typeof mini === 'object' && !Array.isArray(mini)) return mini;
@@ -34,12 +33,12 @@ const unpack = <T extends keyof IRuleType>(mini: RuleS<T>): IRule<T> => {
     Array.isArray(mini) ? mini[1] : undefined,
   ];
 
-  let rule: IRule = {
-    type: (a.endsWith('!') ? a.substring(0, -1) : a) as T,
+  let rule: IRule<T> = {
+    type: (a.endsWith('?') ? a.slice(0, -1) : a) as T,
   };
 
-  if (a.endsWith('!')) {
-    rule.required = true;
+  if (a.endsWith('?')) {
+    rule.optional = true;
   }
 
   if (b) {
@@ -130,7 +129,7 @@ const validators2 = new Map<
   keyof IRuleType,
   {
     type: (value: unknown, config: unknown) => string | void;
-    required?(value: unknown, config: unknown): boolean;
+    optional?(value: unknown, config: unknown): boolean;
     extends?: keyof IRuleType;
   }
 >();
@@ -152,7 +151,7 @@ validators2.set('string', {
       }
     }
   },
-  required: (s: string) => s === '',
+  optional: (s: string) => s === '',
 });
 
 validators2.set('number', {
@@ -226,7 +225,8 @@ validators2.set('email', {
   },
 });
 
-const testNullish = (value: unknown) => value === null || value === undefined;
+const testNullish = (value: unknown): value is null | undefined =>
+  value == undefined;
 
 export const validate = <T extends keyof IRuleType>(
   value: unknown,
@@ -242,10 +242,11 @@ export const validate = <T extends keyof IRuleType>(
     if (message) return message;
   }
 
-  if (
-    rule.required &&
-    (testNullish(value) || v?.required?.(value, rule.config))
-  ) {
+  const empty = testNullish(value) || v?.optional?.(value, rule.config);
+
+  if (rule.optional && empty) return;
+
+  if (!rule.optional && empty) {
     return rule.message ?? messages.required.replace(sRE, name);
   }
 
