@@ -21,7 +21,8 @@
       "typescriptreact"
     ],
     "workbench.colorCustomizations": {
-      "tab.activeBorderTop": "#f3538b"
+      "tab.activeBorderTop": "#f3538b",
+      "tab.activeBorder": "#0000"
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.tabSize": 2

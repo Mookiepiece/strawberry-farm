@@ -8,7 +8,7 @@ import 'vitepress/dist/client/theme-default/styles/components/vp-code-group.css'
 import 'vitepress/dist/client/theme-default/styles/components/vp-sponsor.css';
 import 'vitepress/dist/client/theme-default/styles/fonts.css';
 import VPBadge from 'vitepress/dist/client/theme-default/components/VPBadge.vue';
-import Layout from 'vitepress/dist/client/theme-default/Layout.vue';
+import Layout from './Layout.vue';
 // export { default as VPImage } from 'vitepress/dist/client/theme-default/components/VPImage.vue';
 // export { default as VPButton } from 'vitepress/dist/client/theme-default/components/VPButton.vue';
 // export { default as VPHomeHero } from 'vitepress/dist/client/theme-default/components/VPHomeHero.vue';
