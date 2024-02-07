@@ -4,9 +4,15 @@ body {
   font-family: 'Inter var', 'Inter', 'Noto Sans SC', sans-serif;
   background-color: var(--vp-c-bg);
   color: var(--vp-c-text-1);
+  /* This prevents our white-space:pre-wrap applied to <body>  */
+  font-size: 0;
 }
 
-:root.dark {
+#app {
+  font-size: 16px;
+}
+
+html.dark {
   color-scheme: dark;
 }
 
