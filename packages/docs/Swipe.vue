@@ -2,9 +2,9 @@
 import { onMounted, ref } from 'vue';
 import { trackPointer } from '../strawberry-farm/functions/trackPointer';
 
-const elRef = ref<HTMLDivElement | null>(null);
-const infoRef = ref<HTMLSpanElement | null>(null);
-const container = ref<HTMLDivElement | null>(null);
+const elRef = ref<HTMLDivElement>();
+const infoRef = ref<HTMLSpanElement>();
+const container = ref<HTMLDivElement>();
 
 onMounted(() => {
   const [el, c] = [elRef.value, container.value];
@@ -43,7 +43,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .z {
   position: relative;
   min-height: 250px;

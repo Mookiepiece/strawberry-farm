@@ -41,6 +41,31 @@ html.dark .shiki span {
 }
 
 :root {
+
+  --VPF1: 17px;
+  --VPF2: 14px;
+  --VPF3: 12px;
+  --VPF4: 11px;
+
+  --VPFC1: #3c3c43;
+  --VPFC2: #3c3c43c7;
+  --VPFC3: #3c3c438f;
+
+  --VPCDivider: #e2e2e3;
+
+  --vp-c-indigo-1: #3451b2;
+  --vp-c-indigo-2: #3a5ccc;
+  --vp-c-indigo-3: #5672cd;
+  --vp-c-indigo-soft: #646cff24;
+  
+  --VPCStrawberry1:var(--vp-c-indigo-1); 
+  --VPCStrawberry2:var(--vp-c-indigo-2); 
+  --VPCStrawberry3:var(--vp-c-indigo-3); 
+  --VPCStrawberry3S:var(--vp-c-indigo-soft); 
+
+  --VPCisP: #00000018;
+  --VPCisC: #00000033;
+
   --落霞: radial-gradient(#fe7, #0000 50%) 50% 100% / 400% 400% no-repeat,
     linear-gradient(135deg, #fb9, #f9b);
   --幻迷: repeating-radial-gradient(
@@ -58,6 +83,20 @@ html.dark .shiki span {
       )
       0 0 / 10px 10px,
     linear-gradient(120deg, #acfe, #f9de);
+}
+
+.dark {
+  --VPFC1: #fffff5db;
+  --VPFC2: #ebebf599;
+  --VPFC3: #ebebf561;
+
+  --VPCDivider: #2e2e32;
+
+
+  --vp-c-indigo-1: #a8b1ff;
+  --vp-c-indigo-2: #5c73e7;
+  --vp-c-indigo-3: #3e63dd;
+  --vp-c-indigo-soft: rgba(100, 108, 255, 0.16);
 }
 
 .🩷 {

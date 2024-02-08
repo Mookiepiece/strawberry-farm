@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vitepress'
-import DocLayout from './DocLayout.vue'
+import VPSidebar from './VPSidebar.vue'
 import { useData } from 'vitepress/dist/client/theme-default/composables/data'
 
 const route = useRoute()
@@ -10,7 +10,10 @@ const { frontmatter } = useData()
 </script>
 
 <template>
-  <DocLayout />
+  <div class="DocLayout">
+    <VPSidebar />
+    <!-- <Content /> -->
+  </div>
 </template>
 
 <style scoped>
