@@ -1,7 +1,8 @@
+/* Based on Vitepress default theme */
+
 /**
  * Headings
  * -------------------------------------------------------------------------- */
-
 .vp-doc > div {
   > h1,
   > h2,
@@ -12,70 +13,75 @@
     position: relative;
     font-weight: 600;
     outline: none;
+    line-height: 1.6;
   }
 
   > h1 {
-    letter-spacing: -0.02em;
-    line-height: 40px;
-    font-size: 32px;
+    font-size: var(--head1);
   }
 
   > h2 {
     margin: 48px 0 16px;
-    border-top: 1px solid var(--vp-c-divider);
+    border-top: 1px solid var(--DVD);
     padding-top: 24px;
-    letter-spacing: -0.02em;
-    line-height: 32px;
-    font-size: 24px;
+    font-size: var(--head2);
   }
 
   > h3 {
     margin: 32px 0 0;
-    letter-spacing: -0.01em;
-    line-height: 28px;
-    font-size: 20px;
+    font-size: var(--head3);
   }
-}
 
-.vp-doc .header-anchor {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin-left: -0.87em;
-  font-weight: 500;
-  user-select: none;
-  opacity: 0;
-  text-decoration: none;
-  transition:
-    color 0.25s,
-    opacity 0.25s;
-}
-
-.vp-doc .header-anchor::before {
-  content: var(--vp-header-anchor-symbol);
-}
-
-:is(h1, h2, h3, h4, h5, h6) {
-  &:hover .header-anchor,
-  .header-anchor:focus {
-    opacity: 1;
+  > h4,
+  > h5,
+  > h6 {
+    margin: 2em 0 1em 0;
+    font-size: var(--font2);
   }
-}
 
-.vp-doc h2 .header-anchor {
-  top: 24px;
-}
+  /**
+  * Header Anchor
+  * -------------------------------------------------------------------------- */
 
-/**
+  .header-anchor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: -0.87em;
+    font-weight: 500;
+    user-select: none;
+    opacity: 0;
+    text-decoration: none;
+    transition:
+      color 0.25s,
+      opacity 0.25s;
+  }
+
+  .header-anchor::before {
+    content: '#';
+  }
+
+  :is(h1, h2, h3, h4, h5, h6) {
+    &:hover .header-anchor,
+    .header-anchor:focus {
+      opacity: 1;
+    }
+  }
+
+  h2 .header-anchor {
+    top: 24px;
+  }
+
+  /**
   * Paragraph and inline elements
   * -------------------------------------------------------------------------- */
-.vp-doc > div {
   > p,
   > summary {
     margin: 16px 0;
   }
   > p {
-    line-height: 28px;
+    font-size: var(--font1);
+    line-height: 1.6;
   }
   > blockquote {
     margin: 16px 0;
@@ -89,137 +95,106 @@
       transition: color 0.5s;
     }
   }
-}
 
-.vp-doc a {
-  font-weight: 500;
-  color: var(--vp-c-brand-1);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  transition:
-    color 0.25s,
-    opacity 0.25s;
-}
+  a:not(.undoc *) {
+    font-weight: 500;
+    color: var(--tone-pink-fore);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition:
+      color 0.25s,
+      opacity 0.25s;
+    &:hover {
+      color: var(--tone-pink);
+    }
+  }
 
-.vp-doc a:hover {
-  color: var(--vp-c-brand-2);
-}
+  strong:not(.undoc *) {
+    font-weight: 600;
+  }
 
-.vp-doc strong {
-  font-weight: 600;
-}
-
-/**
+  /* *
   * Lists
   * -------------------------------------------------------------------------- */
 
-.vp-doc ul,
-.vp-doc ol {
-  padding-left: 1.25rem;
-  margin: 16px 0;
-}
+  ul:not(.undoc *),
+  ol:not(.undoc *) {
+    padding-left: 1.25rem;
+    margin: 16px 0;
 
-.vp-doc ul {
-  list-style: disc;
-}
+    li + li {
+      margin-top: 8px;
+    }
 
-.vp-doc ol {
-  list-style: decimal;
-}
+    li > ol,
+    li > ul {
+      margin: 8px 0 0;
+    }
+  }
 
-.vp-doc li + li {
-  margin-top: 8px;
-}
+  ul:not(.undoc *) {
+    list-style: disc;
+  }
 
-.vp-doc li > ol,
-.vp-doc li > ul {
-  margin: 8px 0 0;
-}
+  ol:not(.undoc *) {
+    list-style: decimal;
+  }
 
-/**
+  /**
   * Table
   * -------------------------------------------------------------------------- */
-.vp-doc > div > table {
-  display: block;
-  border-collapse: collapse;
-  margin: 20px 0;
-  overflow-x: auto;
+  table:not(.undoc *) {
+    display: block;
+    border-collapse: collapse;
+    margin: 20px 0;
+    overflow-x: auto;
 
-  tr {
-    background-color: var(--vp-c-bg);
-    border-top: 1px solid var(--vp-c-divider);
-    transition: background-color 0.5s;
+    tr {
+      background-color: var(--vp-c-bg);
+      border-top: 1px solid var(--vp-c-divider);
+      transition: background-color 0.5s;
+    }
+
+    tr:nth-child(2n) {
+      background-color: var(--vp-c-bg-soft);
+    }
+
+    th,
+    td {
+      border: 1px solid var(--vp-c-divider);
+      padding: 8px 16px;
+    }
+
+    th {
+      text-align: left;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--vp-c-text-2);
+      background-color: var(--vp-c-bg-soft);
+    }
+
+    td {
+      font-size: 14px;
+    }
   }
 
-  tr:nth-child(2n) {
-    background-color: var(--vp-c-bg-soft);
-  }
-
-  th,
-  td {
-    border: 1px solid var(--vp-c-divider);
-    padding: 8px 16px;
-  }
-
-  th {
-    text-align: left;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--vp-c-text-2);
-    background-color: var(--vp-c-bg-soft);
-  }
-
-  td {
-    font-size: 14px;
-  }
-}
-
-/**
+  /**
   * Decorational elements
   * -------------------------------------------------------------------------- */
 
-.vp-doc hr {
-  margin: 16px 0;
-  border: none;
-  border-top: 1px solid var(--vp-c-divider);
-}
-
-/**
-  * Custom Block
-  * -------------------------------------------------------------------------- */
-
-.vp-doc .custom-block {
-  margin: 16px 0;
-}
-
-.vp-doc .custom-block p {
-  margin: 8px 0;
-  line-height: 24px;
-}
-
-.vp-doc .custom-block p:first-child {
-  margin: 0;
-}
-
-.vp-doc .custom-block div[class*='language-'] {
-  margin: 8px 0;
-  border-radius: 8px;
-}
-
-.vp-doc .custom-block div[class*='language-'] code {
-  font-weight: 400;
-  background-color: transparent;
-}
-
-.vp-doc .custom-block .vp-code-group .tabs {
-  margin: 0;
-  border-radius: 8px 8px 0 0;
+  hr:not(.undoc *) {
+    margin: 16px 0;
+    border: none;
+    border-top: 1px solid var(--vp-c-divider);
+  }
 }
 
 /**
   * Code
   * -------------------------------------------------------------------------- */
-
+.vp-doc code {
+  font-family: monospace;
+}
 /* inline code */
 .vp-doc :not(pre, h1, h2, h3, h4, h5, h6) > code {
   font-size: var(--vp-code-font-size);
@@ -412,118 +387,78 @@
     color 0.5s;
 }
 
-.vp-doc [class*='language-'] > button.copy {
-  /*rtl:ignore*/
-  direction: ltr;
-  position: absolute;
-  top: 12px;
-  /*rtl:ignore*/
-  right: 12px;
-  z-index: 3;
-  border: 1px solid var(--vp-code-copy-code-border-color);
-  border-radius: 4px;
-  width: 40px;
-  height: 40px;
-  background-color: var(--vp-code-copy-code-bg);
-  opacity: 0;
-  cursor: pointer;
-  background-image: var(--vp-icon-copy);
-  background-position: 50%;
-  background-size: 20px;
-  background-repeat: no-repeat;
-  transition:
-    border-color 0.25s,
-    background-color 0.25s,
-    opacity 0.25s;
-}
+/**
+  * Copy code button
+  * -------------------------------------------------------------------------- */
+.vp-doc [class*='language-'] {
+  button.copy {
+    /* https://github.com/vuejs/vitepress/blob/20511006dba516ca8c06ed1dd3516547af668a0e/src/client/theme-default/styles/vars.css#L308 */
+    --vp-icon-copy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E");
+    --vp-icon-copied: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9 2 2 4-4'/%3E%3C/svg%3E");
 
-.vp-doc [class*='language-']:hover > button.copy,
-.vp-doc [class*='language-'] > button.copy:focus {
-  opacity: 1;
-}
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    color: var(--text3);
+    border: 0;
+    border-radius: 5px;
+    width: 40px;
+    height: 40px;
+    background-color: var(--tone-blank-idle);
+    opacity: 0;
+    cursor: pointer;
+    background-image: var(--vp-icon-copy);
+    background-position: 50%;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    transition:
+      border-color 0.25s,
+      background-color 0.25s,
+      opacity 0.25s;
+  }
 
-.vp-doc [class*='language-'] > button.copy:hover,
-.vp-doc [class*='language-'] > button.copy.copied {
-  border-color: var(--vp-code-copy-code-hover-border-color);
-  background-color: var(--vp-code-copy-code-hover-bg);
-}
+  > span.lang {
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    z-index: 2;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text3);
+    transition:
+      color 0.4s,
+      opacity 0.4s;
+  }
 
-.vp-doc [class*='language-'] > button.copy.copied,
-.vp-doc [class*='language-'] > button.copy:hover.copied {
-  /*rtl:ignore*/
-  border-radius: 0 4px 4px 0;
-  background-color: var(--vp-code-copy-code-hover-bg);
-  background-image: var(--vp-icon-copied);
-}
+  &:hover button.copy,
+  button.copy:focus {
+    opacity: 1;
 
-.vp-doc [class*='language-'] > button.copy.copied::before,
-.vp-doc [class*='language-'] > button.copy:hover.copied::before {
-  position: relative;
-  top: -1px;
-  /*rtl:ignore*/
-  transform: translateX(calc(-100% - 1px));
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid var(--vp-code-copy-code-hover-border-color);
-  /*rtl:ignore*/
-  border-right: 0;
-  border-radius: 4px 0 0 4px;
-  padding: 0 10px;
-  width: fit-content;
-  height: 40px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--vp-code-copy-code-active-text);
-  background-color: var(--vp-code-copy-code-hover-bg);
-  white-space: nowrap;
-  content: var(--vp-code-copy-copied-text-content);
-}
+    + span.lang {
+      opacity: 0;
+    }
+  }
 
-.vp-doc [class*='language-'] > span.lang {
-  position: absolute;
-  top: 2px;
-  /*rtl:ignore*/
-  right: 8px;
-  z-index: 2;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--vp-code-lang-color);
-  transition:
-    color 0.4s,
-    opacity 0.4s;
-}
+  button.copy:hover {
+    background-color: var(--tone-blank-pending);
+  }
 
-.vp-doc [class*='language-']:hover > button.copy + span.lang,
-.vp-doc [class*='language-'] > button.copy:focus + span.lang {
-  opacity: 0;
+  button.copy:active {
+    background-color: var(--tone-blank-active);
+  }
+
+  button.copy.copied {
+    background-color: var(--tone-blank-idle);
+    background-image: var(--vp-icon-copied);
+    pointer-events: none;
+  }
 }
 
 /**
-  * Component: Team
+  * External links icon
   * -------------------------------------------------------------------------- */
 
-.vp-doc .VPTeamMembers {
-  margin-top: 24px;
-}
-
-.vp-doc .VPTeamMembers.small.count-1 .container {
-  margin: 0 !important;
-  max-width: calc((100% - 24px) / 2) !important;
-}
-
-.vp-doc .VPTeamMembers.small.count-2 .container,
-.vp-doc .VPTeamMembers.small.count-3 .container {
-  max-width: 100% !important;
-}
-
-.vp-doc .VPTeamMembers.medium.count-1 .container {
-  margin: 0 !important;
-  max-width: calc((100% - 24px) / 2) !important;
-}
-
-/* prettier-ignore */
 :is(.vp-external-link-icon, .vp-doc a[href*='://'], .vp-doc a[target='_blank']):not(.no-icon)::after {
    display: inline-block;
    margin-top: -1px;
@@ -540,4 +475,13 @@
 
 .vp-external-link-icon::after {
   content: '';
+}
+
+/* vp-code.css */
+.dark .vp-code span {
+  color: var(--shiki-dark, inherit);
+}
+
+html:not(.dark) .vp-code span {
+  color: var(--shiki-light, inherit);
 }

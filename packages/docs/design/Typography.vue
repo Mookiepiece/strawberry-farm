@@ -1,5 +1,5 @@
 <template>
-  <div class="🪟 [B] [2C] [+0]">
+  <div class="🪟 [B] [2C] [[]0]">
     <div v-for="i of 17" class="🩷">{{ i }}</div>
   </div>
 </template>

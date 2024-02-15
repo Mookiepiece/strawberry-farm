@@ -1,21 +1,5 @@
----
-# https://vitepress.dev/reference/default-theme-home-page
-layout: home
+# Strawberry Farm
 
-hero:
-  name: 'My Awesome Project'
-  text: 'A VitePress Site'
-  tagline: My great project tagline
-  actions:
-    - theme: brand
-      text: Get Started
-      link: /css/Intro
+这是一个集合了 CSS 类预设、Javascript 函数、基于它们的 Vue.js 组件，以及一个内置主题设计系统的什锦工具箱。旨在实现、封装和解释各种网页效果的实现原理。
 
-features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
----
+访问下一页以开始学习。

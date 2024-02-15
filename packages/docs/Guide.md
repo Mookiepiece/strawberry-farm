@@ -1,3 +1,7 @@
+# Guide
+
+本篇为 `strawberry-farm` 文档导览。
+
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia enim ipsum commodi, ab sunt nobis autem inventore explicabo. Quae magni repellat cupiditate aperiam quibusdam enim quisquam suscipit inventore tempore amet.
 
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia enim ipsum commodi, ab sunt nobis autem inventore explicabo. Quae magni repellat cupiditate aperiam quibusdam enim quisquam suscipit inventore tempore amet.

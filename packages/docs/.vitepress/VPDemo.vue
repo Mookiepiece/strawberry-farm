@@ -20,10 +20,14 @@ switch (dirname) {
     );
     break;
   case 'css':
-    import(`../css/${filename}.vue`).then(
-      mod => (module.value = mod.default),
-    );
+    import(`../css/${filename}.vue`).then(mod => (module.value = mod.default));
     import(`../css/${filename}.vue?raw`).then(
+      mod => (raw.value = (mod.default as string).replace(/\r\n/g, '\n')), // Windows©️ is awesome
+    );
+    break;
+  case 'design':
+    import(`../design/${filename}.vue`).then(mod => (module.value = mod.default));
+    import(`../design/${filename}.vue?raw`).then(
       mod => (raw.value = (mod.default as string).replace(/\r\n/g, '\n')), // Windows©️ is awesome
     );
     break;
@@ -33,7 +37,7 @@ switch (dirname) {
 </script>
 
 <template>
-  <div class="VPDemo">
+  <div class="VPDemo undoc">
     <div>
       <component v-if="module" :is="module"></component>
     </div>

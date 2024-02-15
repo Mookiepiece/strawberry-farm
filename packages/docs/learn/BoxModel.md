@@ -5,6 +5,3 @@
 
 ::: src 2
 :::
-
-::: demo learn/InputOfRadio
-:::

@@ -33,5 +33,5 @@ $breakpointsex: (
 
 @function w($name) {
   $pixel: map-get($breakpointsex, $name);
-  @return if($pixel == 0, '', '#{$name}:');
+  @return if($pixel == 0, '', '#{$name}\\:');
 }

@@ -1,66 +1,79 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { LinkGroup, LinkItem } from './composables';
-import VPLink from './VPLink.vue'
+import VPLink from './VPLink.vue';
 
-const props = defineProps<{
-  item: LinkGroup | LinkItem
-  depth: number
-}>()
-
-const textTag = computed(() => {
-  if (props.depth > 4) throw new Error()
-  return `h${props.depth + 2}`
-})
-
+defineProps<{
+  item: LinkGroup | LinkItem;
+  depth: number;
+}>();
 </script>
 
 <template>
-  <div v-if="!('items' in item)" class="VPSidebarItem">
-    <VPLink v-if="item.link" class="link" :href="item.link" :rel="item.rel" :target="item.target">
+  <div v-if="!('items' in item)" class="VPSidebarItem [#]">
+    <VPLink
+      v-if="item.link"
+      class="[...] [A] [CF] link px-6 f2 tone:pink tone:blank"
+      :href="item.link"
+      :rel="item.rel"
+      :target="item.target"
+      :exact="item.exact"
+    >
       <span class="text" v-html="item.text" />
     </VPLink>
     <span v-else class="text" v-html="item.text" />
   </div>
 
-  <div v-if="'items' in item && item.items?.length" class="VPSidebarItem--Group">
-    <span>{{ item.text }}</span>
-    <VPSidebarItem v-for="i in item.items" :key="i.text" :item="i" :depth="depth + 1" />
+  <div v-else class="VPSidebarItem--Group f2 py-4" :aria-label="item.text">
+    <VPSidebarItem
+      v-for="i in item.items"
+      :key="i.text"
+      :item="i"
+      :depth="depth + 1"
+    />
   </div>
 </template>
 
-<style scoped>
+<style>
 .VPSidebarItem {
-  display: flex;
-  flex-direction: column;
+  height: var(--7);
+  font-weight: normal;
 
   .link {
     outline: 0;
-    color: var(--VPFC2);
-    line-height: 30px;
+    color: var(--text1);
 
     &:hover {
-      background: var(--VPCisP);
+      background: var(---pending);
     }
 
     &:active {
-      background: var(--VPCisC);
+      background: var(---active);
+    }
+
+    &.active {
+      color: var(---fore);
     }
 
     &:focus-visible {
-      outline: 2px solid var(--VPCStrawberry1);
+      outline: 2px solid var(---main);
       outline-offset: -1px;
-      box-shadow: 0 0 0 3px var(--VPCStrawberry3S);
     }
   }
 }
 
 .VPSidebarItem--Group {
-  font-size: var(--VPF2);
-  font-weight: 600;
+  &::before {
+    display: block;
+    height: var(--7);
+    padding-left: var(--6);
+    font-weight: 600;
+    line-height: var(--7);
+
+    content: attr(aria-label);
+  }
 
   &:not(:last-child) {
-    border-bottom: 1px solid var(--VPBDC1);
+    border-bottom: 1px solid var(--DVD);
   }
 }
 </style>

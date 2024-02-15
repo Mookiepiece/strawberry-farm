@@ -2,7 +2,7 @@
 
 ## Text Align
 
-参考 Github Markdown Extension 表格语法，实现文本对齐。区分 `start` 和 `left` 没有意义。
+参考 Github Markdown Extension 表格语法，实现文本对齐。
 
 | Class  | CSS                  |
 | ------ | -------------------- |

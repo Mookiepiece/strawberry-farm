@@ -19,6 +19,7 @@
 
 <style scoped lang="scss">
 .😊 {
+  position: relative;
   margin: 25px 0;
   aspect-ratio: 1.77;
   user-select: none;

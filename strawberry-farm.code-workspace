@@ -12,7 +12,8 @@
   ],
   "settings": {
     "search.exclude": {
-      "dist": true
+      "**/cache": true,
+      "**/dist": true
     },
     "eslint.validate": [
       "javascript",
@@ -25,7 +26,8 @@
       "tab.activeBorder": "#0000"
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "terminal.integrated.cwd": ""
   },
   "extensions": {
     "recommendations": [
@@ -34,7 +36,8 @@
       "esbenp.prettier-vscode",
       "mrmlnc.vscode-scss",
       "Vue.volar",
-      "Vue.vscode-typescript-vue-plugin"
+      "Vue.vscode-typescript-vue-plugin",
+      "ZixuanChen.vitest-explorer"
     ]
   }
 }

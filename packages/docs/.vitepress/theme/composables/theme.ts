@@ -1,10 +1,12 @@
 import { useData as useData$ } from 'vitepress';
+import { shallowRef } from 'vue';
 
 export type LinkItem = {
   text: string;
   link: string;
-  target?: string
-  rel?: string
+  exact?: boolean;
+  target?: string;
+  rel?: string;
 };
 export type LinkGroup = {
   text: string;
@@ -12,8 +14,57 @@ export type LinkGroup = {
 };
 
 export type ThemeConfig = {
-  nav: LinkItem;
   sidebar: LinkGroup[];
 };
 
-export const useData: typeof useData$<ThemeConfig> = useData$;
+const theme = shallowRef<ThemeConfig>({
+  sidebar: [
+    {
+      text: 'Intro',
+      items: [
+        { text: 'Home', link: '/', exact: true },
+        { text: 'Guide', link: '/guide' },
+      ],
+    },
+    {
+      text: 'CSS',
+      items: [
+        { text: 'Intro', link: '/css/Intro' },
+        { text: 'Reset', link: '/css/Reset' },
+        { text: 'Breakpoints', link: '/css/Breakpoints' },
+        { text: 'Flexbox', link: '/css/Flexbox' },
+        { text: 'Typography', link: '/css/Typography' },
+        { text: 'Spacing', link: '/css/Spacing' },
+        { text: 'Positioning', link: '/css/Positioning' },
+      ],
+    },
+    {
+      text: 'Learn',
+      items: [
+        { text: 'Intro', link: '/learn/Intro' },
+        { text: 'BoxModel', link: '/learn/BoxModel' },
+        { text: 'Overflow', link: '/learn/Overflow' },
+        { text: 'Sizing', link: '/learn/Sizing' },
+        { text: 'Background', link: '/learn/Background' },
+        { text: 'Form', link: '/learn/Form' },
+      ],
+    },
+    {
+      text: 'Experiments',
+      items: [{ text: 'Swipe', link: '/Swipe' }],
+    },
+    {
+      text: 'Design',
+      items: [
+        { text: 'Color', link: '/design/Color' },
+        { text: 'Typography', link: '/design/Typography' },
+        { text: 'Flames', link: '/design/Flames' },
+      ],
+    },
+  ],
+});
+
+export const useData: typeof useData$<ThemeConfig> = () => {
+  const data = useData$();
+  return { ...data, theme };
+};

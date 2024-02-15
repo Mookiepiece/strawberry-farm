@@ -10,11 +10,5 @@
     "jsx": "preserve",
     "lib": ["esnext", "dom", "dom.iterable"]
   },
-  "include": [
-    "**/*.ts",
-    "**/*.vue",
-    ".vitepress/**/*.ts",
-    ".vitepress/**/*.vue"
-  ],
   "exclude": ["**/node_modules/**", "**/dist/**", "**/cache/**"]
 }

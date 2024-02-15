@@ -2,7 +2,7 @@ export interface SFCustomEventMap {
   sfvoid: { void: string };
 }
 
-export type SFEventMap = HTMLElementEventMap & SFCustomEventMap
+export type SFEventMap = HTMLElementEventMap & SFCustomEventMap;
 type SFEvents = SFEventMap & Record<string, any>;
 
 type EventModifiers =
@@ -89,8 +89,8 @@ export const on = <T extends EventTarget>(el: T) => {
       el.addEventListener(type, fn, { capture, once, passive });
       return () => el.removeEventListener(type, fn);
     },
-  });
-  return polaris as ON2;
+  }) as any as ON2;
+  return polaris;
 };
 
 on(document.body).keydown(keyboardevt => {});
