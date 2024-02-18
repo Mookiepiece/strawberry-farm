@@ -3,7 +3,7 @@ export const debounce = <T extends (...args: any[]) => void>(
   timeout = 300,
   signal?: AbortSignal
 ): T => {
-  let timer: number;
+  let timer: ReturnType<typeof setTimeout>;
   return ((...args) => {
     clearTimeout(timer);
     timer = setTimeout(() => !(signal?.aborted) && fn(...args), timeout);

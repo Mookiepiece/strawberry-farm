@@ -4,7 +4,7 @@ import { computed, onMounted, ref, shallowRef } from 'vue';
 import { debounce, on } from '../../../strawberry-farm/functions';
 import VPLink from './VPLink.vue';
 
-const headerMeta = shallowRef<
+const metaHeaders = shallowRef<
   { text: string; link: string; offset: number; level: number }[]
 >([]);
 
@@ -44,7 +44,7 @@ const handleContentUpdated = () => {
     ),
   );
 
-  headerMeta.value = [
+  metaHeaders.value = [
     ...document.querySelectorAll<HTMLHeadingElement>(
       '.vp-doc > div > :where(h2,h3)',
     ),
@@ -66,14 +66,14 @@ onContentUpdated(handleContentUpdated);
 
 const activeIndex = computed(() => {
   if (offset.value === Number.POSITIVE_INFINITY)
-    return headerMeta.value.length - 1;
+    return metaHeaders.value.length - 1;
 
-  const index = headerMeta.value.findIndex(i => i.offset >= offset.value);
-  if (index === -1) return headerMeta.value.length - 1;
+  const index = metaHeaders.value.findIndex(i => i.offset >= offset.value);
+  if (index === -1) return metaHeaders.value.length - 1;
   return index;
 });
 
-const empty = computed(() => (headerMeta.value?.length ?? 0) <= 1);
+const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
 </script>
 
 <template>
@@ -88,7 +88,7 @@ const empty = computed(() => (headerMeta.value?.length ?? 0) <= 1);
     <div class="title px-4">Outline</div>
     <template v-if="!empty">
       <VPLink
-        v-for="(item, index) in headerMeta"
+        v-for="(item, index) in metaHeaders"
         :key="index"
         class="[...] [A] [CF] link px-4"
         :class="{

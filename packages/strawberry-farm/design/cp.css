@@ -38,8 +38,6 @@
   --text2: #e6e3e0cc;
   --text3: #e6e3e088;
 
-  
-
   --DVD: #fff0e922;
 
   --tone-blank-pending: #ece3e715;
@@ -69,6 +67,19 @@
   --tone-reimu-fore: #f66;
 }
 
+:root {
+  ---main: var(--tone-rasp);
+  ---fore: var(--tone-rasp-fore);
+  ---foam: var(--tone-rasp-foam);
+}
+
+/* Material */
+:root {
+  --mat-air-0: #0000;
+  --mat-air-1: #00011110;
+  --mat-air-2: #00011120;
+  --mat-air-3: #00011130;
+}
 
 .tone\:none {
   --pending: none;

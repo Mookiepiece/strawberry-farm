@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { nextTick } from 'vue';
-import { MemoryAccount as path } from '@pictogrammers/memory/src/icons';
+import { MemoryLightbulb as path } from '@pictogrammers/memory/src/icons';
 import VPSidebarItem from './VPSidebarItem.vue';
 import { useData } from './composables';
 
@@ -50,6 +50,7 @@ const sidebarGroups = theme.value.sidebar;
     <div class="QuickAccess">
       <button
         id="VPAppearanceToggle"
+        class="mat:ruby"
         :aria-pressed="isDark"
         @click="toggleTheme"
       >
@@ -79,15 +80,6 @@ const sidebarGroups = theme.value.sidebar;
   overflow-y: auto;
 }
 
-.QuickAccess {
-  button {
-    padding: 10px;
-    border-radius: 10px;
-    background-color: transparent;
-    border: 2px solid #999;
-  }
-}
-
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
@@ -104,17 +96,26 @@ const sidebarGroups = theme.value.sidebar;
   z-index: 9999;
 }
 
+
+.QuickAccess {
+  padding: 10px 30px;
+  button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    /* background-color: transparent; */
+    /* border: 2px solid #999; */
+  }
+}
+
 #VPAppearanceToggle {
-  background: none;
-  border: 1px solid var(--DVD);
-  color: var(--tone-rasp);
+  /* background: none; */
+  border: 2px solid var(--DVD);
+  /* color: var(--tone-rasp); */
 
   svg {
     display: block;
     width: 24px;
     height: 24px;
-    line-height: 1;
-    overflow: hidden;
     fill: currentColor;
   }
 }

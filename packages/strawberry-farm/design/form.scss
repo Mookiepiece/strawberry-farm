@@ -37,11 +37,129 @@
   }
 }
 
-button.mat\:air {
-}
+:where(.mat\:air) {
+  color: var(--text1);
+  border: 0;
+  background: var(--mat-air-0);
+  outline: 0;
 
-button.mat\:air {
-  [aria-current='true'],
-  [aria-pressed='true'] {
+  &:hover {
+    background: var(--mat-air-1);
+  }
+
+  &[aria-current='true'],
+  &[aria-pressed='true'],
+  &.active,
+  &:active {
+    color: var(---fore);
+    background: var(--mat-air-2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(---main);
+    outline-offset: -1px;
   }
 }
+
+:where(.mat\:mist) {
+  color: var(--text1);
+  border: 0;
+  background: var(--mat-air-1);
+  outline: 0;
+
+  &:hover {
+    background: var(--mat-air-2);
+  }
+
+  &[aria-current='true'],
+  &[aria-pressed='true'],
+  &.active,
+  &:active {
+    color: var(---fore);
+    background: var(--mat-air-3);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(---main);
+    outline-offset: -1px;
+  }
+}
+
+// :where(.mat\:airy) {
+//   color: var(--text2);
+//   border: 0;
+//   background: var(--mat-air-1);
+//   outline: 0;
+
+//   &:hover {
+//     background: var(--mat-air-2);
+//   }
+
+//   &[aria-current='true'],
+//   &[aria-pressed='true'],
+//   &.active,
+//   &:active {
+//     color: var(--text1);
+//     background: var(--mat-air-3);
+//   }
+
+//   &:focus-visible {
+//     outline: 2px solid var(---main);
+//     outline-offset: -1px;
+//   }
+// }
+
+.mat\:ruby {
+  color: var(--text1);
+  border: 0;
+  background: var(--mat-air-0);
+  outline: 0;
+
+  &:hover {
+    background: var(--mat-air-1);
+  }
+  
+  &:active {
+    background: var(--mat-air-2);
+  }
+
+  &[aria-current='true'],
+  &[aria-pressed='true'] {
+    background: var(---main);
+
+    &:hover {
+      background: color-mix(in oklab, var(--tone-rasp), #000 10%);
+    }
+    &:active {
+      background: color-mix(in oklab, var(--tone-rasp), #000 20%);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(---main);
+    outline-offset: -1px;
+  }
+}
+
+// :where(.mat\:solid) {
+//   color: var(--text1);
+//   border: 0;
+//   background: var(--mat-air-1);
+//   outline: 0;
+
+//   &:hover {
+//     background: var(--mat-air-2);
+//   }
+
+//   &[aria-current='true'],
+//   &[aria-pressed='true'],
+//   &.active,
+//   &:active {
+//     background: var(--mat-air-3);
+//   }
+
+//   &:focus-visible {
+//     outline: 2px solid var(---main);
+//     outline-offset: -1px;
+//   }
+// }
