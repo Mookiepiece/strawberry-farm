@@ -78,6 +78,7 @@ const sidebarGroups = theme.value.sidebar;
   z-index: 1;
   padding-top: 50px;
   overflow: clip auto;
+  transition: transform .3s;
 }
 
 ::view-transition-old(root),
@@ -115,10 +116,10 @@ const sidebarGroups = theme.value.sidebar;
     fill: currentColor;
   }
 }
-
+/* 
 @media not (min-width: 1300px) {
   .VPSidebar {
     transform: translateX(-100%);
   }
-}
+} */
 </style>

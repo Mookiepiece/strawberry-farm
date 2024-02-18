@@ -6,7 +6,7 @@ import VPSidebar from './VPSidebar.vue';
 
 // https://github.com/vuejs/vitepress/blob/20511006dba516ca8c06ed1dd3516547af668a0e/src/client/app/router.ts#L161
 // Scroll section into view when click hash link (Original code don't work because our doc don't allow body scrolling)
-let off = () => {};
+let off = () => { };
 onMounted(() => {
   // NOTE: Ctrl key opens the link in new tab.
   off = on(document.body).click.exact(e => {
@@ -45,6 +45,8 @@ onUnmounted(() => off());
   display: grid;
   grid-template: 1fr/300px 1fr;
   height: 100vh;
+  overflow: hidden;
+  transition: all .3s;
 
   &::before {
     position: absolute;
@@ -61,9 +63,15 @@ onUnmounted(() => off());
   padding-right: 300px;
   overflow: auto;
 
-  > div {
+  >div {
     width: min(800px, 100%);
     margin-inline: auto;
+  }
+}
+
+@media not (min-width: 1300px) {
+  .VPLayout {
+    grid-template: 1fr/0px 1fr;
   }
 }
 </style>
