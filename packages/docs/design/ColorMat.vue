@@ -2,7 +2,6 @@
   <div class="good f2" style="">
     <div class="tony tone:rasp [-:]">{{ ['山莓','Rasp'].join('\n') }}</div>
     <div class="tony tone:iris [-:]">{{ ['鸢尾', 'Iris'].join('\n') }}</div>
-    <div class="tony tone:citrus [-:]">{{ ['枳果', 'Citrus'].join('\n') }}</div>
     <div class="tony tone:reimu [-:]">{{ ['灵梦', 'Reimu'].join('\n') }}</div>
   </div>
 </template>

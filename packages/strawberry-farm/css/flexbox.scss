@@ -8,7 +8,7 @@
     }
 
     :where(.#{w($bp)}\[x\], .#{w($bp)}\[y\], .#{w($bp)}\[a\], .#{w($bp)}\[b\]) {
-      display: inilne-flex;
+      display: inline-flex;
     }
 
     :where(.#{w($bp)}\[A\], .#{w($bp)}\[a\]) {
@@ -68,27 +68,25 @@
       }
     }
     // Multi-Column Alignment
-    :where(
-        .#{w($bp)}\[\+S\],
-        .#{w($bp)}\[\+C\],
-        .#{w($bp)}\[\+E\],
-        .#{w($bp)}\[\+0\],
-        .#{w($bp)}\[\+1\],
-        .#{w($bp)}\[\+2\],
-        .#{w($bp)}\[\+F\]
-      ) {
+
+    .#{w($bp)}\[\[\+S\]\],
+    .#{w($bp)}\[\[\+C\]\],
+    .#{w($bp)}\[\[\+E\]\],
+    .#{w($bp)}\[\[\+0\]\],
+    .#{w($bp)}\[\[\+1\]\],
+    .#{w($bp)}\[\[\+2\]\],
+    .#{w($bp)}\[\[\+F\]\] {
       flex-wrap: wrap;
     }
-    :where(
-        .#{w($bp)}\[\-S\],
-        .#{w($bp)}\[\-C\],
-        .#{w($bp)}\[\-E\],
-        .#{w($bp)}\[\-0\],
-        .#{w($bp)}\[\-1\],
-        .#{w($bp)}\[\-2\],
-        .#{w($bp)}\[\-F\]
-      ) {
-      flex-wrap: wrap-revere;
+
+    .#{w($bp)}\[\[\-S\]\],
+    .#{w($bp)}\[\[\-C\]\],
+    .#{w($bp)}\[\[\-E\]\],
+    .#{w($bp)}\[\[\-0\]\],
+    .#{w($bp)}\[\[\-1\]\],
+    .#{w($bp)}\[\[\-2\]\],
+    .#{w($bp)}\[\[\-F\]\] {
+      flex-wrap: wrap-reverse;
     }
 
     $ALGINCONTENT: (
@@ -101,7 +99,7 @@
       F: stretch,
     );
     @each $a, $b in $ALGINCONTENT {
-      :where(.#{w($bp)}\[\+#{$a}\], .#{w($bp)}\[\-#{$a}\]) {
+      .#{w($bp)}\[\[\+#{$a}\]\], .#{w($bp)}\[\[\-#{$a}\]\] {
         align-content: #{$b};
       }
     }
@@ -111,10 +109,10 @@
 @each $bp, $__ in $breakpoints {
   @include up($bp) {
     @each $a in (0, 1, 2, 3, 4, 5) {
-      :where(.\[\+#{$a}\]) {
+      .\[\+#{$a}\] {
         flex-grow: #{$a};
       }
-      :where(.\[\-#{$a}\]) {
+      .\[\-#{$a}\] {
         flex-shrink: #{$a};
       }
     }

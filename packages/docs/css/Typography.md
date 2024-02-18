@@ -16,7 +16,7 @@
 <div class="[-:]">[-:]</div>
 ```
 
-<div class="🪟">
+<div class="(///)">
   <div class="[:-]">[:-]</div>
   <div class="[--]">[--]</div>
   <div class="[-:]">[-:]</div>
@@ -26,19 +26,19 @@
 
 | Class | CSS                                                                         |
 | ----- | --------------------------------------------------------------------------- |
-| `...` | `overflow: hidden;`<br>`text-overflow: ellipsis;`<br>`white-space: nowrap;` |
+| `...` or `[...]` | `overflow: hidden;`<br>`text-overflow: ellipsis;`<br>`white-space: nowrap;` |
 
 ```html {3}
 <div class="mini">
   <div>Lorem ipsum.</div>
-  <div class="... 🦄">Lorem ipsum.</div>
+  <div class="[...] 🦄">Lorem ipsum.</div>
 </div>
 ```
 
-<div class="🪟">
+<div class="(///)">
   <div class="mini">
     <div>Lorem ipsum.</div>
-    <div class="... 🦄">Lorem ipsum.</div>
+    <div class="[...] 🦄">Lorem ipsum.</div>
   </div>
 </div>
 
@@ -79,15 +79,15 @@ Flex Items 和 Grid Items 默认的 `min-width:auto`、 `min-height:auto` 等同
 
 ---
 
-下例第二项展示了 `flexbox` 在嵌套 `<div>` 而溢出的现象，可以看到我们的类名`...`失效了：
+下例第二项展示了 `flexbox` 在嵌套 `<div>` 而溢出的现象，可以看到我们的类名`[...]`失效了：
 
 ```html {6}
 <div class="[B] mini">
-  <div class="... 🩷">Text Overflow</div>
+  <div class="[...] 🩷">Text Overflow</div>
 </div>
 <div class="[B] mini">
   <div>
-    <div class="... 🩷">Text Overflow</div>
+    <div class="[...] 🩷">Text Overflow</div>
   </div>
 </div>
 <div class="[B] mini">
@@ -100,13 +100,13 @@ Flex Items 和 Grid Items 默认的 `min-width:auto`、 `min-height:auto` 等同
 </div>
 ```
 
-<div class="🪟">
+<div class="(///)">
   <div class="[B] mini">
-    <div class="... 🩷">Text Overflow</div>
+    <div class="[...] 🩷">Text Overflow</div>
   </div>
   <div class="[B] mini">
     <div>
-      <div class="... 🩷">Text Overflow</div>
+      <div class="[...] 🩷">Text Overflow</div>
     </div>
   </div>
   <div class="[B] mini">
@@ -124,12 +124,12 @@ Flex Items 和 Grid Items 默认的 `min-width:auto`、 `min-height:auto` 等同
 ```html {2,7,12,15-16}
 <div class="[B] mini">
   <div style="min-width: 0">
-    <div class="... 🩷">Text Overflow</div>
+    <div class="[...] 🩷">Text Overflow</div>
   </div>
 </div>
 <div class="[B] mini">
   <div style="overflow: hidden">
-    <div class="... 🩷">Text Overflow</div>
+    <div class="[...] 🩷">Text Overflow</div>
   </div>
 </div>
 <div class="[B] mini">
@@ -142,15 +142,15 @@ Flex Items 和 Grid Items 默认的 `min-width:auto`、 `min-height:auto` 等同
 </div>
 ```
 
-<div class="🪟">
+<div class="(///)">
   <div class="[B] mini">
     <div style="min-width: 0">
-      <div class="... 🩷">Text Overflow</div>
+      <div class="[...] 🩷">Text Overflow</div>
     </div>
   </div>
   <div class="[B] mini">
     <div style="overflow: hidden">
-      <div class="... 🩷">Text Overflow</div>
+      <div class="[...] 🩷">Text Overflow</div>
     </div>
   </div>
   <div class="[B] mini">
@@ -182,32 +182,32 @@ Flex Items 和 Grid Items 默认的 `min-width:auto`、 `min-height:auto` 等同
 
 ```html {2,6,10}
 <div style="display: grid; grid-template-columns: 3fr 1fr; width: 50px;">
-  <div class="... 🩷">Text Overflow</div>
+  <div class="[...] 🩷">Text Overflow</div>
   <div>A</div>
 </div>
 <div style="display: grid; grid-template-columns: 3fr 1fr; width: 50px;">
-  <div class="... 🩷" style="justify-self: start;">Text Overflow</div>
+  <div class="[...] 🩷" style="justify-self: start;">Text Overflow</div>
   <div>A</div>
 </div>
 <div style="display: grid; grid-template-columns: 3fr 1fr; width: 50px;">
-  <div class="... 🩷" style="justify-self: start; max-width: 100%;">
+  <div class="[...] 🩷" style="justify-self: start; max-width: 100%;">
     Text Overflow
   </div>
   <div>A</div>
 </div>
 ```
 
-<div class="🪟">
+<div class="(///)">
   <div style="display: grid; grid-template-columns: 3fr 1fr; width: 50px;">
-    <div class="... 🩷">Text Overflow</div>
+    <div class="[...] 🩷">Text Overflow</div>
     <div>A</div>
   </div>
   <div style="display: grid; grid-template-columns: 3fr 1fr; width: 50px;">
-    <div class="... 🩷" style="justify-self: start;">Text Overflow</div>
+    <div class="[...] 🩷" style="justify-self: start;">Text Overflow</div>
     <div>A</div>
   </div>
   <div style="display: grid; grid-template-columns: 3fr 1fr; width: 50px;">
-    <div class="... 🩷" style="justify-self: start; width: 100%;">
+    <div class="[...] 🩷" style="justify-self: start; width: 100%;">
       Text Overflow
     </div>
     <div>A</div>

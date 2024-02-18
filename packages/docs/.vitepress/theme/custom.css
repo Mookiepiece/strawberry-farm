@@ -48,10 +48,47 @@ html.dark .shiki span {
 
 :root {
   --vp-header-h: 50px;
+}
 
-  --落霞: radial-gradient(#fe7, #0000 50%) 50% 100% / 400% 400% no-repeat,
+.🩷 {
+  position: relative;
+  padding: 5px 5px;
+  border-radius: 5px 7px;
+  box-shadow:
+    inset 1px 1px #fec,
+    inset 2px 2px #fff,
+    inset -1px -1px #c87;
+  color: #334;
+  background:
+    radial-gradient(#fe7, #0000 50%) 50% 100% / 400% 400% no-repeat,
     linear-gradient(135deg, #fb9, #f9b);
-  --幻迷: repeating-radial-gradient(
+  overflow: clip;
+
+  /* &::before {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100%);
+    height: 5px;
+    background: linear-gradient(90deg, #fff, #fff0);
+    pointer-events: none;
+    content: '';
+  } */
+}
+
+.dark .🩷 {
+  box-shadow:
+    inset 1px 1px #fff8,
+    inset 0 0 0 1px #000;
+}
+
+.🦄 {
+  border-radius: 5px;
+  box-shadow: inset 1px 1px #fff;
+  color: #334;
+  background:
+    repeating-radial-gradient(
         transparent 0px,
         transparent 5px,
         #fafafa 6px,
@@ -68,30 +105,7 @@ html.dark .shiki span {
     linear-gradient(120deg, #acfe, #f9de);
 }
 
-.🩷 {
-  padding: 5px;
-  border-radius: 5px;
-  box-shadow:
-    inset 1px 1px #fff,
-    inset 0 0 0 1px #ddd;
-  color: #334;
-  background: var(--落霞);
-}
-
-.dark .🩷 {
-  box-shadow:
-    inset 1px 1px #fff8,
-    inset 0 0 0 1px #000;
-}
-
-.🦄 {
-  border-radius: 5px;
-  box-shadow: inset 1px 1px #fff;
-  color: #334;
-  background: var(--幻迷);
-}
-
-.🪟 {
+.\(\/\/\/\) {
   background: repeating-linear-gradient(
     120deg,
     #0000 0px,
@@ -100,10 +114,7 @@ html.dark .shiki span {
     #f8f6f4 10px
   );
 }
-.🪟 + .🪟 {
-  margin-top: 10px;
-}
-.dark .🪟 {
+.dark .\(\/\/\/\) {
   background: repeating-linear-gradient(
     120deg,
     #0000 0px,

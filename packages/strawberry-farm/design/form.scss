@@ -1,0 +1,47 @@
+.sf-input {
+  line-height: 1.6;
+  border: 2px solid var(--DVD);
+  box-shadow: 0 0 0 0 var(--tone-rasp-foam);
+  transition: box-shadow 0.1s;
+  padding: 0 10px;
+
+  > input {
+    width: 100%;
+    height: 100%;
+    font: inherit;
+    line-height: inherit;
+    border: 0;
+    outline: 0;
+  }
+
+  &,
+  &.\[s\] {
+    height: 30px;
+    font-size: var(--f2);
+  }
+
+  &.\[m\] {
+    height: 40px;
+    font-size: var(--f1);
+  }
+
+  &.\[l\] {
+    height: 50px;
+    font-size: var(--f1);
+  }
+
+  &:focus-within {
+    outline: 2px solid var(--tone-rasp);
+    outline-offset: -1px;
+    box-shadow: 0 0 0 4px var(--tone-rasp-foam);
+  }
+}
+
+button.mat\:air {
+}
+
+button.mat\:air {
+  [aria-current='true'],
+  [aria-pressed='true'] {
+  }
+}

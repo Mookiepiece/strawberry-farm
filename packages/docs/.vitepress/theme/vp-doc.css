@@ -17,26 +17,64 @@
   }
 
   > h1 {
-    font-size: var(--head1);
+    font-size: var(--h1);
   }
 
   > h2 {
     margin: 48px 0 16px;
     border-top: 1px solid var(--DVD);
     padding-top: 24px;
-    font-size: var(--head2);
+    font-size: var(--h2);
   }
 
   > h3 {
     margin: 32px 0 0;
-    font-size: var(--head3);
+    font-size: var(--h3);
   }
 
   > h4,
   > h5,
   > h6 {
     margin: 2em 0 1em 0;
-    font-size: var(--font2);
+    font-size: var(--f1);
+  }
+
+  /**
+  * Paragraph and inline elements
+  * -------------------------------------------------------------------------- */
+  > p,
+  > summary {
+    margin: 16px 0;
+  }
+  > p {
+    font-size: var(--f1);
+    line-height: 1.6;
+  }
+  > blockquote {
+    margin: 16px 0;
+    border-left: 2px solid var(--vp-c-divider);
+    padding-left: 16px;
+    transition: border-color 0.5s;
+    > p {
+      margin: 0;
+      font-size: var(--f1);
+      color: var(--vp-c-text-2);
+      transition: color 0.5s;
+    }
+  }
+
+  a:not(.undoc *) {
+    font-weight: 500;
+    color: var(--tone-rasp-fore);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    &:hover {
+      color: color-mix(in oklab, var(--tone-rasp-fore), #000 15%);
+    }
+  }
+
+  strong:not(.undoc *) {
+    font-weight: 600;
   }
 
   /**
@@ -44,17 +82,19 @@
   * -------------------------------------------------------------------------- */
 
   .header-anchor {
+    display: block;
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
-    margin-left: -0.87em;
-    font-weight: 500;
+    font-weight: 600;
     user-select: none;
+    width: 25px;
     opacity: 0;
-    text-decoration: none;
+    text-decoration: none !important;
     transition:
-      color 0.25s,
-      opacity 0.25s;
+      color 0.3s,
+      opacity 0.3s;
+    transform: translateX(-25px);
   }
 
   .header-anchor::before {
@@ -66,51 +106,6 @@
     .header-anchor:focus {
       opacity: 1;
     }
-  }
-
-  h2 .header-anchor {
-    top: 24px;
-  }
-
-  /**
-  * Paragraph and inline elements
-  * -------------------------------------------------------------------------- */
-  > p,
-  > summary {
-    margin: 16px 0;
-  }
-  > p {
-    font-size: var(--font1);
-    line-height: 1.6;
-  }
-  > blockquote {
-    margin: 16px 0;
-    border-left: 2px solid var(--vp-c-divider);
-    padding-left: 16px;
-    transition: border-color 0.5s;
-    > p {
-      margin: 0;
-      font-size: 16px;
-      color: var(--vp-c-text-2);
-      transition: color 0.5s;
-    }
-  }
-
-  a:not(.undoc *) {
-    font-weight: 500;
-    color: var(--tone-pink-fore);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    transition:
-      color 0.25s,
-      opacity 0.25s;
-    &:hover {
-      color: var(--tone-pink);
-    }
-  }
-
-  strong:not(.undoc *) {
-    font-weight: 600;
   }
 
   /* *
@@ -459,19 +454,20 @@
   * External links icon
   * -------------------------------------------------------------------------- */
 
-:is(.vp-external-link-icon, .vp-doc a[href*='://'], .vp-doc a[target='_blank']):not(.no-icon)::after {
-   display: inline-block;
-   margin-top: -1px;
-   margin-left: 4px;
-   width: 11px;
-   height: 11px;
-   background: currentColor;
-   color: var(--vp-c-text-3);
-   flex-shrink: 0;
-   --icon: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' %3E%3Cpath d='M0 0h24v24H0V0z' fill='none' /%3E%3Cpath d='M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z' /%3E%3C/svg%3E");
-   -webkit-mask-image: var(--icon);
-   mask-image: var(--icon);
- }
+:is(.vp-external-link-icon, .vp-doc a[href*='://'], .vp-doc a[target='_blank']):not(.no-icon)::after
+{
+  display: inline-block;
+  margin-top: -1px;
+  margin-left: 4px;
+  width: 11px;
+  height: 11px;
+  background: currentColor;
+  color: var(--vp-c-text-3);
+  flex-shrink: 0;
+  --icon: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' %3E%3Cpath d='M0 0h24v24H0V0z' fill='none' /%3E%3Cpath d='M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z' /%3E%3C/svg%3E");
+  -webkit-mask-image: var(--icon);
+  mask-image: var(--icon);
+}
 
 .vp-external-link-icon::after {
   content: '';

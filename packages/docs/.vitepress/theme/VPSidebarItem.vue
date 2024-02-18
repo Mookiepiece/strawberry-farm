@@ -12,7 +12,7 @@ defineProps<{
   <div v-if="!('items' in item)" class="VPSidebarItem [#]">
     <VPLink
       v-if="item.link"
-      class="[...] [A] [CF] link px-6 f2 tone:pink tone:blank"
+      class="[...] [A] [CF] link px-6 f2 tone:rasp tone:blank"
       :href="item.link"
       :rel="item.rel"
       :target="item.target"

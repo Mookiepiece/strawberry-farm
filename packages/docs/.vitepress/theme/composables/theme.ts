@@ -34,7 +34,7 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Breakpoints', link: '/css/Breakpoints' },
         { text: 'Flexbox', link: '/css/Flexbox' },
         { text: 'Typography', link: '/css/Typography' },
-        { text: 'Spacing', link: '/css/Spacing' },
+        { text: 'Box', link: '/css/Box' },
         { text: 'Positioning', link: '/css/Positioning' },
       ],
     },
@@ -58,8 +58,13 @@ const theme = shallowRef<ThemeConfig>({
       items: [
         { text: 'Color', link: '/design/Color' },
         { text: 'Typography', link: '/design/Typography' },
-        { text: 'Flames', link: '/design/Flames' },
+        { text: 'Sizing', link: '/design/Sizing' },
+        { text: 'Interaction', link: '/design/Interaction' },
       ],
+    },
+    {
+      text: 'HTML',
+      items: [{ text: 'Form', link: '/html/Form' }],
     },
   ],
 });

@@ -1,24 +1,27 @@
 <template>
-  <div class="🪟 [B] [SC]">
+  <div class="(///) [B] [SC]">
     <div v-for="i of 3" class="🩷">{{ i }}</div>
   </div>
-  <div class="🪟 [B] [CC]">
+  <div class="(///) [B] [CC]">
     <div v-for="i of 3" class="🩷">{{ i }}</div>
   </div>
-  <div class="🪟 [B] [EC]">
+  <div class="(///) [B] [EC]">
     <div v-for="i of 3" class="🩷">{{ i }}</div>
   </div>
-  <div class="🪟 [B] [0C]">
+  <div class="(///) [B] [0C]">
     <div v-for="i of 3" class="🩷">{{ i }}</div>
   </div>
-  <div class="🪟 [B] [1C]">
+  <div class="(///) [B] [1C]">
     <div v-for="i of 3" class="🩷">{{ i }}</div>
   </div>
-  <div class="🪟 [B] [2C]">
+  <div class="(///) [B] [2C]">
     <div v-for="i of 3" class="🩷">{{ i }}</div>
   </div>
 </template>
 <style scoped>
+.\(\/\/\/\) + .\(\/\/\/\) {
+  margin-top: 10px;
+}
 
 .🩷 {
   width: 50px;

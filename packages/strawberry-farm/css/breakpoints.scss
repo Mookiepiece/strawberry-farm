@@ -4,7 +4,7 @@ $breakpoints: (
   w4: 1300px,
 );
 
-$breakpointsex: (
+$breakpointsextended: (
   w0: 0,
   w1: 444px,
   w2: 700px,
@@ -14,7 +14,7 @@ $breakpointsex: (
 );
 
 @mixin up($name) {
-  $size: map-get($breakpointsex, $name);
+  $size: map-get($breakpointsextended, $name);
   @if ($size == 0) {
     @content;
   } @else {
@@ -25,13 +25,14 @@ $breakpointsex: (
 }
 
 @mixin down($name) {
-  $size: map-get($breakpointsex, $name);
+  $size: map-get($breakpointsextended, $name);
   @media not (min-width: $size) {
     @content;
   }
 }
 
 @function w($name) {
-  $pixel: map-get($breakpointsex, $name);
+  $pixel: map-get($breakpointsextended, $name);
   @return if($pixel == 0, '', '#{$name}\\:');
 }
+

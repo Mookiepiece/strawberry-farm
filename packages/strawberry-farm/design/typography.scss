@@ -1,12 +1,12 @@
 @each $i in (1, 2, 3) {
   .h#{$i} {
-    font-size: var(--font#{$i});
+    font-size: var(--f#{$i});
   }
 }
 
 @each $i in (1, 2, 3) {
   .f#{$i},.f#{$i}i {
-    font-size: var(--font#{$i});
+    font-size: var(--f#{$i});
     line-height: 1.6;
   }
 

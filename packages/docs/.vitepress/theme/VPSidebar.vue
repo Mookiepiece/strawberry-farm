@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { nextTick } from 'vue';
+import { MemoryAccount as path } from '@pictogrammers/memory/src/icons';
 import VPSidebarItem from './VPSidebarItem.vue';
 import { useData } from './composables';
 
@@ -52,7 +53,7 @@ const sidebarGroups = theme.value.sidebar;
         :aria-pressed="isDark"
         @click="toggleTheme"
       >
-        hello
+        <svg width="24" height="24" viewBox="0 0 24 24"><path :d="path" /></svg>
       </button>
     </div>
     <nav
@@ -101,5 +102,20 @@ const sidebarGroups = theme.value.sidebar;
 ::view-transition-new(root),
 .dark::view-transition-old(root) {
   z-index: 9999;
+}
+
+#VPAppearanceToggle {
+  background: none;
+  border: 1px solid var(--DVD);
+  color: var(--tone-rasp);
+
+  svg {
+    display: block;
+    width: 24px;
+    height: 24px;
+    line-height: 1;
+    overflow: hidden;
+    fill: currentColor;
+  }
 }
 </style>

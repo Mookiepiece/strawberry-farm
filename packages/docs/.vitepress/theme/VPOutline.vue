@@ -78,7 +78,7 @@ const empty = computed(() => (headerMeta.value?.length ?? 0) <= 1);
 
 <template>
   <aside
-    class="VPOutline [A] f2 tone:pink tone:blank"
+    class="VPOutline [A] f2 tone:rasp tone:blank"
     :class="{ empty }"
     :style="{
       '--vp-outline-opacity': activeIndex >= 0 ? 1 : 0,
@@ -138,7 +138,7 @@ const empty = computed(() => (headerMeta.value?.length ?? 0) <= 1);
     display: block;
     height: var(--6);
     width: 2px;
-    background-color: var(--tone-pink);
+    background-color: var(--tone-rasp);
     opacity: var(--vp-outline-opacity);
     transform: translateY(calc(var(--6) * var(--vp-outline-times)));
     content: '';

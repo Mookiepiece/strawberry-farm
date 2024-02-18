@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress';
 import { mdPlugin } from './mdPlugins';
+import path from 'node:path'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -8,6 +9,13 @@ export default defineConfig({
   head: [['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }]],
   markdown: {
     config: mdPlugin,
+  },
+  vite: {
+    resolve: {
+      alias: {
+        '@mookiepiece/strawberry-farm': path.resolve(__dirname, '../../strawberry-farm'),
+      },
+    },
   },
   vue: {
     template: {
