@@ -12,13 +12,13 @@
   --h1: 28px;
   --h2: 24px;
   --h3: 20px;
-  --f1: 17px;
+  --f1: 16px;
   --f2: 14px;
   --f3: 12px;
 
   --text1: #131314;
   --text2: #13131499;
-  --text3: #13131433;
+  --text3: #13145555;
 
   --bg: #ffffff;
 
@@ -40,92 +40,23 @@
   --tone-blank-active: #ece3e725;
 }
 
-/* Tone */
-:root {
-  --tone-rasp: #f01771;
-  --tone-rasp-fore: #da0b65;
-  --tone-rasp-foam: #f0177133;
-  --tone-iris: #5577dd;
-  --tone-iris-fore: #2656cc;
-  --tone-iris-foam: #5577dd33;
-  --tone-citrus: #f8f808;
-  --tone-citrus-fore: #caac00;
-  --tone-citrus-foam: #f8f80833;
-  --tone-reimu: #f31313;
-  --tone-reimu-fore: #dd1111;
-  --tone-reimu-foam: #f3131333;
-}
-
-.dark {
-  --tone-rasp-fore: #f6a;
-  --tone-iris-fore: #6af;
-  --tone-citrus-fore: #ee8;
-  --tone-reimu-fore: #f66;
-}
-
-:root {
-  ---main: var(--tone-rasp);
-  ---fore: var(--tone-rasp-fore);
-  ---foam: var(--tone-rasp-foam);
-}
-
 /* Material */
 :root {
   --mat-air-0: #00011100;
   --mat-air-1: #00011110;
+  --mat-air-15: #00011115;
   --mat-air-2: #00011120;
   --mat-air-3: #00011130;
   --mat-air-4: #00011140;
 
-  --DVD: var(--mat-air-1);
+  --DVD: var(--mat-air-15);
 }
 
 .dark {
   --mat-air-0: #fffeee00;
   --mat-air-1: #fffeee10;
+  --mat-air-15: #fffeee15;
   --mat-air-2: #fffeee20;
   --mat-air-3: #fffeee30;
   --mat-air-4: #fffeee40;
-  --DVD: var(--mat-air-1);
-}
-
-.tone\:none {
-  --pending: none;
-  --active: none;
-}
-
-.tone\:rasp {
-  ---main: var(--tone-rasp);
-  ---fore: var(--tone-rasp-fore);
-  ---foam: var(--tone-rasp-foam);
-}
-
-.tone\:iris {
-  ---main: var(--tone-iris);
-  ---fore: var(--tone-iris-fore);
-  ---foam: var(--tone-iris-foam);
-}
-
-.tone\:citrus {
-  ---main: var(--tone-citrus);
-  ---fore: var(--tone-citrus-fore);
-  ---foam: var(--tone-citrus-foam);
-}
-
-.tone\:reimu {
-  ---main: var(--tone-reimu);
-  ---fore: var(--tone-reimu-fore);
-  ---foam: var(--tone-reimu-foam);
-}
-
-.tone\:blank {
-  ---idle: var(--tone-blank-idle);
-  ---pending: var(--tone-blank-pending);
-  ---active: var(--tone-blank-active);
-}
-
-.tone\:demi {
-  ---idle: var(--tone-demi-idle);
-  ---pending: var(--tone-demi-pending);
-  ---active: var(--tone-demi-active);
 }

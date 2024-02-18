@@ -1,4 +1,6 @@
 @import './cp.css';
+@import './mat.scss';
+@import './tone.scss';
 @import './button.css';
 @import './typography.scss';
 @import './form.scss';

@@ -43,7 +43,7 @@ onUnmounted(() => off());
 .VPLayout {
   position: relative;
   display: grid;
-  grid-template: 1fr/ 320px 1fr;
+  grid-template: 1fr/300px 1fr;
   height: 100vh;
 
   &::before {

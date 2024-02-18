@@ -78,7 +78,7 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
 
 <template>
   <aside
-    class="VPOutline [A] f2 tone:rasp tone:blank"
+    class="VPOutline [A] f2"
     :class="{ empty }"
     :style="{
       '--vp-outline-opacity': activeIndex >= 0 ? 1 : 0,
@@ -90,10 +90,8 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
       <VPLink
         v-for="(item, index) in metaHeaders"
         :key="index"
-        class="[...] [A] [CF] link px-4"
-        :class="{
-          hask: activeIndex === index,
-        }"
+        class="[...] [A] [CF] link px-4 tone:rasp mat:airy"
+        :active="activeIndex === index"
         :style="{
           '--vp-outline-level': item.level - 1,
         }"
@@ -146,28 +144,8 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
   }
 
   .link {
-    position: relative;
     flex: 0 0 var(--6);
     padding-left: calc(5px + calc(10px * var(--vp-outline-level)));
-    color: var(--text2);
-    outline: 0;
-
-    &:hover {
-      background: var(---pending);
-    }
-
-    &:active {
-      background: var(---active);
-    }
-
-    &.hask {
-      color: var(--text1);
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(---main);
-      outline-offset: -1px;
-    }
   }
 }
 </style>

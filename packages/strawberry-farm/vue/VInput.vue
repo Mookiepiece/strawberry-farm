@@ -1,12 +1,13 @@
 <script setup lang="ts">
 
-const props = defineProps<{
+const { placeholder } = defineProps<{
+  placeholder?: string
 }>();
 
 </script>
 
 <template>
   <div class="sf-input [s]">
-    <input />
+    <input :placeholder="placeholder" />
   </div>
 </template>

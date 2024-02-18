@@ -37,28 +37,6 @@ defineProps<{
 .VPSidebarItem {
   height: var(--7);
   font-weight: normal;
-
-  /* .link {
-    outline: 0;
-    color: var(--text1);
-
-    &:hover {
-      background: var(---pending);
-    }
-
-    &:active {
-      background: var(---active);
-    }
-
-    &.active {
-      color: var(---fore);
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(---main);
-      outline-offset: -1px;
-    }
-  } */
 }
 
 .VPSidebarItem--Group {

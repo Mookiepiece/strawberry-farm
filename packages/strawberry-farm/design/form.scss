@@ -1,17 +1,23 @@
 .sf-input {
+  padding: 0 10px;
+  color: var(--text1);
   line-height: 1.6;
   border: 2px solid var(--DVD);
   box-shadow: 0 0 0 0 var(--tone-rasp-foam);
   transition: box-shadow 0.1s;
-  padding: 0 10px;
 
   > input {
     width: 100%;
     height: 100%;
+    color: inherit;
     font: inherit;
     line-height: inherit;
     border: 0;
     outline: 0;
+
+    &::placeholder {
+      color: var(--text3);
+    }
   }
 
   &,
@@ -27,7 +33,7 @@
 
   &.\[l\] {
     height: 50px;
-    font-size: var(--f1);
+    font-size: var(--h3);
   }
 
   &:focus-within {
@@ -36,134 +42,3 @@
     box-shadow: 0 0 0 4px var(--tone-rasp-foam);
   }
 }
-
-.mat\:air {
-  color: var(--text1);
-  border: 0;
-  background: var(--mat-air-0);
-  outline: 0;
-
-  &:hover {
-    background: var(--mat-air-1);
-  }
-  &:active {
-    background: var(--mat-air-2);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(---main);
-    outline-offset: -1px;
-  }
-}
-
-.mat\:air {
-  &[aria-selected='true'],
-  &[aria-checked='true'],
-  &[aria-pressed='true'],
-  &.active {
-    color: var(---fore);
-  }
-}
-
-.mat\:mist {
-  color: var(--text1);
-  border: 0;
-  background: var(--mat-air-1);
-  outline: 0;
-
-  &:hover {
-    background: var(--mat-air-2);
-  }
-
-  &[aria-current='true'],
-  &[aria-pressed='true'],
-  &.active,
-  &:active {
-    color: var(---fore);
-    background: var(--mat-air-3);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(---main);
-    outline-offset: -1px;
-  }
-}
-
-// :where(.mat\:airy) {
-//   color: var(--text2);
-//   border: 0;
-//   background: var(--mat-air-1);
-//   outline: 0;
-
-//   &:hover {
-//     background: var(--mat-air-2);
-//   }
-
-//   &[aria-current='true'],
-//   &[aria-pressed='true'],
-//   &.active,
-//   &:active {
-//     color: var(--text1);
-//     background: var(--mat-air-3);
-//   }
-
-//   &:focus-visible {
-//     outline: 2px solid var(---main);
-//     outline-offset: -1px;
-//   }
-// }
-
-.mat\:ruby {
-  color: var(--text1);
-  border: 0;
-  background: var(--mat-air-0);
-  outline: 0;
-
-  &:hover {
-    background: var(--mat-air-1);
-  }
-
-  &:active {
-    background: var(--mat-air-2);
-  }
-
-  &[aria-current='true'],
-  &[aria-pressed='true'] {
-    background: var(---main);
-
-    &:hover {
-      background: color-mix(in oklab, var(--tone-rasp), #000 10%);
-    }
-    &:active {
-      background: color-mix(in oklab, var(--tone-rasp), #000 20%);
-    }
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(---main);
-    outline-offset: -1px;
-  }
-}
-
-// :where(.mat\:solid) {
-//   color: var(--text1);
-//   border: 0;
-//   background: var(--mat-air-1);
-//   outline: 0;
-
-//   &:hover {
-//     background: var(--mat-air-2);
-//   }
-
-//   &[aria-current='true'],
-//   &[aria-pressed='true'],
-//   &.active,
-//   &:active {
-//     background: var(--mat-air-3);
-//   }
-
-//   &:focus-visible {
-//     outline: 2px solid var(---main);
-//     outline-offset: -1px;
-//   }
-// }

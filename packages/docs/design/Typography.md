@@ -1,5 +1,8 @@
 # 文字 Typography
 
+:::demo design/Typography
+:::
+
 ## 文本大小
 
 | Custom Property | Class | Value | 1.6x Line Height | 1.2x Line Height |
@@ -7,11 +10,11 @@
 | h1              | h1    | 28px  | **44.8px**       | **33.6px**       |
 | h2              | h2    | 24px  | **38.4px**       | 28.8px           |
 | h3              | h3    | 20px  | **32px**         | 24px             |
-| f1              | f1    | 17px  | 27.2px           | 20.4px           |
+| f1              | f1    | 16px  | 25.6px           | 19.2px           |
 | f2              | f2    | 14px  | 22.4px           | 16.8px           |
 | f3              | f3    | 12px  | 19.2px           | 14.4px           |
 
-- 17px 是微信的默认文章字体大小，也包括 `<h4 />` `<h5 />` `<h6 />`。
+- 微信的默认文章字体大小是17px，也包括 `<h4 />` `<h5 />` `<h6 />`。
 - 14px 是微信的提示文本大小。
 - 行高超过30px在表格里加粗。
 

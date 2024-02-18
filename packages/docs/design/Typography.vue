@@ -1,11 +1,12 @@
 <template>
-  <div class="[B] [2C] [[]0]" style="min-height: 150px;">
-    <div v-for="i of 17" class="🩷">{{ i }}</div>
+  <div class="[A]">
+    <div class="t" v-for="i of 3" :class="[`h${i}`]">Head {{ i }} <span class="(B)">Head</span></div>
+    <div class="t" v-for="i of 3" :class="[`f${i}`]">Text {{ i }} <span class="(B)">Text</span></div>
+    <div class="t" v-for="i of 3" :class="[`f${i}i`]">Text inline {{ i }}</div>
   </div>
 </template>
 <style scoped>
-.🩷 {
-  width: 50px;
-  height: 50px;
+.t {
+  box-shadow: 0 1px 0 0 var(--DVD);
 }
 </style>

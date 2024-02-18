@@ -77,7 +77,7 @@ const sidebarGroups = theme.value.sidebar;
 .VPSidebar {
   z-index: 1;
   padding-top: 50px;
-  overflow-y: auto;
+  overflow: clip auto;
 }
 
 ::view-transition-old(root),
@@ -102,21 +102,23 @@ const sidebarGroups = theme.value.sidebar;
   button {
     padding: 10px 20px;
     border-radius: 10px;
-    /* background-color: transparent; */
-    /* border: 2px solid #999; */
   }
 }
 
 #VPAppearanceToggle {
-  /* background: none; */
   border: 2px solid var(--DVD);
-  /* color: var(--tone-rasp); */
 
   svg {
     display: block;
     width: 24px;
     height: 24px;
     fill: currentColor;
+  }
+}
+
+@media not (min-width: 1300px) {
+  .VPSidebar {
+    transform: translateX(-100%);
   }
 }
 </style>

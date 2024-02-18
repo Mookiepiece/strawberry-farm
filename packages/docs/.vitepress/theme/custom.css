@@ -22,7 +22,6 @@ html {
   }
 }
 
-.VPLink,
 .VPButton {
   text-decoration: none;
 }
@@ -63,18 +62,6 @@ html.dark .shiki span {
     radial-gradient(#fe7, #0000 50%) 50% 100% / 400% 400% no-repeat,
     linear-gradient(135deg, #fb9, #f9b);
   overflow: clip;
-
-  /* &::before {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: calc(100%);
-    height: 5px;
-    background: linear-gradient(90deg, #fff, #fff0);
-    pointer-events: none;
-    content: '';
-  } */
 }
 
 .dark .🩷 {
