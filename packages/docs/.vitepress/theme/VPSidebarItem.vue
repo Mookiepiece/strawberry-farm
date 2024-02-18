@@ -12,7 +12,7 @@ defineProps<{
   <div v-if="!('items' in item)" class="VPSidebarItem [#]">
     <VPLink
       v-if="item.link"
-      class="[...] [A] [CF] link px-6 f2 tone:rasp tone:blank"
+      class="[...] [A] [CF] link px-6 f2 mat:air"
       :href="item.link"
       :rel="item.rel"
       :target="item.target"
@@ -38,7 +38,7 @@ defineProps<{
   height: var(--7);
   font-weight: normal;
 
-  .link {
+  /* .link {
     outline: 0;
     color: var(--text1);
 
@@ -58,7 +58,7 @@ defineProps<{
       outline: 2px solid var(---main);
       outline-offset: -1px;
     }
-  }
+  } */
 }
 
 .VPSidebarItem--Group {

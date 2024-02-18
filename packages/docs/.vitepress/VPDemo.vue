@@ -62,11 +62,11 @@ switch (dirname) {
 
   > div:first-child {
     padding: 20px;
-    --a: var(--tone-rasp-foam);
+    --a: var(--tone-iris-foam);
 
-    --x: 18px;
+    --x: 19px;
     --y: 40px;
-    --z: 2px;
+    --z: 1px;
     background:
       linear-gradient(var(--a), var(--a)) var(--x) 0 / var(--z) var(--y)
         no-repeat,

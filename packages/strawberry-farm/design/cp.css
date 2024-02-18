@@ -22,8 +22,6 @@
 
   --bg: #ffffff;
 
-  --DVD: #00022222;
-
   --tone-blank-idle: transparent;
   --tone-blank-pending: #00011115;
   --tone-blank-active: #00011125;
@@ -37,8 +35,6 @@
   --text1: #e6e3e0;
   --text2: #e6e3e0cc;
   --text3: #e6e3e088;
-
-  --DVD: #fff0e922;
 
   --tone-blank-pending: #ece3e715;
   --tone-blank-active: #ece3e725;
@@ -75,10 +71,22 @@
 
 /* Material */
 :root {
-  --mat-air-0: #0000;
+  --mat-air-0: #00011100;
   --mat-air-1: #00011110;
   --mat-air-2: #00011120;
   --mat-air-3: #00011130;
+  --mat-air-4: #00011140;
+
+  --DVD: var(--mat-air-1);
+}
+
+.dark {
+  --mat-air-0: #fffeee00;
+  --mat-air-1: #fffeee10;
+  --mat-air-2: #fffeee20;
+  --mat-air-3: #fffeee30;
+  --mat-air-4: #fffeee40;
+  --DVD: var(--mat-air-1);
 }
 
 .tone\:none {
