@@ -2,26 +2,22 @@
 :root {
   --tone-rasp: #f01771;
   --tone-rasp-fore: #da0b65;
-  --tone-rasp-fort: #da0b65;
   --tone-rasp-foam: #f0177133;
   --tone-iris: #5577dd;
   --tone-iris-fore: #2656cc;
-  --tone-iris-fort: #2656cc;
   --tone-iris-foam: #5577dd33;
-  --tone-citrus: #f8f808;
-  --tone-citrus-fore: #caac00;
-  --tone-citrus-fort: #caac00;
+  --tone-citrus: #f8e808;
+  --tone-citrus-fore: #ca9c00;
   --tone-citrus-foam: #f8f80833;
   --tone-reimu: #f31313;
   --tone-reimu-fore: #dd1111;
-  --tone-reimu-fort: #dd1111;
   --tone-reimu-foam: #f3131333;
 }
 
 .dark {
   --tone-rasp-fore: #f6a;
   --tone-iris-fore: #6af;
-  --tone-citrus-fore: #ee8;
+  --tone-citrus-fore: #fe8;
   --tone-reimu-fore: #f66;
 }
 
@@ -29,7 +25,6 @@
 :root {
   ---main: var(--tone-rasp);
   ---fore: var(--tone-rasp-fore);
-  ---fort: var(--tone-rasp-fort);
   ---foam: var(--tone-rasp-foam);
 }
 
