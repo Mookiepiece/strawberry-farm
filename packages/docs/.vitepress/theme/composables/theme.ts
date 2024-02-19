@@ -60,6 +60,7 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Typography', link: '/design/Typography' },
         { text: 'Sizing', link: '/design/Sizing' },
         { text: 'Interaction', link: '/design/Interaction' },
+        { text: 'Collapse', link: '/design/Collapse' },
       ],
     },
     {

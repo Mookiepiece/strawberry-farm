@@ -18,10 +18,5 @@ class SFInputElement extends SFElement {
 
   disconnectedCallback() {}
 
-  static observedAttributes?: string[];
-  attributeChangedCallback(
-    name: string,
-    oldValue: string | null,
-    newValue: string | null,
-  ) {}
+
 }

@@ -27,7 +27,10 @@
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.tabSize": 2,
-    "terminal.integrated.cwd": ""
+    "terminal.integrated.cwd": "",
+    "[vue]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
   },
   "extensions": {
     "recommendations": [

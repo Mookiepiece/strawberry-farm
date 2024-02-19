@@ -51,18 +51,18 @@
   },
   "@media (any-pointer: fine)": {
     "scope": "css,scss",
-    "prefix": "media pointer",
+    "prefix": "service unavailable media pointer",
     "body": "@media (any-pointer: fine) {\n  $1\n}",
     "description": "e.g. For carousel display prev next button to change current tabs"
   },
   "@media (prefers-color-scheme: dark)": {
     "scope": "css,scss",
-    "prefix": "media prefers-color-scheme dark",
+    "prefix": "service unavailable media prefers-color-scheme dark",
     "body": "@media (prefers-color-scheme: dark) {\n  $1\n}"
   },
   "@media (prefers-reduced-motion)": {
     "scope": "css,scss",
-    "prefix": "media prefers-reduced-motion",
+    "prefix": "service unavailable media prefers-reduced-motion",
     "body": "@media (prefers-reduced-motion) {\n  $1\n}"
   }
 }
