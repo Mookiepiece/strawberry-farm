@@ -72,24 +72,40 @@ html.dark .shiki span {
 
 .🦄 {
   border-radius: 5px;
-  box-shadow: inset 1px 1px #fff;
   color: #334;
   background:
+    linear-gradient(
+      200deg,
+        white 10%,
+        white calc(10% + 10px),
+        transparent calc(10% + 12px),
+        transparent calc(10% + 32px),
+        white calc(10% + 35px)
+      ) no-repeat,
     repeating-radial-gradient(
         transparent 0px,
         transparent 5px,
-        #fafafa 6px,
-        #fafafa 11px
+        #dde 6px,
+        #dde 11px
       )
       0 0 / 11px 11px,
     repeating-radial-gradient(
         transparent 0px,
         transparent 5px,
-        #f8f8f8 6px,
-        #f8f8f8 10px
+        #dde 6px,
+        #dde 10px
       )
       0 0 / 10px 10px,
-    linear-gradient(120deg, #acfe, #f9de);
+    linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%),
+    /* radial-gradient(#acfe 50%, rgba(153, 185, 255, 0.933) 55%); */
+      repeating-linear-gradient(
+        120deg,
+        #acfe 0px,
+        #acfe 28px,
+        #bbd5f8ee 32px,
+        #bbd5f8ee 46px,
+        #acfe 50px
+      );
 }
 
 .\(\/\/\/\) {

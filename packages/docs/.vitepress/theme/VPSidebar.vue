@@ -46,30 +46,34 @@ const sidebarGroups = theme.value.sidebar;
 </script>
 
 <template>
-  <aside class="VPSidebar">
-    <div class="QuickAccess">
-      <button
-        id="VPAppearanceToggle"
-        class="mat:ruby"
-        :aria-pressed="isDark"
-        @click="toggleTheme"
+  <aside class="VPSidebar [#]">
+    <div class="VPSidebarBody">
+      <div class="QuickAccess">
+        <button
+          id="VPAppearanceToggle"
+          class="mat:ruby"
+          :aria-pressed="isDark"
+          @click="toggleTheme"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path :d="path" />
+          </svg>
+        </button>
+      </div>
+      <nav
+        class="nav"
+        id="VPSidebarNav"
+        aria-label="Sidebar Navigation"
+        tabindex="-1"
       >
-        <svg width="24" height="24" viewBox="0 0 24 24"><path :d="path" /></svg>
-      </button>
+        <VPSidebarItem
+          v-for="item in sidebarGroups"
+          :key="item.text"
+          :item="item"
+          :depth="0"
+        />
+      </nav>
     </div>
-    <nav
-      class="nav"
-      id="VPSidebarNav"
-      aria-label="Sidebar Navigation"
-      tabindex="-1"
-    >
-      <VPSidebarItem
-        v-for="item in sidebarGroups"
-        :key="item.text"
-        :item="item"
-        :depth="0"
-      />
-    </nav>
   </aside>
 </template>
 
@@ -78,7 +82,12 @@ const sidebarGroups = theme.value.sidebar;
   z-index: 1;
   padding-top: 50px;
   overflow: clip auto;
-  transition: transform .3s;
+  transition: transform 0.3s;
+}
+
+/* No Shrink when collapsing in small screen */
+.VPSidebarBody{
+  width: 300px;
 }
 
 ::view-transition-old(root),
@@ -96,7 +105,6 @@ const sidebarGroups = theme.value.sidebar;
 .dark::view-transition-old(root) {
   z-index: 9999;
 }
-
 
 .QuickAccess {
   padding: 10px 30px;
