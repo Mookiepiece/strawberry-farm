@@ -1,7 +1,6 @@
 :root {
-  --0: 0;
-  --1: 2px;
-  --2: 3px;
+  --1: 1px;
+  --2: 2px;
   --3: 5px;
   --4: 10px;
   --5: 20px;
@@ -21,23 +20,12 @@
   --text3: #13145555;
 
   --bg: #ffffff;
-
-  --tone-blank-idle: transparent;
-  --tone-blank-pending: #00011115;
-  --tone-blank-active: #00011125;
-
-  --tone-demi-idle: #00011110;
-  --tone-demi-pending: #00011120;
-  --tone-demi-active: #00011125;
 }
 
 .dark {
   --text1: #e6e3e0;
   --text2: #e6e3e0cc;
   --text3: #e6e3e088;
-
-  --tone-blank-pending: #ece3e715;
-  --tone-blank-active: #ece3e725;
 }
 
 /* Material */

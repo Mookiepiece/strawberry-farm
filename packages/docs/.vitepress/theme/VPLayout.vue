@@ -34,7 +34,7 @@ onUnmounted(() => off());
 <template>
   <div class="VPLayout">
     <VPSidebar />
-    <Content class="VPContent [A] vp-doc p-6 w4:p-8" />
+    <Content class="VPContent [A] vp-doc p-6 ww:p-8" />
     <VPOutline />
   </div>
 </template>

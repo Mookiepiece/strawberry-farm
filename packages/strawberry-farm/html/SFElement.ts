@@ -15,11 +15,11 @@ interface SFEmit {
   (event: Event): void;
 }
 
-class HTMLStrawberryFarmElement extends HTMLElement {
+export class SFElement extends HTMLElement {
   emit: SFEmit & { bubbles: SFEmit };
   $: <T extends Element = Element>(query: string) => T | null;
   $$: <T extends Element = Element>(query: string) => T[];
-  setup: (self: HTMLStrawberryFarmElement) => (() => void) | void;
+  setup: (self: SFElement) => (() => void) | void;
 
   _cleanup?: () => void;
 
@@ -43,7 +43,7 @@ class HTMLStrawberryFarmElement extends HTMLElement {
     });
 
     this.$ = q => self.querySelector(q);
-    this.$$ = <T extends Element = Element>(q) => [
+    this.$$ = <T extends Element = Element>(q: string) => [
       ...self.querySelectorAll<T>(q),
     ];
 
@@ -59,5 +59,3 @@ class HTMLStrawberryFarmElement extends HTMLElement {
     this._cleanup?.();
   }
 }
-
-const sfel = new HTMLStrawberryFarmElement();

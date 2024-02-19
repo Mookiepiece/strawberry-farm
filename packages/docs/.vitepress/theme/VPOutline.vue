@@ -126,7 +126,7 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
   }
 
   &:not(.empty) {
-    box-shadow: inset 1px 0 0 0 var(--tone-demi-idle);
+    box-shadow: inset 1px 0 0 0 var(--mat-air-1);
   }
 
   &:not(.empty)::after {

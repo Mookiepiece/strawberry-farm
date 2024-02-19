@@ -1,10 +1,12 @@
 .sf-input {
+  position: relative;
   padding: 0 10px;
   color: var(--text1);
   line-height: 1.6;
-  border: 2px solid var(--DVD);
+  border: 1px solid var(--DVD);
+  border-radius: 5px;
   box-shadow: 0 0 0 0 var(--tone-rasp-foam);
-  transition: box-shadow 0.1s;
+  transition: box-shadow 0.2s;
 
   > input {
     width: 100%;
@@ -20,25 +22,33 @@
     }
   }
 
-  &,
-  &.\[s\] {
-    height: 30px;
-    font-size: var(--f2);
-  }
-
-  &.\[m\] {
-    height: 40px;
-    font-size: var(--f1);
-  }
-
-  &.\[l\] {
-    height: 50px;
-    font-size: var(--h3);
-  }
-
   &:focus-within {
     outline: 2px solid var(--tone-rasp);
     outline-offset: -1px;
     box-shadow: 0 0 0 4px var(--tone-rasp-foam);
   }
+
+  &:hover,
+  &:focus {
+    z-index: 1;
+  }
+
+  &:where(:not(.sf-input-group:is(.\[m\], .\[l\]) *), .\[s\]) {
+    height: 30px;
+    font-size: var(--f2);
+  }
+
+  &:where(.sf-input-group.\[m\], .\[m\]) {
+    height: 40px;
+    font-size: var(--f1);
+  }
+
+  &:where(.sf-input-group.\[l\], .\[l\]) {
+    height: 50px;
+    font-size: var(--h3);
+  }
+}
+
+.sf-input-group {
+  
 }

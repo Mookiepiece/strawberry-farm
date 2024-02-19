@@ -7,7 +7,7 @@ const { placeholder } = defineProps<{
 </script>
 
 <template>
-  <div class="sf-input">
+  <div class="sf-input-group">
     <input :placeholder="placeholder" />
   </div>
 </template>

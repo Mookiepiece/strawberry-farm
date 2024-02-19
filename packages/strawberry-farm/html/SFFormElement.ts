@@ -1,4 +1,6 @@
-class HTMLStrawberryFarmFormElement extends HTMLStrawberryFarmElement {
+import { SFElement } from "./SFElement";
+
+class SFFormElement extends SFElement {
   constructor() {
     super();
   }

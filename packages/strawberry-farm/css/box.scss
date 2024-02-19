@@ -2,33 +2,37 @@
 
 $spacing: (auto, 0, 1, 2, 3, 4, 5, 6, 7, 8) !default;
 
+@function yyds($a) {
+  @return if($a == auto, auto, if($a == 0, 0, var(--#{$a})));
+}
+
 @each $name, $bp in $breakpoints {
   @each $a in $spacing {
     @include up($name) {
       .#{w($name)}m-#{$a}, .#{w($name)}mx-#{$a}, .#{w($name)}ml-#{$a} {
-        margin-left: if($a == auto, auto, var(--#{$a}));
+        margin-left: yyds($a);
       }
       .#{w($name)}m-#{$a}, .#{w($name)}mx-#{$a}, .#{w($name)}mr-#{$a} {
-        margin-right: if($a == auto, auto, var(--#{$a}));
+        margin-right: yyds($a);
       }
       .#{w($name)}m-#{$a}, .#{w($name)}my-#{$a}, .#{w($name)}mt-#{$a} {
-        margin-top: if($a == auto, auto, var(--#{$a}));
+        margin-top: yyds($a);
       }
       .#{w($name)}m-#{$a}, .#{w($name)}my-#{$a}, .#{w($name)}mb-#{$a} {
-        margin-bottom: if($a == auto, auto, var(--#{$a}));
+        margin-bottom: yyds($a);
       }
 
       .#{w($name)}p-#{$a}, .#{w($name)}px-#{$a}, .#{w($name)}pl-#{$a} {
-        padding-left: if($a == auto, auto, var(--#{$a}));
+        padding-left: yyds($a);
       }
       .#{w($name)}p-#{$a}, .#{w($name)}px-#{$a}, .#{w($name)}pr-#{$a} {
-        padding-right: if($a == auto, auto, var(--#{$a}));
+        padding-right: yyds($a);
       }
       .#{w($name)}p-#{$a}, .#{w($name)}py-#{$a}, .#{w($name)}pt-#{$a} {
-        padding-top: if($a == auto, auto, var(--#{$a}));
+        padding-top: yyds($a);
       }
       .#{w($name)}p-#{$a}, .#{w($name)}py-#{$a}, .#{w($name)}pb-#{$a} {
-        padding-bottom: if($a == auto, auto, var(--#{$a}));
+        padding-bottom: yyds($a);
       }
     }
   }

@@ -1,52 +1,52 @@
 {
   "@media (min-width: 444px)": {
     "scope": "css,scss",
-    "prefix": "w1",
+    "prefix": "@v",
     "body": "@media (min-width: 444px) {\n  $1\n}"
   },
   "@media (min-width: 700px)": {
     "scope": "css,scss",
-    "prefix": "w2",
+    "prefix": "@w",
     "body": "@media (min-width: 700px) {\n  $1\n}"
   },
   "@media (min-width: 1000px)": {
     "scope": "css,scss",
-    "prefix": "w3",
+    "prefix": "@wv",
     "body": "@media (min-width: 1000px) {\n  $1\n}"
   },
   "@media (min-width: 1300px)": {
     "scope": "css,scss",
-    "prefix": "w4",
+    "prefix": "@ww",
     "body": "@media (min-width: 1300px) {\n  $1\n}"
   },
   "@media (min-width: 1700px)": {
     "scope": "css,scss",
-    "prefix": "w5",
+    "prefix": "@wwv",
     "body": "@media (min-width: 1700px) {\n  $1\n}"
   },
   "@media not (min-width: 444px)": {
     "scope": "css,scss",
-    "prefix": "!w1",
+    "prefix": "!@v",
     "body": "@media not (min-width: 444px) {\n  $1\n}"
   },
   "@media not (min-width: 700px)": {
     "scope": "css,scss",
-    "prefix": "!w2",
+    "prefix": "!@w",
     "body": "@media not (min-width: 700px) {\n  $1\n}"
   },
   "@media not (min-width: 1000px)": {
     "scope": "css,scss",
-    "prefix": "!w3",
+    "prefix": "!@wv",
     "body": "@media not (min-width: 1000px) {\n  $1\n}"
   },
   "@media not (min-width: 1300px)": {
     "scope": "css,scss",
-    "prefix": "!w4",
+    "prefix": "!@ww",
     "body": "@media not (min-width: 1300px) {\n  $1\n}"
   },
   "@media not (min-width: 1700px)": {
     "scope": "css,scss",
-    "prefix": "!w5",
+    "prefix": "!@wwv",
     "body": "@media not (min-width: 1700px) {\n  $1\n}"
   },
   "@media (any-pointer: fine)": {
