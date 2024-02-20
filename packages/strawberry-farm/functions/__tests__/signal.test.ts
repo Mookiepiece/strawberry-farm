@@ -48,23 +48,23 @@ describe('signal', () => {
     const spy1 = sinon.spy(() => s.value);
     const spy2 = sinon.spy(() => s.value);
     const spy3 = sinon.spy(() => s.value);
-  
+
     effect(spy1);
     const dispose = effect(spy2);
     effect(spy3);
-  
+
     expect(spy1).toBeCalledTimes(1);
     expect(spy2).toBeCalledTimes(1);
     expect(spy3).toBeCalledTimes(1);
-  
+
     dispose();
-  
+
     s.value = 1;
     expect(spy1).toBeCalledTimes(2);
     expect(spy2).toBeCalledTimes(1);
     expect(spy3).toBeCalledTimes(2);
   });
-  
+
   describe('.peek()', () => {
     it('should get value', () => {
       const s = signal(1);
@@ -1721,7 +1721,7 @@ describe('batch/transaction', () => {
     expect(() =>
       batch(() => {
         throw Error('hello');
-      })
+      }),
     ).to.throw('hello');
   });
 
@@ -1895,7 +1895,7 @@ describe('batch/transaction', () => {
         a.value++;
         b.value++;
         throw Error('hello');
-      })
+      }),
     ).to.throw('hello');
 
     expect(spy1).toBeCalledTimes(1);
@@ -1929,7 +1929,7 @@ describe('batch/transaction', () => {
     expect(() =>
       batch(() => {
         a.value++;
-      })
+      }),
     ).to.throw('hello');
 
     expect(spy1).toBeCalledTimes(1);

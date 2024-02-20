@@ -123,7 +123,7 @@ const _batch = (cb: () => any, eff?: Effect): (() => void) | void => {
   bat.affected.forEach(
     (originalValue, sig) =>
       !Object.is(sig.peek(), originalValue) &&
-      sig._effects.forEach(eff => effs.add(eff))
+      sig._effects.forEach(eff => effs.add(eff)),
   );
   effs.forEach(eff => eff.call());
 
@@ -133,46 +133,33 @@ const _batch = (cb: () => any, eff?: Effect): (() => void) | void => {
 export const computed = <T>(cb: () => T): Signal<T> => {
   let dirty = true;
 
-  const setValue = (v: T) => {
-    if (t++ > 200) throw new Error();
+  const calc = () => {
+    if (dirty) {
+      let eff: Effect = undefined as any;
+      const dispose = effect(_eff => {
+        eff = _eff;
+        sig._value = cb();
+      });
 
-    const activeBatch = activeBatches.at(-1);
-    if (!activeBatch) {
-      batch(() => (sig.value = v));
-      return;
-    }
+      const subs = [...eff._signals].map(sig => {
+        let t = 0;
+        return sig.subscribe(() => {
+          if (!t++) return;
+          dirty = true;
+          subs.forEach(_ => _());
+        });
+      });
 
-    if (!activeBatch.affected.has(sig)) {
-      activeBatch.affected.set(sig, sig._value);
+      dispose();
+      dirty = false;
     }
-    sig._value = v;
   };
 
   const sig: Signal<T> = {
     _value: undefined as any,
     get value() {
       if (t++ > 200) throw new Error();
-
-      if (dirty) {
-        let eff: Effect = undefined as any;
-        const dispose = effect(_eff => {
-          eff = _eff;
-          sig._value = cb();
-        });
-
-        const subs = [...eff._signals].map(sig => {
-          let t = 0;
-          return sig.subscribe(() => {
-            if (!t++) return;
-            dirty = true;
-            subs.forEach(_ => _());
-          });
-        });
-
-        dispose();
-        dirty = false;
-      }
-
+      calc();
       const activeEffect = activeBatches.at(-1)?.effect;
       if (activeEffect) {
         activeEffect._signals.add(sig);
@@ -194,7 +181,10 @@ export const computed = <T>(cb: () => T): Signal<T> => {
     },
 
     brand: PreactSignalsSymbol,
-    peek: () => sig._value,
+    peek: () => {
+      calc();
+      return sig._value;
+    },
     toString: () => '' + sig._value,
     toJSON: () => sig._value,
     valueOf: () => sig._value,
