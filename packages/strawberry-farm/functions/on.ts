@@ -92,19 +92,3 @@ export const on = <T extends EventTarget>(el: T) => {
   }) as any as ON2;
   return polaris;
 };
-
-on(document.body).keydown(keyboardevt => {});
-on(document.body).keydown.exact(keyboardevt => {});
-on(document.body).keydown.ctrl(keyboardevt => {});
-on(document.body).keydown.KeyK(keyboardevt => {});
-on(document.body).keypress.ctrl.KeyK(keyboardevt => {});
-
-on(document.body).click.ctrl(mouse => {});
-on(document.body).click(mouse => {});
-on(document.body).pointercancel(pointer => {});
-on(document.body).wheel(wheel => {});
-on(document.body).touchmove(wheel => {});
-on(document.body).transitioncancel(po => {});
-on(document.body).exact(keyboardevt => {});
-on(document.body).customevents(keyboardevt => {});
-on(document.body).sfvoid(voidevent => {});

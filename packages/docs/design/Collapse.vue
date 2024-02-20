@@ -1,23 +1,11 @@
 <script setup lang="ts">
-import { on } from '@mookiepiece/strawberry-farm/functions';
+import { Bag, on } from '@mookiepiece/strawberry-farm/functions';
 import { onMounted, ref, watchEffect } from 'vue';
 function nextFrame(cb: () => void) {
   requestAnimationFrame(() => {
     requestAnimationFrame(cb);
   });
 }
-
-const Bag = () => {
-  let cbs: (() => void)[] = [];
-  return (cb?: () => void) => {
-    if (cb) {
-      cbs.push(cb);
-    } else {
-      cbs.forEach(_ => _());
-      cbs = [];
-    }
-  };
-};
 
 const a = ref<HTMLDivElement>();
 
@@ -36,7 +24,7 @@ onMounted(() => {
       nextFrame(() => {
         el.style.setProperty('height', `var(--h)`);
         bag(
-          on(el).transitionend.self.once(e => {
+          on(el).transitionend.self.once(_ => {
             el.style.removeProperty('height');
             el.style.removeProperty('overflow');
           }),
@@ -49,7 +37,7 @@ onMounted(() => {
       nextFrame(() => {
         el.style.setProperty('height', `0`);
         bag(
-          on(el).transitionend.self.once(e => {
+          on(el).transitionend.self.once(_ => {
             el.style.setProperty('display', `none`);
           }),
         );

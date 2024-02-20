@@ -43,15 +43,13 @@ onUnmounted(() => off());
 .VPLayout {
   position: relative;
   display: grid;
-  grid-template: 1fr/300px 1fr;
+  grid-template: 1fr/300px 1fr 166px;
   height: 100vh;
   overflow: hidden;
   transition: all 0.3s;
 }
 
 .VPContent {
-  padding-top: var(--6);
-  padding-right: calc(166px + 50px);
   overflow: auto;
 
   > div {
@@ -62,7 +60,7 @@ onUnmounted(() => off());
 
 @media not (min-width: 1300px) {
   .VPLayout {
-    grid-template: 1fr/0px 1fr;
+    grid-template: 1fr/0 1fr 0;
   }
 }
 </style>

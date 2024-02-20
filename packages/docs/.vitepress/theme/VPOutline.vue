@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { onContentUpdated } from 'vitepress';
 import { computed, onMounted, ref, shallowRef } from 'vue';
-import { debounce, on } from '../../../strawberry-farm/functions';
 import VPLink from './VPLink.vue';
+import { Bag, debounce, on } from '@mookiepiece/strawberry-farm/functions';
 
 const metaHeaders = shallowRef<
   { text: string; link: string; offset: number; level: number }[]
@@ -10,13 +10,10 @@ const metaHeaders = shallowRef<
 
 const offset = ref(0);
 
-let off = () => {};
-let ac = new AbortController();
-
+const bag = Bag();
 const handleContentUpdated = () => {
-  off();
-  ac.abort();
-  ac = new AbortController();
+  bag();
+
   let _VPContentEl = document.querySelector<HTMLDivElement>('.VPContent');
   if (!_VPContentEl) return;
   let VPContentEl = _VPContentEl;
@@ -24,23 +21,25 @@ const handleContentUpdated = () => {
   VPContentEl.scrollTop = 0;
   offset.value = VPContentEl.scrollTop;
 
-  off = on(VPContentEl).scroll(
-    debounce(
-      () => {
-        // If scroll to the end, highlight the last element
-        // It is not a promise that clicking an anchor will let the window scroll to the target header.
-        // Because there are some sections that cannot reach at the top of the window even if scroll to the end.
-        // Because they are at the bottom of a page.
-        // Those sections are "un-highlight-able".
-        offset.value =
-          VPContentEl.scrollTop + VPContentEl.clientHeight ===
-            VPContentEl.scrollHeight &&
-          VPContentEl.clientHeight !== VPContentEl.scrollHeight
-            ? Number.POSITIVE_INFINITY
-            : VPContentEl.scrollTop;
-      },
-      100,
-      ac.signal,
+  bag(
+    on(VPContentEl).scroll(
+      debounce(
+        () => {
+          // If scroll to the end, highlight the last element
+          // It is not a promise that clicking an anchor will let the window scroll to the target header.
+          // Because there are some sections that cannot reach at the top of the window even if scroll to the end.
+          // Because they are at the bottom of a page.
+          // Those sections are "un-highlight-able".
+          offset.value =
+            VPContentEl.scrollTop + VPContentEl.clientHeight ===
+              VPContentEl.scrollHeight &&
+            VPContentEl.clientHeight !== VPContentEl.scrollHeight
+              ? Number.POSITIVE_INFINITY
+              : VPContentEl.scrollTop;
+        },
+        100,
+        bag(new AbortController()).signal,
+      ),
     ),
   );
 
@@ -82,7 +81,8 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
     :class="{ empty }"
     :style="{
       '--vp-outline-opacity': activeIndex >= 0 ? 1 : 0,
-      '--vp-outline-times': activeIndex,
+      '--vp-outline-curr': activeIndex,
+      '--vp-outline-sum': metaHeaders.length,
     }"
   >
     <div class="title px-4">Outline</div>
@@ -106,13 +106,10 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
 
 <style>
 .VPOutline {
-  position: absolute;
-  grid-area: 1/2/2/3;
-  top: 0;
-  right: 20px;
-  width: 166px;
+  position: relative;
   max-height: 100%;
   padding-top: 50px;
+  padding-left: 5px;
   z-index: 1;
   overflow-y: auto;
 
@@ -126,20 +123,27 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
     display: none;
   }
 
-  &:not(.empty) {
-    box-shadow: inset 1px 0 0 0 var(--mat-air-1);
+  &:not(.empty)::before {
+    position: absolute;
+    top: 0;
+    height: calc(50px + 30px + calc(var(--6) * var(--vp-outline-sum)));
+    left: 5px;
+    width: 1px;
+    display: block;
+    background-color: var(--mat-air-15);
+    content: '';
   }
 
   &:not(.empty)::after {
     position: absolute;
     top: 80px;
-    left: 0;
+    left: 5px;
     display: block;
     height: var(--6);
     width: 2px;
     background-color: var(--tone-rasp);
     opacity: var(--vp-outline-opacity);
-    transform: translateY(calc(var(--6) * var(--vp-outline-times)));
+    transform: translateY(calc(var(--6) * var(--vp-outline-curr)));
     content: '';
     transition: all 0.1s;
   }

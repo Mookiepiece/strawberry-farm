@@ -125,10 +125,4 @@ const sidebarGroups = theme.value.sidebar;
     fill: currentColor;
   }
 }
-/* 
-@media not (min-width: 1300px) {
-  .VPSidebar {
-    transform: translateX(-100%);
-  }
-} */
 </style>

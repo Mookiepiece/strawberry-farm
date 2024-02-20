@@ -5,6 +5,8 @@ describe('collection', () => {
   describe('Bag', () => {
     it('Very good', () => {
       const bag = Bag();
+      
+      // Callback Fn
       const f1 = vi.fn();
       bag(f1);
       bag(f1);
@@ -17,6 +19,15 @@ describe('collection', () => {
 
       bag();
       expect(f1).not.toBeCalled();
+
+      // AbortController
+      const a1 = new AbortController();
+      const r = bag(a1);
+      expect(r).toEqual(a1);
+      expect(a1.signal.aborted).toBeFalsy();
+
+      bag();
+      expect(a1.signal.aborted).toBeTruthy();
     });
   });
 });
