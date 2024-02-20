@@ -101,11 +101,9 @@
     content: '#';
   }
 
-  :is(h1, h2, h3, h4, h5, h6) {
-    &:hover .header-anchor,
-    .header-anchor:focus {
-      opacity: 1;
-    }
+  :is(h1, h2, h3, h4, h5, h6)
+    :is(&:hover .header-anchor, .header-anchor:focus) {
+    opacity: 1;
   }
 
   /* *
@@ -480,4 +478,33 @@
 
 html:not(.dark) .vp-code span {
   color: var(--shiki-light, inherit);
+}
+
+.custom-block {
+  padding: 20px;
+  margin: 20px 0;
+
+  .custom-block-title {
+    padding-bottom: 5px;
+    font-size: var(--f1);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  blockquote {
+    font-size: var(--f2);
+    line-height: 1.6;
+  }
+
+  &.info {
+    background-color: var(--mat-air-1);
+  }
+  &.details {
+    padding: 0;
+    background-color: var(--mat-air-1);
+    summary {
+      position: relative;
+      padding: 20px;
+    }
+  }
 }

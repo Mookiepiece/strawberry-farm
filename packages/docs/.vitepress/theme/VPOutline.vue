@@ -90,14 +90,15 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
       <VPLink
         v-for="(item, index) in metaHeaders"
         :key="index"
-        class="[...] [A] [CF] link px-4 tone:rasp mat:airy"
+        class="[A] [CF] link px-4 tone:rasp mat:airy"
         :active="activeIndex === index"
         :style="{
           '--vp-outline-level': item.level - 1,
         }"
         :href="item.link"
+        :title="item.text"
       >
-        <span>{{ item.text }}</span></VPLink
+        <div class="[...]">{{ item.text }}</div></VPLink
       >
     </template>
   </aside>
@@ -109,7 +110,7 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
   grid-area: 1/2/2/3;
   top: 0;
   right: 20px;
-  width: 250px;
+  width: 166px;
   max-height: 100%;
   padding-top: 50px;
   z-index: 1;

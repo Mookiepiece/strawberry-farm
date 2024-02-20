@@ -29,40 +29,28 @@ onMounted(() => {
   watchEffect(() => {
     const el = a.value!;
 
+    bag();
     if (r.value) {
-      bag();
-      el.style.setProperty('--h', el.scrollHeight + 'px');
+      el.style.removeProperty('display');
       el.style.setProperty('height', `0`);
       nextFrame(() => {
         el.style.setProperty('height', `var(--h)`);
         bag(
           on(el).transitionend.self.once(e => {
-            bag();
             el.style.removeProperty('height');
-          }),
-        );
-        bag(
-          on(el).transitioncancel.self.once(e => {
-            bag();
-            //
+            el.style.removeProperty('overflow');
           }),
         );
       });
     } else {
-      bag();
       el.style.setProperty('--h', el.scrollHeight + 'px');
       el.style.setProperty('height', `var(--h)`);
+      el.style.setProperty('overflow', `hidden`);
       nextFrame(() => {
         el.style.setProperty('height', `0`);
         bag(
           on(el).transitionend.self.once(e => {
-            bag();
-          }),
-        );
-        bag(
-          on(el).transitioncancel.self.once(e => {
-            bag();
-            //
+            el.style.setProperty('display', `none`);
           }),
         );
       });

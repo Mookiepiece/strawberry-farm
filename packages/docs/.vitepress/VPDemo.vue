@@ -64,9 +64,9 @@ switch (dirname) {
     padding: 20px;
     --a: var(--tone-iris-foam);
 
-    --x: 19px;
+    --x: 18px;
     --y: 40px;
-    --z: 1px;
+    --z: 2px;
     background:
       linear-gradient(var(--a), var(--a)) var(--x) 0 / var(--z) var(--y)
         no-repeat,
