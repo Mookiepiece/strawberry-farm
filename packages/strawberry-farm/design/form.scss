@@ -4,9 +4,10 @@
   color: var(--text1);
   line-height: 1.6;
   border: 1px solid var(--DVD);
-  border-radius: 5px;
   box-shadow: 0 0 0 0 var(--tone-rasp-foam);
-  transition: box-shadow 0.2s;
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
 
   > input {
     width: 100%;
@@ -20,6 +21,10 @@
     &::placeholder {
       color: var(--text3);
     }
+  }
+
+  &:hover {
+    border-color: var(--tone-rasp);
   }
 
   &:focus-within {
@@ -50,5 +55,21 @@
 }
 
 .sf-input-group {
-  
+  > ins {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    text-decoration: unset;
+    border: 1px solid var(--DVD);
+
+    color: var(--text1);
+    font-size: var(--f2);
+
+    background: var(--mat-air-1);
+    padding: 0 10px;
+  }
+
+  > :not(:first-child) {
+    margin-left: -1px;
+  }
 }
