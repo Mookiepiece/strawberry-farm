@@ -90,7 +90,7 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
       <VPLink
         v-for="(item, index) in metaHeaders"
         :key="index"
-        class="[A] [CF] link px-4 tone:rasp mat:airy"
+        class="[A] [FC] link px-4 tone:rasp mat:airy"
         :active="activeIndex === index"
         :style="{
           '--vp-outline-level': item.level - 1,

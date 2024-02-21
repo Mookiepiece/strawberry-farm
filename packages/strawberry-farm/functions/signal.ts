@@ -15,10 +15,12 @@ type Signal<T = any> = {
   valueOf(): T;
 };
 
-type Effect = {
-  call: () => void;
+type Effect<T = void> = {
+  run: () => T;
   _signals: Set<Signal>;
   dispose: () => void;
+  scheduler?: (run: () => void) => void;
+  queue?: 'pre';
 };
 
 type Batch = {
@@ -61,7 +63,7 @@ export const signal = <T>(initialValue: T): Signal<T> => {
       return effect(() => {
         const v = sig.value;
         untracked(() => cb(v));
-      });
+      }).dispose;
     },
 
     brand: PreactSignalsSymbol,
@@ -74,31 +76,41 @@ export const signal = <T>(initialValue: T): Signal<T> => {
   return sig;
 };
 
-export const effect = (cb: (eff: Effect) => any): (() => void) => {
+export const effect = <T = void>(
+  cb: () => T,
+  options?: {
+    lazy?: boolean;
+    scheduler?(cb: () => void): void;
+    queue?: 'pre';
+  },
+): Effect<T> => {
   const signals = new Set<Signal>();
 
-  let cleanup: (() => void) | void;
-
   const dispose = () => {
-    cleanup?.();
     eff._signals.forEach(sig => sig._effects.delete(eff));
     eff._signals.clear();
   };
-  const call = () => {
+  const run = () => {
     dispose();
-    const _cleanup = _batch(() => cb(eff), eff);
-    if (typeof _cleanup === 'function') cleanup = _cleanup;
+    return _batch(() => cb(), eff);
   };
 
-  const eff: Effect = {
-    call,
+  const eff: Effect<T> = {
+    run: run,
     _signals: signals,
     dispose,
   };
 
-  eff.call();
+  if (options?.queue) {
+    eff.queue = options.queue;
+  }
+  if (options?.scheduler) {
+    eff.scheduler = options.scheduler;
+  }
 
-  return eff.dispose;
+  if (!options?.lazy) eff.run();
+
+  return eff;
 };
 
 let activeBatches: (Batch | null)[] = [];
@@ -109,9 +121,9 @@ const untracked = (cb: () => void) => {
   activeBatches.pop();
 };
 
-export const batch = (cb: () => any): (() => void) | void => _batch(cb);
+export const batch = <T = void>(cb: () => T): T => _batch(cb);
 
-const _batch = (cb: () => any, eff?: Effect): (() => void) | void => {
+const _batch = <T = void>(cb: () => T, eff?: Effect): T => {
   activeBatches.push({
     effect: eff,
     affected: new Map(),
@@ -125,7 +137,9 @@ const _batch = (cb: () => any, eff?: Effect): (() => void) | void => {
       !Object.is(sig.peek(), originalValue) &&
       sig._effects.forEach(eff => effs.add(eff)),
   );
-  effs.forEach(eff => eff.call());
+  [...effs]
+    .sort((a, b) => (b.queue?.length ?? 0) - (a.queue?.length ?? 0))
+    .forEach(eff => (eff.scheduler ? eff.scheduler(eff.run) : eff.run()));
 
   return ans;
 };
@@ -133,25 +147,22 @@ const _batch = (cb: () => any, eff?: Effect): (() => void) | void => {
 export const computed = <T>(cb: () => T): Signal<T> => {
   let dirty = true;
 
+  const eff: Effect<T> = effect(() => (sig._value = cb()), {
+    scheduler() {
+      // dirty chain for signal -> computed -> computed tree
+      dirty = true;
+      sig._effects.forEach(e => {
+        e.queue === 'pre' && e.scheduler?.(() => {});
+      });
+    },
+    queue: 'pre',
+    lazy: true,
+  });
+
   const calc = () => {
     if (dirty) {
-      let eff: Effect = undefined as any;
-      const dispose = effect(_eff => {
-        eff = _eff;
-        sig._value = cb();
-      });
-
-      const subs = [...eff._signals].map(sig => {
-        let t = 0;
-        return sig.subscribe(() => {
-          if (!t++) return;
-          dirty = true;
-          subs.forEach(_ => _());
-        });
-      });
-
-      dispose();
       dirty = false;
+      return eff.run();
     }
   };
 
@@ -177,7 +188,7 @@ export const computed = <T>(cb: () => T): Signal<T> => {
       return effect(() => {
         const v = sig.value;
         untracked(() => cb(v));
-      });
+      }).dispose;
     },
 
     brand: PreactSignalsSymbol,

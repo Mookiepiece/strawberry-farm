@@ -1,19 +1,22 @@
 <template>
-    <div class="(///) [B] [SS]">
-      <div v-for="i of 3" :style="{ '--i': i }" class="🩷">{{ i }}</div>
-    </div>
-    <div class="(///) [B] [SC]">
-      <div v-for="i of 3" :style="{ '--i': i }" class="🩷">{{ i }}</div>
-    </div>
-    <div class="(///) [B] [SE]">
-      <div v-for="i of 3" :style="{ '--i': i }" class="🩷">{{ i }}</div>
-    </div>
-    <div class="(///) [B] [SF]">
-      <div v-for="i of 3" :style="{ '--i': i }" class="🩷">{{ i }}</div>
-    </div>
-    <div class="(///) [B] [SB]">
-      <div v-for="i of 3" :style="{ '--i': i }" class="🩷">{{ i }}</div>
-    </div>
+  <div class="(///) [B] [CS]">
+    <div v-for="i of 3" class="🩷">{{ i }}</div>
+  </div>
+  <div class="(///) [B] [CC]">
+    <div v-for="i of 3" class="🩷">{{ i }}</div>
+  </div>
+  <div class="(///) [B] [CE]">
+    <div v-for="i of 3" class="🩷">{{ i }}</div>
+  </div>
+  <div class="(///) [B] [C0]">
+    <div v-for="i of 3" class="🩷">{{ i }}</div>
+  </div>
+  <div class="(///) [B] [C1]">
+    <div v-for="i of 3" class="🩷">{{ i }}</div>
+  </div>
+  <div class="(///) [B] [C2]">
+    <div v-for="i of 3" class="🩷">{{ i }}</div>
+  </div>
 </template>
 <style scoped>
 .\(\/\/\/\) + .\(\/\/\/\) {
@@ -21,12 +24,7 @@
 }
 
 .🩷 {
-  font-size: calc(1.2em * var(--i));
-  line-height: 1;
-}
-
-.🩷 {
-  min-width: 50px;
-  min-height: 50px;
+  width: 50px;
+  height: 50px;
 }
 </style>

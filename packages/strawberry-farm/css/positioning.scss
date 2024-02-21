@@ -60,44 +60,44 @@ $positions: (
   @return $ans;
 }
 
-:where(#{_EACH_POS_($directions)}) {
+#{_EACH_POS_($directions)} {
   --x: 0px;
   --y: 0px;
   --xy: 0px;
 }
 @each $p, $_ in $positions {
-  :where(#{_ONE_POS_($p, $directions)}) {
+  #{_ONE_POS_($p, $directions)} {
     position: $_;
   }
 }
 
-:where(#{_EACH_POS_((_LT_, _T_, _RT_))}) {
+#{_EACH_POS_((_LT_, _T_, _RT_))} {
   top: calc(var(--y) + var(--xy));
 }
 
-:where(#{_EACH_POS_((_L_, _R_))}) {
+#{_EACH_POS_((_L_, _R_))} {
   top: 50%;
   transform: translate(0, -50%);
 }
 
-:where(#{_EACH_POS_((_LB_, _B_, _RB_))}) {
+#{_EACH_POS_((_LB_, _B_, _RB_))} {
   bottom: calc(var(--y) + var(--xy));
 }
 
-:where(#{_EACH_POS_((_LT_, _L_, _LB_))}) {
+#{_EACH_POS_((_LT_, _L_, _LB_))} {
   left: calc(var(--x) + var(--xy));
 }
 
-:where(#{_EACH_POS_((_T_, _B_))}) {
+#{_EACH_POS_((_T_, _B_))} {
   left: 50%;
   transform: translate(-50%, 0);
 }
 
-:where(#{_EACH_POS_((_RT_, _R_, _RB_))}) {
+#{_EACH_POS_((_RT_, _R_, _RB_))} {
   right: calc(var(--x) + var(--xy));
 }
 
-:where(#{_EACH_POS_((_C_))}) {
+#{_EACH_POS_((_C_))} {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

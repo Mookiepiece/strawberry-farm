@@ -6,31 +6,31 @@
       gap: 20px;
     "
   >
-    <div class="(///) [B] [SF] [[+S]]">
+    <div class="(///) [B] [FS] [[+S]]">
       <div v-for="i of 5" class="🩷">{{ i }}</div>
     </div>
-    <div class="(///) [B] [SF] [[+C]]">
+    <div class="(///) [B] [FS] [[+C]]">
       <div v-for="i of 5" class="🩷">{{ i }}</div>
     </div>
-    <div class="(///) [B] [SF] [[+E]]">
+    <div class="(///) [B] [FS] [[+E]]">
       <div v-for="i of 5" class="🩷">{{ i }}</div>
     </div>
-    <div class="(///) [B] [2C] [[-0]]">
+    <div class="(///) [B] [C2] [[-0]]">
       <div v-for="i of 5" class="🩷">{{ i }}</div>
     </div>
-    <div class="(///) [B] [2C] [[-1]]">
+    <div class="(///) [B] [C2] [[-1]]">
       <div v-for="i of 5" class="🩷">{{ i }}</div>
     </div>
-    <div class="(///) [B] [2C] [[-2]]">
+    <div class="(///) [B] [C2] [[-2]]">
       <div v-for="i of 5" class="🩷">{{ i }}</div>
     </div>
-    <div class="(///) [B] [2C] [[+F]]">
+    <div class="(///) [B] [C2] [[+F]]">
       <div v-for="i of 5" class="🩷">{{ i }}</div>
     </div>
-    <div class="(///) [B] [2E] [[+F]]">
+    <div class="(///) [B] [E2] [[+F]]">
       <div v-for="i of 5" class="🩷">{{ i }}</div>
     </div>
-    <div class="(///) [B] [2F] [[+F]]">
+    <div class="(///) [B] [F2] [[+F]]">
       <div v-for="i of 5" class="🩷">{{ i }}</div>
     </div>
   </div>

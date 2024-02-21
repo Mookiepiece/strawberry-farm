@@ -1,6 +1,9 @@
+// copy and modified from @preact/signal
+
 import { describe, test, test as it, expect, vi } from 'vitest';
 
 import { signal, computed, effect, batch, Signal, untracked } from '../signal';
+
 
 const sinon = { spy: vi.fn };
 
@@ -50,14 +53,14 @@ describe('signal', () => {
     const spy3 = sinon.spy(() => s.value);
 
     effect(spy1);
-    const dispose = effect(spy2);
+    const effectFn = effect(spy2);
     effect(spy3);
 
     expect(spy1).toBeCalledTimes(1);
     expect(spy2).toBeCalledTimes(1);
     expect(spy3).toBeCalledTimes(1);
 
-    dispose();
+    effectFn.dispose();
 
     s.value = 1;
     expect(spy1).toBeCalledTimes(2);
@@ -210,10 +213,10 @@ describe('effect()', () => {
     const a = signal('a');
     const b = signal('b');
     const spy = sinon.spy(() => a.value + ' ' + b.value);
-    const dispose = effect(spy);
+    const effectFn = effect(spy);
     spy.mockClear();
 
-    dispose();
+    effectFn.dispose();
     expect(spy).not.toBeCalled();
 
     a.value = 'aa';
@@ -224,10 +227,10 @@ describe('effect()', () => {
   it('should unsubscribe from signal', () => {
     const s = signal(123);
     const spy = sinon.spy(() => s.value);
-    const unsub = effect(spy);
+    const effectFn = effect(spy);
     spy.mockClear();
 
-    unsub();
+    effectFn.dispose();
     s.value = 42;
     expect(spy).not.toBeCalled();
   });
@@ -1563,14 +1566,14 @@ describe('computed()', () => {
       const d = computed(() => a.value);
 
       let result = '';
-      const unsub = effect(() => (result = c.value));
+      const effectFn = effect(() => (result = c.value));
 
       expect(result).to.equal('a');
       expect(d.value).to.equal('a');
 
       spyB.mockClear();
       spyC.mockClear();
-      unsub();
+      effectFn.dispose();
 
       a.value = 'aa';
 

@@ -26,7 +26,7 @@
 
 | Class | CSS                                                                         |
 | ----- | --------------------------------------------------------------------------- |
-| `...` or `[...]` | `overflow: hidden;`<br>`text-overflow: ellipsis;`<br>`white-space: nowrap;` |
+| `[...]` | `overflow: hidden;`<br>`text-overflow: ellipsis;`<br>`white-space: nowrap;` |
 
 ```html {3}
 <div class="mini">
@@ -42,7 +42,7 @@
   </div>
 </div>
 
-打点会触发 volar css 代码提示。按左方向键退出提示以继续打点。
+需要括号的一个原因是因为直接打点会触发 volar css 代码提示。
 
 确保目标是块容器才能设置 `overflow` 属性。
 
