@@ -1,6 +1,6 @@
 export interface IStore<T> {
   get(): T;
-  set(value: T): void;
+  set(value: ((prev: T) => T) | T): void;
   subscribe(cb: (value: T) => void): () => void;
 }
 
@@ -8,9 +8,10 @@ export const store = <T>(initialValue: T): IStore<T> => {
   let value = initialValue;
   const subscribers = new Set<(value: T) => void>();
 
-  return {
+  const store: IStore<T> = {
     get: () => value,
-    set(v) {
+    set(_v) {
+      let v: T = typeof _v === 'function' ? (_v as any)(store.get()) : _v;
       if (!Object.is(value, v)) {
         value = v;
         subscribers.forEach(_ => _(value));
@@ -21,4 +22,5 @@ export const store = <T>(initialValue: T): IStore<T> => {
       return () => subscribers.delete(cb);
     },
   };
+  return store;
 };

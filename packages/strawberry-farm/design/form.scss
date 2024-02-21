@@ -55,6 +55,8 @@
 }
 
 .sf-input-group {
+  display: flex;
+
   > ins {
     display: inline-flex;
     flex-direction: column;

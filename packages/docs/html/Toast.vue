@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import VInput from '@mookiepiece/strawberry-farm/vue/VInput.vue';
-import VInputGroup from '@mookiepiece/strawberry-farm/vue/VInputGroup.vue';
+import Toast from '@mookiepiece/strawberry-farm/vue/Toast';
+
 </script>
 
 <template>
