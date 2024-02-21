@@ -2,15 +2,19 @@
 :root {
   --tone-rasp: #f01771;
   --tone-rasp-fore: #da0b65;
+  --tone-rasp-flame: #f67593;
   --tone-rasp-foam: #f0177122;
   --tone-iris: #5577dd;
   --tone-iris-fore: #2656cc;
+  --tone-iris-flame: #5577dd88;
   --tone-iris-foam: #5577dd22;
   --tone-citrus: #f8e808;
   --tone-citrus-fore: #ca9c00;
+  --tone-citrus-flame: #f8f80822;
   --tone-citrus-foam: #f8f80822;
   --tone-reimu: #f31313;
   --tone-reimu-fore: #dd1111;
+  --tone-reimu-flame: #f3131322;
   --tone-reimu-foam: #f3131322;
 }
 
@@ -25,6 +29,7 @@
 :root {
   ---main: var(--tone-rasp);
   ---fore: var(--tone-rasp-fore);
+  ---flame: var(--tone-rasp-flame);
   ---foam: var(--tone-rasp-foam);
 }
 
@@ -32,23 +37,27 @@
 .tone\:rasp {
   ---main: var(--tone-rasp);
   ---fore: var(--tone-rasp-fore);
+  ---flame: var(--tone-rasp-flame);
   ---foam: var(--tone-rasp-foam);
 }
 
 .tone\:iris {
   ---main: var(--tone-iris);
   ---fore: var(--tone-iris-fore);
+  ---flame: var(--tone-iris-flame);
   ---foam: var(--tone-iris-foam);
 }
 
 .tone\:citrus {
   ---main: var(--tone-citrus);
   ---fore: var(--tone-citrus-fore);
+  ---flame: var(--tone-citrus-flame);
   ---foam: var(--tone-citrus-foam);
 }
 
 .tone\:reimu {
   ---main: var(--tone-reimu);
   ---fore: var(--tone-reimu-fore);
+  ---flame: var(--tone-reimu-flame);
   ---foam: var(--tone-reimu-foam);
 }

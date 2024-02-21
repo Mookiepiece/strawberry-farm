@@ -1,8 +1,36 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const actives = ref(
+  Array(3)
+    .fill(0)
+    .map(() => false),
+);
+</script>
+
 <template>
   <div class="good f2" style="">
-    <div class="tony tone:rasp [-:]">{{ ['山莓','Rasp'].join('\n') }}</div>
-    <div class="tony tone:iris [-:]">{{ ['鸢尾', 'Iris'].join('\n') }}</div>
-    <div class="tony tone:reimu [-:]">{{ ['灵梦', 'Reimu'].join('\n') }}</div>
+    <button
+      class="mat:air"
+      @click="actives[0] = !actives[0]"
+      :class="actives[0] && 'active'"
+    >
+      mat:air
+    </button>
+    <button
+      class="mat:airy"
+      @click="actives[1] = !actives[1]"
+      :class="actives[1] && 'active'"
+    >
+      mat:airy
+    </button>
+    <button
+      class="mat:ruby"
+      @click="actives[2] = !actives[2]"
+      :class="actives[2] && 'active'"
+    >
+      mat:ruby
+    </button>
   </div>
 </template>
 
