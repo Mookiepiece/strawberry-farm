@@ -1,0 +1,20 @@
+toast-bar {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: 100%;
+  max-width: 400px;
+  border: 3px dashed var(--tone-iris-foam);
+
+  pointer-events: none;
+
+  > div {
+    --toast-offset: 0;
+    position: absolute;
+    top: var(--toast-offset);
+    left: 0;
+    right: 0;
+    border: 3px dashed var(--tone-reimu-foam);
+    pointer-events: initial;
+  }
+}

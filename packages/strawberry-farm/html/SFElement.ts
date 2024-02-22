@@ -19,6 +19,7 @@ export class SFElement extends HTMLElement {
   emit: SFEmit & { bubbles: SFEmit };
   $: <T extends Element = Element>(query: string) => T | null;
   $$: <T extends Element = Element>(query: string) => T[];
+  setup: (self: SFElement) => (() => void) | void;
 
   _cleanup?: () => void;
 
@@ -45,9 +46,8 @@ export class SFElement extends HTMLElement {
     this.$$ = <T extends Element = Element>(q: string) => [
       ...self.querySelectorAll<T>(q),
     ];
+    this.setup = () => {};
   }
-
-  setup(self: SFElement): (() => void) | void {}
 
   connectedCallback() {
     const cleanup = this.setup(this);
