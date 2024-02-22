@@ -6,26 +6,23 @@ if (!customElements.get('toast-bar')) {
   customElements.define('toast-bar', ToastBarElement);
 }
 
+const order = () => {
+  Toast.error('Strawberry Farm');
+};
+
 const cll = () => {
-  Toast.error('123');
   setTimeout(() => {
     Toast.error('123');
   }, 200);
 
   setTimeout(() => {
-    const { div } = Toast.error('123');
+    const span = document.createElement('span');
+    span.textContent = '123';
+    Toast.error(span);
     setTimeout(() => {
-      // div.style.height = '200px';
-      div.innerHTML =
+      span.innerHTML =
         `<div><ul><li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quisquam cum excepturi dolor impedit a ex, voluptatibus laborum fugit necessitatibus, illum ab minima deserunt aliquid, veniam rem debitis. Incidunt, assumenda?` +
         `</li></ul></div>`;
-      //       div.innerText =
-
-      //       `
-
-      //  Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quisquam cum excepturi dolor impedit a ex, voluptatibus laborum fugit necessitatibus, illum ab minima deserunt aliquid, veniam rem debitis. Incidunt, assumenda?
-
-      //       `
     }, 500);
   }, 500);
 
@@ -39,11 +36,23 @@ const a = ref(false);
 
 <template>
   <div class="[A]" style="gap: 10px">
-    <button @click="cll" class="mat:air">Toast</button>
-    <button @click="a = !a" class="mat:air">Icon</button>
-    <div v-show="a" class="sf-toast-i-error"></div>
-    <div v-show="a" class="sf-toast-i-success"></div>
-    <div v-show="a" class="sf-toast-i-info"></div>
+    <button @click="() => Toast.success('Strawberry Farm')" class="p-4 mat:air">
+      Success Toast
+    </button>
+    <button @click="() => Toast.info('Strawberry Farm')" class="p-4 mat:air">
+      Info Toast
+    </button>
+    <button @click="() => Toast.error('Strawberry Farm')" class="p-4 mat:air">
+      Error Toast
+    </button>
+    <button @click="() => Toast.custom('Strawberry Farm')" class="p-4 mat:air">
+      Custom Toast
+    </button>
+    <button @click="cll" class="p-4 mat:air">Toast</button>
+    <button @click="a = !a" class="p-4 mat:air">Icon</button>
+    <div v-show="a" class="toast-i-error"></div>
+    <div v-show="a" class="toast-i-success"></div>
+    <div v-show="a" class="toast-i-info"></div>
     <toast-bar main />
   </div>
 </template>

@@ -58,7 +58,7 @@ onUnmounted(() => off());
   }
 }
 
-@media not (min-width: 1300px) {
+@media not (min-width: 1000px) {
   .VPLayout {
     grid-template: 1fr/0 1fr 0;
   }
