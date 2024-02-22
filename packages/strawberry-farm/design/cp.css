@@ -18,9 +18,9 @@
   --black-text1: #131314;
   --black-text2: #13131499;
   --black-text3: #13145555;
-  --white-text1: #e6e3e0;
-  --white-text2: #e6e3e0cc;
-  --white-text3: #e6e3e088;
+  --white-text1: #e6e4e2;
+  --white-text2: #e6e4e2cc;
+  --white-text3: #e6e4e288;
 
   --text1: var(--black-text1);
   --text2: var(--black-text2);
@@ -30,14 +30,15 @@
 }
 
 .dark {
-  --text1:var(--white-text1);
-  --text2:var(--white-text2);
-  --text3:var(--white-text3);
+  --text1: var(--white-text1);
+  --text2: var(--white-text2);
+  --text3: var(--white-text3);
 }
 
 /* Material */
 :root {
   --mat-air-0: #00011100;
+  --mat-air-05: #00011108;
   --mat-air-1: #0001110a;
   --mat-air-15: #00011116;
   --mat-air-2: #0001111a;
@@ -49,6 +50,7 @@
 
 .dark {
   --mat-air-0: #fffeee00;
+  --mat-air-05: #fffeee08;
   --mat-air-1: #fffeee10;
   --mat-air-15: #fffeee15;
   --mat-air-2: #fffeee20;

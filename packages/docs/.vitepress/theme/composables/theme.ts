@@ -65,7 +65,10 @@ const theme = shallowRef<ThemeConfig>({
     },
     {
       text: 'HTML',
-      items: [{ text: 'Form', link: '/html/Form' }],
+      items: [
+        { text: 'Form', link: '/html/Form' },
+        { text: 'Toast', link: '/html/Toast' },
+      ],
     },
   ],
 });

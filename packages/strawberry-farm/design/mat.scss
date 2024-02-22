@@ -43,6 +43,7 @@
   background: var(--mat-air-0);
   outline: 0;
   text-decoration: none;
+  font-weight: 600;
 
   &:hover {
     background: var(--mat-air-1);
@@ -63,6 +64,10 @@
     &:active {
       background: color-mix(in oklab, var(--tone-rasp), #000 20%);
     }
+
+    --text1: #fff;
+    --text2: #fff;
+    --text3: #fff;
   }
 
   &:focus-visible {

@@ -499,12 +499,30 @@ html:not(.dark) .vp-code span {
   &.info {
     background-color: var(--mat-air-1);
   }
-  &.details {
-    padding: 0;
+
+  &:is(details) {
+    padding: 0 20px;
     background-color: var(--mat-air-1);
     summary {
       position: relative;
       padding: 20px;
+      margin-inline: -20px;
+      border: 1px solid transparent;
+      cursor: default;
+
+      &:hover {
+        background-color: var(--mat-air-2);
+      }
+      &:active {
+        background-color: var(--mat-air-3);
+      }
+    }
+
+    &[open] {
+      padding-bottom: 20px;
+      summary {
+        margin-bottom: 20px;
+      }
     }
   }
 }
