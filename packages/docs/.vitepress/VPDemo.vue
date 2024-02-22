@@ -50,7 +50,7 @@ switch (dirname) {
       <component v-if="module" :is="module"></component>
     </div>
     <details>
-      <summary>Code</summary>
+      <summary class="mat:air p-10">Code</summary>
       <VPHighlightVue lang="vue" :raw="raw" />
     </details>
   </div>
@@ -85,6 +85,17 @@ switch (dirname) {
       linear-gradient(var(--a), var(--a)) calc(100% - var(--x)) 100% / var(--z)
         var(--y) no-repeat,
       transparent;
+  }
+  summary {
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  summary::marker {
+    content: '';
+    width: 0;
+    height: 0;
+    display: none;
   }
 }
 </style>

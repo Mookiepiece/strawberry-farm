@@ -2,6 +2,7 @@ import { Bag, inc, nextFrame, on } from '../functions';
 import { SFElement } from '../html/SFElement';
 
 const offsetMap = new WeakMap<HTMLDivElement, number>();
+const heightCacheMap = new WeakMap<HTMLDivElement, number>();
 
 export class ToastBarElement extends SFElement {
   sort(startIndex = 0) {
@@ -19,66 +20,66 @@ export class ToastBarElement extends SFElement {
       offsetMap.set(i, offsetCounter);
       i.style.setProperty('--toast-offset', offsetCounter + 'px');
       offsetCounter += i.offsetHeight + 10;
-      console.log(i.id, offsetCounter);
+      heightCacheMap.set(i, i.offsetHeight);
     }
   }
 }
 
-const disappearTimers = new WeakMap<
-  HTMLElement,
-  ReturnType<typeof setTimeout>
->();
+HTMLButtonElement;
 
 const uuid = inc('ToastItem');
+
+type ToastConfig = {
+  message: string | Node;
+  bar?: ToastBarElement;
+  duration?: number;
+};
 
 export const Toast = {
   error(message: string | Node) {
     const div = document.createElement('div');
-    const bar = document.querySelector<ToastBarElement>('toast-bar');
-    if (!bar) {
-      console.warn('[strawberry-farm] Bar Not Found');
-      return div;
-    }
+    const bar = document.querySelector<ToastBarElement>('toast-bar[main]')!;
 
     div.id = uuid();
+    div.classList.add('f2');
     div.setAttribute('role', 'log');
-    div.append(message);
 
-    const pauseDisappear = () => {
-      if (disappearTimers.has(div)) {
-        clearTimeout(disappearTimers.get(div));
-        disappearTimers.delete(div);
-      }
-    };
+    const ico = document.createElement('div');
+    ico.classList.add('toast-i-error');
+    ico.style.marginRight = '10px';
+    div.append(ico);
+    div.append(message);
 
     const onCleanup = Bag();
 
-    const startDisappear = () => {
-      pauseDisappear();
-      disappearTimers.set(
-        div,
-        setTimeout(() => {
-          div.classList.add('leaving');
-          on(div).transitionend(() => div.remove());
-          onCleanup();
-          bar.sort();
-        }, 3000),
-      );
+    let timer: ReturnType<typeof setTimeout>;
+    const pause = () => clearTimeout(timer);
+    const play = () => {
+      timer = setTimeout(() => {
+        div.classList.add('leaving');
+        on(div).transitionend(() => div.remove());
+        onCleanup();
+        bar.sort();
+      }, 3000);
     };
 
     const mo = new MutationObserver(() => {
-      bar.sort();
+      // If we don't want to get an infinite loop in google chrome
+      if (div.offsetHeight !== heightCacheMap.get(div)) {
+        bar.sort();
+      }
     });
     mo.observe(div, {
       subtree: true,
       childList: true,
       attributes: true,
+      characterData: true,
     });
     onCleanup(() => mo.disconnect());
 
-    startDisappear();
-    onCleanup(on(div).pointerenter(pauseDisappear));
-    onCleanup(on(div).pointerleave(startDisappear));
+    play();
+    onCleanup(on(div).pointerenter(() => pause()));
+    onCleanup(on(div).pointerleave(play));
 
     bar.insertBefore(div, bar.firstElementChild);
     div.classList.add('appear');
@@ -87,6 +88,6 @@ export const Toast = {
       bar.sort();
     });
 
-    return div;
+    return { div, pause, play };
   },
 };
