@@ -1,35 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const actives = ref(
-  Array(3)
-    .fill(0)
-    .map(() => false),
-);
+const colors = ref([
+  'var(--mat-air-0)',
+  'var(--mat-air-05)',
+  'var(--mat-air-1)',
+  'var(--mat-air-15)',
+  'var(--mat-air-2)',
+  'var(--mat-air-3)',
+  'var(--mat-air-4)',
+  'var(--mat-solid-0)',
+  'var(--mat-solid-1)',
+  'var(--mat-solid-2)',
+  'var(--mat-solid-3)',
+  'var(--mat-solid-4)',
+]);
 </script>
 
 <template>
   <div class="good f2" style="">
-    <button
-      class="mat:air"
-      @click="actives[0] = !actives[0]"
-      :class="actives[0] && 'active'"
-    >
-      mat:air
-    </button>
-    <button
-      class="mat:airy"
-      @click="actives[1] = !actives[1]"
-      :class="actives[1] && 'active'"
-    >
-      mat:airy
-    </button>
-    <button
-      class="mat:ruby"
-      @click="actives[2] = !actives[2]"
-      :class="actives[2] && 'active'"
-    >
-      mat:ruby
+    <button class="mat:air [:-] p-3" v-for="c in colors" :style="{ background: c }">
+      {{ c }}
     </button>
   </div>
 </template>
@@ -37,7 +28,7 @@ const actives = ref(
 <style scoped>
 .good {
   display: grid;
-  grid-template: 50px / repeat(auto-fill, 100px);
+  grid-template: 40px / 1fr;
   gap: var(--3);
   justify-content: start;
 }
