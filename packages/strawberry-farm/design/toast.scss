@@ -1,20 +1,35 @@
 toast-bar {
   position: fixed;
-  inset: 0;
+  inset: 20px;
   margin: auto;
   width: 100%;
   max-width: 400px;
   border: 3px dashed var(--tone-iris-foam);
-
   pointer-events: none;
 
   > div {
     --toast-offset: 0;
     position: absolute;
-    top: var(--toast-offset);
+    top: 0;
     left: 0;
     right: 0;
     border: 3px dashed var(--tone-reimu-foam);
+    transform: translateY(0) translateY(var(--toast-offset)) scale(1);
+    transform-origin: center;
+    transition: transform 0.3s var(--ease-io);
     pointer-events: initial;
+
+    &:hover {
+      background-color: var(--mat-air-1);
+    }
+
+    &.appear {
+      transform: translateY(-100px) translateY(var(--toast-offset)) scale(0);
+    }
+
+    &.leaving {
+      transform: translateY(-20%) translateY(var(--toast-offset)) scale(0);
+      pointer-events: none;
+    }
   }
 }
