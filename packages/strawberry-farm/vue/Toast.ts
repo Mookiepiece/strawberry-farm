@@ -1,10 +1,9 @@
 import { Bag, inc, nextFrame, on } from '../functions';
-import { SFElement } from '../html/SFElement';
 
 const offsetMap = new WeakMap<HTMLDivElement, number>();
 const heightCacheMap = new WeakMap<HTMLDivElement, number>();
 
-export class ToastBarElement extends SFElement {
+export class ToastBarElement extends HTMLElement {
   sort(startIndex = 0) {
     const children = ([...this.children] as HTMLDivElement[]).filter(
       el => !el.classList.contains('leaving'),
@@ -27,20 +26,42 @@ export class ToastBarElement extends SFElement {
 
 type ToastConfig = {
   message: string | Node;
-  bar?: ToastBarElement;
+  bar?: string;
   duration?: number;
   className?: string;
 };
 
+type ToastConfigLoosy = ToastConfig | string | Node;
+
+type ToastType = 'blank' | 'error' | 'success' | 'info' | 'loading' | 'custom';
+
+const defaultTimeouts: Record<ToastType, number> = {
+  blank: 4000,
+  info: 4000,
+  error: 4000,
+  custom: 4000,
+  loading: Infinity,
+  success: 2000,
+};
+
+const normalizeConfigDecorator =
+  <T>(type: ToastType, fn: (c: ToastConfig) => T) =>
+  (c: ToastConfigLoosy) =>
+    fn(
+      c instanceof Node || typeof c === 'string'
+        ? { message: c, duration: Toast.defaultTimeouts[type] }
+        : { duration: Toast.defaultTimeouts[type], ...c },
+    );
+
 const renderBody = (
-  message: string | Node,
+  { message }: ToastConfig,
   classNames: string | undefined,
   iconClassName?: string,
 ) => {
   const toast = document.createElement('div');
   toast.classList.add(
     'toast',
-    ...(classNames ?? 'toast--styled').split(' ').filter(Boolean),
+    ...(classNames || '').split(' ').filter(Boolean),
   );
 
   if (iconClassName) {
@@ -56,15 +77,17 @@ const renderBody = (
 
 const uuid = inc('ToastItem');
 
-const createToast = (body: Node) => {
-  const div = document.createElement('div');
-  const bar = document.querySelector<ToastBarElement>('toast-bar[main]')!;
+const createToast = ({ message, duration, bar: _bar }: ToastConfig) => {
+  const bar = !_bar
+    ? document.querySelector<ToastBarElement>('toast-bar[main]')!
+    : (document.getElementById(_bar) as ToastBarElement);
 
+  const div = document.createElement('div');
   div.id = uuid();
   div.classList.add('f2');
   div.setAttribute('role', 'log');
 
-  div.append(body);
+  div.append(message);
 
   const onCleanup = Bag();
 
@@ -73,10 +96,10 @@ const createToast = (body: Node) => {
   const play = () => {
     timer = setTimeout(() => {
       div.classList.add('leaving');
-      on(div).transitionend(() => div.remove());
+      on(div).transitionend.once(() => div.remove());
       onCleanup();
       bar.sort();
-    }, 3000);
+    }, duration);
   };
 
   const mo = new MutationObserver(() => {
@@ -108,11 +131,29 @@ const createToast = (body: Node) => {
 };
 
 export const Toast = {
-  error: (message: string | Node) =>
-    createToast(renderBody(message, undefined, 'toast-i-error')),
-  success: (message: string | Node) =>
-    createToast(renderBody(message, undefined, 'toast-i-success')),
-  info: (message: string | Node) =>
-    createToast(renderBody(message, undefined, 'toast-i-info')),
-  custom: (message: string | Node) => createToast(renderBody(message, '')),
+  defaultTimeouts,
+  error: normalizeConfigDecorator('error', config =>
+    createToast({
+      ...config,
+      message: renderBody(config, 'toast--styled', 'toast-i-error'),
+    }),
+  ),
+  success: normalizeConfigDecorator('success', config =>
+    createToast({
+      ...config,
+      message: renderBody(config, 'toast--styled', 'toast-i-success'),
+    }),
+  ),
+  info: normalizeConfigDecorator('info', config =>
+    createToast({
+      ...config,
+      message: renderBody(config, 'toast--styled', 'toast-i-info'),
+    }),
+  ),
+  blank: normalizeConfigDecorator('blank', config =>
+    createToast({ ...config, message: renderBody(config, 'toast--styled') }),
+  ),
+  custom: normalizeConfigDecorator('custom', config =>
+    createToast({ ...config, message: renderBody(config, '') }),
+  ),
 };

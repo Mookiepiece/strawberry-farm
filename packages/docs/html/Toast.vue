@@ -45,6 +45,15 @@ const a = ref(false);
     <button @click="() => Toast.error('Strawberry Farm')" class="p-4 mat:air">
       Error Toast
     </button>
+    <button
+      @click="() => Toast.error({ message: 'Strawberry Farm', duration: 2000 })"
+      class="p-4 mat:air"
+    >
+      Error Toast (2000ms)
+    </button>
+    <button @click="() => Toast.blank('Strawberry Farm')" class="p-4 mat:air">
+      Blank Toast
+    </button>
     <button @click="() => Toast.custom('Strawberry Farm')" class="p-4 mat:air">
       Custom Toast
     </button>

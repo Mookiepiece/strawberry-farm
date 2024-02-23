@@ -62,7 +62,7 @@ switch (dirname) {
 
   > div:first-child {
     padding: 20px;
-    --a: var(--tone-iris-foam);
+    --a: var(--mat-air-15);
 
     --x: 18px;
     --y: 40px;

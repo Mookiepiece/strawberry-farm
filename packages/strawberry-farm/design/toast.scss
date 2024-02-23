@@ -3,7 +3,6 @@ toast-bar {
   inset: 0;
   margin: auto;
   max-width: 350px;
-  border: 3px dashed var(--tone-iris-foam);
   pointer-events: none;
 
   > div {
@@ -28,33 +27,31 @@ toast-bar {
       pointer-events: none;
     }
   }
+}
 
-  .toast {
-    margin: auto;
-    pointer-events: initial;
-  }
+:where(toast-bar .toast) {
+  margin: auto;
+  pointer-events: initial;
+}
 
-  .toast--styled {
-    display: inline-flex;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: var(--mat-solid-0);
-    border-radius: 10px;
-    box-shadow:
-      0 3px 6px 1px var(--mat-air-15),
-      0 0px 1px var(--mat-air-15);
-  }
+:where(toast-bar .toast--styled) {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--mat-solid-0);
+  border-radius: 10px;
+  box-shadow:
+    0 3px 6px 1px var(--mat-air-15),
+    0 0px 1px var(--mat-air-15);
+}
 
-  .toast--rich {
-    padding: 10px 20px 10px 10px;
-    gap: 10px;
-  }
+:where(toast-bar .toast--rich) {
+  padding: 10px 20px 10px 10px;
+  gap: 10px;
 }
 
 // design inspired by react-hot-toast :D
-.toast-i-error,
-.toast-i-success,
-.toast-i-info {
+:where(.toast-i-error, .toast-i-success, .toast-i-info) {
   width: 20px;
   height: 20px;
   border-radius: 10px;
@@ -66,7 +63,7 @@ toast-bar {
   transform: scale(0);
 }
 
-.toast-i-error {
+:where(.toast-i-error) {
   background: var(--tone-reimu-flame);
   &:after,
   &:before {
@@ -89,7 +86,7 @@ toast-bar {
   }
 }
 
-.toast-i-success {
+:where(.toast-i-success) {
   background: var(--tone-iris);
   &:before {
     content: '';
@@ -109,7 +106,7 @@ toast-bar {
   }
 }
 
-.toast-i-info {
+:where(.toast-i-info) {
   background: var(--tone-rasp);
   &:before {
     content: '';
