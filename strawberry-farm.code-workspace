@@ -37,10 +37,9 @@
       "EditorConfig.EditorConfig",
       "dbaeumer.vscode-eslint",
       "esbenp.prettier-vscode",
-      "mrmlnc.vscode-scss",
       "Vue.volar",
       "Vue.vscode-typescript-vue-plugin",
-      "ZixuanChen.vitest-explorer"
+      "vitest.explorer"
     ]
   }
 }
