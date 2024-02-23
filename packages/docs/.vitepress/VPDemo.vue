@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
 import VPHighlightVue from './VPHighlight.vue';
-
+import { MemoryNotebook } from '@pictogrammers/memory/src/icons';
 const props = defineProps<{
   path: string;
 }>();
@@ -50,7 +50,12 @@ switch (dirname) {
       <component v-if="module" :is="module"></component>
     </div>
     <details>
-      <summary class="mat:air p-10">Code</summary>
+      <summary class="mat:air p-10 f2 [B] [CS]">
+        <svg width="24" height="24" viewBox="0 0 22 22">
+          <path :d="MemoryNotebook" />
+        </svg>
+        Code
+      </summary>
       <VPHighlightVue lang="vue" :raw="raw" />
     </details>
   </div>
