@@ -6,8 +6,14 @@ if (!customElements.get('toast-bar')) {
   customElements.define('toast-bar', ToastBarElement);
 }
 
-const order = () => {
-  Toast.error('Strawberry Farm');
+const complex = () => {
+  const span = document.createElement('span');
+  span.innerHTML =
+    `<details><summary>Click To expand</summary>
+    <ul><li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quisquam cum excepturi dolor impedit a ex, voluptatibus laborum fugit necessitatibus, illum ab minima deserunt aliquid, veniam rem debitis. Incidunt, assumenda?` +
+    `</li></ul>
+    </details>`;
+  Toast.error(span);
 };
 
 const cll = () => {
@@ -51,6 +57,7 @@ const a = ref(false);
     >
       Error Toast (2000ms)
     </button>
+    <button @click="complex" class="p-4 mat:air">Complex Error Toast</button>
     <button @click="() => Toast.blank('Strawberry Farm')" class="p-4 mat:air">
       Blank Toast
     </button>
