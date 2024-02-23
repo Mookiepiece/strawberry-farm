@@ -1,6 +1,6 @@
 # Toast
 
-Design inspired by react-hot-toast.
+Design inspired by `react-hot-toast`.
 
 :::demo html/Toast
 :::
