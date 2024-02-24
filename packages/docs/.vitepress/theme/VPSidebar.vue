@@ -55,7 +55,7 @@ const sidebarGroups = theme.value.sidebar;
           :aria-pressed="isDark"
           @click="toggleTheme"
         >
-          <svg width="24" height="24" viewBox="0 0 22 22">
+          <svg viewBox="0 0 22 22">
             <path :d="path" />
           </svg>
         </button>

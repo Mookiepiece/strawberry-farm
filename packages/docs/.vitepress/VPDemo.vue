@@ -50,8 +50,8 @@ switch (dirname) {
       <component v-if="module" :is="module"></component>
     </div>
     <details>
-      <summary class="mat:air p-10 f2 [B] [CS]">
-        <svg width="24" height="24" viewBox="0 0 22 22">
+      <summary class="mat:air p-10 f2 (B) [B] [CS]">
+        <svg viewBox="0 0 22 22">
           <path :d="MemoryNotebook" />
         </svg>
         Code
@@ -95,6 +95,13 @@ switch (dirname) {
     padding: 10px;
     cursor: pointer;
     user-select: none;
+
+    svg {
+      display: block;
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
   }
   summary::marker {
     content: '';
