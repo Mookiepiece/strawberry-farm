@@ -44,7 +44,7 @@ const defaultTimeouts: Record<ToastType, number> = {
   success: 2000,
 };
 
-const normalizeConfigDecorator =
+const withDefaults =
   <T>(type: ToastType, fn: (c: ToastConfig) => T) =>
   (c: ToastConfigLoosy) =>
     fn(
@@ -134,28 +134,28 @@ const createToast = ({ message, duration, bar: _bar }: ToastConfig) => {
 
 export const Toast = {
   defaultTimeouts,
-  error: normalizeConfigDecorator('error', config =>
+  error: withDefaults('error', config =>
     createToast({
       ...config,
       message: renderBody(config, 'toast--styled', 'toast-i-error'),
     }),
   ),
-  success: normalizeConfigDecorator('success', config =>
+  success: withDefaults('success', config =>
     createToast({
       ...config,
       message: renderBody(config, 'toast--styled', 'toast-i-success'),
     }),
   ),
-  info: normalizeConfigDecorator('info', config =>
+  info: withDefaults('info', config =>
     createToast({
       ...config,
       message: renderBody(config, 'toast--styled', 'toast-i-info tone:rasp'),
     }),
   ),
-  blank: normalizeConfigDecorator('blank', config =>
+  blank: withDefaults('blank', config =>
     createToast({ ...config, message: renderBody(config, 'toast--styled') }),
   ),
-  custom: normalizeConfigDecorator('custom', config =>
+  custom: withDefaults('custom', config =>
     createToast({ ...config, message: renderBody(config, '') }),
   ),
 };

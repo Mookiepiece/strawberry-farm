@@ -53,6 +53,9 @@ export type ON3<N extends keyof SFEvents, E extends SFEvents[N]> = ((
       }
     : void);
 
+/**
+ * Inspired by vue vOn
+ */
 export const on = <T extends EventTarget>(el: T) => {
   let _modifiers: string[] = [];
 

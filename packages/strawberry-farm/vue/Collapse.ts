@@ -16,41 +16,46 @@ const resetBag = (el: HTMLElement) => {
 
 export const Collapse = {
   show(el: HTMLElement) {
-    el.style.setProperty('--h', '0');
-    el.classList.remove('collapsed');
-    el.classList.add('collapsing');
+    return new Promise<void>(resolve => {
+      el.style.setProperty('--h', '0');
+      el.classList.remove('collapsed');
+      el.classList.add('collapsing');
 
-    const bag = resetBag(el);
-    nextFrame(() => {
-      el.style.setProperty('--h', el.scrollHeight + 'px');
-      bag(
-        on(el).transitionend.self.once(_ => {
-          el.style.removeProperty('--h');
-          el.classList.remove('collapsing');
-        }),
-      );
-    }, bag(new AbortController()).signal);
-    //
+      const bag = resetBag(el);
+      nextFrame(() => {
+        el.style.setProperty('--h', el.scrollHeight + 'px');
+        bag(
+          on(el).transitionend.self.once(_ => {
+            el.style.removeProperty('--h');
+            el.classList.remove('collapsing');
+            resolve();
+          }),
+        );
+      }, bag(new AbortController()).signal);
+    });
   },
   hide(el: HTMLElement) {
-    el.style.setProperty('--h', el.scrollHeight + 'px');
-    el.classList.add('collapsing');
+    return new Promise<void>(resolve => {
+      el.style.setProperty('--h', el.scrollHeight + 'px');
+      el.classList.add('collapsing');
 
-    const bag = resetBag(el);
-    nextFrame(() => {
-      el.style.setProperty('--h', '0');
+      const bag = resetBag(el);
+      nextFrame(() => {
+        el.style.setProperty('--h', '0');
 
-      bag(
-        on(el).transitionend.self.once(_ => {
-          el.style.removeProperty('--h');
-          el.classList.add('collapsed');
-          el.classList.remove('collapsing');
-        }),
-      );
-    }, bag(new AbortController()).signal);
+        bag(
+          on(el).transitionend.self.once(_ => {
+            el.style.removeProperty('--h');
+            el.classList.add('collapsed');
+            el.classList.remove('collapsing');
+            resolve();
+          }),
+        );
+      }, bag(new AbortController()).signal);
+    });
   },
   toggle(el: HTMLElement) {
-    el.classList.contains('collapsed') || // leaved 
+    el.classList.contains('collapsed') || // leaved
     el.style.getPropertyValue('--h') === '0' // leaving
       ? Collapse.show(el)
       : Collapse.hide(el);
