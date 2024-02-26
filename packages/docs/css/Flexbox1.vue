@@ -21,10 +21,10 @@
     </div>
 
     <div>
-      <div class="(///) [y]">
+      <div class="(///) [Y]">
         <div v-for="i of 3" class="🩷">{{ i }}</div>
       </div>
-      <div class="(///) [x]">
+      <div class="(///) [X]">
         <div v-for="i of 3" class="🩷">{{ i }}</div>
       </div>
       <div class="(///) [a]">

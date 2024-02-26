@@ -65,43 +65,72 @@ html.dark .shiki span {
 
   &:is(.dark *) {
     box-shadow:
-    inset 1px 1px #fec8,
-    inset 2px 2px #fff8,
-    inset -1px -1px #c878;
+      inset 1px 1px #fec8,
+      inset 2px 2px #fff8,
+      inset -1px -1px #c878;
   }
 }
+/* 
+イナ ノム jβ
+
+イセ めろ めろ の
+
+ホホ オヒ
+
+oβす ヌす ヌす */
 
 .🦄 {
-  color: #334;
+  box-shadow:
+    inset 1px 1px rgba(156, 197, 255, 0.533),
+    inset 3px 3px #fffc,
+    inset -2px -2px rgba(93, 140, 211, 0.533);
+
+  --vp-unicon-b: #f8f8f8;
+  --vp-unicon-c: #acf;
+  --t1: color-mix(in oklab, var(--vp-unicon-c), #0000 90%);
+  --t2: color-mix(in oklab, var(--vp-unicon-c), #0000 60%);
 
   background:
+    /* radial-gradient(#fff1 0px, #fff1 2px, #fff0 6px, #fff0 10px) 5px 5px / 11px
+      11px,
+    radial-gradient(#fff1 0px, #fff1 2px, #fff0 6px, #fff0 10px) 5px 5px / 17px
+      17px,
     repeating-radial-gradient(
         transparent 0px,
         transparent 5px,
-        #f8f8f8 6px,
-        #f8f8f8 11px
+        #fff1 6px,
+        #fff1 10px
       )
-      0 0 / 11px 11px,
+      5px 5px / 10px 10px,
     repeating-radial-gradient(
         transparent 0px,
         transparent 5px,
-        #fafafa 6px,
-        #fafafa 10px
+        #fff1 6px,
+        #fff1 10px
       )
-      0 0 / 10px 10px,
-    linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%),
-    /* radial-gradient(#acfe 50%, rgba(153, 185, 255, 0.933) 55%); */
-      repeating-linear-gradient(
-        120deg,
-        #acfe 0px,
-        #acfe 28px,
-        #bbd5f8ee 32px,
-        #bbd5f8ee 46px,
-        #acfe 50px
-      );
+      0 0 / 10px 10px, */
+    linear-gradient(
+      120deg,
+      transparent,
+      transparent,
+      transparent 66%,
+      #fff8 67%,
+      transparent 85%
+    ),
+    radial-gradient(#ffe0d7b9 0%, transparent 50%) 25% 100%/ 200% 200% no-repeat,
+    linear-gradient(
+      120deg,
+      transparent,
+      var(--t1),
+      var(--t1),
+      var(--t2),
+      var(--t1),
+      transparent
+    ),
+    var(--vp-unicon-b);
 
   &:is(.dark *) {
-    filter: brightness(.75) contrast(1.7);
+    filter: brightness(0.66) contrast(2);
   }
 }
 

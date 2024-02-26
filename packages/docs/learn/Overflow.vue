@@ -16,7 +16,6 @@ defineProps<{
   display: flex;
   overflow: auto;
   scroll-snap-type: x mandatory;
-  border: 5px solid #8883;
 }
 
 .noscrollbar {

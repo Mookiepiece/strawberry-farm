@@ -67,7 +67,7 @@ const renderBody = (
   if (iconClassName) {
     toast.classList.add('toast--rich');
     const icon = document.createElement('div');
-    icon.classList.add(iconClassName);
+    icon.classList.add(...iconClassName?.split(' ').filter(Boolean));
     toast.append(icon);
   }
   toast.append(message);
@@ -147,7 +147,7 @@ export const Toast = {
   info: normalizeConfigDecorator('info', config =>
     createToast({
       ...config,
-      message: renderBody(config, 'toast--styled', 'toast-i-info'),
+      message: renderBody(config, 'toast--styled', 'toast-i-info tone:rasp'),
     }),
   ),
   blank: normalizeConfigDecorator('blank', config =>

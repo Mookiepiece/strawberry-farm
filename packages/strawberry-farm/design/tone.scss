@@ -1,16 +1,16 @@
 /* Tone Colors */
 :root {
-  --tone-rasp: #f01771;
-  --tone-rasp-fore: #da0b65;
-  --tone-rasp-flame: #f67593;
-  --tone-rasp-foam: #f0177122;
-  --tone-iris: #5577dd;
-  --tone-iris-fore: #2656cc;
-  --tone-iris-flame: #5577dd88;
+  --tone-rasp: #f23668;
+  --tone-rasp-fore: #da0b50;
+  --tone-rasp-flame: #ff6a8d;
+  --tone-rasp-foam: #f2366822;
+  --tone-iris: #3f67de;
+  --tone-iris-fore: #254fcb;
+  --tone-iris-flame: #6d90f8;
   --tone-iris-foam: #5577dd22;
-  --tone-citrus: #f8e808;
-  --tone-citrus-fore: #ca9c00;
-  --tone-citrus-flame: #f8f80822;
+  --tone-citrus: #facb4a;
+  --tone-citrus-fore: #d49c00;
+  --tone-citrus-flame: #ffe449;
   --tone-citrus-foam: #f8f80822;
   --tone-reimu: #f31313;
   --tone-reimu-fore: #dd1111;
@@ -19,18 +19,10 @@
 }
 
 .dark {
-  --tone-rasp-fore: #f6a;
-  --tone-iris-fore: #6af;
-  --tone-citrus-fore: #fe8;
-  --tone-reimu-fore: #f66;  
-}
-
-/* Tone Defaults */
-:root {
-  ---main: var(--tone-rasp);
-  ---fore: var(--tone-rasp-fore);
-  ---flame: var(--tone-rasp-flame);
-  ---foam: var(--tone-rasp-foam);
+  --tone-rasp-fore: #ff6a8d;
+  --tone-iris-fore: #6d90f8;
+  --tone-citrus-fore: #ffe449;
+  --tone-reimu-fore: #fd5050;
 }
 
 /* Tone Presets */
@@ -40,6 +32,13 @@
   ---flame: var(--tone-rasp-flame);
   ---foam: var(--tone-rasp-foam);
 }
+
+// .tone\:rasp {
+//   ---main: #ff647c;
+//   ---fore: #ff647c;
+//   ---flame: #fdafbb;
+//   ---foam: #fbe4eb;
+// }
 
 .tone\:iris {
   ---main: var(--tone-iris);

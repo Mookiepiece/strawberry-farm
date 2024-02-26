@@ -64,10 +64,10 @@
     background: var(---main);
 
     &:hover {
-      background: color-mix(in oklab, var(--tone-rasp), #000 10%);
+      background: color-mix(in oklab, var(---main), #000 7%);
     }
     &:active {
-      background: color-mix(in oklab, var(--tone-rasp), #000 20%);
+      background: color-mix(in oklab, var(---main), #000 14%);
     }
 
     --text1: #fff;

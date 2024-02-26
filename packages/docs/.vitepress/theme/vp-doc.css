@@ -101,9 +101,10 @@
     content: '#';
   }
 
-  :is(h1, h2, h3, h4, h5, h6)
-    :is(&:hover .header-anchor, .header-anchor:focus) {
-    opacity: 1;
+  :is(h1, h2, h3, h4, h5, h6) {
+    &:hover .header-anchor, .header-anchor:focus {
+      opacity: 1;
+    }
   }
 
   /* *

@@ -4,12 +4,6 @@ import BreakpointsA from './BreakpointsA.vue';
 
 # Breakpoints
 
-CSS 媒体查询为 vscode 用户片段。
-
-![Breakpoints for VS Code](./Breakpoints.png)
-
-其中，`w` 和 `ww` 为 CSS 预设会考虑支持的断点前缀，具体需参照各页面的介绍。其余仅支持 vscode 用户片段。由于 `w` 已经被使用，“半个 w” 用 v 表示。
-
 宽度断点及常用设备：
 
 | Pixel      | Device                    | Breakpoint | Note             |
@@ -39,3 +33,16 @@ CSS 媒体查询为 vscode 用户片段。
 比例图示：
 
 <BreakpointsA />
+
+## Usage
+
+CSS 媒体查询主要为 vscode 用户片段。
+
+![Breakpoints for VS Code](./Breakpoints.png)
+
+其中，`w` 和 `ww` 为 **CSS 预设会考虑支持的断点前缀** （使用方法 `px-2 w:px-4 ww:px-6` 表示 padding 会根据设备宽度逐渐变大），具体能不能支持，需参照接下来每个页面的介绍。
+
+除了 `w` 和 `ww`， 所有都 支持 vscode 用户片段。
+
+由于 `w` 作为单个字符已经被使用，“半个 w” 用 `v` 表示。
+

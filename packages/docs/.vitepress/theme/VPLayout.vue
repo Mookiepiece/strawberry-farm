@@ -32,7 +32,7 @@ onUnmounted(() => off());
 </script>
 
 <template>
-  <div class="VPLayout">
+  <div class="VPLayout tone:rasp">
     <VPSidebar />
     <Content class="VPContent [A] vp-doc p-6 ww:p-8" />
     <VPOutline />
