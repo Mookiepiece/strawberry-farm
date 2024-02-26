@@ -94,12 +94,14 @@ const createToast = ({ message, duration, bar: _bar }: ToastConfig) => {
   let timer: ReturnType<typeof setTimeout>;
   const pause = () => clearTimeout(timer);
   const play = () => {
-    timer = setTimeout(() => {
-      div.classList.add('leaving');
-      on(div).transitionend.once(() => div.remove());
-      onCleanup();
-      bar.sort();
-    }, duration);
+    if (Number.isFinite(duration)) {
+      timer = setTimeout(() => {
+        div.classList.add('leaving');
+        on(div).transitionend.once(() => div.remove());
+        onCleanup();
+        bar.sort();
+      }, duration);
+    }
   };
 
   const mo = new MutationObserver(() => {

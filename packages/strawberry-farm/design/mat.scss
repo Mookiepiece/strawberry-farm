@@ -3,8 +3,7 @@
   background: var(--mat-air-0);
   outline: 0;
   text-decoration: none;
-  transition:
-    box-shadow 0.2s;
+  transition: box-shadow 0.2s;
 
   &:hover {
     background: var(--mat-air-1);
@@ -40,6 +39,47 @@
   }
 }
 
+:where(.mat\:solid, .mat\:solid2) {
+  border: 0;
+  background: var(--mat-solid-0);
+  outline: 0;
+  text-decoration: none;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    background: var(--mat-solid-1);
+  }
+  &:active {
+    background: var(--mat-solid-2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(---main);
+    outline-offset: -1px;
+    box-shadow: 0 0 0 4px var(---foam);
+  }
+}
+
+.mat\:solid {
+  color: var(--text1);
+  &[aria-selected='true'],
+  &[aria-checked='true'],
+  &[aria-pressed='true'],
+  &.active {
+    color: var(---fore);
+  }
+}
+
+.mat\:solid2 {
+  color: var(--text2);
+  &[aria-selected='true'],
+  &[aria-checked='true'],
+  &[aria-pressed='true'],
+  &.active {
+    color: var(---text1);
+  }
+}
+
 .mat\:ruby {
   color: var(--text1);
   border: 0;
@@ -47,8 +87,7 @@
   outline: 0;
   text-decoration: none;
   font-weight: 600;
-  transition:
-    box-shadow 0.2s;
+  transition: box-shadow 0.2s;
 
   &:hover {
     background: var(--mat-air-1);

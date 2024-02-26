@@ -1,9 +1,12 @@
 toast-bar {
   position: fixed;
   inset: 0;
+  // higher than dialogs
+  z-index: 2;
   margin: auto;
   max-width: 350px;
   pointer-events: none;
+  
 
   > div {
     --toast-offset: 0;
@@ -81,7 +84,7 @@ toast-bar {
   }
 
   &:before {
-    animation-delay: 0.3s;
+    animation-delay: 0.25s;
     transform: rotate(-45deg);
   }
 }

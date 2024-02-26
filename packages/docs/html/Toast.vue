@@ -52,7 +52,7 @@ const a = ref(false);
       Error Toast
     </button>
     <button
-      @click="() => Toast.error({ message: 'Strawberry Farm', duration: 2000 })"
+      @click="() => Toast.error({ message: 'Strawberry Farm', duration: Infinity })"
       class="p-4 mat:air"
     >
       Error Toast (2000ms)
@@ -69,7 +69,9 @@ const a = ref(false);
     <div v-show="a" class="toast-i-error"></div>
     <div v-show="a" class="toast-i-success"></div>
     <div v-show="a" class="toast-i-info"></div>
-    <toast-bar main />
+    <Teleport to="body">
+      <toast-bar main />
+    </Teleport>
   </div>
 </template>
 
