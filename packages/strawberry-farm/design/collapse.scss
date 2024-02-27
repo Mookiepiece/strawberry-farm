@@ -1,10 +1,10 @@
-.collapsing {
+.Collapsing {
   overflow: hidden !important;
   height: var(--h) !important;
   transition: height 0.3s;
 }
 
-.collapsed {
+.Collapsed {
   display: none !important;
   height: 0 !important;
 }

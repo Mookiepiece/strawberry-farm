@@ -79,7 +79,6 @@ const sidebarGroups = theme.value.sidebar;
 
 <style>
 .VPSidebar {
-  z-index: 1;
   padding-top: 50px;
   border-right: 1px solid var(--DVD);
   overflow: clip auto;

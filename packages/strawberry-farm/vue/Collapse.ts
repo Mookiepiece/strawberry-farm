@@ -18,8 +18,8 @@ export const Collapse = {
   show(el: HTMLElement) {
     return new Promise<void>(resolve => {
       el.style.setProperty('--h', '0');
-      el.classList.remove('collapsed');
-      el.classList.add('collapsing');
+      el.classList.remove('Collapsed');
+      el.classList.add('Collapsing');
 
       const bag = resetBag(el);
       nextFrame(() => {
@@ -27,7 +27,7 @@ export const Collapse = {
         bag(
           on(el).transitionend.self.once(_ => {
             el.style.removeProperty('--h');
-            el.classList.remove('collapsing');
+            el.classList.remove('Collapsing');
             resolve();
           }),
         );
@@ -37,7 +37,7 @@ export const Collapse = {
   hide(el: HTMLElement) {
     return new Promise<void>(resolve => {
       el.style.setProperty('--h', el.scrollHeight + 'px');
-      el.classList.add('collapsing');
+      el.classList.add('Collapsing');
 
       const bag = resetBag(el);
       nextFrame(() => {
@@ -46,8 +46,8 @@ export const Collapse = {
         bag(
           on(el).transitionend.self.once(_ => {
             el.style.removeProperty('--h');
-            el.classList.add('collapsed');
-            el.classList.remove('collapsing');
+            el.classList.add('Collapsed');
+            el.classList.remove('Collapsing');
             resolve();
           }),
         );
@@ -55,7 +55,7 @@ export const Collapse = {
     });
   },
   toggle(el: HTMLElement) {
-    el.classList.contains('collapsed') || // leaved
+    el.classList.contains('Collapsed') || // leaved
     el.style.getPropertyValue('--h') === '0' // leaving
       ? Collapse.show(el)
       : Collapse.hide(el);

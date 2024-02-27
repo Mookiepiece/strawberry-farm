@@ -1,0 +1,18 @@
+.Curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  background-color: var(--mat-air-2);
+}
+.Modal {
+  --w: 800px;
+  margin: 10px auto;
+  width: min(calc(100% - 40px), var(--w));
+  max-height: calc(100% - 10px);
+  background-color: var(--mat-solid-0);
+
+  overflow: auto;
+}
+

@@ -1,23 +1,70 @@
 <script setup lang="ts">
-import { trap } from '@mookiepiece/strawberry-farm/functions';
+import { Bag, trap } from '@mookiepiece/strawberry-farm/functions';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 
 const a = ref<HTMLElement>();
+const b = ref<HTMLElement>();
+const c = ref<HTMLElement>();
+const d = ref<HTMLElement>();
 
-onMounted(()=>{
-  
-  return trap(a.value!)
-})
+const bag = Bag();
+onMounted(() => {
+  // return trap(a.value!)
+});
 
+let releaseB = () => {};
+const trapB = () => {
+  releaseB = trap(b.value!);
+};
+
+let releaseC = () => {};
+const trapC = () => {
+  releaseC = trap(c.value!);
+};
+
+let releaseD = () => {};
+const trapD = () => {
+  releaseD = trap(d.value!);
+};
 </script>
 
 <template>
-  <div ref="a">
-    <button>a</button>
-    <button>b</button>
-    <button>c</button>
+  <div class="table">
+    <div class="tr">
+      <button class="mat:solid">a</button>
+      <button class="mat:solid">b</button>
+      <button class="mat:solid" @click="trapB">-></button>
+    </div>
+    <div class="tr" ref="b" @keydown.esc="releaseB">
+      <button class="mat:solid">a</button>
+      <button class="mat:solid">b</button>
+      <button class="mat:solid" @click="trapC">-></button>
+    </div>
+    <div class="tr" ref="c" @keydown.esc="releaseC">
+      <button class="mat:solid">a</button>
+      <button class="mat:solid">b</button>
+      <button class="mat:solid" @click="trapD">-></button>
+    </div>
+    <div class="tr" ref="d" @keydown.esc="releaseD">
+      <button class="mat:solid">a</button>
+      <button class="mat:solid">b</button>
+      <button class="mat:solid">c</button>
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.table {
+  display: grid;
+  max-width: 300px;
+}
+.tr {
+  display: grid;
+  grid: 1fr /1fr 1fr 1fr;
+}
+
+button {
+  padding: 10px;
+}
+</style>

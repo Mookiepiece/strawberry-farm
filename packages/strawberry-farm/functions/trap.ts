@@ -17,10 +17,10 @@ export const trap = (el: HTMLElement) => {
   const off = _trap(el);
 
   return () => {
+    const isTop = el === trapped[trapped.length - 1];
+
     trapped.splice(trapped.indexOf(el), 1);
     off();
-
-    const isTop = el === trapped[trapped.length - 1];
 
     if (isTop) backTo instanceof HTMLElement && backTo.focus();
   };
