@@ -1,18 +1,38 @@
-.Curtain {
+.SFCurtain {
   position: fixed;
   inset: 0;
   z-index: 1;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   background-color: var(--mat-air-2);
-}
-.Modal {
-  --w: 800px;
-  margin: 10px auto;
-  width: min(calc(100% - 40px), var(--w));
-  max-height: calc(100% - 10px);
-  background-color: var(--mat-solid-0);
-
   overflow: auto;
 }
 
+.SFModal {
+  position: relative;
+  margin: auto;
+  --w: 800px;
+  width: min(calc(100% - 40px), var(--w));
+  background-color: var(--mat-solid-0);
+}
+
+@media (min-width: 700px) {
+  .SFCurtain:has(.SFModal:only-child) {
+    padding: 20px 0;
+  }
+}
+
+.scale-enter-from,
+.scale-leave-to {
+  background-color: var(--mat-air-0);
+  .SFModal {
+    transform: scale(0);
+  }
+}
+
+.scale-enter-active,.scale-leave-active {
+  transition: all 0.3s;
+  .SFModal {
+    transition: all 0.3s;
+  }
+}

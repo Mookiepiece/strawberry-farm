@@ -39,3 +39,11 @@ export function nextFrame(cb: () => void, signal?: AbortSignal) {
 
   return;
 }
+
+export const onetime = <T extends (...args: any[]) => void>(fn: T) => {
+  let done = false;
+  return ((...args) => {
+    !done && fn(...args);
+    done = true;
+  }) as T;
+};

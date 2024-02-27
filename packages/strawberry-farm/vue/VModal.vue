@@ -1,17 +1,25 @@
 <script setup lang="ts">
 const model = defineModel();
 
-const { closeOnCurtain } = defineProps<{
-  closeOnCurtain?: string;
-}>();
+const { closeOnCurtainClick } = defineProps({
+  closeOnCurtainClick: {
+    default: true,
+  },
+});
 </script>
 
 <template>
   <Teleport to="body">
-    <div v-show="model" class="Curtain" @click.self="model = false">
-      <div class="Modal">
-        <slot />
+    <Transition name="scale">
+      <div
+        v-if="model"
+        class="SFCurtain"
+        @click.self="closeOnCurtainClick && (model = false)"
+      >
+        <div class="SFModal">
+          <slot />
+        </div>
       </div>
-    </div>
+    </Transition>
   </Teleport>
 </template>

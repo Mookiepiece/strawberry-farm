@@ -37,7 +37,7 @@
     z-index: 1;
   }
 
-  &:where(:not(.sf-input-group:is(.\[m\], .\[l\]) *), .\[s\]) {
+  &:where(:not(.sf-input-group:is(.\[s\], .\[l\]) *), .\[m\]) {
     height: 30px;
     font-size: var(--f2);
   }
