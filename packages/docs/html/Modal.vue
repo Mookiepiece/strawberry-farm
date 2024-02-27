@@ -45,12 +45,6 @@ onUnmounted(() => {
     eaque facilis ducimus sunt facere omnis vitae. Maiores est suscipit
     veritatis quam!
   </VModal>
-
-  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic iste optio, nam
-  ad perferendis ipsam quo harum quas eligendi quis aspernatur placeat deserunt
-  adipisci odit asperiores? Distinctio sit et nobis!
-
-  <div style="height: 1000px">1</div>
 </template>
 
 <style scoped>

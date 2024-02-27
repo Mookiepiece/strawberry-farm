@@ -15,7 +15,7 @@ const b = ref<HTMLDivElement>();
   </div>
   <div></div>
   <button @click="b && Collapse.toggle(b)">toggle</button>
-  <div ref="b" class="(///) collapsed">
+  <div ref="b" class="(///) Collapsed">
     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquid magni,
     veniam sapiente aperiam dolorum vero eos hic repellat quasi deserunt optio
     voluptatem expedita aut quam laborum culpa quaerat facere quisquam?

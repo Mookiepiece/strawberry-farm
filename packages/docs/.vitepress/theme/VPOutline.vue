@@ -12,6 +12,7 @@ const offset = ref(0);
 
 const bag = Bag();
 const handleContentUpdated = () => {
+  getHeaders();
   bag();
 
   let _VPContentEl = document.querySelector<HTMLDivElement>('.VPContent');
@@ -19,31 +20,33 @@ const handleContentUpdated = () => {
   let VPContentEl = _VPContentEl;
 
   VPContentEl.scrollTop = 0;
-  offset.value = VPContentEl.scrollTop;
+
+  const limit = 150;
+  offset.value = VPContentEl.scrollTop + limit;
 
   bag(
     on(VPContentEl).scroll(
       debounce(
         () => {
+          getHeaders();
+
           // If scroll to the end, highlight the last element
           // It is not a promise that clicking an anchor will let the window scroll to the target header.
           // Because there are some sections that cannot reach at the top of the window even if scroll to the end.
           // Because they are at the bottom of a page.
           // Those sections are "un-highlight-able".
-          offset.value =
-            VPContentEl.scrollTop + VPContentEl.clientHeight ===
-              VPContentEl.scrollHeight &&
-            VPContentEl.clientHeight !== VPContentEl.scrollHeight
-              ? Number.POSITIVE_INFINITY
-              : VPContentEl.scrollTop;
+          // UPDATE: this hack has been removed
+
+          offset.value = VPContentEl.scrollTop + limit;
         },
         100,
         bag(new AbortController()).signal,
       ),
     ),
   );
-
-  metaHeaders.value = [
+};
+const getHeaders = () =>
+  (metaHeaders.value = [
     ...document.querySelectorAll<HTMLHeadingElement>(
       '.vp-doc > div > :where(h2,h3)',
     ),
@@ -55,20 +58,17 @@ const handleContentUpdated = () => {
         ?.getAttribute('href') || '',
     offset: el.offsetTop,
     level: Number(el.tagName.slice(-1)),
-  }));
-};
+  })));
 
 onMounted(() => {
   handleContentUpdated();
+  getHeaders();
 });
 onContentUpdated(handleContentUpdated);
 
 const activeIndex = computed(() => {
-  if (offset.value === Number.POSITIVE_INFINITY)
-    return metaHeaders.value.length - 1;
-
-  const index = metaHeaders.value.findIndex(i => i.offset >= offset.value);
-  if (index === -1) return metaHeaders.value.length - 1;
+  const index = metaHeaders.value.findLastIndex(i => i.offset < offset.value);
+  if (index === -1) return 0;
   return index;
 });
 
