@@ -70,6 +70,7 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Toast', link: '/html/Toast' },
         { text: 'Trap', link: '/html/Trap' },
         { text: 'Modal', link: '/html/Modal' },
+        { text: 'Levitate', link: '/html/Levitate' },
       ],
     },
   ],

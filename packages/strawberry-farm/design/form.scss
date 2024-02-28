@@ -1,6 +1,8 @@
 .sf-input {
   position: relative;
-  padding: 0 10px;
+  height: var(--sf-input-h);
+  font-size: var(--sf-input-fs);
+  padding: 0 9px;
   color: var(--text1);
   line-height: 1.6;
   border: 1px solid var(--DVD);
@@ -36,25 +38,12 @@
   &:focus {
     z-index: 1;
   }
-
-  &:where(:not(.sf-input-group:is(.\[s\], .\[l\]) *), .\[m\]) {
-    height: 30px;
-    font-size: var(--f2);
-  }
-
-  &:where(.sf-input-group.\[m\], .\[m\]) {
-    height: 40px;
-    font-size: var(--f1);
-  }
-
-  &:where(.sf-input-group.\[l\], .\[l\]) {
-    height: 50px;
-    font-size: var(--h3);
-  }
 }
 
 .sf-input-group {
   display: flex;
+  height: var(--sf-input-h);
+  font-size: var(--sf-input-fs);
 
   > ins {
     display: inline-flex;
@@ -63,14 +52,31 @@
     text-decoration: unset;
     border: 1px solid var(--DVD);
 
-    color: var(--text1);
-    font-size: var(--f2);
+    color: var(--text2);
 
     background: var(--mat-air-05);
-    padding: 0 10px;
+    padding: 0 9px;
   }
 
   > :not(:first-child) {
     margin-left: -1px;
   }
+}
+
+:root {
+  --sf-input-h: 40px;
+  --sf-input-fs: var(--f1);
+}
+
+:where(.sf-input-group, .sf-input):where(.\[s\]) {
+  --sf-input-h: 30px;
+  --sf-input-fs: var(--f2);
+}
+:where(.sf-input-group, .sf-input):where(.\[m\]) {
+  --sf-input-h: 40px;
+  --sf-input-fs: var(--f1);
+}
+:where(.sf-input-group, .sf-input):where(.\[l\]) {
+  --sf-input-h: 50px;
+  --sf-input-fs: var(--h3);
 }

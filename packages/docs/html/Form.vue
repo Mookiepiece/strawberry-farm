@@ -8,7 +8,17 @@ import VInput from '@mookiepiece/strawberry-farm/vue/VInput.vue';
     <VInput placeholder="Please Input" />
     <VInput placeholder="Please Input" class="[l]" />
 
+    <div class="sf-input-group [s]">
+      <ins>https://</ins>
+      <VInput placeholder="Please Input" />
+      <ins>.com</ins>
+    </div>
     <div class="sf-input-group">
+      <ins>https://</ins>
+      <VInput placeholder="Please Input" />
+      <ins>.com</ins>
+    </div>
+    <div class="sf-input-group [l]">
       <ins>https://</ins>
       <VInput placeholder="Please Input" />
       <ins>.com</ins>
