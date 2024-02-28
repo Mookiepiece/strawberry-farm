@@ -1,4 +1,6 @@
-:where(.mat\:air, .mat\:airy, .mat\:air-ring) {
+.mat\:air,
+.mat\:airy,
+.mat\:air-ring {
   border: 0;
   background: var(--mat-air-0);
   outline: 0;
@@ -19,7 +21,8 @@
   }
 }
 
-:where(.mat\:air, .mat\:air-ring) {
+.mat\:air,
+.mat\:air-ring {
   color: var(--text1);
   &[aria-selected='true'],
   &[aria-checked='true'],
@@ -30,7 +33,7 @@
   }
 }
 
-:where(.mat\:airy) {
+.mat\:airy {
   color: var(--text2);
   &[aria-selected='true'],
   &[aria-checked='true'],
@@ -41,7 +44,9 @@
   }
 }
 
-:where(.mat\:solid, .mat\:solid2, .mat\:solid-ring) {
+.mat\:solid,
+.mat\:solid2,
+.mat\:solid-ring {
   border: 0;
   background: var(--mat-solid-0);
   outline: 0;
@@ -62,7 +67,8 @@
   }
 }
 
-:where(.mat\:solid, .mat\:solid-ring) {
+.mat\:solid,
+.mat\:solid-ring {
   color: var(--text1);
   &[aria-selected='true'],
   &[aria-checked='true'],
@@ -73,7 +79,7 @@
   }
 }
 
-:where(.mat\:solid2) {
+.mat\:solid2 {
   color: var(--text2);
   &[aria-selected='true'],
   &[aria-checked='true'],
@@ -84,7 +90,7 @@
   }
 }
 
-:where(.mat\:ruby) {
+.mat\:ruby {
   color: var(--text1);
   border: 0;
   background: var(--mat-air-0);

@@ -1,4 +1,8 @@
 # Modal
 
+::: details 注：没有锁定 body 滚动条，如果要使用，则使用环境不要让 body 出现滚动条。
+滚动条消失会引起视口宽度突变，就算能计算出滚动条的高度给 body 右侧加 margin hack，`position:fixed` 这种基于视口定位的元素仍然会跳位置。
+:::
+
 :::demo html/Modal
 :::
