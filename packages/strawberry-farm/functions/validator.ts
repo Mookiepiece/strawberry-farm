@@ -13,7 +13,7 @@ export interface IRuleType {
 export interface IRule<T extends keyof IRuleType = keyof IRuleType> {
   type?: T;
   config?: IRuleType[T];
-  optional?: boolean;
+  required?: boolean;
   validator?(value: unknown): string | undefined | Promise<string | undefined>;
   message?: string;
 }
@@ -21,9 +21,9 @@ export interface IRule<T extends keyof IRuleType = keyof IRuleType> {
 export type RuleS<T extends keyof IRuleType = keyof IRuleType> =
   | IRule<T>
   | T
-  | `${T}?`
-  | [T | `${T}?`]
-  | [T | `${T}?`, IRuleType[T]];
+  | `${T}!`
+  | [T | `${T}!`]
+  | [T | `${T}!`, IRuleType[T]];
 
 const unpack = <T extends keyof IRuleType>(mini: RuleS<T>): IRule<T> => {
   if (typeof mini === 'object' && !Array.isArray(mini)) return mini;
@@ -34,11 +34,11 @@ const unpack = <T extends keyof IRuleType>(mini: RuleS<T>): IRule<T> => {
   ];
 
   let rule: IRule<T> = {
-    type: (a.endsWith('?') ? a.slice(0, -1) : a) as T,
+    type: (a.endsWith('!') ? a.slice(0, -1) : a) as T,
   };
 
-  if (a.endsWith('?')) {
-    rule.optional = true;
+  if (a.endsWith('!')) {
+    rule.required = true;
   }
 
   if (b) {
@@ -61,7 +61,7 @@ const messages: Record<keyof IRuleType | 'default' | 'required', string> & {
   >;
 } = {
   default: '%s 不匹配格式',
-  required: '%s 是必填项',
+  required: '%s 不能为空',
   checked: '请先检阅 %s',
   enum: '%s 不在选项范围内',
 
@@ -133,7 +133,7 @@ const validators2 = new Map<
   keyof IRuleType,
   {
     type: (value: unknown, config: unknown) => string | void;
-    optional?(value: unknown, config: unknown): boolean;
+    testEmpty?(value: unknown, config: unknown): boolean;
     extends?: keyof IRuleType;
   }
 >();
@@ -155,7 +155,7 @@ validators2.set('string', {
       }
     }
   },
-  optional: (s: string) => s === '',
+  testEmpty: (s: string) => s === '',
 });
 
 validators2.set('number', {
@@ -246,11 +246,11 @@ export const validate = <T extends keyof IRuleType>(
     if (message) return message;
   }
 
-  const empty = testNullish(value) || v?.optional?.(value, rule.config);
+  const empty = testNullish(value) || v?.testEmpty?.(value, rule.config);
 
-  if (rule.optional && empty) return;
+  if (!rule.required && empty) return;
 
-  if (!rule.optional && empty) {
+  if (rule.required && empty) {
     return rule.message ?? messages.required.replace(sRE, name);
   }
 
@@ -263,5 +263,3 @@ export const validate = <T extends keyof IRuleType>(
 };
 
 export const defineRule = <T extends keyof IRuleType>(_: RuleS<T>) => _;
-
-const r = validate('1', 'any');

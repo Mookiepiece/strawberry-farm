@@ -45,7 +45,7 @@
 }
 
 .mat\:solid,
-.mat\:solid2,
+.mat\:solidity,
 .mat\:solid-ring {
   border: 0;
   background: var(--mat-solid-0);
@@ -79,7 +79,7 @@
   }
 }
 
-.mat\:solid2 {
+.mat\:solidity {
   color: var(--text2);
   &[aria-selected='true'],
   &[aria-checked='true'],

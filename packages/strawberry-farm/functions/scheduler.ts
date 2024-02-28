@@ -15,7 +15,7 @@ export const debounce = <T extends (...args: any[]) => void>(
 };
 
 /**
- * This function is only used for bags to collect in complex senario.
+ * This function is **only** used for bags to collect in **complex** senario.
  */
 export const addTimeout = <T extends (...args: any[]) => void>(
   fn: T,
@@ -46,4 +46,10 @@ export const onetime = <T extends (...args: any[]) => void>(fn: T) => {
     !done && fn(...args);
     done = true;
   }) as T;
+};
+
+export const share = <T extends (...args: any[]) => Promise<any>>(fn: T) => {
+  let i: Promise<any> | undefined;
+  return ((...args: Parameters<T>) =>
+    (i = i || fn(...args).finally(() => (i = undefined)))) as any as T;
 };
