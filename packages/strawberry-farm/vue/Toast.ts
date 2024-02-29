@@ -24,6 +24,10 @@ export class ToastBarElement extends HTMLElement {
   }
 }
 
+if (!customElements.get('toast-bar')) {
+  customElements.define('toast-bar', ToastBarElement);
+}
+
 type ToastConfig = {
   message: string | Node;
   bar?: string;

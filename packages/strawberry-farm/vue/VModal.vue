@@ -4,8 +4,8 @@ import { Bin, trap } from '../functions';
 
 const model = defineModel();
 
-const { unclosable } = defineProps({
-  unclosable: {
+const { strong } = defineProps({
+  strong: {
     default: false,
   },
 });
@@ -23,7 +23,7 @@ const afterEnter = () => {
 
 onUnmounted(() => bin());
 
-const close = () => void (!unclosable && (model.value = false));
+const close = () => void (!strong && (model.value = false));
 </script>
 
 <template>

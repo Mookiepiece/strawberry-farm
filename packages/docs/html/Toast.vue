@@ -2,10 +2,6 @@
 import { Toast, ToastBarElement } from '@mookiepiece/strawberry-farm/vue/Toast';
 import { ref } from 'vue';
 
-if (!customElements.get('toast-bar')) {
-  customElements.define('toast-bar', ToastBarElement);
-}
-
 const complex = () => {
   const span = document.createElement('span');
   span.innerHTML =
