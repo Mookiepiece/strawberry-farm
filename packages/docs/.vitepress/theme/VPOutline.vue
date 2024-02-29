@@ -2,7 +2,7 @@
 import { onContentUpdated } from 'vitepress';
 import { computed, onMounted, ref, shallowRef } from 'vue';
 import VPLink from './VPLink.vue';
-import { Bag, debounce, on } from '@mookiepiece/strawberry-farm/functions';
+import { Bin, debounce, on } from '@mookiepiece/strawberry-farm/functions';
 
 const metaHeaders = shallowRef<
   { text: string; link: string; offset: number; level: number }[]
@@ -10,10 +10,10 @@ const metaHeaders = shallowRef<
 
 const offset = ref(0);
 
-const bag = Bag();
+const bin = Bin();
 const handleContentUpdated = () => {
   getHeaders();
-  bag();
+  bin();
 
   let _VPContentEl = document.querySelector<HTMLDivElement>('.VPContent');
   if (!_VPContentEl) return;
@@ -24,7 +24,7 @@ const handleContentUpdated = () => {
   const limit = 150;
   offset.value = VPContentEl.scrollTop + limit;
 
-  bag(
+  bin(
     on(VPContentEl).scroll(
       debounce(
         () => {
@@ -40,7 +40,7 @@ const handleContentUpdated = () => {
           offset.value = VPContentEl.scrollTop + limit;
         },
         100,
-        bag(new AbortController()).signal,
+        bin(new AbortController()).signal,
       ),
     ),
   );

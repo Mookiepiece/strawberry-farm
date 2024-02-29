@@ -6,6 +6,13 @@
   flex-direction: column;
   background-color: var(--mat-air-2);
   overflow: auto;
+
+  transition: box-shadow 0.2s;
+
+  outline: 0;
+  &:focus-visible {
+    box-shadow: inset 0 0 0 4px var(---flame);
+  }
 }
 
 .SFModal {
@@ -14,6 +21,15 @@
   --w: 800px;
   width: min(calc(100% - 40px), var(--w));
   background-color: var(--mat-solid-0);
+
+  transition: box-shadow 0.2s;
+
+  outline: 0;
+  &:focus-visible {
+    outline: 2px solid var(---main);
+    outline-offset: -1px;
+    box-shadow: 0 0 0 4px var(---foam);
+  }
 }
 
 @media (min-width: 700px) {
@@ -30,9 +46,10 @@
   }
 }
 
-.scale-enter-active,.scale-leave-active {
+.scale-enter-active,
+.scale-leave-active {
   transition: all 0.3s;
   .SFModal {
-    transition: all 0.3s;
+    transition: all 0.2s;
   }
 }

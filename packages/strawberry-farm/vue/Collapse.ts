@@ -1,17 +1,17 @@
-import { Bag, nextFrame, on } from '../functions';
+import { Bin, nextFrame, on } from '../functions';
 
-const bags = new WeakMap<HTMLElement, ReturnType<typeof Bag>>();
+const bins = new WeakMap<HTMLElement, ReturnType<typeof Bin>>();
 
-const resetBag = (el: HTMLElement) => {
-  let bag = bags.get(el);
-  bag?.();
+const resetBin = (el: HTMLElement) => {
+  let bin = bins.get(el);
+  bin?.();
 
-  if (!bag) {
-    bag = Bag();
-    bags.set(el, bag);
+  if (!bin) {
+    bin = Bin();
+    bins.set(el, bin);
   }
 
-  return bag;
+  return bin;
 };
 
 export const Collapse = {
@@ -21,7 +21,7 @@ export const Collapse = {
       el.classList.remove('Collapsed');
       el.classList.add('Collapsing');
 
-      const bag = resetBag(el);
+      const bag = resetBin(el);
       nextFrame(() => {
         el.style.setProperty('--h', el.scrollHeight + 'px');
         bag(
@@ -39,7 +39,7 @@ export const Collapse = {
       el.style.setProperty('--h', el.scrollHeight + 'px');
       el.classList.add('Collapsing');
 
-      const bag = resetBag(el);
+      const bag = resetBin(el);
       nextFrame(() => {
         el.style.setProperty('--h', '0');
 

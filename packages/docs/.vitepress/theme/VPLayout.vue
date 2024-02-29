@@ -1,38 +1,47 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
-import { on } from '../../../strawberry-farm/functions';
+import { Bin, on } from '../../../strawberry-farm/functions';
 import VPOutline from './VPOutline.vue';
 import VPSidebar from './VPSidebar.vue';
 
 // https://github.com/vuejs/vitepress/blob/20511006dba516ca8c06ed1dd3516547af668a0e/src/client/app/router.ts#L161
 // Scroll section into view when click hash link (Original code don't work because our doc don't allow body scrolling)
-let off = () => {};
+let bin = Bin();
 onMounted(() => {
   // NOTE: Ctrl key opens the link in new tab.
-  off = on(document.body).click.exact(e => {
-    const anchor = e.target instanceof HTMLElement && e.target.closest('a');
+  bin(
+    on(document.body).click.exact(e => {
+      const anchor = e.target instanceof HTMLElement && e.target.closest('a');
 
-    if (anchor) {
-      const href = anchor.getAttribute('href');
-      if (href?.startsWith('#')) {
-        const target = document.getElementById(href.slice(1));
+      if (anchor) {
+        const href = anchor.getAttribute('href');
+        if (href?.startsWith('#')) {
+          const target = document.getElementById(href.slice(1));
 
-        requestAnimationFrame(() => {
-          // Don't know why this won't work if we don't schedule it in a callback.
-          target?.scrollIntoView({
-            behavior: target.contains(anchor) ? 'smooth' : 'auto',
+          requestAnimationFrame(() => {
+            // Don't know why this won't work if we don't schedule it in a callback.
+            target?.scrollIntoView({
+              behavior: target.contains(anchor) ? 'smooth' : 'auto',
+            });
           });
-        });
+        }
       }
-    }
+    }),
+  );
+});
+
+onMounted(() => {
+  document.body.classList.add('tone:rasp');
+  bin(() => {
+    document.body.classList.remove('tone:rasp');
   });
 });
 
-onUnmounted(() => off());
+onUnmounted(() => bin());
 </script>
 
 <template>
-  <div class="VPLayout tone:rasp">
+  <div class="VPLayout">
     <VPSidebar />
     <Content class="VPContent [A] vp-doc p-6 ww:p-8" role="article" />
     <VPOutline />

@@ -1,4 +1,4 @@
-import { Bag, inc, nextFrame, on } from '../functions';
+import { Bin, inc, nextFrame, on } from '../functions';
 
 const offsetMap = new WeakMap<HTMLDivElement, number>();
 const heightCacheMap = new WeakMap<HTMLDivElement, number>();
@@ -89,7 +89,7 @@ const createToast = ({ message, duration, bar: _bar }: ToastConfig) => {
 
   div.append(message);
 
-  const onCleanup = Bag();
+  const onCleanup = Bin();
 
   let timer: ReturnType<typeof setTimeout>;
   const pause = () => clearTimeout(timer);

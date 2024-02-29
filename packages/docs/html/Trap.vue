@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import { Bag, trap } from '@mookiepiece/strawberry-farm/functions';
-import { onMounted } from 'vue';
+import { trap } from '@mookiepiece/strawberry-farm/functions';
 import { ref } from 'vue';
 
 const a = ref<HTMLElement>();
 const b = ref<HTMLElement>();
 const c = ref<HTMLElement>();
 const d = ref<HTMLElement>();
-
-const bag = Bag();
-onMounted(() => {
-  // return trap(a.value!)
-});
 
 let releaseB = () => {};
 const trapB = () => {

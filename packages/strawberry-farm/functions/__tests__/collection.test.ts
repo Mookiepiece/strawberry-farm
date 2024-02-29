@@ -1,32 +1,32 @@
 import { describe, expect, it, vi } from 'vitest';
-import { Bag } from '../collection';
+import { Bin } from '../collection';
 
 describe('collection', () => {
-  describe('Bag', () => {
+  describe('Bin', () => {
     it('Very good', () => {
-      const bag = Bag();
+      const bin = Bin();
       
       // Callback Fn
       const f1 = vi.fn();
-      bag(f1);
-      bag(f1);
-      bag(f1);
+      bin(f1);
+      bin(f1);
+      bin(f1);
       expect(f1).not.toBeCalled();
 
-      bag();
+      bin();
       expect(f1).toBeCalledTimes(1);
       f1.mockReset();
 
-      bag();
+      bin();
       expect(f1).not.toBeCalled();
 
       // AbortController
       const a1 = new AbortController();
-      const r = bag(a1);
+      const r = bin(a1);
       expect(r).toEqual(a1);
       expect(a1.signal.aborted).toBeFalsy();
 
-      bag();
+      bin();
       expect(a1.signal.aborted).toBeTruthy();
     });
   });
