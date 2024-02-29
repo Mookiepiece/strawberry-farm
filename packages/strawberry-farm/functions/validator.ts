@@ -61,7 +61,7 @@ const messages: Record<keyof IRuleType | 'default' | 'required', string> & {
   >;
 } = {
   default: '%s 不匹配格式',
-  required: '%s 不能为空',
+  required: '请输入 %s',
   checked: '请先检阅 %s',
   enum: '%s 不在选项范围内',
 

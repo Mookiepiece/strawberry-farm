@@ -52,8 +52,8 @@ describe('vadliator', () => {
       [0, 'ok'],
       [false, 'ok'],
       ['', 'ok'],
-      [null, 'Dinner 不能为空'],
-      [undefined, 'Dinner 不能为空'],
+      [null, '请输入 Dinner'],
+      [undefined, '请输入 Dinner'],
       [[], 'ok'],
       [[[]], 'ok'],
     );
@@ -79,12 +79,12 @@ describe('vadliator', () => {
     $('string!')(
       [0, 'Dinner 必须为字符类型'],
       [[], 'Dinner 必须为字符类型'],
-      ['', 'Dinner 不能为空'],
+      ['', '请输入 Dinner'],
       ['  ', 'ok'],
       ['\n', 'ok'],
       ['  zoo', 'ok'],
-      [null, 'Dinner 不能为空'],
-      [undefined, 'Dinner 不能为空'],
+      [null, '请输入 Dinner'],
+      [undefined, '请输入 Dinner'],
     );
   });
 
@@ -122,8 +122,8 @@ describe('vadliator', () => {
       [String, 'Dinner 必须为数值类型'],
       ['111', 'Dinner 必须为数值类型'],
       ['', 'Dinner 必须为数值类型'],
-      [null, 'Dinner 不能为空'],
-      [undefined, 'Dinner 不能为空'],
+      [null, '请输入 Dinner'],
+      [undefined, '请输入 Dinner'],
       [JSON, 'Dinner 必须为数值类型'],
       [[undefined], 'Dinner 必须为数值类型'],
       [{}, 'Dinner 必须为数值类型'],
@@ -145,8 +145,8 @@ describe('vadliator', () => {
       ['1', 'Dinner 不在选项范围内'],
       [1, 'Dinner 不在选项范围内'],
       [3, 'Dinner 不在选项范围内'],
-      [null, 'Dinner 不能为空'],
-      [undefined, 'Dinner 不能为空'],
+      [null, '请输入 Dinner'],
+      [undefined, '请输入 Dinner'],
     );
 
     $(['enum', [1, 2, 3]])(
@@ -163,8 +163,8 @@ describe('vadliator', () => {
       ['1', 'Dinner 不在选项范围内'],
       [1, 'ok'],
       [3, 'ok'],
-      [null, 'Dinner 不能为空'],
-      [undefined, 'Dinner 不能为空'],
+      [null, '请输入 Dinner'],
+      [undefined, '请输入 Dinner'],
     );
   });
 
@@ -180,8 +180,8 @@ describe('vadliator', () => {
       ['', 'Dinner 必须为布尔类型'],
       [true, 'ok'],
       [false, 'ok'],
-      [null, 'Dinner 不能为空'],
-      [undefined, 'Dinner 不能为空'],
+      [null, '请输入 Dinner'],
+      [undefined, '请输入 Dinner'],
     );
   });
 
@@ -197,8 +197,8 @@ describe('vadliator', () => {
       ['1', '请先检阅 Dinner'],
       [true, 'ok'],
       [false, '请先检阅 Dinner'],
-      [null, 'Dinner 不能为空'],
-      [undefined, 'Dinner 不能为空'],
+      [null, '请输入 Dinner'],
+      [undefined, '请输入 Dinner'],
     );
   });
 
@@ -211,11 +211,11 @@ describe('vadliator', () => {
       [undefined, 'ok'],
     );
     $('email!')(
-      ['', 'Dinner 不能为空'],
+      ['', '请输入 Dinner'],
       ['@@', 'Dinner 不是有效的邮箱地址'],
       ['a@qq.cc', 'ok'],
-      [null, 'Dinner 不能为空'],
-      [undefined, 'Dinner 不能为空'],
+      [null, '请输入 Dinner'],
+      [undefined, '请输入 Dinner'],
     );
   });
 
@@ -231,8 +231,8 @@ describe('vadliator', () => {
       [[], 'ok'],
       [[[]], 'ok'],
       [{}, 'Dinner 必须为列表类型'],
-      [null, 'Dinner 不能为空'],
-      [undefined, 'Dinner 不能为空'],
+      [null, '请输入 Dinner'],
+      [undefined, '请输入 Dinner'],
     );
   });
 
@@ -246,8 +246,8 @@ describe('vadliator', () => {
     $(['type!', Date])(
       [new Date(), 'ok'],
       [100, 'Dinner 不匹配格式'],
-      [null, 'Dinner 不能为空'],
-      [undefined, 'Dinner 不能为空'],
+      [null, '请输入 Dinner'],
+      [undefined, '请输入 Dinner'],
     );
   });
 
@@ -260,10 +260,10 @@ describe('vadliator', () => {
     );
 
     $(['string!', [3, 3]])(
-      ['', 'Dinner 不能为空'],
+      ['', '请输入 Dinner'],
       ['1', 'Dinner 的长度必须等于 3'],
-      [null, 'Dinner 不能为空'],
-      [undefined, 'Dinner 不能为空'],
+      [null, '请输入 Dinner'],
+      [undefined, '请输入 Dinner'],
     );
 
     $(['string!', [3, 10]])(

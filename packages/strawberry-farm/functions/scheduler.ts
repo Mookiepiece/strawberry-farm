@@ -53,3 +53,19 @@ export const share = <T extends (...args: any[]) => Promise<any>>(fn: T) => {
   return ((...args: Parameters<T>) =>
     (i = i || fn(...args).finally(() => (i = undefined)))) as any as T;
 };
+
+export const longPress = <T extends (...args: any[]) => Promise<any>>(
+  fn: T,
+  signal: AbortSignal,
+) => {
+  fn();
+  debounce(
+    () => {
+      if (signal.aborted) return;
+      const i = setInterval(fn, 100);
+      signal.addEventListener('abort', () => clearInterval(i));
+    },
+    800,
+    signal,
+  );
+};
