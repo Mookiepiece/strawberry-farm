@@ -1,11 +1,26 @@
+@mixin ActiveQuery() {
+  @at-root &:where(
+        [aria-selected=true],
+        [aria-checked=true],
+        [aria-pressed=true],
+        :is(details[open] > summary),
+        .active
+      ) {
+    @content;
+  }
+}
+
+@mixin DisabledQuery() {
+  @at-root &:where(:disabled, [aria-disabled=true], .disabled) {
+    @content;
+  }
+}
+
 .mat\:air,
 .mat\:airy,
-.mat\:air-ring {
+.mat\:air-crown {
   border: 0;
   background: var(--mat-air-0);
-  outline: 0;
-  text-decoration: none;
-  transition: box-shadow 0.2s;
 
   &:hover {
     background: var(--mat-air-1);
@@ -13,45 +28,13 @@
   &:active {
     background: var(--mat-air-2);
   }
-
-  &:focus-visible {
-    outline: 2px solid var(---main);
-    outline-offset: -1px;
-    box-shadow: 0 0 0 4px var(---foam);
-  }
-}
-
-.mat\:air,
-.mat\:air-ring {
-  color: var(--text1);
-  &[aria-selected='true'],
-  &[aria-checked='true'],
-  &[aria-pressed='true'],
-  &:is(details[open] > summary),
-  &.active {
-    color: var(---fore);
-  }
-}
-
-.mat\:airy {
-  color: var(--text2);
-  &[aria-selected='true'],
-  &[aria-checked='true'],
-  &[aria-pressed='true'],
-  &:is(details[open] > summary),
-  &.active {
-    color: var(---text1);
-  }
 }
 
 .mat\:solid,
 .mat\:solidity,
-.mat\:solid-ring {
+.mat\:solid-crown {
   border: 0;
   background: var(--mat-solid-0);
-  outline: 0;
-  text-decoration: none;
-  transition: box-shadow 0.2s;
 
   &:hover {
     background: var(--mat-solid-1);
@@ -59,34 +42,31 @@
   &:active {
     background: var(--mat-solid-2);
   }
-
-  &:focus-visible {
-    outline: 2px solid var(---main);
-    outline-offset: -1px;
-    box-shadow: 0 0 0 4px var(---foam);
-  }
 }
 
+.mat\:air,
+.mat\:air-crown,
 .mat\:solid,
-.mat\:solid-ring {
+.mat\:solid-crown {
   color: var(--text1);
-  &[aria-selected='true'],
-  &[aria-checked='true'],
-  &[aria-pressed='true'],
-  &:is(details[open] > summary),
-  &.active {
+  @include ActiveQuery() {
     color: var(---fore);
   }
 }
 
+.mat\:airy,
 .mat\:solidity {
   color: var(--text2);
-  &[aria-selected='true'],
-  &[aria-checked='true'],
-  &[aria-pressed='true'],
-  &:is(details[open] > summary),
-  &.active {
+  @include ActiveQuery() {
     color: var(---text1);
+  }
+}
+
+.mat\:air-crown,
+.mat\:solid-crown {
+  border: 2px solid transparent;
+  @include ActiveQuery() {
+    border: 2px solid var(---main);
   }
 }
 
@@ -95,9 +75,6 @@
   border: 0;
   background: var(--mat-air-0);
   outline: 0;
-  text-decoration: none;
-  font-weight: 600;
-  transition: box-shadow 0.2s;
 
   &:hover {
     background: var(--mat-air-1);
@@ -106,11 +83,7 @@
     background: var(--mat-air-2);
   }
 
-  &[aria-selected='true'],
-  &[aria-checked='true'],
-  &[aria-pressed='true'],
-  &:is(details[open] > summary),
-  &.active {
+  @include ActiveQuery() {
     background: var(---main);
 
     &:hover {
@@ -124,10 +97,38 @@
     --text2: #fff;
     --text3: #fff;
   }
+}
+
+.mat\:air,
+.mat\:airy,
+.mat\:air-crown,
+.mat\:solid,
+.mat\:solidity,
+.mat\:solid-crown,
+.mat\:ruby {
+  outline: 0;
+  text-decoration: none;
+
+  --mat-shadow: 0 0 0 0 transparent;
+  --mat-shadow-outline: 0 0 0 0 transparent;
+  box-shadow: var(--mat-shadow), var(--mat-shadow-outline);
+  transition: box-shadow 0.2s;
 
   &:focus-visible {
     outline: 2px solid var(---main);
     outline-offset: -1px;
-    box-shadow: 0 0 0 4px var(---foam);
+    --mat-shadow-outline: 0 0 0 4px var(---foam);
+  }
+}
+
+.mat\:air,
+.mat\:airy,
+.mat\:air-crown,
+.mat\:solid,
+.mat\:solidity,
+.mat\:solid-crown,
+.mat\:ruby {
+  @include DisabledQuery() {
+    color: var(--text3);
   }
 }

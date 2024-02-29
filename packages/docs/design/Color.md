@@ -39,6 +39,8 @@
 
 ## 材质
 
+材质定义了盒如何反射光源。
+
 :::demo design/ColorMat
 :::
 

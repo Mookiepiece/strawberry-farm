@@ -145,38 +145,38 @@ describe('vadliator', () => {
       ['1', 'Dinner 不在选项范围内'],
       [1, 'Dinner 不在选项范围内'],
       [3, 'Dinner 不在选项范围内'],
+      [null, 'Dinner 不能为空'],
+      [undefined, 'Dinner 不能为空'],
+    );
+
+    $(['enum', [1, 2, 3]])(
+      [[1], 'Dinner 不在选项范围内'],
+      ['1', 'Dinner 不在选项范围内'],
+      [1, 'ok'],
+      [3, 'ok'],
       [null, 'ok'],
       [undefined, 'ok'],
     );
 
-    // $(['enum', [1, 2, 3]])(
-    //   [[1], 'Dinner 不在选项范围内'],
-    //   ['1', 'Dinner 不在选项范围内'],
-    //   [1, 'ok'],
-    //   [3, 'ok'],
-    //   [null, 'ok'],
-    //   [undefined, 'ok'],
-    // );
-
-    // $(['enum!', [1, 2, 3]])(
-    //   [[1], 'Dinner 不在选项范围内'],
-    //   ['1', 'Dinner 不在选项范围内'],
-    //   [1, 'ok'],
-    //   [3, 'ok'],
-    //   [null, 'Dinner 不能为空'],
-    //   [undefined, 'Dinner 不能为空'],
-    // );
+    $(['enum!', [1, 2, 3]])(
+      [[1], 'Dinner 不在选项范围内'],
+      ['1', 'Dinner 不在选项范围内'],
+      [1, 'ok'],
+      [3, 'ok'],
+      [null, 'Dinner 不能为空'],
+      [undefined, 'Dinner 不能为空'],
+    );
   });
 
   it('validates boolean', () => {
-    $('boolean?')(
+    $('boolean')(
       ['', 'Dinner 必须为布尔类型'],
       [true, 'ok'],
       [false, 'ok'],
       [null, 'ok'],
       [undefined, 'ok'],
     );
-    $('boolean')(
+    $('boolean!')(
       ['', 'Dinner 必须为布尔类型'],
       [true, 'ok'],
       [false, 'ok'],
@@ -186,14 +186,14 @@ describe('vadliator', () => {
   });
 
   it('validates checked', () => {
-    $('checked?')(
+    $('checked')(
       ['1', '请先检阅 Dinner'],
       [true, 'ok'],
       [false, '请先检阅 Dinner'],
       [null, 'ok'],
       [undefined, 'ok'],
     );
-    $('checked')(
+    $('checked!')(
       ['1', '请先检阅 Dinner'],
       [true, 'ok'],
       [false, '请先检阅 Dinner'],
@@ -203,14 +203,14 @@ describe('vadliator', () => {
   });
 
   it('validates email', () => {
-    $('email?')(
+    $('email')(
       ['', 'Dinner 不是有效的邮箱地址'],
       ['@@', 'Dinner 不是有效的邮箱地址'],
       ['a@qq.cc', 'ok'],
       [null, 'ok'],
       [undefined, 'ok'],
     );
-    $('email')(
+    $('email!')(
       ['', 'Dinner 不能为空'],
       ['@@', 'Dinner 不是有效的邮箱地址'],
       ['a@qq.cc', 'ok'],
@@ -220,14 +220,14 @@ describe('vadliator', () => {
   });
 
   it('validates array', () => {
-    $('array?')(
+    $('array')(
       [[], 'ok'],
       [[[]], 'ok'],
       [{}, 'Dinner 必须为列表类型'],
       [null, 'ok'],
       [undefined, 'ok'],
     );
-    $('array')(
+    $('array!')(
       [[], 'ok'],
       [[[]], 'ok'],
       [{}, 'Dinner 必须为列表类型'],
@@ -237,13 +237,13 @@ describe('vadliator', () => {
   });
 
   it('validates type', () => {
-    $(['type?', Date])(
+    $(['type', Date])(
       [new Date(), 'ok'],
       [100, 'Dinner 不匹配格式'],
       [null, 'ok'],
       [undefined, 'ok'],
     );
-    $(['type', Date])(
+    $(['type!', Date])(
       [new Date(), 'ok'],
       [100, 'Dinner 不匹配格式'],
       [null, 'Dinner 不能为空'],
@@ -252,47 +252,47 @@ describe('vadliator', () => {
   });
 
   it('do range validations', () => {
-    $(['string?', [3, 3]])(
+    $(['string', [3, 3]])(
       ['', 'ok'],
       ['1', 'Dinner 的长度必须等于 3'],
       [null, 'ok'],
       [undefined, 'ok'],
     );
 
-    $(['string', [3, 3]])(
+    $(['string!', [3, 3]])(
       ['', 'Dinner 不能为空'],
       ['1', 'Dinner 的长度必须等于 3'],
       [null, 'Dinner 不能为空'],
       [undefined, 'Dinner 不能为空'],
     );
 
-    $(['string', [3, 10]])(
+    $(['string!', [3, 10]])(
       ['1', 'Dinner 的长度必须介于 3 - 10'],
       ['123', 'ok'],
       ['123456789abc', 'Dinner 的长度必须介于 3 - 10'],
     );
-    $(['string', 3])(['1', 'Dinner 的长度必须等于 3'], ['123', 'ok']);
-    $(['string', [3]])(['1', 'Dinner 的长度至少为 3'], ['123', 'ok']);
-    $(['string', [, 10]])(
+    $(['string!', 3])(['1', 'Dinner 的长度必须等于 3'], ['123', 'ok']);
+    $(['string!', [3]])(['1', 'Dinner 的长度至少为 3'], ['123', 'ok']);
+    $(['string!', [, 10]])(
       ['1', 'ok'],
       ['123456789abc', 'Dinner 的长度至多为 10'],
     );
 
-    $(['number', [3, 10]])(
+    $(['number!', [3, 10]])(
       ['', 'Dinner 必须为数值类型'],
       [1, 'Dinner 的值必须介于 3 - 10'],
       [3, 'ok'],
       [30, 'Dinner 的值必须介于 3 - 10'],
     );
-    $(['number', 3])([1, 'Dinner 必须等于 3'], [3, 'ok']);
-    $(['number', [3]])([1, 'Dinner 至少为 3'], [3, 'ok']);
-    $(['number', [, 10]])([1, 'ok'], [30, 'Dinner 至多为 10']);
+    $(['number!', 3])([1, 'Dinner 必须等于 3'], [3, 'ok']);
+    $(['number!', [3]])([1, 'Dinner 至少为 3'], [3, 'ok']);
+    $(['number!', [, 10]])([1, 'ok'], [30, 'Dinner 至多为 10']);
 
     $(['array', [3]])([[,], 'Dinner 的长度至少为 3'], [[, , ,], 'ok']);
   });
 
   it('supports config', () => {
-    $(['string?', /\d\d\d/])(
+    $(['string', /\d\d\d/])(
       ['', 'ok'],
       ['000', 'ok'],
       ['^_^', 'Dinner 不匹配格式'],
@@ -302,16 +302,17 @@ describe('vadliator', () => {
   it('supports message', () => {
     $({
       type: 'string',
+      required: true,
       config: /\d\d\d/,
       message: 'foo',
     })(['', 'foo'], [null, 'foo'], ['000', 'ok'], ['^_^', 'foo']);
   });
 
   it('has many shortcuts', () => {
-    $(['string?', /\d\d\d/])(['', 'ok'], ['^_^', 'Dinner 不匹配格式']);
+    $(['string', /\d\d\d/])(['', 'ok'], ['^_^', 'Dinner 不匹配格式']);
     $({
       type: 'string',
-      required: true,
+      required: false,
       config: /\d\d\d/,
     })(['', 'ok'], ['000', 'ok'], ['^_^', 'Dinner 不匹配格式']);
   });
@@ -319,7 +320,7 @@ describe('vadliator', () => {
   it('supports custom validators', () => {
     $({
       type: 'string',
-      required: true,
+      required: false,
       config: /\d\d\d/,
       validator(value) {
         if (value !== '000') return '%s%s%s';
@@ -331,6 +332,7 @@ describe('vadliator', () => {
   it('supports only validator was provided', () => {
     $({
       config: /\d\d\d/,
+      required:true,
       validator(value) {
         if (value !== '000') return '%s%s%s';
       },

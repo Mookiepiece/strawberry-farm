@@ -1,22 +1,21 @@
 @each $i in (1, 2, 3) {
-  .h#{$i} {
+  :where(.h#{$i}) {
     font-size: var(--h#{$i});
     line-height: 1.6;
-    color: var(--text1);
   }
 }
 
 @each $i in (1, 2, 3) {
-  .f#{$i},.f#{$i}i {
+  :where(.f#{$i}, .f#{$i}i) {
     font-size: var(--f#{$i});
     color: var(--text1);
   }
 
-  .f#{$i} {
+  :where(.f#{$i}) {
     line-height: 1.6;
   }
 
-  .f#{$i}i {
+  :where(.f#{$i}i) {
     line-height: 1.2;
   }
 }

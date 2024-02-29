@@ -1,8 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+const mats = [
+  'mat:air',
+  'mat:airy',
+  'mat:air-crown',
+  'mat:solid',
+  'mat:solidity',
+  'mat:solid-crown',
+  'mat:ruby',
+];
+
 const actives = ref(
-  Array(3)
+  Array(mats.length)
     .fill(0)
     .map(() => false),
 );
@@ -10,36 +20,47 @@ const actives = ref(
 
 <template>
   <div class="good f2" style="">
-    <button
-      class="mat:air"
-      @click="actives[0] = !actives[0]"
-      :class="actives[0] && 'active'"
-    >
-      mat:air
-    </button>
-    <button
-      class="mat:airy"
-      @click="actives[1] = !actives[1]"
-      :class="actives[1] && 'active'"
-    >
-      mat:airy
-    </button>
-    <button
-      class="mat:ruby"
-      @click="actives[2] = !actives[2]"
-      :class="actives[2] && 'active'"
-    >
-      mat:ruby
-    </button>
+    <div v-for="(cls, index) in mats" class="[A]">
+      <button
+        :class="[cls, actives[index] && 'active']"
+        @click="actives[index] = !actives[index]"
+      >
+        {{ cls }}
+      </button>
+      <button
+        class="[:-]"
+        :class="[cls, !actives[index] && 'active']"
+        @click="actives[index] = !actives[index]"
+      >
+        {{ cls }}
+      </button>
+
+      <button
+        class="[:-]"
+        aria-disabled="true"
+        style="pointer-events: none"
+        :class="[cls, !actives[index] && 'active']"
+        @click="actives[index] = !actives[index]"
+      >
+        {{ cls }}
+      </button>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .good {
   display: grid;
-  grid-template: 50px / repeat(auto-fill, 100px);
+  grid-template: 150px / repeat(auto-fill, 100px);
   gap: var(--3);
   justify-content: start;
+
+  > div {
+    display: flex;
+    > button {
+      height: 50px;
+    }
+  }
 }
 
 .tony {
