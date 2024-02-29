@@ -75,6 +75,9 @@
 
 /* Material */
 :root {
+  /* This feels good in popper animations */
+  --curve-wave: cubic-bezier(0.66, 0, 0, 1);
+  /* --curve-ease: cubic-bezier(0.23, 1, 0.32, 1); */
   /* tailwind css default ease in out */
-  --ease-io: cubic-bezier(0.4, 0, 0.2, 1);
+  /* --ease-io: cubic-bezier(0.4, 0, 0.2, 1); */
 }

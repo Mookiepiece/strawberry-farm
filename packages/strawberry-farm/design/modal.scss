@@ -48,8 +48,8 @@
 
 .scale-enter-active,
 .scale-leave-active {
-  transition: all 0.3s;
+  transition: background-color 0.3s;
   .SFModal {
-    transition: all 0.2s;
+    transition: transform 0.3s var(--curve-wave);
   }
 }

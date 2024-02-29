@@ -4,9 +4,9 @@ import { Bin, trap } from '../functions';
 
 const model = defineModel();
 
-const { closeOnCurtainClick } = defineProps({
-  closeOnCurtainClick: {
-    default: true,
+const { unclosable } = defineProps({
+  unclosable: {
+    default: false,
   },
 });
 
@@ -22,6 +22,8 @@ const afterEnter = () => {
 };
 
 onUnmounted(() => bin());
+
+const close = () => void (!unclosable && (model.value = false));
 </script>
 
 <template>
@@ -33,9 +35,9 @@ onUnmounted(() => bin());
     >
       <div
         v-if="model"
-        @keydown.esc="model = false"
+        @keydown.esc="close"
         class="SFCurtain"
-        @click.self="closeOnCurtainClick && (model = false)"
+        @click.self="close"
       >
         <div class="SFModal" ref="surface" tabindex="-1">
           <slot />

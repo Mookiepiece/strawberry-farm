@@ -1,7 +1,7 @@
 .Collapsing {
   overflow: hidden !important;
   height: var(--h) !important;
-  transition: height 0.3s;
+  transition: height 0.3s var(--curve-wave);
 }
 
 .Collapsed {
