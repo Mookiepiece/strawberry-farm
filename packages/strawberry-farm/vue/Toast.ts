@@ -81,31 +81,30 @@ const renderBody = (
 
 const uuid = inc('ToastItem');
 
-const createToast = ({ message, duration, bar: _bar }: ToastConfig) => {
-  const bar = !_bar
-    ? document.querySelector<ToastBarElement>('toast-bar[main]')!
-    : (document.getElementById(_bar) as ToastBarElement);
+const createToast = ({
+  message,
+  duration,
+  bar: _bar = 'MainToastBar',
+}: ToastConfig) => {
+  const bar = document.getElementById(_bar) as ToastBarElement;
 
   const div = document.createElement('div');
   div.id = uuid();
   div.classList.add('f2');
   div.setAttribute('role', 'log');
-
   div.append(message);
 
-  const onCleanup = Bin();
+  const onClose = Bin();
+  const bin = Bin();
 
-  let timer: ReturnType<typeof setTimeout>;
-  const pause = () => clearTimeout(timer);
-  const play = () => {
-    if (Number.isFinite(duration)) {
-      timer = setTimeout(() => {
-        div.classList.add('leaving');
-        on(div).transitionend.once(() => div.remove());
-        onCleanup();
-        bar.sort();
-      }, duration);
-    }
+  const close = () => {
+    onClose();
+    div.classList.add('leaving');
+    on(div).transitionend.once(() => {
+      bin();
+      div.remove();
+    });
+    bar.sort();
   };
 
   const mo = new MutationObserver(() => {
@@ -120,11 +119,18 @@ const createToast = ({ message, duration, bar: _bar }: ToastConfig) => {
     attributes: true,
     characterData: true,
   });
-  onCleanup(() => mo.disconnect());
+  onClose(() => mo.disconnect());
 
+  let timer: ReturnType<typeof setTimeout>;
+  const pause = () => clearTimeout(timer);
+  const play = () => {
+    if (Number.isFinite(duration)) {
+      timer = setTimeout(close, duration);
+    }
+  };
   play();
-  onCleanup(on(div).pointerenter(() => pause()));
-  onCleanup(on(div).pointerleave(play));
+  onClose(on(div).pointerenter(pause));
+  onClose(on(div).pointerleave(play));
 
   bar.insertBefore(div, bar.firstElementChild);
   div.classList.add('appear');
@@ -133,7 +139,7 @@ const createToast = ({ message, duration, bar: _bar }: ToastConfig) => {
     bar.sort();
   });
 
-  return { div, pause, play };
+  return { div, pause, play, close, bin };
 };
 
 export const Toast = {

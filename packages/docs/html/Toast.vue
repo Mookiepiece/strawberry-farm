@@ -1,15 +1,40 @@
 <script setup lang="ts">
 import { Toast, ToastBarElement } from '@mookiepiece/strawberry-farm/vue/Toast';
+import { h } from 'vue';
+import { createApp } from 'vue';
 import { ref } from 'vue';
 
 const complex = () => {
   const span = document.createElement('span');
-  span.innerHTML =
-    `<details><summary>Click To expand</summary>
-    <ul><li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quisquam cum excepturi dolor impedit a ex, voluptatibus laborum fugit necessitatibus, illum ab minima deserunt aliquid, veniam rem debitis. Incidunt, assumenda?` +
-    `</li></ul>
-    </details>`;
-  Toast.error(span);
+  const app = createApp({
+    beforeUnmount() {
+      console.log('wa');
+    },
+    unmounted() {
+      console.log('sei');
+    },
+    render() {
+      return h('details', {}, [
+        h('summary', {}, 'Click To expand'),
+        h('ul', {}, [
+          h(
+            'li',
+            {},
+            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quisquam cum excepturi dolor impedit a ex, voluptatibus laborum fugit necessitatibus, illum ab minima deserunt aliquid, veniam rem debitis. Incidunt, assumenda?',
+          ),
+        ]),
+      ]);
+    },
+  });
+  app.mount(span);
+
+  // span.innerHTML =
+  //   `<details><summary>Click To expand</summary>
+  //   <ul><li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quisquam cum excepturi dolor impedit a ex, voluptatibus laborum fugit necessitatibus, illum ab minima deserunt aliquid, veniam rem debitis. Incidunt, assumenda?` +
+  //   `</li></ul>
+  //   </details>`;
+  const { bin } = Toast.error(span);
+  bin(app.unmount);
 };
 
 const cll = () => {
@@ -48,7 +73,9 @@ const a = ref(false);
       Error Toast
     </button>
     <button
-      @click="() => Toast.error({ message: 'Strawberry Farm', duration: Infinity })"
+      @click="
+        () => Toast.error({ message: 'Strawberry Farm', duration: Infinity })
+      "
       class="p-4 mat:air"
     >
       Error Toast (2000ms)
@@ -66,7 +93,7 @@ const a = ref(false);
     <div v-show="a" class="toast-i-success"></div>
     <div v-show="a" class="toast-i-info"></div>
     <Teleport to="body">
-      <toast-bar main />
+      <toast-bar id="MainToastBar" />
     </Teleport>
   </div>
 </template>
