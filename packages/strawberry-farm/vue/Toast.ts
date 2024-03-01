@@ -1,4 +1,5 @@
 import { Bin, inc, nextFrame, on } from '../functions';
+import { cx } from '../functions/cx';
 
 const offsetMap = new WeakMap<HTMLDivElement, number>();
 const heightCacheMap = new WeakMap<HTMLDivElement, number>();
@@ -46,6 +47,12 @@ const defaultTimeouts: Record<ToastType, number> = {
   custom: 4000,
   loading: Infinity,
   success: 2000,
+};
+
+const defaultTones: Partial<Record<ToastType, string>> = {
+  success: 'tone:rasp',
+  info: 'tone:citrus',
+  error: 'tone:reimu',
 };
 
 const withDefaults =
@@ -144,22 +151,35 @@ const createToast = ({
 
 export const Toast = {
   defaultTimeouts,
+  defaultTones,
   error: withDefaults('error', config =>
     createToast({
       ...config,
-      message: renderBody(config, 'toast--styled', 'toast-i-error'),
+      message: renderBody(
+        config,
+        cx('toast--styled', defaultTones['error']),
+        'toast-i-error',
+      ),
     }),
   ),
   success: withDefaults('success', config =>
     createToast({
       ...config,
-      message: renderBody(config, 'toast--styled', 'toast-i-success'),
+      message: renderBody(
+        config,
+        cx('toast--styled', defaultTones['success']),
+        'toast-i-success',
+      ),
     }),
   ),
   info: withDefaults('info', config =>
     createToast({
       ...config,
-      message: renderBody(config, 'toast--styled', 'toast-i-info tone:rasp'),
+      message: renderBody(
+        config,
+        cx('toast--styled', defaultTones['info']),
+        'toast-i-info',
+      ),
     }),
   ),
   blank: withDefaults('blank', config =>

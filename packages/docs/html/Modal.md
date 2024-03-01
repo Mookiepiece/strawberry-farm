@@ -8,11 +8,11 @@
 
 火狐下任何有滚动条的元素都能被聚焦，也就是 Modal 外层的 Curtain 可能会被聚焦。
 
-由于 `compareDocumentPosition`不处理包含和被包含的情况，所以这个例外不被处理。
+`strawberry-farm` 的 `trap` 函数在判断 `compareDocumentPosition` 时也没有处理包含和被包含的情况。
 
 属于合理的浏览器行为差异。
 
-`@eydown.esc` 也是放在幕布上的。
+`@keydown.esc` 也是放在幕布上的。
 
 :::
 

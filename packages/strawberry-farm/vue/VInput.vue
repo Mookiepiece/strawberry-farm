@@ -32,6 +32,7 @@ const handleBlur = () => {
 
 <template>
   <div class="sf-input" :class="textarea && 'sf-textarea'">
+    <slot name="prefix"></slot>
     <textarea
       v-if="textarea"
       :value="innerModel"
@@ -46,5 +47,6 @@ const handleBlur = () => {
       @blur="handleBlur"
       :placeholder="placeholder"
     />
+    <slot name="suffix"></slot>
   </div>
 </template>

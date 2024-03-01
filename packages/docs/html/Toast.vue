@@ -57,6 +57,7 @@ const cll = () => {
     Toast.error('123');
   }, 700);
 };
+const infinityToast = ref<ReturnType<typeof Toast.error>>();
 
 const a = ref(false);
 </script>
@@ -73,12 +74,24 @@ const a = ref(false);
       Error Toast
     </button>
     <button
-      @click="
-        () => Toast.error({ message: 'Strawberry Farm', duration: Infinity })
-      "
+      @click="() => Toast.error({ message: 'Strawberry Farm', duration: 2000 })"
       class="p-4 mat:air"
     >
       Error Toast (2000ms)
+    </button>
+    <button
+      @click="
+        () =>
+          infinityToast
+            ? (infinityToast = void infinityToast.close())
+            : (infinityToast = Toast.error({
+                message: 'Strawberry Farm',
+                duration: Infinity,
+              }))
+      "
+      class="p-4 mat:air"
+    >
+      Error Toast (Infinity)
     </button>
     <button @click="complex" class="p-4 mat:air">Complex Error Toast</button>
     <button @click="() => Toast.blank('Strawberry Farm')" class="p-4 mat:air">

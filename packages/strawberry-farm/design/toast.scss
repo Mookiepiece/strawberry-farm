@@ -67,7 +67,7 @@ toast-bar {
 }
 
 :where(.toast-i-error) {
-  background: var(--tone-reimu-flame);
+  background: var(---main);
   &:after,
   &:before {
     content: '';
@@ -90,7 +90,7 @@ toast-bar {
 }
 
 :where(.toast-i-success) {
-  background: var(--tone-iris);
+  background: var(---main);
   &:before {
     content: '';
     animation: ToastLineBAnimation 0.2s ease-out forwards;
@@ -113,43 +113,23 @@ toast-bar {
   background: var(---main);
   &:before {
     content: '';
-    animation: ToastLineAnimation 0.2s ease-out forwards;
+    animation: ToastLineCAnimation 0.2s ease-out forwards;
     animation-delay: 0.25s;
     position: absolute;
     background:
       linear-gradient(
           180deg,
-          transparent 4px,
-          #fff 4px,
-          #fff 5px,
-          transparent 5px,
+          #fff 8px,
+          transparent 8px,
           transparent 10px,
           #fff 10px
-        )
-        3px 0 / 1px 100% no-repeat,
-      linear-gradient(
-          180deg,
-          transparent 4px,
-          #fff 4px,
-          #fff 5px,
-          transparent 5px,
-          transparent 10px,
-          #fff 10px
-        )
-        0 0 / 1px 100% no-repeat,
-      linear-gradient(
-          180deg,
-          #fff 2px,
-          transparent 2px,
-          transparent 4px,
-          #fff 4px
         )
         1px 0 / 2px 100% no-repeat;
     top: 3px;
     left: 8px;
     width: 4px;
     height: 12px;
-    clip-path: circle(0%);
+    transform: scale(0);
   }
 }
 
@@ -179,5 +159,14 @@ toast-bar {
   }
   to {
     clip-path: xywh(0 0 100% 100%);
+  }
+}
+
+@keyframes ToastLineCAnimation {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
   }
 }
