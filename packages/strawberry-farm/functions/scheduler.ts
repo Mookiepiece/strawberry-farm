@@ -27,9 +27,11 @@ export const addTimeout = <T extends (...args: any[]) => void>(
 
 // https://github.com/vuejs/core/blob/ee4cd78a06e6aa92b12564e527d131d1064c2cd0/packages/runtime-dom/src/components/Transition.ts#L316
 export function nextFrame(cb: () => void, signal?: AbortSignal) {
-  requestAnimationFrame(() => {
+  let timer: number;
+  signal?.addEventListener('abort', () => void cancelAnimationFrame(timer));
+  timer = requestAnimationFrame(() => {
     if (!signal?.aborted) {
-      requestAnimationFrame(() => {
+      timer = requestAnimationFrame(() => {
         if (!signal?.aborted) {
           cb();
         }
