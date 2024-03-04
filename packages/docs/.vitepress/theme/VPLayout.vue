@@ -52,7 +52,7 @@ onUnmounted(() => bag());
 .VPLayout {
   position: relative;
   display: grid;
-  grid-template: 1fr/250px 1fr 166px;
+  grid-template: 1fr/300px 1fr 166px;
   height: 100vh;
   overflow: hidden;
   transition: grid-template 0.3s;
