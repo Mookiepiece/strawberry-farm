@@ -32,8 +32,13 @@ const measure = (id: string, { top, left, width, height }: DOMRect) => {
   el.style.height = height + 'px';
 };
 
-const place = ($up: Element, $fan: HTMLElement, dir = 'bottom', offset = 0) => {
-  const boundary: DOMRect = {
+const place = (
+  $up: Element,
+  $fan: HTMLElement,
+  dir: Direction = 'bottom',
+  offset = 0,
+) => {
+  const viewport: DOMRect = {
     x: 0,
     y: 0,
     top: 0,
@@ -50,46 +55,86 @@ const place = ($up: Element, $fan: HTMLElement, dir = 'bottom', offset = 0) => {
   measure('aaa', up);
   measure('bbb', fan);
 
-  if (hasAvailableSpace(up, fan, boundary)) {
+  const map = availableSpace4[dir]([[up], viewport], offset);
+
+  if (smaller([[fan], map])) {
+    const [rangeMin,rangeMax] = shiftRange([[up,fan],map],dir);
+
+    'start';
+
+
+    'center';
+
+
+    'end';
+
     $fan.style.setProperty('top', up.top + 'px');
     $fan.style.setProperty('left', up.left + 'px');
   }
 };
 
-type Dimension = { x: number; y: number };
+const clamp = (min= 0,a: number,max = 100) => Math.min(max,Math.max(a,min));
 
 const availableSpace4: Record<
   Direction,
-  (up: DOMRect, bound: DOMRect) => Dimension
+  ([[up], map]: [[DOMRect], DOMRect], offset: number) => DOMRect
 > = {
   // prettier-ignore
-  top: (up,bound) => ({ x: bound.width, y: Math.max(up.top - bound.top, 0) }),
+  top: ([[up], map], offset) => { const height = Math.max(up.top - map.top - offset, 0); const bottom = map.top + height; return ({ ...map, bottom, height }) },
   // prettier-ignore
-  right: (up,bound) => ({ x: Math.max(bound.right - up.right), y: bound.height }),
+  right: ([[up], map], offset) => { const width = Math.max(map.right - up.right - offset, 0); const x = map.right - width; return ({ ...map, left: x, x, width }) },
   // prettier-ignore
-  bottom: (up,bound) => ({ x: bound.width, y: Math.max(bound.bottom - up.bottom, 0) }),
+  bottom: ([[up], map], offset) => { const height = Math.max(map.bottom - up.bottom - offset, 0); const y = map.bottom - height; return ({ ...map, top: y , y, height }) },
   // prettier-ignore
-  left: (up,bound) => ({ x: Math.max( up.left - bound.left), y: bound.height }),
-};
-const addOffset4: Record<
-  Direction,
-  (fan: DOMRect, offset: number, dir: Direction) => Dimension
-> = {
-  // prettier-ignore
-  top: (fan,offset,bound) => ({ ...fan, height:fan.height + offset, bottom : fan.bottom + offset }),
+  left: ([[up], map], offset) => { const width = Math.max(up.left - map.left - offset, 0); const right = map.left + width; return ({ ...map, right, width }) },
 };
 
-const smallerThan = (fan: DOMRect, dimension: Dimension) =>
-  fan.width < dimension.x && fan.height < dimension.y;
+// const visibleRect = ([[up], viewport]: [[DOMRect], DOMRect]) :DOMRect => {
+  
+//   const top = Math.max(, 0);
 
-const availableSpace = (up: DOMRect, bound: DOMRect, dir: Direction) =>
-  availableSpace4[dir](up, bound);
+//   return {
+//     ...up,
 
-const hasAvailableSpace = (
-  up: DOMRect,
-  fan: DOMRect,
-  bound: DOMRect,
+//   }
+// };
+
+const smaller = ([[fan], map]: [[DOMRect], DOMRect]) =>
+  fan.width < map.width && fan.height < map.height;
+
+const inside = ([[fan], map]: [[DOMRect], DOMRect]) =>
+  fan.left > map.left &&
+  fan.top > map.top &&
+  fan.bottom < map.bottom &&
+  fan.right < map.right;
+
+const shiftRange = (
+  [[up, fan], map]: [[DOMRect, DOMRect], DOMRect],
   dir: Direction,
-) => smallerThan(fan, availableSpace(up, bound, dir));
+): [0, number] => {
+  const r = {
+    x: 0,
+    y: 0,
+    width: fan.width,
+    height: fan.height,
+    get left() {
+      return this.x;
+    },
+    get top() {
+      return this.y;
+    },
+    get right() {
+      return this.x + this.width;
+    },
+    get bottom() {
+      return this.y + this.height;
+    },
+  };
+  if (dir === 'bottom' || dir === 'top') {
+    return [0, map.width - fan.width];
+  }
+  return [0, map.height - fan.height];
+  // const shiftRange = [map.width - r.left, map.width - r.width]
+};
 
 export const levitate = { auto, measure, place };
