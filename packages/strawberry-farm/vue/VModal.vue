@@ -38,8 +38,10 @@ const close = () => void (!strong && (model.value = false));
         @keydown.esc="close"
         class="SFCurtain"
         @click.self="close"
+        tabindex="-1"
+        ref="surface"
       >
-        <div class="SFModal" ref="surface" tabindex="-1">
+        <div class="SFModal">
           <slot />
         </div>
       </div>

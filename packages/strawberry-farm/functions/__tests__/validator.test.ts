@@ -3,15 +3,6 @@ import { IRuleType, RuleS, validate, defineRule } from '../validator';
 
 const d = defineRule;
 
-/**
- * NN: Not Nullish
- *
- * C: Commented
- */
-const rr = {
-  AnyNNC1: d({ message: 'foo' }),
-};
-
 describe('vadliator', () => {
   const $ =
     (...rulesss: RuleS<keyof IRuleType>[]) =>

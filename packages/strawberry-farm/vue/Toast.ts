@@ -1,191 +1,78 @@
-import { Bin, inc, nextFrame, on } from '../functions';
 import { cx } from '../functions/cx';
+import { sf7 } from '../html/sf7';
+import {
+  ToastBarElement,
+  toastPrimitive,
+  ToastPrimitiveConfig,
+} from './ToastPrimitive';
 
-const offsetMap = new WeakMap<HTMLDivElement, number>();
-const heightCacheMap = new WeakMap<HTMLDivElement, number>();
+export { ToastBarElement };
 
-export class ToastBarElement extends HTMLElement {
-  sort(startIndex = 0) {
-    const children = ([...this.children] as HTMLDivElement[]).filter(
-      el => !el.classList.contains('leaving'),
-    );
-    if (!children.length) return;
-
-    let offsetCounter =
-      (startIndex &&
-        offsetMap.get(children[startIndex - 1] as HTMLDivElement)) ||
-      0;
-
-    for (const i of children.slice(startIndex)) {
-      offsetMap.set(i, offsetCounter);
-      i.style.setProperty('--toast-offset', offsetCounter + 'px');
-      offsetCounter += i.offsetHeight + 10;
-      heightCacheMap.set(i, i.offsetHeight);
-    }
-  }
-}
-
-if (!customElements.get('toast-bar')) {
-  customElements.define('toast-bar', ToastBarElement);
-}
-
-type ToastConfig = {
-  message: string | Node;
-  bar?: string;
-  duration?: number;
-  className?: string;
-};
-
-type ToastConfigLoosy = ToastConfig | string | Node;
-
-type ToastType = 'blank' | 'error' | 'success' | 'info' | 'loading' | 'custom';
+type ToastConfig = ToastPrimitiveConfig | string | Node;
+type ToastType = 'blank' | 'error' | 'success' | 'loading' | 'custom';
 
 const defaultTimeouts: Record<ToastType, number> = {
   blank: 4000,
-  info: 4000,
   error: 4000,
   custom: 4000,
   loading: Infinity,
   success: 2000,
 };
 
+const icons: Partial<Record<ToastType, string>> = {
+  success: 'toast-i-success',
+  error: 'toast-i-error',
+};
+
 const defaultTones: Partial<Record<ToastType, string>> = {
   success: 'tone:rasp',
-  info: 'tone:citrus',
   error: 'tone:reimu',
 };
 
-const withDefaults =
-  <T>(type: ToastType, fn: (c: ToastConfig) => T) =>
-  (c: ToastConfigLoosy) =>
-    fn(
-      c instanceof Node || typeof c === 'string'
-        ? { message: c, duration: Toast.defaultTimeouts[type] }
-        : { duration: Toast.defaultTimeouts[type], ...c },
-    );
+const unpackConfig = (_config: ToastConfig): ToastPrimitiveConfig =>
+  _config instanceof Node || typeof _config === 'string'
+    ? { message: _config }
+    : _config;
 
-const renderBody = (
-  { message }: ToastConfig,
-  classNames: string | undefined,
-  iconClassName?: string,
-) => {
-  const toast = document.createElement('div');
-  toast.classList.add(
-    'toast',
-    ...(classNames || '').split(' ').filter(Boolean),
-  );
+const createToast = (_config: ToastConfig, type: ToastType) => {
+  let { message, bar, duration } = unpackConfig(_config);
 
-  if (iconClassName) {
-    toast.classList.add('toast--rich');
-    const icon = document.createElement('div');
-    icon.classList.add(...iconClassName?.split(' ').filter(Boolean));
-    toast.append(icon);
+  switch (type) {
+    case 'success':
+    case 'error':
+    case 'blank':
+      message = (() => {
+        const iconName = icons[type];
+        const toast = sf7(
+          'div',
+          {
+            class: cx(
+              'toast',
+              'toast--styled',
+              iconName && 'toast--rich',
+              defaultTones[type],
+            ),
+          },
+          [iconName ? sf7('div', { class: iconName }) : undefined, message],
+        );
+        return toast;
+      })();
+      break;
+    default:
   }
-  toast.append(message);
 
-  return toast;
-};
-
-const uuid = inc('ToastItem');
-
-const createToast = ({
-  message,
-  duration,
-  bar: _bar = 'MainToastBar',
-}: ToastConfig) => {
-  const bar = document.getElementById(_bar) as ToastBarElement;
-
-  const div = document.createElement('div');
-  div.id = uuid();
-  div.classList.add('f2');
-  div.setAttribute('role', 'log');
-  div.append(message);
-
-  const onClose = Bin();
-  const bin = Bin();
-
-  const close = () => {
-    onClose();
-    div.classList.add('leaving');
-    on(div).transitionend.once(() => {
-      bin();
-      div.remove();
-    });
-    bar.sort();
-  };
-
-  const mo = new MutationObserver(() => {
-    // If we don't want to get an infinite loop in google chrome
-    if (div.offsetHeight !== heightCacheMap.get(div)) {
-      bar.sort();
-    }
+  return toastPrimitive({
+    message,
+    duration: duration ?? defaultTimeouts[type],
+    bar,
   });
-  mo.observe(div, {
-    subtree: true,
-    childList: true,
-    attributes: true,
-    characterData: true,
-  });
-  onClose(() => mo.disconnect());
-
-  let timer: ReturnType<typeof setTimeout>;
-  const pause = () => clearTimeout(timer);
-  const play = () => {
-    if (Number.isFinite(duration)) {
-      timer = setTimeout(close, duration);
-    }
-  };
-  play();
-  onClose(on(div).pointerenter(pause));
-  onClose(on(div).pointerleave(play));
-
-  bar.insertBefore(div, bar.firstElementChild);
-  div.classList.add('appear');
-  nextFrame(() => {
-    div.classList.remove('appear');
-    bar.sort();
-  });
-
-  return { div, pause, play, close, bin };
 };
 
 export const Toast = {
   defaultTimeouts,
   defaultTones,
-  error: withDefaults('error', config =>
-    createToast({
-      ...config,
-      message: renderBody(
-        config,
-        cx('toast--styled', defaultTones['error']),
-        'toast-i-error',
-      ),
-    }),
-  ),
-  success: withDefaults('success', config =>
-    createToast({
-      ...config,
-      message: renderBody(
-        config,
-        cx('toast--styled', defaultTones['success']),
-        'toast-i-success',
-      ),
-    }),
-  ),
-  info: withDefaults('info', config =>
-    createToast({
-      ...config,
-      message: renderBody(
-        config,
-        cx('toast--styled', defaultTones['info']),
-        'toast-i-info',
-      ),
-    }),
-  ),
-  blank: withDefaults('blank', config =>
-    createToast({ ...config, message: renderBody(config, 'toast--styled') }),
-  ),
-  custom: withDefaults('custom', config =>
-    createToast({ ...config, message: renderBody(config, '') }),
-  ),
+  success: (config: ToastConfig) => createToast(config, 'success'),
+  error: (config: ToastConfig) => createToast(config, 'error'),
+  blank: (config: ToastConfig) => createToast(config, 'blank'),
+  custom: (config: ToastConfig) => toastPrimitive(unpackConfig(config)),
 };

@@ -6,7 +6,7 @@ import path from 'node:path'
 export default defineConfig({
   title: 'Strawberry Farm',
   description: 'Web Development Notes',
-  head: [['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }]],
+  head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
   markdown: {
     config: mdPlugin,
   },

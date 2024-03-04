@@ -43,7 +43,7 @@ onUnmounted(() => bin());
 <template>
   <div class="VPLayout">
     <VPSidebar />
-    <Content class="VPContent [A] vp-doc p-6 ww:p-8" role="article" />
+    <Content class="VPContent [A] vp-doc pt-6 px-6 ww:pt-8 ww:px-8" role="article" />
     <VPOutline />
   </div>
 </template>
@@ -52,7 +52,7 @@ onUnmounted(() => bin());
 .VPLayout {
   position: relative;
   display: grid;
-  grid-template: 1fr/300px 1fr 166px;
+  grid-template: 1fr/250px 1fr 166px;
   height: 100vh;
   overflow: hidden;
   transition: all 0.3s;
@@ -60,6 +60,7 @@ onUnmounted(() => bin());
 
 .VPContent {
   overflow: auto;
+  padding-bottom: 100px;
 
   > div {
     width: min(800px, 100%);

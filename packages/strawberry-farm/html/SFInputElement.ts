@@ -13,7 +13,7 @@ class SFInputElement extends SFElement {
       }
 
       const off = on(input).input(ev => {
-        this.emit('sf-input', input.value.trim());
+        this.emit('Input', input.value.trim());
       });
     };
   }
@@ -27,9 +27,14 @@ class SFInputNumberElement extends SFElement {
   constructor() {
     super();
     this.setup = self => {
-      const input: HTMLInputElement =
-        self.$('input') ?? document.createElement('input');
-      if (!self.contains(input)) {
+      const isTextarea =this.getAttribute('textarea') !== 'false'
+
+      const input: HTMLInputElement | HTMLTextAreaElement =
+        isTextarea ? 
+        (self.$('textarea') ?? document.createElement('textarea') ):
+        (self.$('input') ?? document.createElement('input'));
+      
+        if (!self.contains(input)) {
         self.appendChild(input);
       }
 

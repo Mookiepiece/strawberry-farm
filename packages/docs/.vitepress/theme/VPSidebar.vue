@@ -36,7 +36,7 @@ const toggleTheme = async (e: MouseEvent) => {
     { clipPath: isDark.value ? clipPath.reverse() : clipPath },
     {
       duration: 300,
-      easing: 'ease-in',
+      easing: 'cubic-bezier(0.66, 0, 0, 1)',
       pseudoElement: `::view-transition-${isDark.value ? 'old' : 'new'}(root)`,
     },
   );

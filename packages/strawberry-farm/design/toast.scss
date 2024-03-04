@@ -1,34 +1,33 @@
-toast-bar {
+#ToastBarTopCenter {
   position: fixed;
   inset: 0;
-  // higher than dialogs
   z-index: 2;
   margin: auto;
   max-width: 350px;
   pointer-events: none;
-  
+}
 
-  > div {
-    --toast-offset: 0;
-    position: absolute;
-    top: 20px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
+#ToastBarTopCenter > div {
+  --toast-offset: 0;
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
 
-    transform: translateY(0) translateY(var(--toast-offset)) scale(1);
-    transform-origin: center;
-    transition: transform 0.3s var(--curve-wave);
+  transform: translateY(0) translateY(var(--toast-offset)) scale(1);
+  transform-origin: center;
+  transition: transform 0.3s var(--curve-wave);
 
-    &.appear {
-      transform: translateY(calc(-30px - 100%)) translateY(var(--toast-offset)) scale(0.5);
-    }
+  &.entering {
+    transform: translateY(calc(-30px - 100%)) translateY(var(--toast-offset))
+      scale(0.5);
+  }
 
-    &.leaving {
-      transform: translateY(-20%) translateY(var(--toast-offset)) scale(0);
-      pointer-events: none;
-    }
+  &.leaving {
+    transform: translateY(-20%) translateY(var(--toast-offset)) scale(0);
+    pointer-events: none;
   }
 }
 
@@ -54,7 +53,7 @@ toast-bar {
 }
 
 // design inspired by react-hot-toast :D
-:where(.toast-i-error, .toast-i-success, .toast-i-info) {
+:where(.toast-i-error, .toast-i-success) {
   width: 20px;
   height: 20px;
   border-radius: 10px;
@@ -71,8 +70,8 @@ toast-bar {
   &:after,
   &:before {
     content: '';
-    animation: ToastLineAnimation 0.2s ease-out forwards;
-    animation-delay: 0.2s;
+    animation: ToastLineAnimation 0.3s ease-in forwards;
+    animation-delay: 0.1s;
     position: absolute;
     background: #fff;
     top: 9px;
@@ -80,11 +79,10 @@ toast-bar {
     height: 2px;
     width: 12px;
     transform: rotate(45deg);
-    clip-path: circle(0%);
   }
 
   &:before {
-    animation-delay: 0.25s;
+    animation-delay: 0.05s;
     transform: rotate(-45deg);
   }
 }
@@ -93,8 +91,8 @@ toast-bar {
   background: var(---main);
   &:before {
     content: '';
-    animation: ToastLineBAnimation 0.2s ease-out forwards;
-    animation-delay: 0.2s;
+    animation: ToastLineBAnimation 0.3s ease-in forwards;
+    animation-delay: 0.1s;
     position: absolute;
     background: transparent;
     color: #fff;
@@ -105,42 +103,15 @@ toast-bar {
     width: 10px;
     height: 6px;
     transform: rotate(-45deg);
-    clip-path: circle(0%);
-  }
-}
-
-:where(.toast-i-info) {
-  background: var(---main);
-  &:before {
-    content: '';
-    animation: ToastLineCAnimation 0.2s ease-out forwards;
-    animation-delay: 0.25s;
-    position: absolute;
-    background:
-      linear-gradient(
-          180deg,
-          #fff 8px,
-          transparent 8px,
-          transparent 10px,
-          #fff 10px
-        )
-        1px 0 / 2px 100% no-repeat;
-    top: 3px;
-    left: 8px;
-    width: 4px;
-    height: 12px;
-    transform: scale(0);
   }
 }
 
 @keyframes ToastCircleAnimation {
   from {
     transform: scale(0);
-    box-shadow: 0 0 0 4px var(--tone-reimu-foam);
   }
   to {
     transform: scale(1);
-    box-shadow: 0 0 0 4px transparent;
   }
 }
 
@@ -159,14 +130,5 @@ toast-bar {
   }
   to {
     clip-path: xywh(0 0 100% 100%);
-  }
-}
-
-@keyframes ToastLineCAnimation {
-  from {
-    transform: scale(0);
-  }
-  to {
-    transform: scale(1);
   }
 }

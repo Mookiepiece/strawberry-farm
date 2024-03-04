@@ -4,6 +4,8 @@ import { h } from 'vue';
 import { createApp } from 'vue';
 import { ref } from 'vue';
 
+ToastBarElement.install();
+
 const complex = () => {
   const span = document.createElement('span');
   const app = createApp({
@@ -67,9 +69,6 @@ const a = ref(false);
     <button @click="() => Toast.success('Strawberry Farm')" class="p-4 mat:air">
       Success Toast
     </button>
-    <button @click="() => Toast.info('Strawberry Farm')" class="p-4 mat:air">
-      Info Toast
-    </button>
     <button @click="() => Toast.error('Strawberry Farm')" class="p-4 mat:air">
       Error Toast
     </button>
@@ -100,13 +99,13 @@ const a = ref(false);
     <button @click="() => Toast.custom('Strawberry Farm')" class="p-4 mat:air">
       Custom Toast
     </button>
-    <button @click="cll" class="p-4 mat:air">Toast</button>
+    <button @click="cll" class="p-4 mat:air">Many Toasts</button>
     <button @click="a = !a" class="p-4 mat:air">Icon</button>
     <div v-show="a" class="toast-i-error"></div>
     <div v-show="a" class="toast-i-success"></div>
     <div v-show="a" class="toast-i-info"></div>
     <Teleport to="body">
-      <toast-bar id="MainToastBar" />
+      <toast-bar id="ToastBarTopCenter" />
     </Teleport>
   </div>
 </template>

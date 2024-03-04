@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 
 const model = defineModel<string>({
   required: true,
 });
 
-const { placeholder, textarea, trim } = withDefaults(
+const props = withDefaults(
   defineProps<{
     placeholder?: string;
     textarea?: boolean;
@@ -14,15 +14,31 @@ const { placeholder, textarea, trim } = withDefaults(
   { trim: true },
 );
 
+const { placeholder, textarea, trim } = props;
+
 const innerModel = ref('');
 
-watchEffect(() => {
-  innerModel.value = model.value;
-});
+watch(
+  () => ({
+    value: model.value,
+    trim: props.trim,
+  }),
+  ({ value, trim }) => {
+    if (trim) {
+      if (innerModel.value.trim() !== value.trim()) {
+        innerModel.value = value.trim();
+      }
+    }
+  },
+);
 
 const handleInput = (e: Event) => {
-  innerModel.value = (e.target as HTMLInputElement).value;
-  model.value = trim ? innerModel.value.trim() : innerModel.value;
+  if (trim) {
+    innerModel.value = (e.target as HTMLInputElement).value;
+    model.value = innerModel.value.trim();
+  } else {
+    model.value = (e.target as HTMLInputElement).value;
+  }
 };
 
 const handleBlur = () => {
@@ -31,18 +47,18 @@ const handleBlur = () => {
 </script>
 
 <template>
-  <div class="sf-input" :class="textarea && 'sf-textarea'">
+  <div class="Input" :class="textarea && 'sf-textarea'">
     <slot name="prefix"></slot>
     <textarea
       v-if="textarea"
-      :value="innerModel"
+      :value="trim ? innerModel : model"
       @input="handleInput"
       @blur="handleBlur"
       :placeholder="placeholder"
     />
     <input
       v-else
-      :value="innerModel"
+      :value="trim ? innerModel : model"
       @input="handleInput"
       @blur="handleBlur"
       :placeholder="placeholder"

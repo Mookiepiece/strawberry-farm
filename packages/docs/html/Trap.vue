@@ -52,10 +52,12 @@ const trapD = () => {
 .table {
   display: grid;
   max-width: 300px;
+  gap: 5px;
 }
 .tr {
   display: grid;
   grid: 1fr /1fr 1fr 1fr;
+  gap: 5px;
 }
 
 button {

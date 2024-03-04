@@ -102,7 +102,8 @@
   }
 
   :is(h1, h2, h3, h4, h5, h6) {
-    &:hover .header-anchor, .header-anchor:focus {
+    &:hover .header-anchor,
+    .header-anchor:focus {
       opacity: 1;
     }
   }
@@ -187,7 +188,7 @@
   * Code
   * -------------------------------------------------------------------------- */
 .vp-doc code {
-  font-family: monospace;
+  font-family: var(--vp-font-family-mono);
 }
 /* inline code */
 .vp-doc :not(pre, h1, h2, h3, h4, h5, h6) > code {
@@ -212,11 +213,11 @@
   color: var(--vp-code-link-hover-color);
 }
 
-.vp-doc h1 > code,
+/* .vp-doc h1 > code,
 .vp-doc h2 > code,
 .vp-doc h3 > code {
   font-size: 0.9em;
-}
+} */
 
 .vp-doc div[class*='language-'],
 .vp-block {
@@ -249,20 +250,11 @@
 
 .vp-doc [class*='language-'] pre,
 .vp-doc [class*='language-'] code {
-  /*rtl:ignore*/
-  direction: ltr;
-  /*rtl:ignore*/
-  text-align: left;
   white-space: pre;
   word-spacing: normal;
   word-break: normal;
   word-wrap: normal;
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
   tab-size: 4;
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
   hyphens: none;
 }
 
@@ -295,7 +287,7 @@
   display: inline-block;
 }
 
-.vp-doc [class*='language-'] code .highlighted.error {
+/* .vp-doc [class*='language-'] code .highlighted.error {
   background-color: var(--vp-code-line-error-color);
 }
 
@@ -356,7 +348,6 @@
 }
 
 .vp-doc div[class*='language-'].line-numbers-mode {
-  /*rtl:ignore*/
   padding-left: 32px;
 }
 
@@ -364,10 +355,10 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  /*rtl:ignore*/
+
   left: 0;
   z-index: 3;
-  /*rtl:ignore*/
+
   border-right: 1px solid var(--vp-code-block-divider-color);
   padding-top: 20px;
   width: 32px;
@@ -379,7 +370,7 @@
   transition:
     border-color 0.5s,
     color 0.5s;
-}
+} */
 
 /**
   * Copy code button
@@ -493,8 +484,25 @@ html:not(.dark) .vp-code span {
   }
 
   blockquote {
+    position: relative;
     font-size: var(--f2);
     line-height: 1.6;
+    background-color: var(--mat-air-1);
+    border-left: 5px solid var(--mat-air-05);
+    padding: 10px;
+
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      font-size: var(--h1);
+      line-height: 1;
+      color: var(--text3);
+      user-select: none;
+      pointer-events: none;
+      content: ',,';
+      transform: translateY(-10px);
+    }
   }
 
   &.info {

@@ -7,8 +7,10 @@ const a = ref<HTMLElement>();
 const b = ref<HTMLElement>();
 
 onMounted(() => {
-  levitate.measure('aaaa', a.value!.getBoundingClientRect());
-  levitate.measure('bbbb', b.value!.getBoundingClientRect());
+  levitate.place(a.value!,b.value!);
+
+  // levitate.measure('aaaa', a.value!.getBoundingClientRect());
+  // levitate.measure('bbbb', b.value!.getBoundingClientRect());
 });
 </script>
 
@@ -26,7 +28,9 @@ onMounted(() => {
   background-color: #def;
 }
 .b {
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: min-content;
   background-color: #fde;
 }

@@ -14,17 +14,17 @@ const model = ref('');
     <VInput v-model="model" textarea placeholder="Please Input" />
 
 
-    <div class="sf-input-group [s]">
+    <div class="InputGroup [s]">
       <ins>https://</ins>
       <VInput v-model="model" placeholder="Please Input" />
       <ins>.com</ins>
     </div>
-    <div class="sf-input-group">
+    <div class="InputGroup">
       <ins>https://</ins>
       <VInput v-model="model" placeholder="Please Input" />
       <ins>.com</ins>
     </div>
-    <div class="sf-input-group [l]">
+    <div class="InputGroup [l]">
       <ins>https://</ins>
       <VInput v-model="model" placeholder="Please Input" />
       <ins>.com</ins>

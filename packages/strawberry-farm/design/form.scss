@@ -1,7 +1,8 @@
-.sf-input {
+.Input {
   position: relative;
-  height: var(--sf-input-h);
-  font-size: var(--sf-input-fs);
+  height: var(--Input-h);
+  display: flex;
+  font-size: var(--Input-fs);
   color: var(--text1);
   line-height: 1.6;
   border: 1px solid var(--DVD);
@@ -17,6 +18,7 @@
     line-height: inherit;
     border: 0;
     outline: 0;
+    margin: 0;
     padding: 0 9px;
 
     &::placeholder {
@@ -49,10 +51,10 @@
   }
 }
 
-.sf-input-group {
+.InputGroup {
   display: flex;
-  height: var(--sf-input-h);
-  font-size: var(--sf-input-fs);
+  height: var(--Input-h);
+  font-size: var(--Input-fs);
 
   > ins {
     display: inline-flex;
@@ -73,19 +75,19 @@
 }
 
 :root {
-  --sf-input-h: 40px;
-  --sf-input-fs: var(--f1);
+  --Input-h: 40px;
+  --Input-fs: var(--f1);
 }
 
-:where(.sf-input-group, .sf-input):where(.\[s\]) {
-  --sf-input-h: 30px;
-  --sf-input-fs: var(--f2);
+:where(.InputGroup, .Input):where(.\[s\]) {
+  --Input-h: 30px;
+  --Input-fs: var(--f2);
 }
-:where(.sf-input-group, .sf-input):where(.\[m\]) {
-  --sf-input-h: 40px;
-  --sf-input-fs: var(--f1);
+:where(.InputGroup, .Input):where(.\[m\]) {
+  --Input-h: 40px;
+  --Input-fs: var(--f1);
 }
-:where(.sf-input-group, .sf-input):where(.\[l\]) {
-  --sf-input-h: 50px;
-  --sf-input-fs: var(--h3);
+:where(.InputGroup, .Input):where(.\[l\]) {
+  --Input-h: 50px;
+  --Input-fs: var(--h3);
 }
