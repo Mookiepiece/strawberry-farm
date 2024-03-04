@@ -1,4 +1,4 @@
-import { Bin, SFEventMap } from '../functions';
+import { SFEventMap } from '../functions';
 
 interface SFEmit {
   <T extends keyof SFEventMap>(

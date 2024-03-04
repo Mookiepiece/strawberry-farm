@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onUnmounted, ref } from 'vue';
-import { Bin, trap } from '../functions';
+import { Bag, trap } from '../functions';
 
 const model = defineModel();
 
@@ -10,18 +10,17 @@ const { strong } = defineProps({
   },
 });
 
-const bin = Bin();
+const bag = Bag();
+onUnmounted(() => bag());
 
 const surface = ref<HTMLElement>();
 
 const afterEnter = () => {
   const el = surface.value;
   if (el) {
-    bin(trap(el));
+    bag(trap(el));
   }
 };
-
-onUnmounted(() => bin());
 
 const close = () => void (!strong && (model.value = false));
 </script>
@@ -31,7 +30,7 @@ const close = () => void (!strong && (model.value = false));
     <Transition
       name="scale"
       @after-enter="afterEnter"
-      @after-leave="() => bin()"
+      @after-leave="() => bag()"
     >
       <div
         v-if="model"

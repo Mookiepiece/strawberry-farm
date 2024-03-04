@@ -35,8 +35,8 @@ const complex = () => {
   //   <ul><li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quisquam cum excepturi dolor impedit a ex, voluptatibus laborum fugit necessitatibus, illum ab minima deserunt aliquid, veniam rem debitis. Incidunt, assumenda?` +
   //   `</li></ul>
   //   </details>`;
-  const { bin } = Toast.error(span);
-  bin(app.unmount);
+  const { bag } = Toast.error(span);
+  bag(app.unmount);
 };
 
 const cll = () => {

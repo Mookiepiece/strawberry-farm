@@ -1,27 +1,27 @@
-import { Bin, nextFrame, on } from '../functions';
+import { Bag, nextFrame, on } from '../functions';
 
-const bins = new WeakMap<HTMLElement, ReturnType<typeof Bin>>();
+const bins = new WeakMap<HTMLElement, ReturnType<typeof Bag>>();
 
-const resetBin = (el: HTMLElement) => {
-  let bin = bins.get(el);
-  bin?.();
+const newBin = (el: HTMLElement) => {
+  let bag = bins.get(el);
+  bag?.();
 
-  if (!bin) {
-    bin = Bin();
-    bins.set(el, bin);
+  if (!bag) {
+    bag = Bag();
+    bins.set(el, bag);
   }
 
-  return bin;
+  return bag;
 };
 
-export const Collapse = {
+export const collapse = {
   show(el: HTMLElement) {
     return new Promise<void>(resolve => {
       el.style.setProperty('--h', '0');
       el.classList.remove('Collapsed');
       el.classList.add('Collapsing');
 
-      const bag = resetBin(el);
+      const bag = newBin(el);
       nextFrame(() => {
         el.style.setProperty('--h', el.scrollHeight + 'px');
         bag(
@@ -39,7 +39,7 @@ export const Collapse = {
       el.style.setProperty('--h', el.scrollHeight + 'px');
       el.classList.add('Collapsing');
 
-      const bag = resetBin(el);
+      const bag = newBin(el);
       nextFrame(() => {
         el.style.setProperty('--h', '0');
 
@@ -57,7 +57,7 @@ export const Collapse = {
   toggle(el: HTMLElement) {
     el.classList.contains('Collapsed') || // leaved
     el.style.getPropertyValue('--h') === '0' // leaving
-      ? Collapse.show(el)
-      : Collapse.hide(el);
+      ? collapse.show(el)
+      : collapse.hide(el);
   },
 };

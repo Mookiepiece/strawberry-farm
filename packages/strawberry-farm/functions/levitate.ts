@@ -1,35 +1,32 @@
+import { Bag } from './collection';
+import { on } from './on';
+
 type Direction = 'top' | 'right' | 'bottom' | 'left';
 type Alignment = 'start' | 'end';
+type Position = Direction | `${Direction}-${Alignment}`;
 
-const auto = (el: Element) => {
-  let { top, right, bottom, left } = el.getBoundingClientRect();
-
-  const io = new IntersectionObserver(() => {}, {
-    rootMargin: `${top}px ${right}px ${bottom}px ${left}px`,
-  });
-
-  io.observe(el);
+const isScrollableElement = (p: Element) => {
+  const { overflowY, overflowX } = getComputedStyle(p);
+  return /auto|scroll/.test(overflowY + overflowX);
 };
 
-const measure = (id: string, { top, left, width, height }: DOMRect) => {
-  let el = document.getElementById(id);
-  if (!el) {
-    el = document.createElement('div');
-    el.style.pointerEvents = 'none';
-    el.style.boxShadow =
-      'inset 0 0 0 1px ' +
-      {
-        a: '#fa8',
-        b: '#8af',
-      }[id[0]];
-    document.body.appendChild(el);
-  }
+const auto = (el: Element, cb: () => void) => {
+  const bag = Bag();
 
-  el.style.position = 'fixed';
-  el.style.top = top + 'px';
-  el.style.left = left + 'px';
-  el.style.width = width + 'px';
-  el.style.height = height + 'px';
+  for (
+    let p: Element | null = el;
+    p && p !== document.documentElement;
+    p = p.parentElement
+  )
+    if (isScrollableElement(p)) bag(on(p).scroll(() => cb())); // ancestorScroll
+
+  bag(on(window).resize(() => cb())); // windowResize (May replaced with ancestorResize)
+
+  // Note: Intersection Observer is hard to use...
+  // It didn't pass my test on "multiple scrollable parent", which makes bounding rect "overlays" the element.
+  // https://github.com/floating-ui/floating-ui/blob/2be011f877dd0c56d77b528d9f4422c83f6950b9/packages/dom/src/autoUpdate.ts#L141
+
+  return () => bag();
 };
 
 const place = (
@@ -52,45 +49,57 @@ const place = (
 
   const up = $up.getBoundingClientRect();
   const fan = $fan.getBoundingClientRect();
-  measure('aaa', up);
-  measure('bbb', fan);
 
   const map = availableSpace4[dir]([[up], viewport], offset);
 
   if (smaller([[fan], map])) {
-    const [rangeMin,rangeMax] = shiftRange([[up,fan],map],dir);
+    let x = 0,
+      y = map.top;
 
-    'start';
+    // ('start');
+    // left0 = up.left;
 
+    ('center');
+    x = Math.round((up.left + up.right) / 2 - fan.width / 2);
 
-    'center';
+    // ('end');
+    // left0 = up.right - fan.width;
 
-
-    'end';
-
-    $fan.style.setProperty('top', up.top + 'px');
-    $fan.style.setProperty('left', up.left + 'px');
+    x = clamp(map.left, x, map.right - fan.width);
+    console.log(map);
+    requestAnimationFrame(() => {
+      $fan.style.setProperty('--x', x + 'px');
+      $fan.style.setProperty('--y', y + 'px');
+      $fan.style.setProperty('transform', 'translate(var(--x), var(--y))');
+    });
+  } else {
+    requestAnimationFrame(() => {
+      $fan.style.setProperty('--x', 0 + 'px');
+      $fan.style.setProperty('--y', 0 + 'px');
+      $fan.style.setProperty('transform', 'translate(var(--x), var(--y))');
+    });
   }
 };
 
-const clamp = (min= 0,a: number,max = 100) => Math.min(max,Math.max(a,min));
+const clamp = (min = 0, a: number, max = 100) =>
+  Math.min(max, Math.max(a, min));
 
 const availableSpace4: Record<
   Direction,
   ([[up], map]: [[DOMRect], DOMRect], offset: number) => DOMRect
 > = {
   // prettier-ignore
-  top: ([[up], map], offset) => { const height = Math.max(up.top - map.top - offset, 0); const bottom = map.top + height; return ({ ...map, bottom, height }) },
+  top: ([[up], map], offset) => { const height = clamp(0, up.top - map.top - offset, map.height); const bottom = map.top + height; return ({ ...map, bottom, height }) },
   // prettier-ignore
-  right: ([[up], map], offset) => { const width = Math.max(map.right - up.right - offset, 0); const x = map.right - width; return ({ ...map, left: x, x, width }) },
+  right: ([[up], map], offset) => { const width = clamp(0, map.right - up.right - offset, map.width); const x = map.right - width; return ({ ...map, left: x, x, width }) },
   // prettier-ignore
-  bottom: ([[up], map], offset) => { const height = Math.max(map.bottom - up.bottom - offset, 0); const y = map.bottom - height; return ({ ...map, top: y , y, height }) },
+  bottom: ([[up], map], offset) => { const height = clamp(0, map.bottom - up.bottom - offset, map.height); const y = map.bottom - height; return ({ ...map, top: y , y, height }) },
   // prettier-ignore
-  left: ([[up], map], offset) => { const width = Math.max(up.left - map.left - offset, 0); const right = map.left + width; return ({ ...map, right, width }) },
+  left: ([[up], map], offset) => { const width = clamp(0, up.left - map.left - offset, map.width); const right = map.left + width; return ({ ...map, right, width }) },
 };
 
 // const visibleRect = ([[up], viewport]: [[DOMRect], DOMRect]) :DOMRect => {
-  
+
 //   const top = Math.max(, 0);
 
 //   return {
@@ -112,29 +121,10 @@ const shiftRange = (
   [[up, fan], map]: [[DOMRect, DOMRect], DOMRect],
   dir: Direction,
 ): [0, number] => {
-  const r = {
-    x: 0,
-    y: 0,
-    width: fan.width,
-    height: fan.height,
-    get left() {
-      return this.x;
-    },
-    get top() {
-      return this.y;
-    },
-    get right() {
-      return this.x + this.width;
-    },
-    get bottom() {
-      return this.y + this.height;
-    },
-  };
   if (dir === 'bottom' || dir === 'top') {
     return [0, map.width - fan.width];
   }
   return [0, map.height - fan.height];
-  // const shiftRange = [map.width - r.left, map.width - r.width]
 };
 
-export const levitate = { auto, measure, place };
+export const levitate = { auto, place };

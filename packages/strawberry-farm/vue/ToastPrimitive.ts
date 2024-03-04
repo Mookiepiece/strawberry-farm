@@ -1,4 +1,4 @@
-import { Bin, inc, nextFrame, on } from '../functions';
+import { Bag, inc, nextFrame, on } from '../functions';
 
 const uuid = inc('ToastItem');
 
@@ -51,14 +51,14 @@ export const toastPrimitive = ({
   div.setAttribute('role', 'log');
   div.append(message);
 
-  const onClose = Bin();
-  const bin = Bin();
+  const onClose = Bag();
+  const bag = Bag();
 
   const close = () => {
     onClose();
     div.classList.add('leaving');
     on(div).transitionend.once(() => {
-      bin();
+      bag();
       div.remove();
     });
     bar.sort();
@@ -97,5 +97,5 @@ export const toastPrimitive = ({
     bar.sort();
   });
 
-  return { div, pause, play, close, bin };
+  return { div, pause, play, close, bag };
 };

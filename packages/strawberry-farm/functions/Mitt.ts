@@ -7,7 +7,7 @@ export type Emitter<T> = {
   ) => void;
 };
 
-export const Mi = <T>(): Emitter<T> => {
+export const Mitt = <T>(): Emitter<T> => {
   const deps = {} as Emitter<T>['deps'];
 
   const on = ((k, f) => (

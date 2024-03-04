@@ -1,23 +1,36 @@
 <script setup lang="ts">
 import { levitate } from '@mookiepiece/strawberry-farm/functions';
-import { ref } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import { onMounted } from 'vue';
 
 const a = ref<HTMLElement>();
 const b = ref<HTMLElement>();
 
-onMounted(() => {
-  levitate.place(a.value!,b.value!);
+let bin = () => {};
 
-  // levitate.measure('aaaa', a.value!.getBoundingClientRect());
-  // levitate.measure('bbbb', b.value!.getBoundingClientRect());
+onMounted(() => {
+  bin = levitate.auto(a.value!, () => {
+    levitate.place(a.value!, b.value!);
+  });
 });
+
+onUnmounted(() => bin());
+
+const update = () => {
+  levitate.place(a.value!, b.value!);
+};
 </script>
 
 <template>
-  <div class="[A]">
-    <div ref="a" class="a"></div>
-    <div ref="b" class="b">lorem</div>
+  <div style="height: 300px; width: 100%; overflow: auto">
+    <div style="width: 200%; height: 500px">
+      <div ref="a" class="a"></div>
+      <div ref="b" class="b">lorem</div>
+    </div>
+
+    <div>
+      <button @click="update">Place</button>
+    </div>
   </div>
 </template>
 
@@ -31,7 +44,7 @@ onMounted(() => {
   position: fixed;
   top: 0;
   left: 0;
-  width: min-content;
   background-color: #fde;
+  padding: 10px;
 }
 </style>

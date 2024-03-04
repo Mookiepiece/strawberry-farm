@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
-import { Bin, on } from '../../../strawberry-farm/functions';
+import { Bag, on } from '../../../strawberry-farm/functions';
 import VPOutline from './VPOutline.vue';
 import VPSidebar from './VPSidebar.vue';
 
 // https://github.com/vuejs/vitepress/blob/20511006dba516ca8c06ed1dd3516547af668a0e/src/client/app/router.ts#L161
 // Scroll section into view when click hash link (Original code don't work because our doc don't allow body scrolling)
-let bin = Bin();
+let bag = Bag();
 onMounted(() => {
   // NOTE: Ctrl key opens the link in new tab.
-  bin(
+  bag(
     on(document.body).click.exact(e => {
       const anchor = e.target instanceof HTMLElement && e.target.closest('a');
 
@@ -32,12 +32,12 @@ onMounted(() => {
 
 onMounted(() => {
   document.body.classList.add('tone:rasp');
-  bin(() => {
+  bag(() => {
     document.body.classList.remove('tone:rasp');
   });
 });
 
-onUnmounted(() => bin());
+onUnmounted(() => bag());
 </script>
 
 <template>
@@ -55,7 +55,7 @@ onUnmounted(() => bin());
   grid-template: 1fr/250px 1fr 166px;
   height: 100vh;
   overflow: hidden;
-  transition: all 0.3s;
+  transition: grid-template 0.3s;
 }
 
 .VPContent {
