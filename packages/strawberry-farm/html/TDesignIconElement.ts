@@ -1,4 +1,4 @@
-          import { SFElement } from './SFElement';
+import { SFElement } from './SFElement';
 
 export class TDesignIconElement extends SFElement {
   static credits = `Most of icons are based on TDesign https://github.com/Tencent/tdesign-icons @0.2.2; Optimized with https://svgomg.net/`;
@@ -6,21 +6,14 @@ export class TDesignIconElement extends SFElement {
   constructor() {
     super();
     this.setup = () => {
-      const input: HTMLInputElement =
-        this.$('input') ?? document.createElement('input');
-      if (!this.contains(input)) {
-        this.appendChild(input);
+      const svg: HTMLElement = this.$('svg') ?? document.createElement('svg');
+      if (!this.contains(svg)) {
+        this.appendChild(svg);
       }
-
-      const off = on(input).input(ev => {
-        this.emit('Input', input.value.trim());
-      });
     };
   }
 
-  // step: 0.01 (numberic) step 0.1 (numberic)  step 1  (decimal)
-  // fraction=""
-  static observedAttributes = ['disabled', 'min', 'max', 'step', 'fraction'];
+  static observedAttributes = ['size'];
 
   static install() {
     if (!customElements.get('t-icon')) {

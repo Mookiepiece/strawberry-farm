@@ -1,4 +1,6 @@
 # Icon
 
-::: demo/Icon
+TDesign
+
+::: demo html/Icon
 :::
