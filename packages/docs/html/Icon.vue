@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import * as allIcons from '@mookiepiece/strawberry-farm/html/TDesignIconManifest.js';
+import * as allIcons from '@mookiepiece/strawberry-farm/html/TDesignManifest';
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import * as allIcons from '@mookiepiece/strawberry-farm/html/TDesignIconManifest
       <svg viewBox="0 0 24 24" fill="none">
         <path :d="v" />
       </svg>
-      <span class="f3 [--]">{{ k }}</span>
+      <span class="f3 [--]">T{{ k.substring(7) }}</span>
     </div>
   </div>
 </template>

@@ -27,7 +27,7 @@ for (let _name of svgNames) {
   const pathRe = /d="(.+?)"/g;
   const d = pathRe.exec(content)[1];
 
-  manifset.push('const ' + name.split('.svg')[0] + ' = "' + d + '" as const');
+  manifset.push('export const ' + name.split('.svg')[0] + ' = "' + d + '" as const');
 }
 
 fs.writeFile(
