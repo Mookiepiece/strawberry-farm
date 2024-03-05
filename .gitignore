@@ -3,3 +3,4 @@ node_modules
 packages/docs/.vitepress/cache
 packages/_docs
 packages/_strawberry-farm
+packages/strawberry-farm/html/svg

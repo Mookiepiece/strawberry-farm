@@ -13,14 +13,17 @@ const isScrollableElement = (p: Element) => {
 const auto = (el: Element, cb: () => void) => {
   const bag = Bag();
 
+  const ro = new ResizeObserver(cb);
+
   for (
     let p: Element | null = el;
     p && p !== document.documentElement;
     p = p.parentElement
-  )
-    if (isScrollableElement(p)) bag(on(p).scroll(() => cb())); // ancestorScroll
+  ) {
+    ro.observe(p); // ancestorResize @floating-ui/core@1.6
+    if (isScrollableElement(p)) bag(on(p).scroll(() => cb())); // ancestorScroll @floating-ui/core@1.6
+  }
 
-  bag(on(window).resize(() => cb())); // windowResize (May replaced with ancestorResize)
 
   // Note: Intersection Observer is hard to use...
   // It didn't pass my test on "multiple scrollable parent", which makes bounding rect "overlays" the element.
@@ -97,16 +100,6 @@ const availableSpace4: Record<
   // prettier-ignore
   left: ([[up], map], offset) => { const width = clamp(0, up.left - map.left - offset, map.width); const right = map.left + width; return ({ ...map, right, width }) },
 };
-
-// const visibleRect = ([[up], viewport]: [[DOMRect], DOMRect]) :DOMRect => {
-
-//   const top = Math.max(, 0);
-
-//   return {
-//     ...up,
-
-//   }
-// };
 
 const smaller = ([[fan], map]: [[DOMRect], DOMRect]) =>
   fan.width < map.width && fan.height < map.height;
