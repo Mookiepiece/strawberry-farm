@@ -5,6 +5,25 @@ type Direction = 'top' | 'right' | 'bottom' | 'left';
 type Alignment = 'start' | 'end';
 type Position = Direction | `${Direction}-${Alignment}`;
 
+type RuntimeConfigs = {
+  $up: Element;
+  $fan: HTMLElement;
+
+  dir: Direction;
+  offset: number;
+  alignment?: Alignment;
+
+  up: DOMRect;
+  fan: DOMRect;
+  map?: DOMRect;
+  viewport: DOMRect;
+
+  glitch?: boolean;
+
+  x?: number;
+  y?: number;
+};
+
 const isScrollableElement = (p: Element) => {
   const { overflowY, overflowX } = getComputedStyle(p);
   return /auto|scroll/.test(overflowY + overflowX);
@@ -23,7 +42,6 @@ const auto = (el: Element, cb: () => void) => {
     ro.observe(p); // ancestorResize @floating-ui/core@1.6
     if (isScrollableElement(p)) bag(on(p).scroll(() => cb())); // ancestorScroll @floating-ui/core@1.6
   }
-
 
   // Note: Intersection Observer is hard to use...
   // It didn't pass my test on "multiple scrollable parent", which makes bounding rect "overlays" the element.
@@ -89,20 +107,80 @@ const clamp = (min = 0, a: number, max = 100) =>
 
 const availableSpace4: Record<
   Direction,
-  ([[up], map]: [[DOMRect], DOMRect], offset: number) => DOMRect
+  ([[up], view]: [[DOMRect], DOMRect], offset: number) => DOMRect
 > = {
   // prettier-ignore
-  top: ([[up], map], offset) => { const height = clamp(0, up.top - map.top - offset, map.height); const bottom = map.top + height; return ({ ...map, bottom, height }) },
+  top: ([[up], viewport], offset) => { const height = clamp(0, up.top - viewport.top - offset, viewport.height); const bottom = viewport.top + height; return ({ ...viewport, bottom, height }) },
   // prettier-ignore
-  right: ([[up], map], offset) => { const width = clamp(0, map.right - up.right - offset, map.width); const x = map.right - width; return ({ ...map, left: x, x, width }) },
+  right: ([[up], viewport], offset) => { const width = clamp(0, viewport.right - up.right - offset, viewport.width); const x = viewport.right - width; return ({ ...viewport, left: x, x, width }) },
   // prettier-ignore
-  bottom: ([[up], map], offset) => { const height = clamp(0, map.bottom - up.bottom - offset, map.height); const y = map.bottom - height; return ({ ...map, top: y , y, height }) },
+  bottom: ([[up], viewport], offset) => { const height = clamp(0, viewport.bottom - up.bottom - offset, viewport.height); const y = viewport.bottom - height; return ({ ...viewport, top: y , y, height }) },
   // prettier-ignore
-  left: ([[up], map], offset) => { const width = clamp(0, up.left - map.left - offset, map.width); const right = map.left + width; return ({ ...map, right, width }) },
+  left: ([[up], viewport], offset) => { const width = clamp(0, up.left - viewport.left - offset, viewport.width); const right = viewport.left + width; return ({ ...viewport, right, width }) },
 };
 
 const smaller = ([[fan], map]: [[DOMRect], DOMRect]) =>
   fan.width < map.width && fan.height < map.height;
+
+const dontFlip = (config: RuntimeConfigs): RuntimeConfigs => {
+  let { up, fan, viewport, dir, offset, glitch } = config;
+  const map = availableSpace4[dir]([[up], viewport], offset);
+  return {
+    ...config,
+    map: availableSpace4[dir]([[up], viewport], offset),
+    glitch: glitch || smaller([[fan], map]),
+  };
+};
+
+const flip = (config: RuntimeConfigs): RuntimeConfigs => {
+  let { up, fan, viewport, dir, offset, glitch } = config;
+  let map = availableSpace4[dir]([[up], viewport], offset);
+  if (!smaller([[fan], map])) {
+    let _glitch = true;
+    for (const _dir of (
+      {
+        top: ['bottom', 'left', 'right'],
+        bottom: ['top', 'left', 'right'],
+        left: ['right', 'top', 'bottom'],
+        right: ['left', 'top', 'bottom'],
+      } as const
+    )[dir]) {
+      let _map = availableSpace4[_dir]([[up], viewport], offset);
+      if (!smaller([[fan], map])) {
+        map = _map;
+        dir = _dir;
+        _glitch = false;
+        break;
+      }
+    }
+    glitch ||= _glitch;
+  }
+  return { ...config, dir, map, glitch };
+};
+
+const alignment = (config: RuntimeConfigs): RuntimeConfigs => {
+  let { up, fan, viewport, dir, offset, alignment, glitch } = config;
+  let x = 0, y = map.top;
+
+  if(alignment=== 'start')  {
+    ('start');
+    x = up.left;
+  } else if( alignment === 'end') {
+    ('end');
+    x = up.right - fan.width;
+  } else {
+    ('center');
+    x = Math.round((up.left + up.right) / 2 - fan.width / 2);
+  }
+
+  x = clamp(map.left, x, map.right - fan.width);
+  console.log(map);
+  requestAnimationFrame(() => {
+    $fan.style.setProperty('--x', x + 'px');
+    $fan.style.setProperty('--y', y + 'px');
+    $fan.style.setProperty('transform', 'translate(var(--x), var(--y))');
+  });
+};
 
 const inside = ([[fan], map]: [[DOMRect], DOMRect]) =>
   fan.left > map.left &&
