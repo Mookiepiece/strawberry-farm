@@ -10,7 +10,7 @@
 <style scoped>
 .good {
   display: grid;
-  grid: auto-flow 150px / repeat(auto-fill, minmax(150px, 1fr));
+  grid: auto-flow 110px / repeat(auto-fill, minmax(150px, 1fr));
   gap: var(--3);
   justify-content: start;
 }

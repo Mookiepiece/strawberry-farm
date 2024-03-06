@@ -97,6 +97,8 @@ oβす ヌす ヌす */
   --t1: color-mix(in oklab, var(--vp-unicon-c), #0000 90%);
   --t2: color-mix(in oklab, var(--vp-unicon-c), #0000 60%);
 
+  color: var(--black-text1);
+
   background:
     /* radial-gradient(#fff1 0px, #fff1 2px, #fff0 6px, #fff0 10px) 5px 5px / 11px
       11px,

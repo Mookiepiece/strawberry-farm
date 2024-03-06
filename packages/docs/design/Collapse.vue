@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Collapse } from '@mookiepiece/strawberry-farm/vue/Collapse';
+import { collapse } from '@mookiepiece/strawberry-farm/vue/Collapse';
 import { ref } from 'vue';
 
 const a = ref<HTMLDivElement>();
@@ -7,7 +7,7 @@ const b = ref<HTMLDivElement>();
 </script>
 
 <template>
-  <button @click="a && Collapse.toggle(a)">toggle</button>
+  <button @click="a && collapse.toggle(a)">toggle</button>
   <div ref="a" class="(///)">
     <div class="p-4" style="border: 10px dotted var(--mat-air-2)">
       Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquid magni,
@@ -16,7 +16,7 @@ const b = ref<HTMLDivElement>();
     </div>
   </div>
   <div></div>
-  <button @click="b && Collapse.toggle(b)">toggle</button>
+  <button @click="b && collapse.toggle(b)">toggle</button>
   <div ref="b" class="(///) Collapsed">
     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquid magni,
     veniam sapiente aperiam dolorum vero eos hic repellat quasi deserunt optio

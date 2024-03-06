@@ -3,7 +3,6 @@ import { on } from './on';
 
 type Direction = 'top' | 'right' | 'bottom' | 'left';
 type Alignment = 'start' | 'end';
-type Position = Direction | `${Direction}-${Alignment}`;
 
 type RuntimeConfigs = {
   $up: Element;
@@ -33,6 +32,7 @@ const auto = (el: Element, cb: () => void) => {
   const bag = Bag();
 
   const ro = new ResizeObserver(cb);
+  bag(() => ro.disconnect());
 
   for (
     let p: Element | null = el;
@@ -53,8 +53,19 @@ const auto = (el: Element, cb: () => void) => {
 const place = (
   $up: Element,
   $fan: HTMLElement,
-  dir: Direction = 'bottom',
-  offset = 0,
+  {
+    dir = 'bottom',
+    alignment,
+    offset = 0,
+  }: {
+    dir?: Direction;
+    offset?: number;
+    alignment?: Alignment;
+    viewport?: DOMRect;
+  } = {
+    dir: 'bottom',
+    offset: 0,
+  },
 ) => {
   const viewport: DOMRect = {
     x: 0,
@@ -71,35 +82,30 @@ const place = (
   const up = $up.getBoundingClientRect();
   const fan = $fan.getBoundingClientRect();
 
-  const map = availableSpace4[dir]([[up], viewport], offset);
+  let config: RuntimeConfigs = {
+    $up,
+    $fan,
+    dir,
+    alignment,
+    up,
+    fan,
+    offset,
+    viewport,
+  };
 
-  if (smaller([[fan], map])) {
-    let x = 0,
-      y = map.top;
+  config = flip(config);
+  config = align(config);
 
-    // ('start');
-    // left0 = up.left;
+  if (!config.glitch) {
+    // requestAnimationFrame(() => {
+    $fan.style.setProperty('--x', config.x + 'px');
+    $fan.style.setProperty('--y', config.y + 'px');
+    $fan.style.setProperty('transform', 'translate(var(--x), var(--y))');
+    // });
 
-    ('center');
-    x = Math.round((up.left + up.right) / 2 - fan.width / 2);
-
-    // ('end');
-    // left0 = up.right - fan.width;
-
-    x = clamp(map.left, x, map.right - fan.width);
-    console.log(map);
-    requestAnimationFrame(() => {
-      $fan.style.setProperty('--x', x + 'px');
-      $fan.style.setProperty('--y', y + 'px');
-      $fan.style.setProperty('transform', 'translate(var(--x), var(--y))');
-    });
-  } else {
-    requestAnimationFrame(() => {
-      $fan.style.setProperty('--x', 0 + 'px');
-      $fan.style.setProperty('--y', 0 + 'px');
-      $fan.style.setProperty('transform', 'translate(var(--x), var(--y))');
-    });
+    return config.glitch;
   }
+  return config.glitch;
 };
 
 const clamp = (min = 0, a: number, max = 100) =>
@@ -158,28 +164,38 @@ const flip = (config: RuntimeConfigs): RuntimeConfigs => {
   return { ...config, dir, map, glitch };
 };
 
-const alignment = (config: RuntimeConfigs): RuntimeConfigs => {
-  let { up, fan, viewport, dir, offset, alignment, glitch } = config;
-  let x = 0, y = map.top;
+const align = (config: RuntimeConfigs): RuntimeConfigs => {
+  let { up, fan, dir, alignment } = config;
+  let map = config.map!;
 
-  if(alignment=== 'start')  {
-    ('start');
-    x = up.left;
-  } else if( alignment === 'end') {
-    ('end');
-    x = up.right - fan.width;
+  let x = 0,
+    y = 0;
+
+  if (dir === 'top' || dir === 'bottom') {
+    y = dir === 'top' ? map.bottom - fan.height : map.top;
+
+    if (alignment === 'start') {
+      x = up.left;
+    } else if (alignment === 'end') {
+      x = up.right - fan.width;
+    } else {
+      x = Math.round((up.left + up.right) / 2 - fan.width / 2);
+    }
+    x = clamp(map.left, x, map.right - fan.width);
   } else {
-    ('center');
-    x = Math.round((up.left + up.right) / 2 - fan.width / 2);
+    x = dir === 'left' ? map.right - fan.width : map.left;
+
+    if (alignment === 'start') {
+      y = up.top;
+    } else if (alignment === 'end') {
+      y = up.bottom - fan.height;
+    } else {
+      y = Math.round((up.top + up.bottom) / 2 - fan.height / 2);
+    }
+    y = clamp(map.top, y, map.bottom - fan.height);
   }
 
-  x = clamp(map.left, x, map.right - fan.width);
-  console.log(map);
-  requestAnimationFrame(() => {
-    $fan.style.setProperty('--x', x + 'px');
-    $fan.style.setProperty('--y', y + 'px');
-    $fan.style.setProperty('transform', 'translate(var(--x), var(--y))');
-  });
+  return { ...config, x, y };
 };
 
 const inside = ([[fan], map]: [[DOMRect], DOMRect]) =>

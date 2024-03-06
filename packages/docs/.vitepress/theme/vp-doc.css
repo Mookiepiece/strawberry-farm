@@ -1,5 +1,12 @@
 /* Based on Vitepress default theme */
 
+:root {
+  background-color: var(--mat-solid-0);
+}
+.dark {
+  background-color: var(--mat-solid-0);
+}
+
 /**
  * Headings
  * -------------------------------------------------------------------------- */
@@ -231,14 +238,7 @@
 @media (min-width: 640px) {
   .vp-doc div[class*='language-'],
   .vp-block {
-    border-radius: 8px;
     margin: 16px 0;
-  }
-}
-
-@media (max-width: 639px) {
-  .vp-doc li div[class*='language-'] {
-    border-radius: 8px 0 0 8px;
   }
 }
 
