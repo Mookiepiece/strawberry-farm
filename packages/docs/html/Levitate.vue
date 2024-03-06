@@ -26,18 +26,29 @@ const changeDir = (dir: 'top' | 'left' | 'right' | 'bottom') => {
 </script>
 
 <template>
-  <div style="height: 300px; width: 100%; overflow: auto">
-    <div>
+  <div style="position: relative">
+    <div style="position: relative; height: 300px; width: 100%; overflow: auto">
+      <div style="width: 500%; height: 1000px">
+        <div ref="a" class="a"></div>
+        <div ref="b" class="b">lorem</div>
+      </div>
+    </div>
+    <div
+      style="
+        position: absolute;
+        top: 100%;
+        left: 100%;
+        transform: translate(-100%, -100%);
+        width: max-content;
+        max-width: 100%;
+      "
+    >
       <button @click="update">Place</button>
       <br />
       <button @click="changeDir('top')">Top</button>
       <button @click="changeDir('right')">Right</button>
       <button @click="changeDir('bottom')">Bottom</button>
       <button @click="changeDir('left')">Left</button>
-    </div>
-    <div style="width: 200%; height: 500px">
-      <div ref="a" class="a"></div>
-      <div ref="b" class="b">lorem</div>
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VModal from '@mookiepiece/strawberry-farm/vue/Vmodal.vue';
+import VModal from '@mookiepiece/strawberry-farm/vue/VModal.vue';
 import { onUnmounted } from 'vue';
 import { ref } from 'vue';
 
