@@ -5,6 +5,7 @@
       grid-template: 100px 100px 100px / 1fr 1fr 1fr;
       gap: 20px;
     "
+    class="f2i"
   >
     <div></div>
     <div class="(///) [Y]">

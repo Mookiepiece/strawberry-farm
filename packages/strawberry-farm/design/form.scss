@@ -19,7 +19,7 @@
     border: 0;
     outline: 0;
     margin: 0;
-    padding: 0 9px;
+    padding-inline: 9px;
 
     &::placeholder {
       color: var(--text3);
@@ -27,6 +27,7 @@
   }
 
   > textarea {
+    padding-block: 9px;
     resize: vertical;
   }
 

@@ -23,7 +23,7 @@ const theme = shallowRef<ThemeConfig>({
       text: 'Intro',
       items: [
         { text: 'Home', link: '/', exact: true },
-        { text: 'Guide', link: '/guide' },
+        { text: 'Guide', link: '/Guide' },
       ],
     },
     {
