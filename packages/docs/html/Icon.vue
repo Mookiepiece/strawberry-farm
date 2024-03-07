@@ -28,7 +28,7 @@ svg {
   width: 2em;
   height: 2em;
   fill: none;
-  color: #225;
+  color: var(---fore);
   path {
     fill: currentColor;
   }
