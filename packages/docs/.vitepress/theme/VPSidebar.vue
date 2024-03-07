@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { nextTick } from 'vue';
+import { computed, nextTick } from 'vue';
 import { MemoryLightbulb as path } from '@pictogrammers/memory/src/icons';
 import VPSidebarItem from './VPSidebarItem.vue';
 import { useData } from './composables';
@@ -43,6 +43,9 @@ const toggleTheme = async (e: MouseEvent) => {
 };
 
 const sidebarGroups = theme.value.sidebar;
+
+// Volar bug
+const _isDark = computed(() => isDark.value);
 </script>
 
 <template>
@@ -51,8 +54,8 @@ const sidebarGroups = theme.value.sidebar;
       <div class="QuickAccess">
         <button
           id="VPAppearanceToggle"
-          class="mat:ruby"
-          :aria-pressed="isDark"
+          class="mat:dust"
+          :aria-pressed="_isDark"
           @click="toggleTheme"
         >
           <svg viewBox="0 0 22 22">
@@ -86,7 +89,7 @@ const sidebarGroups = theme.value.sidebar;
 }
 
 /* No Shrink when collapsing in small screen */
-.VPSidebarBody{
+.VPSidebarBody {
   width: 300px;
 }
 
@@ -110,12 +113,13 @@ const sidebarGroups = theme.value.sidebar;
   padding: 10px 30px;
   button {
     padding: 10px 20px;
-    border-radius: 10px;
+    border-radius: 5px;
   }
 }
 
 #VPAppearanceToggle {
-  border: 2px solid var(--DVD);
+  border: 0;
+  /* border: 2px solid currentColor; */
 
   svg {
     display: block;

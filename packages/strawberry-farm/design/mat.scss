@@ -1,8 +1,8 @@
 @mixin ActiveQuery() {
   @at-root &:where(
-        [aria-selected=true],
-        [aria-checked=true],
-        [aria-pressed=true],
+        [aria-selected='true'],
+        [aria-checked='true'],
+        [aria-pressed='true'],
         :is(details[open] > summary),
         .active
       ) {
@@ -11,7 +11,7 @@
 }
 
 @mixin DisabledQuery() {
-  @at-root &:where(:disabled, [aria-disabled=true], .disabled) {
+  @at-root &:where(:disabled, [aria-disabled='true'], .disabled) {
     @content;
   }
 }
@@ -99,13 +99,81 @@
   }
 }
 
+.mat\:dust {
+  border: 0;
+  background: var(--mat-air-1);
+
+  &:hover {
+    background: var(--mat-air-2);
+  }
+  &:active {
+    background: var(--mat-air-3);
+  }
+
+  @include ActiveQuery() {
+    background: var(---foam);
+
+    &:hover {
+      background: color-mix(in oklab, var(---foam), var(---flame) 12%);
+    }
+    &:active {
+      background: color-mix(in oklab, var(---foam), var(---flame) 24%);
+    }
+  }
+}
+
+.mat\:dust {
+  color: var(--text1);
+  @include ActiveQuery() {
+    color: var(---fore);
+  }
+}
+.mat\:dusty {
+  border: 0;
+  background: var(--mat-air-1);
+
+  &:hover {
+    background: var(--mat-air-2);
+  }
+  &:active {
+    background: var(--mat-air-3);
+  }
+
+  @include ActiveQuery() {
+    background: var(---foam);
+
+    &:hover {
+      background: color-mix(in oklab, var(---foam), var(---flame) 12%);
+    }
+    &:active {
+      background: color-mix(in oklab, var(---foam), var(---flame) 24%);
+    }
+  }
+}
+
 .mat\:air,
 .mat\:airy,
 .mat\:air-crown,
 .mat\:solid,
 .mat\:solidity,
 .mat\:solid-crown,
-.mat\:ruby {
+.mat\:ruby,
+.mat\:dust,
+.mat\:dusty {
+  @include DisabledQuery() {
+    color: var(--text3);
+  }
+}
+
+.mat\:air,
+.mat\:airy,
+.mat\:air-crown,
+.mat\:solid,
+.mat\:solidity,
+.mat\:solid-crown,
+.mat\:ruby,
+.mat\:dust,
+.mat\:dusty {
   outline: 0;
   text-decoration: none;
 
@@ -118,17 +186,5 @@
     outline: 2px solid var(---main);
     outline-offset: -1px;
     --mat-shadow-outline: 0 0 0 4px var(---foam);
-  }
-}
-
-.mat\:air,
-.mat\:airy,
-.mat\:air-crown,
-.mat\:solid,
-.mat\:solidity,
-.mat\:solid-crown,
-.mat\:ruby {
-  @include DisabledQuery() {
-    color: var(--text3);
   }
 }

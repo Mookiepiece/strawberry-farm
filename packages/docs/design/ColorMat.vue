@@ -9,6 +9,8 @@ const mats = [
   'mat:solidity',
   'mat:solid-crown',
   'mat:ruby',
+  'mat:dust',
+  'mat:dusty',
 ];
 
 const actives = ref(
