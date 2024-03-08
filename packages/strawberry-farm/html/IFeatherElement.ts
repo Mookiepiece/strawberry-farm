@@ -19,7 +19,7 @@ const f = {
   'stroke-linejoin': 'round',
 };
 
-// generated from feather sprite, using regexp...
+// generated from feather-sprite.svg, using regexp...
 const names = {
   "activity": ()=>svg(f, 
     polyline({points:"22 12 18 12 15 21 9 3 6 12 2 12"}),
@@ -1388,35 +1388,27 @@ const names = {
  * @license MIT SVG Icons credits: The MIT License (MIT) Copyright (c) 2013-2023 Cole Bemis https://github.com/feathericons/feather
  */
 export class IFeatherElement extends SFElement {
-  currentIconName: string = '';
+  static observedAttributes = ['i'];
 
   constructor() {
     super();
-    this.setup = () => {
-      this.init();
+    this.setup = ({ observe }) => {
+      this.draw();
+
+      observe('i', () => {
+        this.draw();
+      });
     };
   }
 
-  init() {
-    const iconName = this.getAttribute('i');
-    const constructorFn = (IFeatherElement.names as any)[
-      iconName as any
-    ] as () => SVGElement;
-    if (!constructorFn) {
-      this.childNodes.forEach(c => c.remove());
-      this.currentIconName = '';
-    } else if (iconName && this.currentIconName !== iconName && constructorFn) {
-      this.childNodes.forEach(c => c.remove());
-      const svg = constructorFn();
-      this.append(svg);
-      this.currentIconName = iconName;
+  draw() {
+    const i = this.getAttribute('i') || '';
+    const h = IFeatherElement.names[i];
+    if (!h) {
+      this.replaceChildren();
+    } else {
+      this.replaceChildren(h());
     }
-  }
-
-  static observedAttributes = ['i'];
-
-  attributeChangedCallback(name: string): void {
-    if (name === 'i') this.init();
   }
 
   static install() {
@@ -1425,5 +1417,5 @@ export class IFeatherElement extends SFElement {
     }
   }
 
-  static names = names;
+  static names: Record<string, (() => SVGElement) | undefined> = names;
 }

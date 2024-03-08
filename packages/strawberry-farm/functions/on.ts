@@ -57,7 +57,7 @@ export type ON3<N extends keyof SFEvents, E extends SFEvents[N]> = ((
  * Inspired by vue vOn
  */
 export const on = <T extends EventTarget>(el: T) => {
-  let _modifiers: string[] = [];
+  const _modifiers: string[] = [];
 
   const polaris = new Proxy(() => {}, {
     get(_, p) {

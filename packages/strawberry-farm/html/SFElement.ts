@@ -1,4 +1,4 @@
-import { SFEventMap } from '../functions';
+import { Bag, Emitter, Mitt, SFEventMap } from '../functions';
 
 interface SFEmit {
   <T extends keyof SFEventMap>(
@@ -26,23 +26,30 @@ type AdvancedSetup = (ctx: {
   $: AdvancedQuerySelector;
   $$: AdvancedQuerySelectorAll;
   emit: SFEmit & { bubbles: SFEmit };
-  updated: AdvancedAttributeChangedCallback;
+  observe: AdvancedAttributeChangedCallback;
 }) => (() => void) | void;
+
 type AdvancedAttributeChangedCallback = (
   name: string,
-  oldValue: string | null,
-  newValue: string | null,
-) => void;
+  listener: (newValue: string | null, oldValue: string | null) => void,
+) => () => void;
 
 export class SFElement extends HTMLElement {
   emit: SFEmit & { bubbles: SFEmit };
   $: AdvancedQuerySelector;
   $$: AdvancedQuerySelectorAll;
   setup: AdvancedSetup;
-  updated: AdvancedAttributeChangedCallback;
+  /**
+   * NOTE: 在组件每次脱离 DOM 后会全部取消监听，这个设计非常主观
+   *
+   * 之后为了和 on 统一可能支持 getter Proxy
+   */
+  observe: AdvancedAttributeChangedCallback;
+  _attr: Emitter<{
+    [k in string]: [string | null, string | null];
+  }>;
 
-  _cleanup?: () => void;
-  // _onUpdated?: () => void;
+  bag: ReturnType<typeof Bag>;
 
   constructor() {
     super();
@@ -68,22 +75,35 @@ export class SFElement extends HTMLElement {
       ...self.querySelectorAll<T>(q),
     ];
     this.setup = () => {};
-    this.updated = () => {};
+    this.bag = Bag();
+    this._attr = Mitt();
+    this.observe = (
+      name: string,
+      listener: (newValue: string | null, oldValue: string | null) => void,
+    ) => {
+      const off = this._attr.on(name, ([newValue, oldValue]) =>
+        listener(newValue, oldValue),
+      );
+      this.bag(off);
+      return off;
+    };
   }
 
   connectedCallback() {
+    const bag = Bag();
+
     const cleanup = this.setup({
       self: this,
       $: this.$,
       $$: this.$$,
       emit: this.emit,
-      updated: this.updated,
+      observe: this.observe,
     });
-    cleanup && (this._cleanup = cleanup);
+    cleanup && bag(cleanup);
   }
 
   disconnectedCallback() {
-    this._cleanup?.();
+    this.bag();
   }
 
   static observedAttributes?: string[];
@@ -92,8 +112,6 @@ export class SFElement extends HTMLElement {
     oldValue: string | null,
     newValue: string | null,
   ) {
-    // TODO: MITT or on pattern ???
-    //  onUpdated.i(()=>{})
-    this.updated(name, oldValue, newValue);
+    this._attr.emit(name, [newValue, oldValue]);
   }
 }
