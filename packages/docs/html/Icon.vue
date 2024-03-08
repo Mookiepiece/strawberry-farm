@@ -1,8 +1,21 @@
 <script setup lang="ts">
 import * as allIcons from '@mookiepiece/strawberry-farm/html/TDesignManifest';
+import {IFeatherElement} from '@mookiepiece/strawberry-farm/html/IFeatherElement';
+
+IFeatherElement.install();
+
+const z = Object.keys(IFeatherElement.names);
+
 </script>
 
 <template>
+  <div class="good">
+    <div class="good-cell [A] [CC] mat:air p-6" v-for="k in z">
+     <i-feather style="font-size: 100px;" :i="k"></i-feather>
+      <span class="f3 [--]">{{ k }}</span>
+    </div>
+  </div>
+
   <div class="good">
     <div class="good-cell [A] [CC] mat:air p-6" v-for="(v, k) of allIcons">
       <svg viewBox="0 0 24 24" fill="none">

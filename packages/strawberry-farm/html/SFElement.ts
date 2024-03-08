@@ -15,13 +15,34 @@ interface SFEmit {
   (event: Event): void;
 }
 
+type AdvancedQuerySelector = <T extends Element = HTMLElement>(
+  query: string,
+) => T | null;
+type AdvancedQuerySelectorAll = <T extends Element = HTMLElement>(
+  query: string,
+) => T[];
+type AdvancedSetup = (ctx: {
+  self: SFElement;
+  $: AdvancedQuerySelector;
+  $$: AdvancedQuerySelectorAll;
+  emit: SFEmit & { bubbles: SFEmit };
+  updated: AdvancedAttributeChangedCallback;
+}) => (() => void) | void;
+type AdvancedAttributeChangedCallback = (
+  name: string,
+  oldValue: string | null,
+  newValue: string | null,
+) => void;
+
 export class SFElement extends HTMLElement {
   emit: SFEmit & { bubbles: SFEmit };
-  $: <T extends Element = HTMLElement>(query: string) => T | null;
-  $$: <T extends Element = HTMLElement>(query: string) => T[];
-  setup: (self: SFElement) => (() => void) | void;
+  $: AdvancedQuerySelector;
+  $$: AdvancedQuerySelectorAll;
+  setup: AdvancedSetup;
+  updated: AdvancedAttributeChangedCallback;
 
   _cleanup?: () => void;
+  // _onUpdated?: () => void;
 
   constructor() {
     super();
@@ -47,10 +68,17 @@ export class SFElement extends HTMLElement {
       ...self.querySelectorAll<T>(q),
     ];
     this.setup = () => {};
+    this.updated = () => {};
   }
 
   connectedCallback() {
-    const cleanup = this.setup(this);
+    const cleanup = this.setup({
+      self: this,
+      $: this.$,
+      $$: this.$$,
+      emit: this.emit,
+      updated: this.updated,
+    });
     cleanup && (this._cleanup = cleanup);
   }
 
@@ -63,5 +91,9 @@ export class SFElement extends HTMLElement {
     name: string,
     oldValue: string | null,
     newValue: string | null,
-  ) {}
+  ) {
+    // TODO: MITT or on pattern ???
+    //  onUpdated.i(()=>{})
+    this.updated(name, oldValue, newValue);
+  }
 }
