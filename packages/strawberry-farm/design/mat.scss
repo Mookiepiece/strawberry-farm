@@ -50,7 +50,7 @@
 .mat\:solid-crown {
   color: var(--text1);
   @include ActiveQuery() {
-    color: var(---fore);
+    color: var(---ink);
   }
 }
 
@@ -125,7 +125,7 @@
 .mat\:dust {
   color: var(--text1);
   @include ActiveQuery() {
-    color: var(---fore);
+    color: var(---ink);
   }
 }
 .mat\:dusty {

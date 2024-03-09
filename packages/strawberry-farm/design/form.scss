@@ -1,7 +1,8 @@
-.Input {
+.sf-input {
   position: relative;
   height: var(--Input-h);
   display: flex;
+  align-items: center;
   font-size: var(--Input-fs);
   color: var(--text1);
   line-height: 1.6;
@@ -9,7 +10,14 @@
   box-shadow: 0 0 0 0 var(---foam);
   transition: box-shadow 0.2s;
 
-  > input, > textarea {
+  // TODO: optimize with position absolute + poiniter events none?
+  > .sf-input-icon {
+    font-size: calc(var(--Input-h) - 20px);
+    padding: 10px 0 10px 10px;
+  }
+
+  > input,
+  > textarea {
     width: 100%;
     height: 100%;
     color: inherit;
@@ -46,13 +54,12 @@
     z-index: 1;
   }
 
-
-  &.sf-textarea {
+  &.Textarea {
     height: unset;
   }
 }
 
-.InputGroup {
+.sf-group {
   display: flex;
   height: var(--Input-h);
   font-size: var(--Input-fs);
@@ -75,20 +82,18 @@
   }
 }
 
-:root {
-  --Input-h: 40px;
-  --Input-fs: var(--f1);
-}
-
-:where(.InputGroup, .Input):where(.\[s\]) {
+:where(.sf-group, .sf-input:not(.sf-group *)):where(.size-s) {
   --Input-h: 30px;
+  --Input-fs: var(--f3);
+}
+:where(.sf-group, .sf-input:not(.sf-group *)):where(
+    :not(.size-s, .size-l),
+    .size-m
+  ) {
+  --Input-h: 40px;
   --Input-fs: var(--f2);
 }
-:where(.InputGroup, .Input):where(.\[m\]) {
-  --Input-h: 40px;
-  --Input-fs: var(--f1);
-}
-:where(.InputGroup, .Input):where(.\[l\]) {
+:where(.sf-group, .sf-input:not(.sf-group *)):where(.size-l) {
   --Input-h: 50px;
-  --Input-fs: var(--h3);
+  --Input-fs: var(--f1);
 }

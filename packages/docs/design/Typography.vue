@@ -1,16 +1,31 @@
+<script setup>
+const classes = [
+  ['h1-1', 'h1', 'h1-3'],
+  ['h2-1', 'h2', 'h2-3'],
+  ['h3-1', 'h3', 'h3-3'],
+  ['f1-1', 'f1', 'f1-3'],
+  ['f2-1', 'f2', 'f2-3'],
+  ['f3-1', 'f3', 'f3-3'],
+].flat();
+</script>
+
 <template>
-  <div class="[A]">
-    <div class="t" v-for="i of 3" :class="[`h${i}`]">
-      Head {{ i }} <span class="(B)">Head</span>
+  <div class="good">
+    <div class="t (///)" v-for="i of classes" :class="[i]">
+      <span class="fw6">{{ i }}</span> IS
+      <span class="fw3">AWESOME</span>
     </div>
-    <div class="t" v-for="i of 3" :class="[`f${i}`]">
-      Text {{ i }} <span class="(B)">Text</span>
-    </div>
-    <div class="t" v-for="i of 3" :class="[`f${i}i`]">Text inline {{ i }}</div>
   </div>
 </template>
 <style scoped>
+.good {
+  display: grid;
+  grid: auto-flow 1fr 1fr 1fr/ 1fr 1fr 1fr;
+  place-items: start start;
+  gap: 10px;
+}
+
 .t {
-  box-shadow: 0 1px 0 0 var(--DVD);
+  box-shadow: 0 0 0 1px var(--DVD);
 }
 </style>

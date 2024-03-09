@@ -1,21 +1,37 @@
 @each $i in (1, 2, 3) {
-  :where(.h#{$i}) {
+  :where(.h#{$i}, .h#{$i}-1, .h#{$i}-2, .h#{$i}-3) {
     font-size: var(--h#{$i});
+    color: var(--text1);
+  }
+
+  :where(.h#{$i}-1) {
+    line-height: 2;
+  }
+
+  :where(.h#{$i}, .h#{$i}-2) {
     line-height: 1.6;
+  }
+
+  :where(.h#{$i}-3) {
+    line-height: 1.2;
   }
 }
 
 @each $i in (1, 2, 3) {
-  :where(.f#{$i}, .f#{$i}i) {
+  :where(.f#{$i}, .f#{$i}-1, .f#{$i}-2, .f#{$i}-3) {
     font-size: var(--f#{$i});
     color: var(--text1);
   }
 
-  :where(.f#{$i}) {
+  :where(.f#{$i}-1) {
+    line-height: 2;
+  }
+
+  :where(.f#{$i}, .f#{$i}-2) {
     line-height: 1.6;
   }
 
-  :where(.f#{$i}i) {
+  :where(.f#{$i}-3) {
     line-height: 1.2;
   }
 }

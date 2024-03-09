@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, watch, watchEffect } from 'vue';
+import { VNode, ref, useSlots, watch, watchEffect } from 'vue';
+import { IFeatherElement } from '../html/IFeatherElement';
 
 const model = defineModel<string>({
   required: true,
@@ -10,9 +11,14 @@ const props = withDefaults(
     placeholder?: string;
     textarea?: boolean;
     trim?: boolean;
+    prefix?: keyof typeof IFeatherElement.names;
   }>(),
   { trim: true },
 );
+
+const slots = defineSlots<{
+  suffix: VNode;
+}>();
 
 const { placeholder, textarea, trim } = props;
 
@@ -47,8 +53,8 @@ const handleBlur = () => {
 </script>
 
 <template>
-  <div class="Input" :class="textarea && 'sf-textarea'">
-    <slot name="prefix"></slot>
+  <div class="sf-input" :class="textarea && 'Textarea'">
+    <i-feather v-if="props.prefix" :i="props.prefix" class="sf-input-icon" />
     <textarea
       v-if="textarea"
       :value="trim ? innerModel : model"

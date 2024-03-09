@@ -41,7 +41,7 @@ svg {
   width: 2em;
   height: 2em;
   fill: none;
-  color: var(---fore);
+  color: var(---ink);
   path {
     fill: currentColor;
   }

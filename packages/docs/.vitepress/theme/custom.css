@@ -169,7 +169,7 @@ oβす ヌす ヌす */
   z-index: 10086;
   position: relative;
 
-  color: var(--mat-iris-fore);
+  color: var(--tone-iris-ink);
   font: bold 15px var(--vp-font-family-mono);
   --back: #fff;
   filter: drop-shadow(var(--back) 1px 1px) drop-shadow(var(--back) -1px -1px)

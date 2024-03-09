@@ -50,7 +50,7 @@ switch (dirname) {
       <component v-if="module" :is="module"></component>
     </div>
     <details>
-      <summary class="mat:air p-10 f2 (B) [B] [CS]">
+      <summary class="mat:air p-10 f2 fw6 [B] [CS]">
         <svg viewBox="0 0 22 22">
           <path :d="MemoryNotebook" />
         </svg>

@@ -72,11 +72,11 @@
 
   a:not(.undoc *) {
     font-weight: 500;
-    color: var(--tone-rasp-fore);
+    color: var(--tone-rasp-ink);
     text-decoration: underline;
     text-underline-offset: 2px;
     &:hover {
-      color: color-mix(in oklab, var(--tone-rasp-fore), #000 15%);
+      color: color-mix(in oklab, var(--tone-rasp-ink), #000 15%);
     }
   }
 

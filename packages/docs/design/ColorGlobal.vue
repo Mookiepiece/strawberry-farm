@@ -36,7 +36,7 @@ const colors = ref([
 .tony {
   background: linear-gradient(
       70deg,
-      var(---fore) 40px,
+      var(---ink) 40px,
       var(---main) 41px,
       var(---main) 80px,
       var(---foam) 81px,
@@ -45,7 +45,7 @@ const colors = ref([
     ),
     linear-gradient(
       10deg,
-      var(---fore) 30px,
+      var(---ink) 30px,
       var(---main) 32px,
       var(---main) 50px,
       var(---foam) 52px,
@@ -54,7 +54,7 @@ const colors = ref([
     );
 
   border-radius: var(--5);
-  color: var(---fore);
+  color: var(---ink);
   box-shadow: inset 0 0 0 var(--3);
 
   padding: var(--4);

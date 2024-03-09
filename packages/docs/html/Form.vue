@@ -6,27 +6,69 @@ const model = ref('');
 </script>
 
 <template>
-  <div class="[A]" style="gap: 10px">
-    <VInput v-model="model" placeholder="Please Input" class="[s]" />
-    <VInput v-model="model" placeholder="Please Input" />
-    <VInput v-model="model" placeholder="Please Input" class="[l]" />
+  <div class="[A]" style="gap: 20px">
+    <VInput
+      v-model="model"
+      placeholder="東方神霊廟 〜 Ten Desires."
+      class="size-s"
+    />
+    <VInput v-model="model" placeholder="東方神霊廟 〜 Ten Desires." />
+    <VInput
+      v-model="model"
+      placeholder="東方神霊廟 〜 Ten Desires."
+      class="size-l"
+    />
 
-    <VInput v-model="model" textarea placeholder="Please Input" />
+    <VInput
+      v-model="model"
+      textarea
+      class="size-s"
+      placeholder="東方神霊廟 〜 Ten Desires."
+    />
+    <VInput v-model="model" textarea placeholder="東方神霊廟 〜 Ten Desires." />
+    <VInput
+      v-model="model"
+      textarea
+      class="size-l"
+      placeholder="東方神霊廟 〜 Ten Desires."
+    />
 
-
-    <div class="InputGroup [s]">
+    <VInput
+      v-model="model"
+      class="size-s"
+      placeholder="東方神霊廟 〜 Ten Desires."
+      prefix="airplay"
+    >
+      <template #prefix><i-feather i="x" /></template>
+    </VInput>
+    <VInput
+      v-model="model"
+      placeholder="東方神霊廟 〜 Ten Desires."
+      prefix="airplay"
+    >
+      <template #prefix><i-feather i="x" /></template>
+    </VInput>
+    <VInput
+      v-model="model"
+      class="size-l"
+      placeholder="東方神霊廟 〜 Ten Desires."
+      prefix="airplay"
+    >
+      <template #prefix><i-feather i="x" /></template>
+    </VInput>
+    <div class="sf-group size-s">
       <ins>https://</ins>
-      <VInput v-model="model" placeholder="Please Input" />
+      <VInput v-model="model" placeholder="東方神霊廟 〜 Ten Desires." />
       <ins>.com</ins>
     </div>
-    <div class="InputGroup">
+    <div class="sf-group">
       <ins>https://</ins>
-      <VInput v-model="model" placeholder="Please Input" />
+      <VInput v-model="model" placeholder="東方神霊廟 〜 Ten Desires." />
       <ins>.com</ins>
     </div>
-    <div class="InputGroup [l]">
+    <div class="sf-group size-l">
       <ins>https://</ins>
-      <VInput v-model="model" placeholder="Please Input" />
+      <VInput v-model="model" placeholder="東方神霊廟 〜 Ten Desires." />
       <ins>.com</ins>
     </div>
   </div>

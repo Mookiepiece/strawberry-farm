@@ -8,6 +8,10 @@ import { Theme } from 'vitepress';
 
 import './vp-doc.css';
 import './custom.css';
+import { IFeatherElement } from '@mookiepiece/strawberry-farm/html/IFeatherElement';
+
+IFeatherElement.install();
+
 const theme: Theme = {
   Layout,
   enhanceApp: ({ app }) => {

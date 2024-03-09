@@ -18,7 +18,7 @@
 .tony {
   background: linear-gradient(
       70deg,
-      var(---fore) 40px,
+      var(---ink) 40px,
       var(---main) 41px,
       var(---main) 80px,
       var(---flame) 81px,
@@ -29,7 +29,7 @@
     ),
     linear-gradient(
       10deg,
-      var(---fore) 50px,
+      var(---ink) 50px,
       var(---main) 52px,
       var(---main) 70px,
       var(---foam) 72px,
@@ -38,7 +38,7 @@
     );
 
   border-radius: var(--5);
-  color: var(---fore);
+  color: var(---ink);
   box-shadow: inset 0 0 0 var(--3);
 
   padding: var(--4);

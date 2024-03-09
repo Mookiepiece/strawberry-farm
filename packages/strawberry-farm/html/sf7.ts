@@ -1,13 +1,17 @@
-export const sf7 = <T extends keyof HTMLElementTagNameMap>(
+export const sf7 = <T extends keyof HTMLElementTagNameMap | string>(
   name: T,
-  props?: { class: string; [key: string]: unknown },
+  props?: { class?: string; [key: string]: unknown },
   children?: (string | Node | undefined)[] | string | Node,
 ) => {
   const el = document.createElement(name);
 
   if (props) {
     const { class: _class, ...rest } = props;
-    el.setAttribute('class', _class);
+    if (_class) el.setAttribute('class', _class);
+
+    for (const [k, v] of Object.entries(rest)) {
+      v && el.setAttribute(k, '' + v);
+    }
   }
 
   if (children) {

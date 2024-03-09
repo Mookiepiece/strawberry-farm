@@ -1381,7 +1381,7 @@ const names = {
     line({x1:"21",y1:"21",x2:"16.65",y2:"16.65"}),
     line({x1:"8",y1:"11",x2:"14",y2:"11"}),
   ),
-}
+} as const
 
 
 /**
@@ -1403,7 +1403,7 @@ export class IFeatherElement extends SFElement {
 
   draw() {
     const i = this.getAttribute('i') || '';
-    const h = IFeatherElement.names[i];
+    const h = (IFeatherElement.names as any)[i];
     if (!h) {
       this.replaceChildren();
     } else {
@@ -1417,5 +1417,5 @@ export class IFeatherElement extends SFElement {
     }
   }
 
-  static names: Record<string, (() => SVGElement) | undefined> = names;
+  static names: Record<keyof typeof names, (() => SVGElement) | undefined> = names;
 }

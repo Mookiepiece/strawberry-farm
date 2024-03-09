@@ -9,7 +9,7 @@ const b = ref<HTMLDivElement>();
 <template>
   <button @click="a && collapse.toggle(a)">toggle</button>
   <div ref="a" class="(///)">
-    <div class="p-4" style="border: 10px dotted var(--mat-air-2)">
+    <div class="p-4" style="border: 40px dotted var(--mat-air-2)">
       Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquid magni,
       veniam sapiente aperiam dolorum vero eos hic repellat quasi deserunt optio
       voluptatem expedita aut quam laborum culpa quaerat facere quisquam?
