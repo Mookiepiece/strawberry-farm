@@ -11,6 +11,21 @@ body {
   font-size: 0;
 }
 
+body.VPBodyDefaultFont {
+  /* twitter.com ja */
+  /* font-family:
+    'Segoe UI',
+    Meiryo,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif; */
+
+    /* http://element-plus.org zh */
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC',
+  'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+}
+
 body > * {
   font-size: initial;
 }

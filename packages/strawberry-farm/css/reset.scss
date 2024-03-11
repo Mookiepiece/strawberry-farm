@@ -4,25 +4,25 @@
   box-sizing: border-box;
 }
 
-img {
+:where(img) {
   max-width: 100%; // For images to not be able to exceed their container
   max-height: 100%;
   object-fit: contain;
 }
 
-video {
+:where(video) {
   max-width: 100%;
   max-height: 100%;
 }
 
-body {
+:where(body) {
   margin: 0;
   white-space: pre-wrap; // Forbidden to add spaces among tags or tag and it's text contents, be careful
   overflow-wrap: break-word; // CSS IS AWESOME
   line-height: 1.2; // Default line height in Firefox, but different in Google Chrome
 }
 
-table {
+:where(table) {
   border-collapse: collapse;
 }
 
@@ -57,6 +57,6 @@ table {
 }
 
 // Form
-button {
+:where(button, input) {
   font-family: inherit;
 }

@@ -12,11 +12,6 @@ const ellipse = svg7.bind(null, 'ellipse');
 
 const f = {
   viewBox: '0 0 24 24',
-  'stroke-width': '2',
-  fill: 'none',
-  stroke: 'currentColor',
-  'stroke-linecap': 'round',
-  'stroke-linejoin': 'round',
 };
 
 // generated from feather-sprite.svg, using regexp...

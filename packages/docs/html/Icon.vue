@@ -11,7 +11,7 @@ const z = Object.keys(IFeatherElement.names);
 <template>
   <div class="good">
     <div class="good-cell [A] [CC] mat:air p-6" v-for="k in z">
-     <i-feather style="font-size: 100px;" :i="k"></i-feather>
+     <i-feather style="font-size: 24px;" :i="k"></i-feather>
       <span class="f3 [--]">{{ k }}</span>
     </div>
   </div>

@@ -1,99 +1,178 @@
-.sf-input {
+:where(.sf-input) {
   position: relative;
-  height: var(--Input-h);
+  width: 100%;
+  height: var(--sf-input-h);
   display: flex;
   align-items: center;
-  font-size: var(--Input-fs);
+  font-size: var(--sf-input-fs);
   color: var(--text1);
   line-height: 1.6;
-  border: 1px solid var(--DVD);
+  outline: 1px solid var(--mat-solid-15);
+  outline-offset: -1px;
   box-shadow: 0 0 0 0 var(---foam);
   transition: box-shadow 0.2s;
 
-  // TODO: optimize with position absolute + poiniter events none?
-  > .sf-input-icon {
-    font-size: calc(var(--Input-h) - 20px);
-    padding: 10px 0 10px 10px;
-  }
+  --sf-input-pl: 10px;
+  --sf-input-pr: 10px;
+}
 
-  > input,
-  > textarea {
-    width: 100%;
-    height: 100%;
-    color: inherit;
-    background: none;
-    font: inherit;
-    line-height: inherit;
-    border: 0;
-    outline: 0;
-    margin: 0;
-    padding-inline: 9px;
+:where(.sf-input:hover) {
+  outline-color: var(---flame);
+}
 
-    &::placeholder {
-      color: var(--text3);
-    }
-  }
+:where(.sf-input:focus-within) {
+  outline: 2px solid var(---flame);
+  box-shadow: 0 0 0 4px var(---foam);
+}
 
-  > textarea {
-    padding-block: 9px;
-    resize: vertical;
-  }
+:where(.sf-input:is(:hover, :focus-within)) {
+  z-index: 1;
+}
 
-  &:hover {
-    border-color: var(---flame);
-  }
+:where(.sf-input > :is(input, textarea)) {
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  background: none;
+  font: inherit;
+  border: 0;
+  outline: 0;
+  margin: 0;
+  padding-inline: 10px;
 
-  &:focus-within {
-    outline: 2px solid var(---flame);
-    outline-offset: -1px;
-    box-shadow: 0 0 0 4px var(---foam);
-  }
-
-  &:hover,
-  &:focus {
-    z-index: 1;
-  }
-
-  &.Textarea {
-    height: unset;
+  &::placeholder {
+    color: var(--text3);
   }
 }
 
-.sf-group {
+:where(.sf-input.--textarea) {
+  height: unset;
+}
+
+// NOTE: Webkit 居然还能有这种 Bug，涨见识了，而且还是只对中文生效的
+// > input输入框向下偏移，输入中文，字符数字下移一像素问题
+:where(.sf-input > input) {
+  height: var(--sf-input-h);
+  line-height: var(--sf-input-h);
+}
+
+:where(.sf-input.--textarea > textarea) {
+  padding-block: 10px;
+  resize: vertical;
+}
+
+:where(.sf-input.--has-prefix > :is(input, textarea)) {
+  padding-left: calc(var(--sf-input-h) - 1px);
+}
+
+:where(.sf-input-icon, .sf-input-clean) {
+  position: absolute;
+  inset: 0;
+  width: calc(var(--sf-input-h));
+  font-size: 120%;
+  color: var(--text2);
+  pointer-events: none;
+  user-select: none;
+}
+
+:where(:is(input, textarea) ~ :is(.sf-input-icon), .sf-input-clean) {
+  left: auto;
+}
+
+:where(.sf-input-clean) {
+  pointer-events: initial;
+}
+
+:where(.sf-input-clean:hover) {
+  background-color: var(--mat-air-1);
+}
+
+:where(.sf-input-clean:active) {
+  background-color: var(--mat-air-2);
+}
+
+:where(.sf-input.--has-suffix .sf-input-clean) {
+  right: calc(var(--sf-input-h));
+}
+
+:where(.sf-input-prepend,.sf-input-append) {
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+:where(.sf-group) {
+  width: 100%;
   display: flex;
-  height: var(--Input-h);
-  font-size: var(--Input-fs);
+  flex-wrap: wrap;
+  font-size: var(--sf-input-fs);
+}
 
-  > ins {
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: center;
-    text-decoration: unset;
-    border: 1px solid var(--DVD);
+:where(.sf-group > .sf-input) {
+  width: fit-content;
+  flex-grow: 1;
+}
 
-    color: var(--text2);
+:where(.sf-group > ins) {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  height: var(--sf-input-h);
+  padding: 0 10px;
+  border: 1px solid var(--mat-solid-15);
+  background: var(--mat-air-05);
+  color: var(--text2);
+  text-decoration: unset;
+  white-space: nowrap;
+}
 
-    background: var(--mat-air-05);
-    padding: 0 9px;
-  }
+:where(.sf-group > ins:not(:first-child)) {
+  border-left: none;
+}
 
-  > :not(:first-child) {
-    margin-left: -1px;
-  }
+:where(.sf-group > ins:not(:last-child)) {
+  border-right: none;
+}
+
+:where(.sf-group, :is(.sf-input, .sf-button):not(.sf-group *)):where(.size-s) {
+  --sf-input-h: 30px;
+  --sf-input-fs: var(--f3);
+}
+
+:where(.sf-group, :is(.sf-input, .sf-button):not(.sf-group *)):where(
+    :not(.size-s, .size-l),
+    .size-m
+  ) {
+  --sf-input-h: 40px;
+  --sf-input-fs: var(--f2);
+}
+
+:where(.sf-group, :is(.sf-input, .sf-button):not(.sf-group *)):where(.size-l) {
+  --sf-input-h: 50px;
+  --sf-input-fs: var(--f1);
+}
+
+:where(.sf-button) {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  height: var(--sf-input-h);
+  // line-height: var(--sf-input-h);
 }
 
 :where(.sf-group, .sf-input:not(.sf-group *)):where(.size-s) {
-  --Input-h: 30px;
-  --Input-fs: var(--f3);
+  --sf-input-h: 30px;
+  --sf-input-fs: var(--f3);
 }
+
 :where(.sf-group, .sf-input:not(.sf-group *)):where(
     :not(.size-s, .size-l),
     .size-m
   ) {
-  --Input-h: 40px;
-  --Input-fs: var(--f2);
+  --sf-input-h: 40px;
+  --sf-input-fs: var(--f2);
 }
+
 :where(.sf-group, .sf-input:not(.sf-group *)):where(.size-l) {
-  --Input-h: 50px;
-  --Input-fs: var(--f1);
+  --sf-input-h: 50px;
+  --sf-input-fs: var(--f1);
 }

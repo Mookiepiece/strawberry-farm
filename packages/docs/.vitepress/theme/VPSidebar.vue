@@ -1,6 +1,9 @@
 <script lang="ts" setup>
-import { computed, nextTick } from 'vue';
-import { MemoryLightbulb as path } from '@pictogrammers/memory/src/icons';
+import { computed, nextTick, ref, watch, watchEffect } from 'vue';
+import {
+  MemoryLightbulb,
+  MemoryFormatBold,
+} from '@pictogrammers/memory/src/icons';
 import VPSidebarItem from './VPSidebarItem.vue';
 import { useData } from './composables';
 
@@ -42,6 +45,17 @@ const toggleTheme = async (e: MouseEvent) => {
   );
 };
 
+const toggleFontFamily = () => {
+  isToggledFontFamily.value = !isToggledFontFamily.value;
+  document.body.classList.toggle('VPBodyDefaultFont');
+};
+const isToggledFontFamily = ref(!!sessionStorage.getItem('VPBodyDefaultFont'));
+watch(isToggledFontFamily, is => {
+  is
+    ? sessionStorage.setItem('VPBodyDefaultFont', '1')
+    : sessionStorage.removeItem('VPBodyDefaultFont');
+});
+
 const sidebarGroups = theme.value.sidebar;
 
 // Volar bug
@@ -53,13 +67,23 @@ const _isDark = computed(() => isDark.value);
     <div class="VPSidebarBody">
       <div class="QuickAccess">
         <button
-          id="VPAppearanceToggle"
           class="mat:dust"
+          title="切换深色模式"
           :aria-pressed="_isDark"
           @click="toggleTheme"
         >
           <svg viewBox="0 0 22 22">
-            <path :d="path" />
+            <path :d="MemoryLightbulb" />
+          </svg>
+        </button>
+        <button
+          class="mat:dust"
+          title="切换默认字体（调试用，思源在相同行高下汉字的位置会偏下一点）"
+          :aria-pressed="isToggledFontFamily"
+          @click="toggleFontFamily"
+        >
+          <svg viewBox="0 0 22 22">
+            <path :d="MemoryFormatBold" />
           </svg>
         </button>
       </div>
@@ -110,22 +134,22 @@ const _isDark = computed(() => isDark.value);
 }
 
 .QuickAccess {
+  display: grid;
+  grid: auto-flow 1fr / repeat(auto-fill, minmax(60px, 1fr));
+  gap: 5px;
   padding: 10px 30px;
   button {
     padding: 10px 20px;
     border-radius: 5px;
-  }
-}
+    border: 0;
 
-#VPAppearanceToggle {
-  border: 0;
-  /* border: 2px solid currentColor; */
-
-  svg {
-    display: block;
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
+    svg {
+      margin: auto;
+      display: block;
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
   }
 }
 </style>

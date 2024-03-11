@@ -1,9 +1,10 @@
 <script setup lang="ts">
 const props = defineProps<{
-  class?: string;
+  class?: any;
 }>();
+
 </script>
 
 <template>
-  <button :class="props.class"><slot /></button>
+  <button class="sf-button" :class="props.class"><slot /></button>
 </template>

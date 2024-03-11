@@ -41,7 +41,7 @@
 :root,
 .light {
   --mat-air-0: #00011100;
-  --mat-air-05: #00011108;
+  --mat-air-05: #00011105;
   --mat-air-1: #0001110a;
   --mat-air-15: #00011116;
   --mat-air-2: #0001111a;
@@ -49,7 +49,9 @@
   --mat-air-4: #0001113a;
 
   --mat-solid-0: #ffffff;
+  --mat-solid-05: #fafafa;
   --mat-solid-1: #f5f5f5;
+  --mat-solid-15: #e9e9ea;
   --mat-solid-2: #e5e5e6;
   --mat-solid-3: #d5d5d7;
   --mat-solid-4: #c5c5c8;
@@ -59,7 +61,7 @@
 
 .dark {
   --mat-air-0: #eeefff00;
-  --mat-air-05: #eeefff08;
+  --mat-air-05: #eeefff05;
   --mat-air-1: #eeefff10;
   --mat-air-15: #eeefff15;
   --mat-air-2: #eeefff20;
@@ -67,7 +69,9 @@
   --mat-air-4: #eeefff40;
 
   --mat-solid-0: #1c1b22;
+  --mat-solid-05: #201f26;
   --mat-solid-1: #292830;
+  --mat-solid-15: #2e2d34;
   --mat-solid-2: #36363e;
   --mat-solid-3: #44434c;
   --mat-solid-4: #515059;

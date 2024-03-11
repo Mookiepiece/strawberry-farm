@@ -10,7 +10,9 @@ const colors = ref([
   'var(--mat-air-3)',
   'var(--mat-air-4)',
   'var(--mat-solid-0)',
+  'var(--mat-solid-05)',
   'var(--mat-solid-1)',
+  'var(--mat-solid-15)',
   'var(--mat-solid-2)',
   'var(--mat-solid-3)',
   'var(--mat-solid-4)',
@@ -19,7 +21,11 @@ const colors = ref([
 
 <template>
   <div class="good f2" style="">
-    <button class="mat:air [:-] p-3" v-for="c in colors" :style="{ background: c }">
+    <button
+      class="mat:air [:-] p-3"
+      v-for="c in colors"
+      :style="{ background: c }"
+    >
       {{ c }}
     </button>
   </div>
