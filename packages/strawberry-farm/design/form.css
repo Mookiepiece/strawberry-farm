@@ -13,8 +13,9 @@
   transition: box-shadow 0.2s;
 }
 
-:where(.sf-input:hover) {
+:where(.sf-input:not(.--disabled):hover) {
   outline-color: var(---flame);
+  cursor: text;
 }
 
 :where(.sf-input:focus-within) {
@@ -57,25 +58,17 @@
   resize: vertical;
 }
 
-:where(.sf-input.--has-prefix > :is(input, textarea)) {
-  padding-left: calc(var(--sf-input-h) - 1px);
-}
-
 :where(.sf-input-icon, .sf-input-clean) {
-  position: absolute;
-  inset: 0;
-  width: calc(var(--sf-input-h));
+  flex-shrink: 0;
+  width: var(--sf-input-h);
+  height: var(--sf-input-h);
   font-size: 120%;
   color: var(--text2);
   pointer-events: none;
-  user-select: none;
-}
-
-:where(:is(input, textarea) ~ :is(.sf-input-icon), .sf-input-clean) {
-  left: auto;
 }
 
 :where(.sf-input-clean) {
+  cursor: pointer;
   pointer-events: initial;
 }
 
@@ -87,14 +80,14 @@
   background-color: var(--mat-air-2);
 }
 
-:where(.sf-input.--has-suffix .sf-input-clean) {
-  right: calc(var(--sf-input-h));
-}
-
 :where(.sf-input-prepend, .sf-input-append) {
+  flex-shrink: 0;
   padding: 0 10px;
   color: var(--text2);
   white-space: nowrap;
+}
+
+:where(.sf-input-prepend, .sf-input-append) {
 }
 
 :where(.sf-group) {

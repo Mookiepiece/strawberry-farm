@@ -113,12 +113,34 @@ const model = ref('');
       v-model="model"
       class="size-s"
       placeholder="東方神霊廟 〜 Ten Desires."
+      prefix="compass"
       suffix="compass"
       clearable
     >
       <template #prepend>$ =</template>
-      <template #append>= ￥</template>
-    ></VInput>
+      <template #append>sina=[2tan(a/2)]/[1+tan²(a/2)]</template>
+    </VInput>
+    <VInput
+      v-model="model"
+      placeholder="東方神霊廟 〜 Ten Desires."
+      prefix="compass"
+      suffix="compass"
+      clearable
+    >
+      <template #prepend>$ =</template>
+      <template #append>sina=[2tan(a/2)]/[1+tan²(a/2)]</template>
+    </VInput>
+    <VInput
+      v-model="model"
+      class="size-l"
+      placeholder="東方神霊廟 〜 Ten Desires."
+      prefix="compass"
+      suffix="compass"
+      clearable
+    >
+      <template #prepend>$ =</template>
+      <template #append>sina=[2tan(a/2)]/[1+tan²(a/2)]</template>
+    </VInput>
 
     <div class="sf-group size-s">
       <ins>https://</ins>

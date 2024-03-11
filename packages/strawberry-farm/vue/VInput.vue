@@ -14,6 +14,7 @@ const props = withDefaults(
     prefix?: keyof typeof IFeatherElement.names;
     suffix?: keyof typeof IFeatherElement.names;
     clearable?: boolean;
+    disabled?: boolean;
   }>(),
   { trim: true },
 );
@@ -23,7 +24,8 @@ const slots = defineSlots<{
   append: any;
 }>();
 
-const { placeholder, textarea, trim } = props;
+const { placeholder, textarea, disabled, clearable, prefix, suffix, trim } =
+  props;
 
 const input = ref<HTMLInputElement | HTMLTextAreaElement>();
 
@@ -70,14 +72,16 @@ const clean = () => {
     class="sf-input"
     :class="[
       textarea && '--textarea',
-      props.prefix && '--has-prefix',
-      props.suffix && '--has-suffix',
+      disabled && '--disabled',
+      prefix && '--has-prefix',
+      suffix && '--has-suffix',
     ]"
+    @click.self="input?.focus()"
   >
     <div class="sf-input-prepend" v-if="$slots.prepend">
       <slot name="prepend"></slot>
     </div>
-    <i-feather v-if="props.prefix" :i="props.prefix" class="sf-input-icon" />
+    <i-feather v-if="prefix" :i="prefix" class="sf-input-icon" />
     <textarea
       v-if="textarea"
       ref="input"
@@ -93,13 +97,13 @@ const clean = () => {
       :placeholder="placeholder"
     />
     <i-feather
-      v-if="props.clearable && filled"
+      v-if="clearable && filled"
       i="x"
       class="sf-input-clean"
       tabindex="-1"
       @click="clean"
     />
-    <i-feather v-if="props.suffix" :i="props.suffix" class="sf-input-icon" />
+    <i-feather v-if="suffix" :i="suffix" class="sf-input-icon" />
     <div class="sf-input-append" v-if="$slots.append">
       <slot name="append"></slot>
     </div>
