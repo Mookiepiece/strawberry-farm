@@ -4,8 +4,8 @@
 @import './tone.scss';
 @import './button.css';
 @import './typography.scss';
-@import './form.scss';
+@import './form.css';
 @import './toast.scss';
 @import './collapse.scss';
 @import './modal.scss';
-@import './icon.scss';
+@import './icon.css';

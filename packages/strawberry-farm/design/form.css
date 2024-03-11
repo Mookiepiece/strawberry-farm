@@ -1,19 +1,16 @@
 :where(.sf-input) {
   position: relative;
-  width: 100%;
-  height: var(--sf-input-h);
   display: flex;
   align-items: center;
+  width: 100%;
+  height: var(--sf-input-h);
   font-size: var(--sf-input-fs);
-  color: var(--text1);
   line-height: 1.6;
+  color: var(--text1);
   outline: 1px solid var(--mat-solid-15);
   outline-offset: -1px;
   box-shadow: 0 0 0 0 var(---foam);
   transition: box-shadow 0.2s;
-
-  --sf-input-pl: 10px;
-  --sf-input-pr: 10px;
 }
 
 :where(.sf-input:hover) {
@@ -39,18 +36,17 @@
   outline: 0;
   margin: 0;
   padding-inline: 10px;
+}
 
-  &::placeholder {
-    color: var(--text3);
-  }
+:where(.sf-input > :is(input, textarea)::placeholder) {
+  color: var(--text3);
 }
 
 :where(.sf-input.--textarea) {
   height: unset;
 }
 
-// NOTE: Webkit 居然还能有这种 Bug，涨见识了，而且还是只对中文生效的
-// > input输入框向下偏移，输入中文，字符数字下移一像素问题
+/* NOTE: Webkit 居然还能有这种 Bug，涨见识了，而且还是只对中文生效的： input输入框向下偏移，输入中文，字符数字下移一像素问题 */
 :where(.sf-input > input) {
   height: var(--sf-input-h);
   line-height: var(--sf-input-h);
@@ -95,8 +91,9 @@
   right: calc(var(--sf-input-h));
 }
 
-:where(.sf-input-prepend,.sf-input-append) {
+:where(.sf-input-prepend, .sf-input-append) {
   padding: 0 10px;
+  color: var(--text2);
   white-space: nowrap;
 }
 
@@ -156,7 +153,6 @@
   align-items: center;
   padding: 0 10px;
   height: var(--sf-input-h);
-  // line-height: var(--sf-input-h);
 }
 
 :where(.sf-group, .sf-input:not(.sf-group *)):where(.size-s) {

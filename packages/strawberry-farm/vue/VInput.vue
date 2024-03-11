@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VNode, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { IFeatherElement } from '../html/IFeatherElement';
 
 const model = defineModel<string>({
@@ -19,8 +19,8 @@ const props = withDefaults(
 );
 
 const slots = defineSlots<{
-  prepend: VNode;
-  append: VNode;
+  prepend: any;
+  append: any;
 }>();
 
 const { placeholder, textarea, trim } = props;
@@ -29,6 +29,7 @@ const input = ref<HTMLInputElement | HTMLTextAreaElement>();
 
 const filled = ref(false);
 
+// Reference: How vue "v-model.trim" behaves https://github.com/vuejs/core/blob/9a936aaec489c79433a32791ecf5ddb1739a62bd/packages/runtime-dom/src/directives/vModel.ts#L48
 watch(
   () => ({ value: model.value, trim: props.trim, input: input.value }),
   ({ value, trim, input }) => {
