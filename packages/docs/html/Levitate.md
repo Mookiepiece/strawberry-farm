@@ -1,4 +1,8 @@
 # Levitate
 
-:::demo html/Levitate
+:::demo html/LevitateHTML
+:::
+
+
+:::demo html/LevitateVue
 :::

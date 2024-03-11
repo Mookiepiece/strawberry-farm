@@ -24,9 +24,6 @@ const slots = defineSlots<{
   append: any;
 }>();
 
-const { placeholder, textarea, disabled, clearable, prefix, suffix, trim } =
-  props;
-
 const input = ref<HTMLInputElement | HTMLTextAreaElement>();
 
 const filled = ref(false);
@@ -53,12 +50,12 @@ watch(
 
 const handleInput = (e: Event) => {
   let value = (e.target as HTMLInputElement | HTMLTextAreaElement).value;
-  model.value = value = trim ? value.trim() : value;
+  model.value = value = props.trim ? value.trim() : value;
   filled.value = !!value;
 };
 
 const handleBlur = () => {
-  if (trim) input.value!.value = input.value!.value.trim();
+  if (props.trim) input.value!.value = input.value!.value.trim();
 };
 
 const clean = () => {
@@ -71,39 +68,39 @@ const clean = () => {
   <div
     class="sf-input"
     :class="[
-      textarea && '--textarea',
-      disabled && '--disabled',
-      prefix && '--has-prefix',
-      suffix && '--has-suffix',
+      props.textarea && '--textarea',
+      props.disabled && '--disabled',
+      props.prefix && '--has-prefix',
+      props.suffix && '--has-suffix',
     ]"
     @click.self="input?.focus()"
   >
     <div class="sf-input-prepend" v-if="$slots.prepend">
       <slot name="prepend"></slot>
     </div>
-    <i-feather v-if="prefix" :i="prefix" class="sf-input-icon" />
+    <i-feather v-if="props.prefix" :i="props.prefix" class="sf-input-icon" />
     <textarea
-      v-if="textarea"
+      v-if="props.textarea"
       ref="input"
       @input="handleInput"
       @blur="handleBlur"
-      :placeholder="placeholder"
+      :placeholder="props.placeholder"
     />
     <input
       v-else
       ref="input"
       @input="handleInput"
       @blur="handleBlur"
-      :placeholder="placeholder"
+      :placeholder="props.placeholder"
     />
     <i-feather
-      v-if="clearable && filled"
+      v-if="props.clearable && filled"
       i="x"
       class="sf-input-clean"
       tabindex="-1"
       @click="clean"
     />
-    <i-feather v-if="suffix" :i="suffix" class="sf-input-icon" />
+    <i-feather v-if="props.suffix" :i="props.suffix" class="sf-input-icon" />
     <div class="sf-input-append" v-if="$slots.append">
       <slot name="append"></slot>
     </div>

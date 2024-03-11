@@ -1,3 +1,5 @@
+/* INPUT */
+
 :where(.sf-input) {
   position: relative;
   display: flex;
@@ -23,19 +25,17 @@
   box-shadow: 0 0 0 4px var(---foam);
 }
 
+/* TODO: needed? */
 :where(.sf-input:is(:hover, :focus-within)) {
   z-index: 1;
 }
 
 :where(.sf-input > :is(input, textarea)) {
+  all: unset;
   width: 100%;
   height: 100%;
   color: inherit;
-  background: none;
   font: inherit;
-  border: 0;
-  outline: 0;
-  margin: 0;
   padding-inline: 10px;
 }
 
@@ -67,6 +67,14 @@
   pointer-events: none;
 }
 
+:where(.sf-input.--has-prefix > :is(input, textarea)) {
+  padding-inline-start: 0;
+}
+
+:where(.sf-input.--has-suffix > :is(input, textarea)) {
+  padding-inline-end: 0;
+}
+
 :where(.sf-input-clean) {
   cursor: pointer;
   pointer-events: initial;
@@ -82,12 +90,24 @@
 
 :where(.sf-input-prepend, .sf-input-append) {
   flex-shrink: 0;
-  padding: 0 10px;
+  padding: 0;
   color: var(--text2);
   white-space: nowrap;
+  pointer-events: none;
 }
 
-:where(.sf-input-prepend, .sf-input-append) {
+:where(.sf-input-prepend) {
+  padding-left: 10px;
+}
+
+:where(.sf-input-append) {
+  padding-right: 10px;
+}
+
+:where(:is(.sf-input-prepend, .sf-input-append) ins) {
+  all: unset;
+  color: var(--text2);
+  pointer-events: none;
 }
 
 :where(.sf-group) {
@@ -123,45 +143,31 @@
   border-right: none;
 }
 
-:where(.sf-group, :is(.sf-input, .sf-button):not(.sf-group *)):where(.size-s) {
-  --sf-input-h: 30px;
-  --sf-input-fs: var(--f3);
-}
-
-:where(.sf-group, :is(.sf-input, .sf-button):not(.sf-group *)):where(
-    :not(.size-s, .size-l),
-    .size-m
-  ) {
+:root {
   --sf-input-h: 40px;
   --sf-input-fs: var(--f2);
 }
 
-:where(.sf-group, :is(.sf-input, .sf-button):not(.sf-group *)):where(.size-l) {
-  --sf-input-h: 50px;
-  --sf-input-fs: var(--f1);
+:where(:is(.sf-group, .sf-input, .sf-button).size-s) {
+  --sf-input-h: 30px;
+  --sf-input-fs: var(--f3);
 }
+
+:where(:is(.sf-group, .sf-input, .sf-button).size-m) {
+  --sf-input-h: 40px;
+  --sf-input-fs: var(--f2);
+}
+
+:where(:is(.sf-group, .sf-input, .sf-button).size-l) {
+  --sf-input-h: 40px;
+  --sf-input-fs: var(--f2);
+}
+
+/* BUTTON */
 
 :where(.sf-button) {
   display: flex;
   align-items: center;
   padding: 0 10px;
   height: var(--sf-input-h);
-}
-
-:where(.sf-group, .sf-input:not(.sf-group *)):where(.size-s) {
-  --sf-input-h: 30px;
-  --sf-input-fs: var(--f3);
-}
-
-:where(.sf-group, .sf-input:not(.sf-group *)):where(
-    :not(.size-s, .size-l),
-    .size-m
-  ) {
-  --sf-input-h: 40px;
-  --sf-input-fs: var(--f2);
-}
-
-:where(.sf-group, .sf-input:not(.sf-group *)):where(.size-l) {
-  --sf-input-h: 50px;
-  --sf-input-fs: var(--f1);
 }
