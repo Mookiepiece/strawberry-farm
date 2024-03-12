@@ -6,3 +6,6 @@
 
 :::demo html/LevitateVueSimple
 :::
+
+:::demo html/LevitateVueAnimated
+:::
