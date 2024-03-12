@@ -1,6 +1,12 @@
 @use 'sass:list';
 @use 'sass:meta';
 
+:where(.fixed) {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
 @function _LT_($i) {
   @return '.\\\\\\\{' + $i + '\\\}';
 }

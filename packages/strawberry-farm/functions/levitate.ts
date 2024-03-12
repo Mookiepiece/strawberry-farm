@@ -31,6 +31,10 @@ const isScrollableElement = (p: Element) => {
 const auto = (el: Element, cb: () => void) => {
   const bag = Bag();
 
+  // NOTE: ResizeObserver will firing the callback immediately
+  // probably scheduled like requestAnimationFrame
+  // https://drafts.csswg.org/resize-observer/#intro
+  // > Observation will fire when observation starts if Element is being rendered, and Element’s size is not 0,0.
   const ro = new ResizeObserver(cb);
   bag(() => ro.disconnect());
 
@@ -81,6 +85,8 @@ const place = (
 
   const up = $up.getBoundingClientRect();
   const fan = $fan.getBoundingClientRect();
+
+  console.log($fan.innerHTML);
 
   let config: RuntimeConfigs = {
     $up,

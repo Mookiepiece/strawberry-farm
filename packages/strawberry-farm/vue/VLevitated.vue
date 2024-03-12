@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { levitate } from '../functions';
+import { onUnmounted, ref, watch } from 'vue';
+import { Bag, levitate } from '../functions';
+import { sf7 } from '../html/sf7';
 
 // const random = inc('VLevitated');
 
@@ -20,15 +21,33 @@ const show = ref(false);
 const button = ref<Element>();
 const popper = ref<HTMLDivElement>();
 
+const bag = Bag();
+onUnmounted(bag);
+
 watch(show, show => {
   if (show) {
-    if (button.value && popper.value) {
-      levitate.place(button.value, popper.value);
+    if (button.value) {
+      const ppr = (popper.value = sf7('div', {
+        class: 'fixed',
+      }) as HTMLDivElement);
+      document.body.appendChild(ppr);
+      const btn = button.value;
+
+      bag(
+        levitate.auto(btn, () => {
+          levitate.place(btn, ppr);
+        }),
+      );
+
+      bag(() => {
+        ppr.remove();
+        popper.value = undefined;
+      });
     }
+  } else {
+    bag();
   }
 });
-
-// const a =
 </script>
 
 <template>
@@ -42,8 +61,8 @@ watch(show, show => {
     Nike
   </button>
 
-  <Teleport to="#VLV" disabled>
-    <div v-if="show" class="levitated" ref="popper">
+  <Teleport v-if="show && popper" :to="popper">
+    <div class="levitated">
       <slot />
     </div>
   </Teleport>
