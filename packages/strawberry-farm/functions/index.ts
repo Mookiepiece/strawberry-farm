@@ -7,4 +7,5 @@ export * from './scheduler';
 export * from './collection';
 export * from './trackPointer';
 export * from './trap';
+export * from './fx';
 export * from './levitate';

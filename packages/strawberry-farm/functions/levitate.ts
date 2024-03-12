@@ -31,8 +31,8 @@ const isScrollableElement = (p: Element) => {
 const auto = (el: Element, cb: () => void) => {
   const bag = Bag();
 
-  // NOTE: ResizeObserver will firing the callback immediately
-  // probably scheduled like requestAnimationFrame
+  // NOTE: ResizeObserver will firing the callback once the element is being observed
+  // it is probably scheduled after requestAnimationFrame, at next painting https://stackoverflow.com/questions/77943736/order-of-callbacks-settimeout-and-resizeobserver
   // https://drafts.csswg.org/resize-observer/#intro
   // > Observation will fire when observation starts if Element is being rendered, and Element’s size is not 0,0.
   const ro = new ResizeObserver(cb);
@@ -103,11 +103,9 @@ const place = (
   config = align(config);
 
   if (!config.glitch) {
-    // requestAnimationFrame(() => {
     $fan.style.setProperty('--x', config.x + 'px');
     $fan.style.setProperty('--y', config.y + 'px');
     $fan.style.setProperty('transform', 'translate(var(--x), var(--y))');
-    // });
 
     return config.glitch;
   }

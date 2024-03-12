@@ -72,6 +72,7 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Modal', link: '/html/Modal' },
         { text: 'Levitate', link: '/html/Levitate' },
         { text: 'Icon', link: '/html/Icon' },
+        { text: 'FX', link: '/html/FX' },
       ],
     },
   ],

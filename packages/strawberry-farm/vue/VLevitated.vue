@@ -28,7 +28,7 @@ watch(show, show => {
   if (show) {
     if (button.value) {
       const ppr = (popper.value = sf7('div', {
-        class: 'fixed',
+        class: 'fixed (///)',
       }) as HTMLDivElement);
       document.body.appendChild(ppr);
       const btn = button.value;
