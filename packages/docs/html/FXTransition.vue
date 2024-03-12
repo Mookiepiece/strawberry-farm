@@ -58,6 +58,6 @@ onUnmounted(() => {
 
 .fx-demo-leave-to {
   background-color: transparent;
-  transform: translateX(100px) scale(0);
+  /* transform: translateX(100px) scale(0); */
 }
 </style>

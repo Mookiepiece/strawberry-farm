@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted, ref, watch } from 'vue';
+import { Transition, onUnmounted, ref, watch } from 'vue';
 import { Bag, levitate } from '../functions';
 import { sf7 } from '../html/sf7';
 
@@ -35,7 +35,9 @@ watch(show, show => {
 
       bag(
         levitate.auto(btn, () => {
-          levitate.place(btn, ppr);
+          levitate.place(btn, ppr, {
+            offset: 10,
+          });
         }),
       );
 
@@ -61,9 +63,25 @@ watch(show, show => {
     Nike
   </button>
 
-  <Teleport v-if="show && popper" :to="popper">
-    <div class="levitated">
-      <slot />
-    </div>
+  <Teleport :disabled="!show || !popper" :to="popper">
+    <Transition name="test-popper">
+      <div v-if="show && popper" class="levitated">
+        <slot />
+      </div>
+    </Transition>
   </Teleport>
 </template>
+
+<style>
+.test-popper-enter-from {
+  transform: scale(0);
+}
+
+.test-popper-enter-active {
+  transition: all 0.3s;
+}
+
+.test-popper-enter-to {
+  transform: scale(1);
+}
+</style>

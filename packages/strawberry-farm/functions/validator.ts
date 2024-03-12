@@ -60,44 +60,44 @@ const messages: Record<keyof IRuleType | 'default' | 'required', string> & {
     >
   >;
 } = {
-  default: '%s 不匹配格式',
-  required: '请输入 %s',
-  checked: '请先检阅 %s',
-  enum: '%s 不在选项范围内',
+  default: '{{s}} 不匹配格式',
+  required: '请输入 {{s}}',
+  checked: '请先检阅 {{s}}',
+  enum: '{{s}} 不在选项范围内',
 
-  any: '%s 必须为任意类型',
-  string: '%s 必须为字符类型',
-  array: '%s 必须为列表类型',
-  number: '%s 必须为数值类型',
-  boolean: '%s 必须为布尔类型',
-  email: '%s 不是有效的邮箱地址',
-  type: '%s 不匹配格式',
+  any: '{{s}} 必须为任意类型',
+  string: '{{s}} 必须为字符类型',
+  array: '{{s}} 必须为列表类型',
+  number: '{{s}} 必须为数值类型',
+  boolean: '{{s}} 必须为布尔类型',
+  email: '{{s}} 不是有效的邮箱地址',
+  type: '{{s}} 不匹配格式',
 
   ranges: {
     string: {
-      len: '%s 的长度必须等于 %a',
-      min: '%s 的长度至少为 %a',
-      max: '%s 的长度至多为 %a',
-      range: '%s 的长度必须介于 %a - %b',
+      len: '{{s}} 的长度必须等于 {{a}}',
+      min: '{{s}} 的长度至少为 {{a}}',
+      max: '{{s}} 的长度至多为 {{a}}',
+      range: '{{s}} 的长度必须介于 {{a}} - {{b}}',
     },
     number: {
-      len: '%s 必须等于 %a',
-      min: '%s 至少为 %a',
-      max: '%s 至多为 %a',
-      range: '%s 的值必须介于 %a - %b',
+      len: '{{s}} 必须等于 {{a}}',
+      min: '{{s}} 至少为 {{a}}',
+      max: '{{s}} 至多为 {{a}}',
+      range: '{{s}} 的值必须介于 {{a}} - {{b}}',
     },
     array: {
-      len: '%s 的长度必须等于 %a',
-      min: '%s 的长度至少为 %a',
-      max: '%s 的长度至多为 %a',
-      range: '%s 的长度必须介于 %a - %b',
+      len: '{{s}} 的长度必须等于 {{a}}',
+      min: '{{s}} 的长度至少为 {{a}}',
+      max: '{{s}} 的长度至多为 {{a}}',
+      range: '{{s}} 的长度必须介于 {{a}} - {{b}}',
     },
   },
 } as const;
 
-const aRE = /\%a/;
-const bRE = /\%b/;
-const sRE = /\%s/;
+const aRE = /\{\{a\}\}/;
+const bRE = /\{\{b\}\}/;
+const sRE = /\{\{s\}\}/;
 
 const testRange = (
   value: number,
@@ -220,7 +220,7 @@ validators2.set('type', {
  * Candidate: https://emailregex.com/
  */
 const EMAILRE =
-  /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 validators2.set('email', {
   extends: 'string',

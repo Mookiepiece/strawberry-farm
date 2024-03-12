@@ -314,10 +314,10 @@ describe('vadliator', () => {
       required: false,
       config: /\d\d\d/,
       validator(value) {
-        if (value !== '000') return '%s%s%s';
+        if (value !== '000') return '{{s}}{{s}}{{s}}';
       },
-      message: '%s',
-    })(['', 'ok'], ['000', 'ok'], ['123', '%s%s%s'], ['^_^', '%s']);
+      message: '{{s}}',
+    })(['', 'ok'], ['000', 'ok'], ['123', '{{s}}{{s}}{{s}}'], ['^_^', '{{s}}']);
   });
 
   it('supports only validator was provided', () => {
@@ -325,8 +325,8 @@ describe('vadliator', () => {
       config: /\d\d\d/,
       required:true,
       validator(value) {
-        if (value !== '000') return '%s%s%s';
+        if (value !== '000') return '{{s}}{{s}}{{s}}';
       },
-    })(['', '%s%s%s'], ['000', 'ok'], ['123', '%s%s%s'], ['^_^', '%s%s%s']);
+    })(['', '{{s}}{{s}}{{s}}'], ['000', 'ok'], ['123', '{{s}}{{s}}{{s}}'], ['^_^', '{{s}}{{s}}{{s}}']);
   });
 });
