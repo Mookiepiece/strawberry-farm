@@ -43,7 +43,7 @@ onUnmounted(() => bag());
 <template>
   <div class="VPLayout">
     <VPSidebar />
-    <Content class="VPContent [A] vp-doc pt-6 px-6 ww:pt-8 ww:px-8" role="article" />
+    <Content class="VPContent [A] vp-doc" role="article" />
     <VPOutline />
   </div>
 </template>
@@ -60,6 +60,7 @@ onUnmounted(() => bag());
 
 .VPContent {
   overflow: auto;
+  padding: 50px 30px;
   padding-bottom: 100px;
 
   > div {

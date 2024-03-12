@@ -4,5 +4,5 @@
 :::
 
 
-:::demo html/LevitateVue
+:::demo html/LevitateVueSimple
 :::

@@ -1,17 +1,26 @@
 <script setup lang="ts">
 import { fx } from '@mookiepiece/strawberry-farm/functions';
-import { onUnmounted, ref } from 'vue';
+import { ref } from 'vue';
 
+const open = ref(true);
 const div = ref<HTMLDivElement>();
+
 const toggle = () => {
-  if (!div.value) return;
+  const el = div.value!;
 
-  fx.cssTransition(div.value, 'fx-demo-leave');
+  open.value = !open.value;
+
+  if (!open.value) {
+    fx.cssTransition(el, 'fx-demo-leave', {
+      done() {
+        el.setAttribute('hidden', '');
+      },
+    });
+  } else {
+    el.removeAttribute('hidden');
+    fx.cssTransition(el, 'fx-demo-enter');
+  }
 };
-
-onUnmounted(() => {
-  document.body.style.removeProperty('height');
-});
 </script>
 
 <template>
@@ -27,13 +36,9 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.fx-demo {
+.fx-demo-enter-from,
+.fx-demo-leave-to {
   background-color: #f9ca;
-  transform: translateX(0);
-}
-
-.fx-demo-enter-from {
-  background-color: transparent;
   transform: translateX(100px) scale(0);
 }
 
@@ -43,21 +48,7 @@ onUnmounted(() => {
     transform 1s;
 }
 
-.fx-demo-enter-to {
-  /*  */
-}
-
-.fx-demo-leave-from {
-  background-color: #f9ca;
-  transform: translateX(0);
-}
-
 .fx-demo-leave-active {
   transition: all 0.5s;
-}
-
-.fx-demo-leave-to {
-  background-color: transparent;
-  /* transform: translateX(100px) scale(0); */
 }
 </style>

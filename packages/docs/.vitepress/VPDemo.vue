@@ -39,6 +39,12 @@ switch (dirname) {
       mod => (raw.value = (mod.default as string).replace(/\r\n/g, '\n')), // Windows©️ is awesome
     );
     break;
+  case 'experiments':
+    import(`../experiments/${filename}.vue`).then(mod => (module.value = mod.default));
+    import(`../experiments/${filename}.vue?raw`).then(
+      mod => (raw.value = (mod.default as string).replace(/\r\n/g, '\n')), // Windows©️ is awesome
+    );
+    break;
   default:
     throw new Error();
 }

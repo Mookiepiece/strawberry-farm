@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { trackPointer } from '../strawberry-farm/functions/trackPointer';
+import { trackPointer } from '@mookiepiece/strawberry-farm/functions';
 
 const elRef = ref<HTMLDivElement>();
 const infoRef = ref<HTMLSpanElement>();
@@ -63,3 +63,4 @@ onMounted(() => {
   min-height: 50px;
 }
 </style>
+../../strawberry-farm/functions/trackPointer

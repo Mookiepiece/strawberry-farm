@@ -1,5 +1,5 @@
 import { useData as useData$ } from 'vitepress';
-import { shallowRef } from 'vue';
+import { ref, shallowRef } from 'vue';
 
 export type LinkItem = {
   text: string;
@@ -17,7 +17,7 @@ export type ThemeConfig = {
   sidebar: LinkGroup[];
 };
 
-const theme = shallowRef<ThemeConfig>({
+const theme = ref<ThemeConfig>({
   sidebar: [
     {
       text: 'Intro',
@@ -50,10 +50,6 @@ const theme = shallowRef<ThemeConfig>({
       ],
     },
     {
-      text: 'Experiments',
-      items: [{ text: 'Swipe', link: '/Swipe' }],
-    },
-    {
       text: 'Design',
       items: [
         { text: 'Color', link: '/design/Color' },
@@ -75,10 +71,14 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'FX', link: '/html/FX' },
       ],
     },
+    {
+      text: 'Experiments',
+      items: [{ text: 'Swipe', link: '/experiments/Swipe' }],
+    },
   ],
 });
 
-export const useData: typeof useData$<ThemeConfig> = () => {
+export const useData: typeof useData$ = () => {
   const data = useData$();
-  return { ...data, theme };
+  return { ...data, theme: theme };
 };
