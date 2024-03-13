@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { Bag, on } from '../../../strawberry-farm/functions';
 import VPOutline from './VPOutline.vue';
 import VPSidebar from './VPSidebar.vue';
@@ -44,19 +44,28 @@ onMounted(() => {
     }),
   );
 });
+
+const sidebar = ref(false);
+const outline = ref(false);
 </script>
 
 <template>
   <div class="VPLayout">
+    <VPSidebar :open="sidebar" />
     <VPNav
+      v-model:sidebar="sidebar"
+      v-model:outline="outline"
       :features="full ? ['sidebar'] : ['sidebar', 'outline']"
-      @sidebar=""
     />
-    <VPSidebar />
-    <div v-if="full" class="VPMain">full</div>
+    <div v-if="full" class="VPMain">
+      <div class="mat:air">
+        Click
+      </div>
+      <!-- <Content class="VPContent" role="article" /> -->
+    </div>
     <div v-else class="VPMain">
       <Content class="VPContent [A] vp-doc" role="article" />
-      <VPOutline />
+      <VPOutline :open="outline" />
     </div>
   </div>
 </template>
@@ -71,13 +80,16 @@ onMounted(() => {
 }
 
 .VPMain {
+  /* position: relative; */
+  padding-left: 300px;
+  z-index: 0;
   overflow: auto;
 }
 
 .VPContent {
   overflow: auto;
   padding: 50px 30px;
-  padding-inline: calc(300px + 50px) calc(166px + 50px);
+  padding-inline: calc(50px) calc(166px + 50px);
   padding-bottom: 100px;
   /* transition: padding 0.3s; */
 

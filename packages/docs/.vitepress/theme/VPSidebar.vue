@@ -7,6 +7,10 @@ import {
 import VPSidebarItem from './VPSidebarItem.vue';
 import { useData } from './composables';
 
+const props = defineProps<{
+  open:boolean
+}>()
+
 const { theme, isDark } = useData();
 
 // https://github.com/vuejs/vitepress/blob/20511006dba516ca8c06ed1dd3516547af668a0e/docs/zh/guide/extending-default-theme.md?plain=1#L236
@@ -64,7 +68,7 @@ const _isDark = computed(() => isDark.value);
 </script>
 
 <template>
-  <aside class="VPSidebar [#]">
+  <aside class="VPSidebar [#]" :class="[props.open && 'open']">
     <div class="QuickAccess">
       <button
         class="mat:dust"
@@ -111,6 +115,7 @@ const _isDark = computed(() => isDark.value);
   z-index: 1;
   padding-top: 50px;
   border-right: 1px solid var(--mat-solid-15);
+  background-color: var(--mat-solid-0);
   overflow: clip auto;
 }
 

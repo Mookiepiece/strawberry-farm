@@ -4,6 +4,10 @@ import { computed, onMounted, ref, shallowRef } from 'vue';
 import VPLink from './VPLink.vue';
 import { Bag, debounce, on } from '@mookiepiece/strawberry-farm/functions';
 
+const props = defineProps<{
+  open: boolean;
+}>();
+
 const metaHeaders = shallowRef<
   { text: string; link: string; offset: number; level: number }[]
 >([]);
@@ -77,7 +81,7 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
 <template>
   <aside
     class="VPOutline [A] f2"
-    :class="{ empty }"
+    :class="[{ empty }, props.open && 'open']"
     :style="{
       '--vp-outline-opacity': activeIndex >= 0 ? 1 : 0,
       '--vp-outline-curr': activeIndex,
@@ -107,17 +111,21 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
 .VPOutline {
   position: absolute;
   top: 50px;
-  right: 50px;
+  right: 10px;
   width: 166px;
   max-height: 100%;
-  padding-left: 5px;
+  padding-bottom: 10px;
   z-index: 1;
   overflow-y: auto;
+  background-color: var(--mat-solid-0);
 }
 
 @media not (min-width: 1000px) {
-  .VPOutline:not(.open) {
-    display: none;
+  .VPOutline {
+    /* border-bottom: 1px solid var(--mat-solid-15); */
+    &:not(.open) {
+      display: none;
+    }
   }
 }
 
@@ -132,21 +140,21 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
     display: none;
   }
 
-  &:not(.empty)::before {
+  /* &:not(.empty)::before {
     position: absolute;
     top: 0;
     height: calc(30px + calc(var(--6) * var(--vp-outline-sum)));
-    left: 5px;
+    left: 0;
     width: 1px;
     display: block;
-    background-color: var(--mat-air-15);
+    background-color: var(--mat-solid-15);
     content: '';
-  }
+  } */
 
   &:not(.empty)::after {
     position: absolute;
     top: 30px;
-    left: 5px;
+    left: 0;
     display: block;
     height: var(--6);
     width: 2px;

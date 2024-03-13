@@ -10,17 +10,26 @@ const features = computed(() => ({
   outline: props.features.includes('outline'),
 }));
 
-const emit = defineEmits<{
-  sidebar: [_: string];
-  outline: [_: void];
-}>();
+const sidebar = defineModel<boolean>('sidebar');
+const outline = defineModel<boolean>('outline');
 </script>
 <template>
-  <div class="VPNav (///)">
-    <button v-if="features.sidebar" class="mat:air" @click="emit('sidebar','')">
+  <div class="VPNav [B] [FS]">
+    <button
+      v-if="features.sidebar"
+      class="mat:air px-5"
+      :aria-pressed="sidebar"
+      @click="sidebar = !sidebar"
+    >
       Sidebar
     </button>
-    <button v-if="features.outline" class="mat:air" @click="emit('outline')">
+    <img src="/favicon.ico" />
+    <button
+      v-if="features.outline"
+      class="mat:air px-5"
+      :aria-pressed="outline"
+      @click="outline = !outline"
+    >
       Outline
     </button>
   </div>
@@ -39,7 +48,16 @@ const emit = defineEmits<{
 
 @media (min-width: 1000px) {
   .VPNav {
-    display: none;
+    width: 299px;
+    > :not(img) {
+      display: none;
+    }
   }
+}
+
+.VPNav img {
+  width: 30px;
+  margin: auto;
+  pointer-events: none;
 }
 </style>
