@@ -216,4 +216,11 @@ const shiftRange = (
   return [0, map.height - fan.height];
 };
 
+const dataAttr = (config: RuntimeConfigs) => {
+  const { dir, $fan } = config;
+  // const z = ;
+
+  return { ...config };
+};
+
 export const levitate = { auto, place };

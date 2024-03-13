@@ -111,10 +111,9 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
 .VPOutline {
   position: absolute;
   top: 50px;
-  right: 10px;
+  right: 20px;
   width: 166px;
   max-height: 100%;
-  padding-bottom: 10px;
   z-index: 1;
   overflow-y: auto;
   background-color: var(--mat-solid-0);
@@ -122,7 +121,6 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
 
 @media not (min-width: 1000px) {
   .VPOutline {
-    /* border-bottom: 1px solid var(--mat-solid-15); */
     &:not(.open) {
       display: none;
     }
@@ -139,17 +137,6 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
   &.empty .title {
     display: none;
   }
-
-  /* &:not(.empty)::before {
-    position: absolute;
-    top: 0;
-    height: calc(30px + calc(var(--6) * var(--vp-outline-sum)));
-    left: 0;
-    width: 1px;
-    display: block;
-    background-color: var(--mat-solid-15);
-    content: '';
-  } */
 
   &:not(.empty)::after {
     position: absolute;

@@ -1,10 +1,20 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import {
+  computed,
+  defineAsyncComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+} from 'vue';
 import { Bag, on } from '../../../strawberry-farm/functions';
 import VPOutline from './VPOutline.vue';
 import VPSidebar from './VPSidebar.vue';
 import VPNav from './VPNav.vue';
 import { useData } from './composables';
+
+const AsyncComponent = defineAsyncComponent(
+  () => import('../../examples/AsyncComponentExample.vue'),
+);
 
 const { site, frontmatter } = useData();
 
@@ -58,9 +68,7 @@ const outline = ref(false);
       :features="full ? ['sidebar'] : ['sidebar', 'outline']"
     />
     <div v-if="full" class="VPMain">
-      <div class="mat:air">
-        Click
-      </div>
+      <AsyncComponent />
       <!-- <Content class="VPContent" role="article" /> -->
     </div>
     <div v-else class="VPMain">
@@ -80,7 +88,6 @@ const outline = ref(false);
 }
 
 .VPMain {
-  /* position: relative; */
   padding-left: 300px;
   z-index: 0;
   overflow: auto;
@@ -88,10 +95,9 @@ const outline = ref(false);
 
 .VPContent {
   overflow: auto;
-  padding: 50px 30px;
+  padding: 0 30px;
   padding-inline: calc(50px) calc(166px + 50px);
   padding-bottom: 100px;
-  /* transition: padding 0.3s; */
 
   > div {
     width: min(800px, 100%);
@@ -100,8 +106,9 @@ const outline = ref(false);
 }
 
 @media not (min-width: 1000px) {
-  .VPLayout {
-    /* grid-template: 1fr/1fr; */
+  .VPMain {
+    padding-top: 50px;
+    padding-left: 0;
   }
   .VPContent {
     padding-inline: 50px;

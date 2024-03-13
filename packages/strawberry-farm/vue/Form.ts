@@ -71,14 +71,14 @@ type PathValue<T, P extends Path<T>> = T extends Unpathed
 
 type z = Path<{ a: 1 } | undefined>;
 
-  type V = PathValue<IForm15Pro, 'otherDescritionPro.billingRefs'>;
-  type zV = PathValue<IForm15Pro, 'otherDescritionPro.billings'>;
-  type zzV = PathValue<IForm15Pro, 'otherDescritionPro.billingRefs.1'>;
-  type zV2 = PathValue<IForm15Pro, 'otherDescritionPro.billings.1'>;
-  type zVz = PathValue<{ a: string | number }[] | undefined, '1'>;
-  type dd = PathValue<IForm15Pro, 'duration'>;
-  type ddasd = PathValue<IForm15Pro, 'duration.3'>;
-  type ddasdss = PathValue<IForm15Pro, 'billings.1'>;
+type V = PathValue<IForm15Pro, 'otherDescritionPro.billingRefs'>;
+type zV = PathValue<IForm15Pro, 'otherDescritionPro.billings'>;
+type zzV = PathValue<IForm15Pro, 'otherDescritionPro.billingRefs.1'>;
+type zV2 = PathValue<IForm15Pro, 'otherDescritionPro.billings.1'>;
+type zVz = PathValue<{ a: string | number }[] | undefined, '1'>;
+type dd = PathValue<IForm15Pro, 'duration'>;
+type ddasd = PathValue<IForm15Pro, 'duration.3'>;
+type ddasdss = PathValue<IForm15Pro, 'billings.1'>;
 
 type v = string[] extends Unpathed ? 1 : 0;
 // Potential undefined
