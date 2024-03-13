@@ -33,9 +33,9 @@ switch (dirname) {
       mod => (raw.value = (mod.default as string).replace(/\r\n/g, '\n')), // Windows©️ is awesome
     );
     break;
-  case 'html':
-    import(`../html/${filename}.vue`).then(mod => (module.value = mod.default));
-    import(`../html/${filename}.vue?raw`).then(
+  case 'components':
+    import(`../components/${filename}.vue`).then(mod => (module.value = mod.default));
+    import(`../components/${filename}.vue?raw`).then(
       mod => (raw.value = (mod.default as string).replace(/\r\n/g, '\n')), // Windows©️ is awesome
     );
     break;
@@ -73,7 +73,7 @@ switch (dirname) {
 
   > div:first-child {
     padding: 20px;
-    --a: var(--mat-air-15);
+    --a: var(--mat-solid-15);
 
     --x: 18px;
     --y: 40px;

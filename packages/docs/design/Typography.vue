@@ -20,9 +20,15 @@ const classes = [
 <style scoped>
 .good {
   display: grid;
-  grid: auto-flow 1fr 1fr 1fr/ 1fr 1fr 1fr;
+  grid: auto-flow /  1fr;
   place-items: start start;
   gap: 10px;
+}
+
+@media (min-width: 700px) {
+  .good {
+  grid: auto-flow / 1fr 1fr 1fr;
+  }
 }
 
 .t {

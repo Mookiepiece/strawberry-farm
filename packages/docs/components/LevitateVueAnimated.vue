@@ -44,7 +44,7 @@ const toggle = () => {
       <Teleport v-if="open || leaving" to="body">
         <div ref="popper" class="vp-demo-levitate-vue-animated-container fixed (///)">
           <Transition appear @after-leave="leaving = false">
-            <div v-show="open" class="vp-demo-levitate-vue-animated 🦄 p-6">
+            <div v-show="open" class="vp-demo-levitate-vue-animated 💖 p-6">
               Content
             </div>
           </Transition>

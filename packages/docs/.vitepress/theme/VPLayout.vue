@@ -1,12 +1,27 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
 import { Bag, on } from '../../../strawberry-farm/functions';
 import VPOutline from './VPOutline.vue';
 import VPSidebar from './VPSidebar.vue';
+import VPNav from './VPNav.vue';
+import { useData } from './composables';
+
+const { site, frontmatter } = useData();
+
+const full = computed(() => frontmatter.value.layout === 'full');
 
 // https://github.com/vuejs/vitepress/blob/20511006dba516ca8c06ed1dd3516547af668a0e/src/client/app/router.ts#L161
 // Scroll section into view when click hash link (Original code don't work because our doc don't allow body scrolling)
 let bag = Bag();
+
+onMounted(() => {
+  document.body.classList.add('tone:rasp');
+  bag(() => {
+    document.body.classList.remove('tone:rasp');
+  });
+});
+onUnmounted(() => bag());
+
 onMounted(() => {
   // NOTE: Ctrl key opens the link in new tab.
   bag(
@@ -29,22 +44,20 @@ onMounted(() => {
     }),
   );
 });
-
-onMounted(() => {
-  document.body.classList.add('tone:rasp');
-  bag(() => {
-    document.body.classList.remove('tone:rasp');
-  });
-});
-
-onUnmounted(() => bag());
 </script>
 
 <template>
   <div class="VPLayout">
+    <VPNav
+      :features="full ? ['sidebar'] : ['sidebar', 'outline']"
+      @sidebar=""
+    />
     <VPSidebar />
-    <Content class="VPContent [A] vp-doc" role="article" />
-    <VPOutline />
+    <div v-if="full" class="VPMain">full</div>
+    <div v-else class="VPMain">
+      <Content class="VPContent [A] vp-doc" role="article" />
+      <VPOutline />
+    </div>
   </div>
 </template>
 
@@ -52,16 +65,21 @@ onUnmounted(() => bag());
 .VPLayout {
   position: relative;
   display: grid;
-  grid-template: 1fr/300px 1fr 166px;
+  grid: 1fr/1fr;
   height: 100vh;
   overflow: hidden;
-  transition: grid-template 0.3s;
+}
+
+.VPMain {
+  overflow: auto;
 }
 
 .VPContent {
   overflow: auto;
   padding: 50px 30px;
+  padding-inline: calc(300px + 50px) calc(166px + 50px);
   padding-bottom: 100px;
+  /* transition: padding 0.3s; */
 
   > div {
     width: min(800px, 100%);
@@ -71,7 +89,10 @@ onUnmounted(() => bag());
 
 @media not (min-width: 1000px) {
   .VPLayout {
-    grid-template: 1fr/0 1fr 0;
+    /* grid-template: 1fr/1fr; */
+  }
+  .VPContent {
+    padding-inline: 50px;
   }
 }
 </style>

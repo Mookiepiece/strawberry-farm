@@ -1,10 +1,15 @@
 <script setup lang="ts">
-const props = defineProps<{
-  class?: any;
-}>();
-
+const props = withDefaults(
+  defineProps<{
+    class?: any;
+    type?: 'submit' | 'reset' | 'button';
+  }>(),
+  {
+    type: 'button',
+  },
+);
 </script>
 
 <template>
-  <button class="sf-button" :class="props.class"><slot /></button>
+  <button class="sf-button" :class="props.class" :type="props.type"><slot /></button>
 </template>

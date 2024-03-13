@@ -15,17 +15,16 @@ const handleContentUpdated = () => {
   getHeaders();
   bag();
 
-  let _VPContentEl = document.querySelector<HTMLDivElement>('.VPContent');
-  if (!_VPContentEl) return;
-  let VPContentEl = _VPContentEl;
+  const VPMain = document.querySelector<HTMLDivElement>('.VPMain');
+  if (!VPMain) return;
 
-  VPContentEl.scrollTop = 0;
+  VPMain.scrollTop = 0;
 
   const limit = 150;
-  offset.value = VPContentEl.scrollTop + limit;
+  offset.value = VPMain.scrollTop + limit;
 
   bag(
-    on(VPContentEl).scroll(
+    on(VPMain).scroll(
       debounce(
         () => {
           getHeaders();
@@ -37,7 +36,7 @@ const handleContentUpdated = () => {
           // Those sections are "un-highlight-able".
           // UPDATE: this hack has been removed
 
-          offset.value = VPContentEl.scrollTop + limit;
+          offset.value = VPMain.scrollTop + limit;
         },
         100,
         bag(new AbortController()).signal,
@@ -106,13 +105,23 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
 
 <style>
 .VPOutline {
-  position: relative;
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  width: 166px;
   max-height: 100%;
-  padding-top: 50px;
   padding-left: 5px;
   z-index: 1;
   overflow-y: auto;
+}
 
+@media not (min-width: 1000px) {
+  .VPOutline:not(.open) {
+    display: none;
+  }
+}
+
+.VPOutline {
   .title {
     font-weight: 600;
     height: var(--6);
@@ -126,7 +135,7 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
   &:not(.empty)::before {
     position: absolute;
     top: 0;
-    height: calc(50px + 30px + calc(var(--6) * var(--vp-outline-sum)));
+    height: calc(30px + calc(var(--6) * var(--vp-outline-sum)));
     left: 5px;
     width: 1px;
     display: block;
@@ -136,7 +145,7 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
 
   &:not(.empty)::after {
     position: absolute;
-    top: 80px;
+    top: 30px;
     left: 5px;
     display: block;
     height: var(--6);

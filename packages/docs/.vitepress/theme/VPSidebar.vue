@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch, watchEffect } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import {
   MemoryLightbulb,
   MemoryFormatBold,
@@ -45,15 +45,16 @@ const toggleTheme = async (e: MouseEvent) => {
   );
 };
 
-const toggleFontFamily = () => {
-  isToggledFontFamily.value = !isToggledFontFamily.value;
-  document.body.classList.toggle('VPBodyDefaultFont');
-};
 const isToggledFontFamily = ref(!!sessionStorage.getItem('VPBodyDefaultFont'));
 watch(isToggledFontFamily, is => {
   is
     ? sessionStorage.setItem('VPBodyDefaultFont', '1')
     : sessionStorage.removeItem('VPBodyDefaultFont');
+});
+watch(isToggledFontFamily, is => {
+  is
+    ? document.body.classList.add('VPBodyDefaultFont')
+    : document.body.classList.remove('VPBodyDefaultFont');
 });
 
 const sidebarGroups = theme.value.sidebar;
@@ -64,57 +65,59 @@ const _isDark = computed(() => isDark.value);
 
 <template>
   <aside class="VPSidebar [#]">
-    <div class="VPSidebarBody">
-      <div class="QuickAccess">
-        <button
-          class="mat:dust"
-          title="切换深色模式"
-          :aria-pressed="_isDark"
-          @click="toggleTheme"
-        >
-          <svg viewBox="0 0 22 22">
-            <path :d="MemoryLightbulb" />
-          </svg>
-        </button>
-        <button
-          class="mat:dust"
-          title="切换默认字体（调试用，思源在相同行高下汉字的位置会偏下一点）"
-          :aria-pressed="isToggledFontFamily"
-          @click="toggleFontFamily"
-        >
-          <svg viewBox="0 0 22 22">
-            <path :d="MemoryFormatBold" />
-          </svg>
-        </button>
-      </div>
-      <nav
-        class="nav"
-        id="VPSidebarNav"
-        aria-label="Sidebar Navigation"
-        tabindex="-1"
+    <div class="QuickAccess">
+      <button
+        class="mat:dust"
+        title="切换深色模式"
+        :aria-pressed="_isDark"
+        @click="toggleTheme"
       >
-        <VPSidebarItem
-          v-for="item in sidebarGroups"
-          :key="item.text"
-          :item="item"
-          :depth="0"
-        />
-      </nav>
+        <svg viewBox="0 0 22 22">
+          <path :d="MemoryLightbulb" />
+        </svg>
+      </button>
+      <button
+        class="mat:dust"
+        title="切换默认字体（调试用，思源在相同行高下汉字的位置会偏下一点）"
+        :aria-pressed="isToggledFontFamily"
+        @click="isToggledFontFamily = !isToggledFontFamily"
+      >
+        <svg viewBox="0 0 22 22">
+          <path :d="MemoryFormatBold" />
+        </svg>
+      </button>
     </div>
+    <nav
+      class="nav"
+      id="VPSidebarNav"
+      aria-label="Sidebar Navigation"
+      tabindex="-1"
+    >
+      <VPSidebarItem
+        v-for="item in sidebarGroups"
+        :key="item.text"
+        :item="item"
+        :depth="0"
+      />
+    </nav>
   </aside>
 </template>
 
 <style>
 .VPSidebar {
+  position: absolute;
+  inset: 0;
+  width: 300px;
+  z-index: 1;
   padding-top: 50px;
-  border-right: 1px solid var(--DVD);
+  border-right: 1px solid var(--mat-solid-15);
   overflow: clip auto;
-  transition: transform 0.3s;
 }
 
-/* No Shrink when collapsing in small screen */
-.VPSidebarBody {
-  width: 300px;
+@media not (min-width: 1000px) {
+  .VPSidebar:not(.open) {
+    display: none;
+  }
 }
 
 ::view-transition-old(root),
@@ -138,6 +141,7 @@ const _isDark = computed(() => isDark.value);
   grid: auto-flow 1fr / repeat(auto-fill, minmax(60px, 1fr));
   gap: 5px;
   padding: 10px 30px;
+
   button {
     padding: 10px 20px;
     border-radius: 5px;

@@ -1,5 +1,5 @@
 import { useData as useData$ } from 'vitepress';
-import { ref, shallowRef } from 'vue';
+import { shallowRef } from 'vue';
 
 export type LinkItem = {
   text: string;
@@ -17,7 +17,7 @@ export type ThemeConfig = {
   sidebar: LinkGroup[];
 };
 
-const theme = ref<ThemeConfig>({
+const theme = shallowRef<ThemeConfig>({
   sidebar: [
     {
       text: 'Intro',
@@ -60,25 +60,31 @@ const theme = ref<ThemeConfig>({
       ],
     },
     {
-      text: 'HTML',
+      text: 'Components',
       items: [
-        { text: 'Form', link: '/html/Form' },
-        { text: 'Toast', link: '/html/Toast' },
-        { text: 'Trap', link: '/html/Trap' },
-        { text: 'Modal', link: '/html/Modal' },
-        { text: 'Levitate', link: '/html/Levitate' },
-        { text: 'Icon', link: '/html/Icon' },
-        { text: 'FX', link: '/html/FX' },
+        { text: 'Select', link: '/components/Select' },
+        { text: 'Form', link: '/components/Form' },
+        { text: 'Toast', link: '/components/Toast' },
+        { text: 'Trap', link: '/components/Trap' },
+        { text: 'Modal', link: '/components/Modal' },
+        { text: 'Levitate', link: '/components/Levitate' },
+        { text: 'Icon', link: '/components/Icon' },
+        { text: 'FX', link: '/components/FX' },
       ],
     },
     {
       text: 'Experiments',
       items: [{ text: 'Swipe', link: '/experiments/Swipe' }],
     },
+    {
+      text: 'Examples',
+      items: [{ text: 'Example', link: '/examples/Example' }],
+    },
   ],
 });
 
 export const useData: typeof useData$ = () => {
   const data = useData$();
-  return { ...data, theme: theme };
+  // FIXME: Typescript HACK
+  return { ...data, theme: theme as any };
 };
