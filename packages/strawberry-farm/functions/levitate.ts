@@ -86,8 +86,6 @@ const place = (
   const up = $up.getBoundingClientRect();
   const fan = $fan.getBoundingClientRect();
 
-  console.log($fan.innerHTML);
-
   let config: RuntimeConfigs = {
     $up,
     $fan,

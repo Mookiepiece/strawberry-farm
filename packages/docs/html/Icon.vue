@@ -38,8 +38,8 @@ const z = Object.keys(IFeatherElement.names);
   user-select: none;
 }
 svg {
-  width: 2em;
-  height: 2em;
+  width: 24px;
+  height: 24px;
   fill: none;
   color: var(---ink);
   path {

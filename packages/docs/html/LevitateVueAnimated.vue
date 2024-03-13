@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onUnmounted, ref, watch } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 import { Bag, levitate } from '@mookiepiece/strawberry-farm/functions';
 
 const open = ref(false);
@@ -14,18 +14,15 @@ onBeforeUnmount(bag);
 watch(
   () => [popper.value, open.value] as const,
   ([el, open]) => {
-    if (open) {
+    bag();
+    if (open && el) {
       bag(
         levitate.auto(button.value!, () => {
-          levitate.place(button.value!, el!, {
+          levitate.place(button.value!, el, {
             offset: 100,
           });
         }),
       );
-    } else {
-      if (!open) {
-        bag();
-      }
     }
   },
 );
@@ -43,14 +40,11 @@ const toggle = () => {
 <template>
   <div style="position: relative; height: 300px; width: 100%; overflow: auto">
     <div style="width: 500%; height: 1000px">
-      <button ref="button" class="sf-button" @click="toggle">Nike</button>
+      <button ref="button" class="sf-button mat:dusty" @click="toggle">Nike</button>
       <Teleport v-if="open || leaving" to="body">
-        <div
-          ref="popper"
-          class="vp-demo-levitate-vue-animated-container fixed (///)"
-        >
+        <div ref="popper" class="vp-demo-levitate-vue-animated-container fixed (///)">
           <Transition appear @after-leave="leaving = false">
-            <div v-show="open" class="vp-demo-levitate-vue-animated">
+            <div v-show="open" class="vp-demo-levitate-vue-animated 🦄 p-6">
               Content
             </div>
           </Transition>
@@ -61,14 +55,13 @@ const toggle = () => {
 </template>
 
 <style>
-.vp-demo-levitate-vue-animated-container {
-}
+.vp-demo-levitate-vue-animated-container {}
 
 .vp-demo-levitate-vue-animated {
   width: 100px;
-  background-color: pink;
   transition: all 1s var(--curve-wave);
 }
+
 .vp-demo-levitate-vue-animated.v-enter-from,
 .vp-demo-levitate-vue-animated.v-leave-to {
   transform: translateX(200px);
@@ -76,8 +69,7 @@ const toggle = () => {
 }
 
 .vp-demo-levitate-vue-animated.v-enter-active,
-.vp-demo-levitate-vue-animated.v-leave-active {
-}
+.vp-demo-levitate-vue-animated.v-leave-active {}
 
 .vp-demo-levitate-vue-animated.v-enter-to,
 .vp-demo-levitate-vue-animated.v-leave-from {

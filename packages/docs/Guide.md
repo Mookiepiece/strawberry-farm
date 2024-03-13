@@ -9,12 +9,12 @@
 ### 彩色区域
 
 ```html
-<div class="🩷" style="width:150px; height:100px;"></div>
+<div class="💖" style="width:150px; height:100px;"></div>
 <div class="🦄" style="width:150px; height:100px;"></div>
 <div class="(///)" style="width:150px; height:100px;"></div>
 ```
 
-<div class="🩷" style="width:150px; height:100px;"></div>
+<div class="💖" style="width:150px; height:100px;"></div>
 <div class="🦄" style="width:150px; height:100px;"></div>
 <div class="(///)" style="width:150px; height:100px;"></div>
 
