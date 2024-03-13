@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted, ref, watch } from 'vue';
+import { onBeforeUnmount, onUnmounted, ref, watch } from 'vue';
 import { Bag, levitate } from '@mookiepiece/strawberry-farm/functions';
 
 const open = ref(false);
@@ -9,26 +9,26 @@ const button = ref<Element>();
 const popper = ref<HTMLDivElement>();
 
 const bag = Bag();
-onUnmounted(bag);
+onBeforeUnmount(bag);
 
-// watch(
-//   () => [popper.value, open.value] as const,
-//   ([el, show]) => {
-//     if (el) {
-//       bag(
-//         levitate.auto(button.value!, () => {
-//           levitate.place(button.value!, el, {
-//             offset: 100,
-//           });
-//         }),
-//       );
-//     } else {
-//       if (!show) {
-//         bag();
-//       }
-//     }
-//   },
-// );
+watch(
+  () => [popper.value, open.value] as const,
+  ([el, open]) => {
+    if (open) {
+      bag(
+        levitate.auto(button.value!, () => {
+          levitate.place(button.value!, el!, {
+            offset: 100,
+          });
+        }),
+      );
+    } else {
+      if (!open) {
+        bag();
+      }
+    }
+  },
+);
 
 const toggle = () => {
   if (!open.value) {
@@ -44,15 +44,18 @@ const toggle = () => {
   <div style="position: relative; height: 300px; width: 100%; overflow: auto">
     <div style="width: 500%; height: 1000px">
       <button ref="button" class="sf-button" @click="toggle">Nike</button>
-      <Transition >
-        <div class="vp-demo-levitate-vue-animated" v-show="open">Content</div>
-      </Transition>
-      <!-- <Teleport to="body">
+      <Teleport v-if="open || leaving" to="body">
         <div
           ref="popper"
           class="vp-demo-levitate-vue-animated-container fixed (///)"
-        ></div>
-      </Teleport> -->
+        >
+          <Transition appear @after-leave="leaving = false">
+            <div v-show="open" class="vp-demo-levitate-vue-animated">
+              Content
+            </div>
+          </Transition>
+        </div>
+      </Teleport>
     </div>
   </div>
 </template>
