@@ -11,6 +11,8 @@ const popper = ref<HTMLDivElement>();
 const bag = Bag();
 onBeforeUnmount(bag);
 
+const flip = levitate.plugins.flip(120)
+
 watch(
   () => [popper.value, open.value] as const,
   ([el, open]) => {
@@ -18,9 +20,9 @@ watch(
     if (open && el) {
       bag(
         levitate.auto(button.value!, () => {
-          levitate.place(button.value!, el, {
-            offset: 100,
-          });
+          levitate(button.value!, el, {
+            offset: 10,
+          }, flip);
         }),
       );
     }
@@ -55,7 +57,9 @@ const toggle = () => {
 </template>
 
 <style>
-.vp-demo-levitate-vue-animated-container {}
+.vp-demo-levitate-vue-animated-container {
+  z-index: 1;
+}
 
 .vp-demo-levitate-vue-animated {
   width: 100px;

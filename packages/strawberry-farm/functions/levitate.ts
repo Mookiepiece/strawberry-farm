@@ -4,7 +4,12 @@ import { on } from './on';
 type Direction = 'top' | 'right' | 'bottom' | 'left';
 type Alignment = 'start' | 'end';
 
-type RuntimeConfigs = {
+type Levitate = typeof _levitate & {
+  auto: typeof auto;
+  plugins: typeof plugins;
+};
+
+type PopConfigs = {
   $up: Element;
   $fan: HTMLElement;
 
@@ -22,6 +27,10 @@ type RuntimeConfigs = {
   x?: number;
   y?: number;
 };
+
+interface PopPlugins {
+  (configs: PopConfigs): PopConfigs;
+}
 
 const isScrollableElement = (p: Element) => {
   const { overflowY, overflowX } = getComputedStyle(p);
@@ -54,64 +63,6 @@ const auto = (el: Element, cb: () => void) => {
   return () => bag();
 };
 
-const place = (
-  $up: Element,
-  $fan: HTMLElement,
-  {
-    dir = 'bottom',
-    alignment,
-    offset = 0,
-  }: {
-    dir?: Direction;
-    offset?: number;
-    alignment?: Alignment;
-    viewport?: DOMRect;
-  } = {
-    dir: 'bottom',
-    offset: 0,
-  },
-) => {
-  const viewport: DOMRect = {
-    x: 0,
-    y: 0,
-    top: 0,
-    right: document.body.clientWidth,
-    bottom: document.body.clientHeight,
-    left: 0,
-    width: document.body.clientWidth,
-    height: document.body.clientHeight,
-    toJSON() {},
-  };
-
-  const up = $up.getBoundingClientRect();
-  const fan = $fan.getBoundingClientRect();
-
-  const map = availableSpace4[dir]([[up], viewport], offset);
-
-  let config: RuntimeConfigs = {
-    $up,
-    $fan,
-    dir,
-    alignment,
-    up,
-    fan,
-    offset,
-    viewport,
-    map,
-  };
-
-  config = align(config);
-
-  if (!config.glitch) {
-    $fan.style.setProperty('--x', config.x + 'px');
-    $fan.style.setProperty('--y', config.y + 'px');
-    $fan.style.setProperty('transform', 'translate(var(--x), var(--y))');
-
-    return config.glitch;
-  }
-  return config.glitch;
-};
-
 const clamp = (min = 0, a: number, max = 100) =>
   Math.min(max, Math.max(a, min));
 
@@ -129,8 +80,8 @@ const availableSpace4: Record<
   left: ([[up], viewport], offset) => { const width = clamp(0, up.left - viewport.left - offset, viewport.width); const right = viewport.left + width; return ({ ...viewport, right, width }) },
 };
 
-const smaller = ([[fan], map]: [[DOMRect], DOMRect]) =>
-  fan.width < map.width && fan.height < map.height;
+// const smaller = ([[fan], map]: [[DOMRect], DOMRect]) =>
+//   fan.width < map.width && fan.height < map.height;
 
 type LogicalBox = {
   main: number;
@@ -168,7 +119,7 @@ const flipAll =
     limit = 300,
     fallback = (dir: Direction): Direction[] => defaultFlipFallbacks[dir],
   ) =>
-  (config: RuntimeConfigs): RuntimeConfigs => {
+  (config: PopConfigs): PopConfigs => {
     let { up, viewport, dir, offset } = config;
     let map = availableSpace4[dir]([[up], viewport], offset);
 
@@ -194,7 +145,7 @@ const flip = (limit = 300) =>
 
 // Align
 
-const align = (config: RuntimeConfigs): RuntimeConfigs => {
+const align = (config: PopConfigs): PopConfigs => {
   let { up, fan, dir, alignment } = config;
   let map = config.map!;
 
@@ -228,24 +179,24 @@ const align = (config: RuntimeConfigs): RuntimeConfigs => {
   return { ...config, x, y };
 };
 
-const inside = ([[fan], map]: [[DOMRect], DOMRect]) =>
-  fan.left > map.left &&
-  fan.top > map.top &&
-  fan.bottom < map.bottom &&
-  fan.right < map.right;
+// const inside = ([[fan], map]: [[DOMRect], DOMRect]) =>
+//   fan.left > map.left &&
+//   fan.top > map.top &&
+//   fan.bottom < map.bottom &&
+//   fan.right < map.right;
 
-const shiftRange = (
-  [[up, fan], map]: [[DOMRect, DOMRect], DOMRect],
-  dir: Direction,
-): [0, number] => {
-  if (dir === 'bottom' || dir === 'top') {
-    return [0, map.width - fan.width];
-  }
-  return [0, map.height - fan.height];
-};
+// const shiftRange = (
+//   [[up, fan], map]: [[DOMRect, DOMRect], DOMRect],
+//   dir: Direction,
+// ): [0, number] => {
+//   if (dir === 'bottom' || dir === 'top') {
+//     return [0, map.width - fan.width];
+//   }
+//   return [0, map.height - fan.height];
+// };
 
-// TODO: remove data attr
-const dataAttr = (config: RuntimeConfigs) => {
+// TODO: how to remove data attr
+const dataAttr = (config: PopConfigs) => {
   const { dir, $fan } = config;
   $fan.setAttribute('data-dir', dir);
   return config;
@@ -256,4 +207,65 @@ const plugins = {
   flipAll,
 };
 
-export const levitate = { auto, place, plugins };
+const _levitate = (
+  $up: Element,
+  $fan: HTMLElement,
+  {
+    dir = 'bottom',
+    alignment,
+    offset = 0,
+  }: {
+    dir?: Direction;
+    offset?: number;
+    alignment?: Alignment;
+    viewport?: DOMRect;
+  } = {
+    dir: 'bottom',
+    offset: 0,
+  },
+  ...plugins: PopPlugins[]
+) => {
+  const viewport: DOMRect = {
+    x: 0,
+    y: 0,
+    top: 0,
+    right: document.body.clientWidth,
+    bottom: document.body.clientHeight,
+    left: 0,
+    width: document.body.clientWidth,
+    height: document.body.clientHeight,
+    toJSON() {},
+  };
+
+  const up = $up.getBoundingClientRect();
+  const fan = $fan.getBoundingClientRect();
+
+  const map = availableSpace4[dir]([[up], viewport], offset);
+
+  let config: PopConfigs = {
+    $up,
+    $fan,
+    dir,
+    alignment,
+    up,
+    fan,
+    offset,
+    viewport,
+    map,
+  };
+
+  for (let p of plugins) config = p(config);
+
+  config = align(config);
+
+  if (!config.glitch) {
+    $fan.style.setProperty('--x', config.x + 'px');
+    $fan.style.setProperty('--y', config.y + 'px');
+    $fan.style.setProperty('transform', 'translate(var(--x), var(--y))');
+
+    return config.glitch;
+  }
+  return config.glitch;
+};
+
+export const levitate: Levitate = Object.assign(_levitate, { auto, plugins });

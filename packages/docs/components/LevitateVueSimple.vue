@@ -16,7 +16,7 @@ watch(
     if (el) {
       bag(
         levitate.auto(button.value!, () => {
-          levitate.place(button.value!, el, {
+          levitate(button.value!, el, {
             offset: 100,
           });
         }),

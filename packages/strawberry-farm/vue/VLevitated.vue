@@ -34,7 +34,7 @@ watch(show, show => {
 
       autoBag(
         levitate.auto(btn, () => {
-          levitate.place(btn, ppr, {
+          levitate(btn, ppr, {
             offset: 10,
           });
         }),

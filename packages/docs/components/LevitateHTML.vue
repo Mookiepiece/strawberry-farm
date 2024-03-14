@@ -16,7 +16,7 @@ onMounted(() => {
 });
 
 const update = () => {
-  levitate.place(a.value!, b.value!, { dir: dirRef.value });
+  levitate(a.value!, b.value!, { dir: dirRef.value }, levitate.plugins.flip(80));
 };
 
 const changeDir = (dir: 'top' | 'left' | 'right' | 'bottom') => {
@@ -30,7 +30,9 @@ const changeDir = (dir: 'top' | 'left' | 'right' | 'bottom') => {
     <div style="position: relative; height: 300px; width: 100%; overflow: auto">
       <div style="width: 500%; height: 1000px">
         <div ref="a" class="a"></div>
-        <div ref="b" class="b">lorem</div>
+        <Teleport to="body">
+          <div ref="b" class="b 💖">lorem</div>
+        </Teleport>
       </div>
     </div>
     <div
@@ -64,8 +66,7 @@ const changeDir = (dir: 'top' | 'left' | 'right' | 'bottom') => {
   position: fixed;
   top: 0;
   left: 0;
-  color: var(--black-text1);
-  background-color: #fde;
   padding: 10px;
+  z-index: 1;
 }
 </style>
