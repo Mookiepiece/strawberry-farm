@@ -101,13 +101,13 @@
 
 .mat\:dust {
   border: 0;
-  background: var(--mat-air-1);
+  background: color-mix(in oklab, var(--mat-air-05), var(--mat-air-1));
 
   &:hover {
-    background: var(--mat-air-2);
+    background: color-mix(in oklab, var(--mat-air-05), var(--mat-air-2));
   }
   &:active {
-    background: var(--mat-air-3);
+    background:  var(--mat-air-2);
   }
 
   @include ActiveQuery() {
