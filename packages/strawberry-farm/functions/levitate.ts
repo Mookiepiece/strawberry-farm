@@ -14,7 +14,7 @@ type RuntimeConfigs = {
 
   up: DOMRect;
   fan: DOMRect;
-  map?: DOMRect;
+  map: DOMRect;
   viewport: DOMRect;
 
   glitch?: boolean;
@@ -86,6 +86,8 @@ const place = (
   const up = $up.getBoundingClientRect();
   const fan = $fan.getBoundingClientRect();
 
+  const map = availableSpace4[dir]([[up], viewport], offset);
+
   let config: RuntimeConfigs = {
     $up,
     $fan,
@@ -95,9 +97,9 @@ const place = (
     fan,
     offset,
     viewport,
+    map,
   };
 
-  config = flip(config);
   config = align(config);
 
   if (!config.glitch) {
@@ -130,41 +132,67 @@ const availableSpace4: Record<
 const smaller = ([[fan], map]: [[DOMRect], DOMRect]) =>
   fan.width < map.width && fan.height < map.height;
 
-const dontFlip = (config: RuntimeConfigs): RuntimeConfigs => {
-  let { up, fan, viewport, dir, offset, glitch } = config;
-  const map = availableSpace4[dir]([[up], viewport], offset);
-  return {
-    ...config,
-    map: availableSpace4[dir]([[up], viewport], offset),
-    glitch: glitch || smaller([[fan], map]),
-  };
+type LogicalBox = {
+  main: number;
+  cross: number;
 };
 
-const flip = (config: RuntimeConfigs): RuntimeConfigs => {
-  let { up, fan, viewport, dir, offset, glitch } = config;
-  let map = availableSpace4[dir]([[up], viewport], offset);
-  if (!smaller([[fan], map])) {
-    let _glitch = true;
-    for (const _dir of (
-      {
-        top: ['bottom', 'left', 'right'],
-        bottom: ['top', 'left', 'right'],
-        left: ['right', 'top', 'bottom'],
-        right: ['left', 'top', 'bottom'],
-      } as const
-    )[dir]) {
-      let _map = availableSpace4[_dir]([[up], viewport], offset);
-      if (!smaller([[fan], map])) {
-        map = _map;
-        dir = _dir;
-        _glitch = false;
-        break;
+const logicalBoxes: Record<Direction, (rect: DOMRect) => LogicalBox> = {
+  top: ({ width, height }) => ({ main: height, cross: width }),
+  bottom: ({ width, height }) => ({ main: height, cross: width }),
+
+  left: ({ width, height }) => ({ main: width, cross: height }),
+  right: ({ width, height }) => ({ main: width, cross: height }),
+};
+
+const area = (rect: DOMRect) => rect.width * rect.height;
+
+// Flip
+
+const defaultFlipFallbacks: Record<Direction, Direction[]> = {
+  top: ['bottom', 'left', 'right'],
+  bottom: ['top', 'left', 'right'],
+  left: ['right', 'top', 'bottom'],
+  right: ['left', 'top', 'bottom'],
+};
+
+const mainAxisFlipFallbacks: Record<Direction, Direction[]> = {
+  top: ['bottom'],
+  bottom: ['top'],
+  left: ['right'],
+  right: ['left'],
+};
+
+const flipAll =
+  (
+    limit = 300,
+    fallback = (dir: Direction): Direction[] => defaultFlipFallbacks[dir],
+  ) =>
+  (config: RuntimeConfigs): RuntimeConfigs => {
+    let { up, viewport, dir, offset } = config;
+    let map = availableSpace4[dir]([[up], viewport], offset);
+
+    if (logicalBoxes[dir](map).main < limit) {
+      for (const _dir of fallback(dir)) {
+        let _map = availableSpace4[_dir]([[up], viewport], offset);
+        if (
+          // logicalBoxes[dir](_map).main < limit &&
+          area(_map) > area(map)
+        ) {
+          map = _map;
+          dir = _dir;
+          break;
+        }
       }
     }
-    glitch ||= _glitch;
-  }
-  return { ...config, dir, map, glitch };
-};
+
+    return { ...config, dir, map };
+  };
+
+const flip = (limit = 300) =>
+  flipAll(limit, (dir: Direction): Direction[] => mainAxisFlipFallbacks[dir]);
+
+// Align
 
 const align = (config: RuntimeConfigs): RuntimeConfigs => {
   let { up, fan, dir, alignment } = config;
@@ -216,11 +244,16 @@ const shiftRange = (
   return [0, map.height - fan.height];
 };
 
+// TODO: remove data attr
 const dataAttr = (config: RuntimeConfigs) => {
   const { dir, $fan } = config;
-  // const z = ;
-
-  return { ...config };
+  $fan.setAttribute('data-dir', dir);
+  return config;
 };
 
-export const levitate = { auto, place };
+const plugins = {
+  flip,
+  flipAll,
+};
+
+export const levitate = { auto, place, plugins };
