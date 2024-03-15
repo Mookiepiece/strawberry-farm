@@ -88,13 +88,12 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
       '--vp-outline-sum': metaHeaders.length,
     }"
   >
-    <div class="title px-4">Outline</div>
     <template v-if="!empty">
       <VPLink
         v-for="(item, index) in metaHeaders"
         :key="index"
         class="[A] [FC] link px-4 tone:rasp mat:airy"
-        :active="activeIndex === index"
+        :active="() => activeIndex === index"
         :style="{
           '--vp-outline-level': item.level - 1,
         }"
@@ -128,19 +127,9 @@ const empty = computed(() => (metaHeaders.value?.length ?? 0) <= 1);
 }
 
 .VPOutline {
-  .title {
-    font-weight: 600;
-    height: var(--6);
-    line-height: var(--6);
-  }
-
-  &.empty .title {
-    display: none;
-  }
-
   &:not(.empty)::after {
     position: absolute;
-    top: 30px;
+    top: 0;
     left: 0;
     display: block;
     height: var(--6);

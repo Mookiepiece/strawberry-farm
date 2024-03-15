@@ -10,6 +10,7 @@ const props = defineProps<{
   rel?: string;
   judgeActive?: (active: boolean) => boolean;
   exact?: boolean;
+  active?:() =>boolean
 }>();
 
 const route = useRoute();
@@ -20,7 +21,7 @@ const isActive = computed(() => {
 
   const to = new URL(window.location.origin + (props.href ?? '/404')).pathname;
 
-  const active = props.exact ? pathname === to : pathname.startsWith(to);
+  const active = typeof props.active === 'function' ? props.active() : props.exact ? pathname === to : pathname.startsWith(to);
 
   if (props.judgeActive) {
     return props.judgeActive(active);
@@ -29,19 +30,22 @@ const isActive = computed(() => {
 });
 
 const tag = computed(() => props.tag ?? (props.href ? 'a' : 'span'));
-const isExternal = computed(
-  () => props.href && props.href.startsWith('http'),
-);
+const isExternal = computed(() => props.href && props.href.startsWith('http'));
 </script>
 
 <template>
-  <component :is="tag" :class="{
-    link: href,
-    active: isActive,
-    'vp-external-link-icon': isExternal,
-    'no-icon': noIcon,
-  }" :href="href" :target="target ?? (isExternal ? '_blank' : undefined)"
-    :rel="rel ?? (isExternal ? 'noreferrer' : undefined)">
+  <component
+    :is="tag"
+    :class="{
+      link: href,
+      active: isActive,
+      'vp-external-link-icon': isExternal,
+      'no-icon': noIcon,
+    }"
+    :href="href"
+    :target="target ?? (isExternal ? '_blank' : undefined)"
+    :rel="rel ?? (isExternal ? 'noreferrer' : undefined)"
+  >
     <slot />
   </component>
 </template>

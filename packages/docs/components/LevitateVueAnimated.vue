@@ -11,7 +11,7 @@ const popper = ref<HTMLDivElement>();
 const bag = Bag();
 onBeforeUnmount(bag);
 
-const flip = levitate.plugins.flip(120)
+const flip = levitate.plugins.flip()
 
 watch(
   () => [popper.value, open.value] as const,

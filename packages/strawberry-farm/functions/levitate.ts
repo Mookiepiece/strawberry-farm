@@ -116,20 +116,23 @@ const mainAxisFlipFallbacks: Record<Direction, Direction[]> = {
 
 const flipAll =
   (
-    limit = 300,
-    fallback = (dir: Direction): Direction[] => defaultFlipFallbacks[dir],
+    settings?: (config: PopConfigs) => {
+      limit?: number;
+      fallback?: Direction[];
+    },
   ) =>
   (config: PopConfigs): PopConfigs => {
-    let { up, viewport, dir, offset } = config;
+    let { up, fan, viewport, dir, offset } = config;
     let map = availableSpace4[dir]([[up], viewport], offset);
 
+    const _settings = settings?.(config);
+    const limit = _settings?.limit ?? logicalBoxes[dir](fan).main;
+    const fallbacks = _settings?.fallback ?? defaultFlipFallbacks[dir];
+
     if (logicalBoxes[dir](map).main < limit) {
-      for (const _dir of fallback(dir)) {
+      for (const _dir of fallbacks) {
         let _map = availableSpace4[_dir]([[up], viewport], offset);
-        if (
-          // logicalBoxes[dir](_map).main < limit &&
-          area(_map) > area(map)
-        ) {
+        if (area(_map) > area(map)) {
           map = _map;
           dir = _dir;
           break;
@@ -140,8 +143,11 @@ const flipAll =
     return { ...config, dir, map };
   };
 
-const flip = (limit = 300) =>
-  flipAll(limit, (dir: Direction): Direction[] => mainAxisFlipFallbacks[dir]);
+const flip: typeof flipAll = settings =>
+  flipAll(config => ({
+    fallback: mainAxisFlipFallbacks[config.dir],
+    ...settings?.(config),
+  }));
 
 // Align
 

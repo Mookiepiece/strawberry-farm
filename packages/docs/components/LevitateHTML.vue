@@ -16,7 +16,7 @@ onMounted(() => {
 });
 
 const update = () => {
-  levitate(a.value!, b.value!, { dir: dirRef.value }, levitate.plugins.flip(80));
+  levitate(a.value!, b.value!, { dir: dirRef.value }, levitate.plugins.flip());
 };
 
 const changeDir = (dir: 'top' | 'left' | 'right' | 'bottom') => {
