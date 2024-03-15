@@ -85,7 +85,9 @@ const onKeyDownExact = (e: KeyboardEvent) => {
       next();
       break;
     case 'Enter':
-      el.value!.closest('form')?.submit();
+      (
+        el.value!.closest('form, [role="form"]') as { submit?: () => void }
+      )?.submit?.();
       break;
   }
 };
@@ -139,7 +141,7 @@ const onKeyDownExact = (e: KeyboardEvent) => {
   &:focus-visible {
     outline: 2px solid var(---main);
     outline-offset: -1px;
-    box-shadow: 0 0 0 4px var(---foam);
+    box-shadow: 0 0 0 6px var(---foam);
   }
 }
 </style>

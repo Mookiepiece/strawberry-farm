@@ -5,14 +5,14 @@
 
 ## Font Presets
 
-| Custom Property            | `font-size`       | 2.0x Line Height | **1.6x Line Height (default)** | 1.2x Line Height |
-| -------------------------- | ----------------- | ---------------- | ------------------------------ | ---------------- |
-| <span class="h1">h1</span> | `font-size: 28px` | **56px**         | **44.8px**                     | **33.6px**       |
-| <span class="h2">h2</span> | `font-size: 24px` | **48px**         | **38.4px**                     | 28.8px           |
-| <span class="h3">h3</span> | `font-size: 20px` | **40px**         | **32px**                       | 24px             |
-| <span class="f1">f1</span> | `font-size: 16px` | **32px**         | 25.6px                         | 19.2px           |
-| <span class="f2">f2</span> | `font-size: 14px` | 28px             | 22.4px                         | 16.8px           |
-| <span class="f3">f3</span> | `font-size: 12px` | 24px             | 19.2px                         | 14.4px           |
+| Class                      | `font-size`       | 2.0x Line Height | **1.6x (default)** | 1.2x Line Height |
+| -------------------------- | ----------------- | ---------------- | ------------------ | ---------------- |
+| <span class="h1">h1</span> | `font-size: 28px` | **56px**         | **44.8px**         | **33.6px**       |
+| <span class="h2">h2</span> | `font-size: 24px` | **48px**         | **38.4px**         | 28.8px           |
+| <span class="h3">h3</span> | `font-size: 20px` | **40px**         | **32px**           | 24px             |
+| <span class="f1">f1</span> | `font-size: 16px` | **32px**         | 25.6px             | 19.2px           |
+| <span class="f2">f2</span> | `font-size: 14px` | 28px             | 22.4px             | 16.8px           |
+| <span class="f3">f3</span> | `font-size: 12px` | 24px             | 19.2px             | 14.4px           |
 
 - 行高超过30px在表格里加粗。
 
