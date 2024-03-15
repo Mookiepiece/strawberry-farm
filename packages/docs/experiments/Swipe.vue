@@ -24,7 +24,10 @@ onMounted(() => {
         infoRef.value!.innerText = JSON.stringify(relative);
 
         el.style.removeProperty('transition');
-        el.style.setProperty('transform', `translate(${relative.x}px,${relative.y}px)`);
+        el.style.setProperty(
+          'transform',
+          `translate(${relative.x}px,${relative.y}px)`,
+        );
       } else {
         infoRef.value!.innerText = '{}';
 
@@ -51,7 +54,9 @@ onMounted(() => {
 
 .z,
 .z div {
-  border: 5px solid salmon;
+  box-shadow:
+    inset -2px -2px 0 0 var(---main),
+    inset 0 0 0 2px var(---flame);
   padding: 2px;
 
   border-radius: 10px;
@@ -63,4 +68,3 @@ onMounted(() => {
   min-height: 50px;
 }
 </style>
-../../strawberry-farm/functions/trackPointer

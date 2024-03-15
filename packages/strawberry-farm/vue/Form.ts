@@ -1,3 +1,6 @@
+import { ComputedRef, computed } from 'vue';
+import { RuleS } from '../functions/validator';
+
 type IForm15Pro = {
   // name: string;
   // type: 'A' | 'B' | 'C';
@@ -5,7 +8,7 @@ type IForm15Pro = {
   rating: number;
   // temperature: number;
 
-  // usage: 'Good' | 'Bad' | 'other';
+  usage: 'Good' | 'Bad' | 'other';
   // otherDescrtion?: string;
   // otherDescrtionScreenshot: Blob;
 
@@ -16,7 +19,7 @@ type IForm15Pro = {
     billingRefs: string[];
   };
 
-  duration: [Date, Date];
+  duration: [Date | null, Date | null];
   billings: { name: string; value: number; label?: string }[];
   billingRefs: string[];
 };
@@ -56,19 +59,19 @@ type PathValue<T, P extends Path<T>> = T extends Unpathed
     ? A extends keyof T
       ? B extends Path<T[A]>
         ? PathValue<T[A], B>
-        : 7
+        : never
       : B extends `${number}`
         ? T extends Array<infer I>
           ? PathValue<I, B & Path<I>>
-          : 2
-        : 3
+          : never
+        : never
     : P extends keyof T
       ? T[P]
       : P extends `${number}`
         ? T extends Array<infer I>
           ? I
-          : 4
-        : 5;
+          : never
+        : never;
 
 // TODO: get out
 type CommonChoice =
@@ -76,19 +79,21 @@ type CommonChoice =
   | number
   | boolean
   | null
-  | undefined
   | {
       label: string;
       value: any;
       disabled?: boolean;
     };
 
+type ValueOrReactive<T> = T | ComputedRef<T>;
+
 interface FieldTypes {
-  any: undefined;
-  text: number | (number | null | undefined)[] | RegExp;
-  radio: {
-    options: CommonChoice;
-  };
+  any: ValueOrReactive<any>;
+  text: ValueOrReactive<number | (number | null | undefined)[] | RegExp>;
+  radio: ValueOrReactive<{
+    options: ValueOrReactive<CommonChoice[]>;
+  }>;
+  hidden: undefined;
 }
 
 interface FieldTypeBindings {
@@ -96,19 +101,97 @@ interface FieldTypeBindings {
   text: string;
   number: number;
   radio: any;
+  hidden: any;
 }
 
-type FieldDescriptor<Objective, ObjectivePath extends Path<Objective>, Type> = {
-  label: string;
-  name: PathValue<Objective, ObjectivePath>;
-  type?: keyof FieldTypes;
-  props?: keyof FieldTypes;
+type FieldDescriptor<
+  Objective,
+  ObjectivePath extends Path<Objective>,
+  Type extends keyof FieldTypes,
+> = {
+  label?: string;
+  name: ObjectivePath;
+
+  type: Type;
+  props?: FieldTypes[Type];
+
+  rule?: RuleS;
+  rules?: RuleS[];
+
+  initialValue: PathValue<Objective, ObjectivePath>;
+  // value: PathValue<Objective, ObjectivePath>;
+  error?: string;
 };
 
-type SFFormModel = {
-  focus(name: string): void;
-  validate(names?: []): Promise<void>;
+// type FieldRuntime<Objective, ObjectivePath extends Path<Objective>> = {
+//   descriptor:
+// }
+
+type SFFormModel<Objective> = {
+  reject(name?: Path<Objective>[], message?: 'string'): Promise<void>;
+  focus(name: Path<Objective>): void;
+  validate(names?: Path<Objective>[]): Promise<void>;
   submit(): Promise<void>;
+  /**
+   * Set the target field value, value are not able to be type analysed.
+   */
+  set(name: Path<Objective>, value: any): void;
+
+  action: (formValue: Objective) => Promise<void>;
+
+  fields: FieldDescriptor<Objective, any, any>;
 };
 
-const describeForm = <T>() => {};
+// const ComputedSymbol = Symbol('ComputedSymbol');
+
+const describeForm = <Objective>(
+  cb: (payload: {
+    describeGroup: () => any;
+    describeField: <PV extends Path<Objective>, Type extends keyof FieldTypes>(
+      f: FieldDescriptor<Objective, PV, Type>,
+    ) => FieldDescriptor<Objective, PV, Type>;
+  }) => void,
+) => {};
+
+const describeField = <Objective>() => {};
+
+const form = describeForm<IForm15Pro>(({ describeField }) => {
+  describeField({
+    initialValue: [null, null],
+    name: 'duration',
+    type: 'hidden',
+  });
+
+  describeField({
+    initialValue: 'Good',
+    name: 'usage',
+    type: 'hidden',
+  });
+
+  describeField({
+    initialValue: 0,
+    name: 'rating',
+    rule: 'string!',
+    type: 'hidden',
+  });
+
+  describeField({
+    initialValue: '1',
+    name: 'billingRefs.0',
+    rule: 'string!',
+    type: 'radio',
+    props: {
+      options: computed(() => ['1']),
+    },
+  });
+
+  describeField({
+    initialValue: ['1', '2', '3'],
+    name: 'otherDescritionPro.billingRefs',
+    rule: ['array!', [1, 3]],
+    type: 'radio',
+    props: {
+      options: computed(() => ['1']),
+    },
+  });
+});

@@ -129,7 +129,7 @@ const testRange = (
   }
 };
 
-const validators2 = new Map<
+const presets = new Map<
   keyof IRuleType,
   {
     type: (value: unknown, config: unknown) => string | void;
@@ -138,11 +138,11 @@ const validators2 = new Map<
   }
 >();
 
-validators2.set('any', {
+presets.set('any', {
   type: () => {},
 });
 
-validators2.set('string', {
+presets.set('string', {
   type: (value: unknown, config: unknown) => {
     if (typeof value !== 'string') return messages.string;
 
@@ -158,7 +158,7 @@ validators2.set('string', {
   testEmpty: (s: string) => s === '',
 });
 
-validators2.set('number', {
+presets.set('number', {
   type: (value: unknown, config: unknown) => {
     if (
       typeof value !== 'number' ||
@@ -173,7 +173,7 @@ validators2.set('number', {
   },
 });
 
-validators2.set('array', {
+presets.set('array', {
   type: (value: unknown, config: unknown) => {
     if (!Array.isArray(value)) {
       return messages.array;
@@ -185,7 +185,7 @@ validators2.set('array', {
   },
 });
 
-validators2.set('enum', {
+presets.set('enum', {
   type: (value: unknown, config: unknown) => {
     const _config = Array.isArray(config) ? config : [config];
     if (!_config.some(item => Object.is(value, item))) {
@@ -194,19 +194,19 @@ validators2.set('enum', {
   },
 });
 
-validators2.set('boolean', {
+presets.set('boolean', {
   type: (value: unknown) => {
     if (typeof value !== 'boolean') return messages.boolean;
   },
 });
 
-validators2.set('checked', {
+presets.set('checked', {
   type: (value: unknown) => {
     if (value !== true) return messages.checked;
   },
 });
 
-validators2.set('type', {
+presets.set('type', {
   type: (value: unknown, config: unknown) => {
     if (config && value && !(value instanceof (config as any))) {
       return messages.default;
@@ -222,7 +222,7 @@ validators2.set('type', {
 const EMAILRE =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-validators2.set('email', {
+presets.set('email', {
   extends: 'string',
   type(value) {
     if (!EMAILRE.test(value as string)) return messages.email;
@@ -239,7 +239,7 @@ export const validate = <T extends keyof IRuleType>(
 ): void | string | Promise<void | string> => {
   const rule = unpack(_rule);
 
-  const v = rule.type && validators2.get(rule.type);
+  const v = rule.type && presets.get(rule.type);
 
   if (v?.extends) {
     const message = validate(value, { ...rule, type: v.extends }, name);

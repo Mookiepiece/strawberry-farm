@@ -1,3 +1,4 @@
+import { Bag } from './collection';
 import { on } from './on';
 
 // Inspired by vueuse usePointerSwipe
@@ -8,45 +9,34 @@ export const trackPointer = (
     e: PointerEvent;
   }) => void,
 ) => {
-  const offs0 = new Set<any>();
-  const offs = new Set<any>();
-  if (!el.style.getPropertyValue('touch-action')) {
-    console.warn(
-      '[StrawberryFarm] Pointer events should apply on elements that `touch-action` is `none`',
-    );
-  }
+  const bag = Bag();
 
   if (!el.style.getPropertyValue('touch-action')) {
     el.style?.setProperty('touch-action', 'none');
-    offs0.add(() => {
+    bag(() => {
       el.style?.removeProperty('touch-action');
     });
   }
 
-  offs0.add(
+  const smallBag = Bag();
+
+  bag(
     on(el).pointerdown(async ev => {
       el.setPointerCapture(ev.pointerId);
 
       const subscribe: (
         cb: (p2: { e: PointerEvent; done: boolean }) => void,
       ) => void = cb => {
-        offs.add(
-          on(el).pointermove(ev => {
-            cb({
-              e: ev,
-              done: false,
-            });
+        smallBag(
+          on(el).pointermove(e => {
+            cb({ e, done: false });
           }),
         );
 
-        offs.add(
-          on(el).pointerup(ev => {
-            cb({
-              e: ev,
-              done: true,
-            });
-
-            offs.forEach(_ => _());
+        smallBag(
+          on(el).pointerup(e => {
+            cb({ e, done: true });
+            smallBag();
           }),
         );
         return;
@@ -60,7 +50,7 @@ export const trackPointer = (
   );
 
   return () => {
-    offs0.forEach(_ => _());
-    offs.forEach(_ => _());
+    bag();
+    smallBag();
   };
 };

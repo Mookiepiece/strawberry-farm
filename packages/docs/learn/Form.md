@@ -6,7 +6,7 @@ import FormInputOfFile from './FormInputOfFile.vue';
 
 ### Text
 
-- W3C定义默认的大小为 20 字符，需要 `width: 100%` （待溯源）
+- W3C 定义默认的大小为 20 字符，需要 `width: 100%` （待溯源）
 - 表单中只有一个 `input` 时哪怕没有提交按钮，回车时也会发生提交 （待溯源）
 
 ```html
