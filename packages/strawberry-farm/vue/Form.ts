@@ -41,9 +41,10 @@ type PathImpl<K extends string | number, V> = V extends Unpathed
   : `${K}` | `${K}.${PathInternal<V>}`;
 
 // react-hook-form
-type PathInternal<T> = T extends Array<infer I>
-  ? PathImpl<number, I>
-  : { [K in keyof T]-?: PathImpl<K & string, T[K]> }[keyof T];
+type PathInternal<T> =
+  T extends Array<infer I>
+    ? PathImpl<number, I>
+    : { [K in keyof T]-?: PathImpl<K & string, T[K]> }[keyof T];
 
 // react-hook-form
 export type Path<T> = T extends any ? PathInternal<T> : never;
@@ -69,18 +70,45 @@ type PathValue<T, P extends Path<T>> = T extends Unpathed
           : 4
         : 5;
 
-type z = Path<{ a: 1 } | undefined>;
+// TODO: get out
+type CommonChoice =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | {
+      label: string;
+      value: any;
+      disabled?: boolean;
+    };
 
-type V = PathValue<IForm15Pro, 'otherDescritionPro.billingRefs'>;
-type zV = PathValue<IForm15Pro, 'otherDescritionPro.billings'>;
-type zzV = PathValue<IForm15Pro, 'otherDescritionPro.billingRefs.1'>;
-type zV2 = PathValue<IForm15Pro, 'otherDescritionPro.billings.1'>;
-type zVz = PathValue<{ a: string | number }[] | undefined, '1'>;
-type dd = PathValue<IForm15Pro, 'duration'>;
-type ddasd = PathValue<IForm15Pro, 'duration.3'>;
-type ddasdss = PathValue<IForm15Pro, 'billings.1'>;
+interface FieldTypes {
+  any: undefined;
+  text: number | (number | null | undefined)[] | RegExp;
+  radio: {
+    options: CommonChoice;
+  };
+}
 
-type v = string[] extends Unpathed ? 1 : 0;
-// Potential undefined
+interface FieldTypeBindings {
+  any: any;
+  text: string;
+  number: number;
+  radio: any;
+}
+
+type FieldDescriptor<Objective, ObjectivePath extends Path<Objective>, Type> = {
+  label: string;
+  name: PathValue<Objective, ObjectivePath>;
+  type?: keyof FieldTypes;
+  props?: keyof FieldTypes;
+};
+
+type SFFormModel = {
+  focus(name: string): void;
+  validate(names?: []): Promise<void>;
+  submit(): Promise<void>;
+};
 
 const describeForm = <T>() => {};
