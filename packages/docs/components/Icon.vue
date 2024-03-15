@@ -33,7 +33,7 @@ const z = Object.keys(IFeatherElement.names);
 }
 
 .good-cell {
-  border-radius: var(--4);
+  border-radius: var(--2);
   cursor: pointer;
   user-select: none;
 }

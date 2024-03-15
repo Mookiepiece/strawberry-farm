@@ -26,6 +26,10 @@
   border-collapse: collapse;
 }
 
+:where(tr, td) {
+  padding: 0;
+}
+
 // Remove default margin
 :where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd) {
   font-weight: normal;

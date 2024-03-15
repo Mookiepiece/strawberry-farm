@@ -59,11 +59,11 @@ const colors = ref([
       transparent 72px
     );
 
-  border-radius: var(--5);
+  border-radius: var(--3);
   color: var(---ink);
-  box-shadow: inset 0 0 0 var(--3);
+  box-shadow: inset 0 0 0 var(--1);
 
-  padding: var(--4);
+  padding: var(--2);
 
   &::first-line {
     font-size: var(--f1);

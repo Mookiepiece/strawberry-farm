@@ -64,18 +64,18 @@ const data = [
   <div class="sf-table">
     <table>
       <colgroup>
-        <col style="    width:500px; " />
-        <col style="    width:20px ; "/>
-        <col style="    width:10px; " />
-        <col style="    width:10px; " />
-        <col style="    width:10px; " />
-        <col style="    width:40px ; "/>
-        <col style="    width:40px ; "/>
-        <col style="    min-width:40px ; " />
+        <col style="width: 80px" />
+        <col style="width: 80px" />
+        <col style="width: 80px" />
+        <col style="width: 80px" />
+        <col style="width: 80px" />
+        <col style="width: 80px" />
+        <col style="width: 80px" />
+        <col style="width: 40px" />
       </colgroup>
       <tr>
-        <th v-for="h in columns" :key="h.name">
-          <div class="__cell" :class="h.classes">
+        <th v-for="h in columns" :key="h.name" :class="h.classes">
+          <div class="__cell">
             {{ h.name }}
           </div>
         </th>
@@ -85,7 +85,9 @@ const data = [
           v-for="(cell, index) in row"
           :key="index"
           :is="index === 0 ? 'th' : 'td'"
-          > <div class="__cell" :class="columns[index].classes">
+          :class="columns[index].classes"
+        >
+          <div class="__cell">
             {{ cell }}
           </div></component
         >
@@ -102,6 +104,7 @@ const data = [
   table {
     --count: 8;
     width: 100%;
+    height: 1px;
     border-collapse: collapse;
     table-layout: fixed;
   }
@@ -123,6 +126,14 @@ const data = [
   td {
     width: calc(100% / var(--count));
     max-width: 40px;
+  }
+
+  .__cell {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    background: var(---foam);
   }
 
   .--end {
