@@ -9,14 +9,18 @@
 ### 彩色区域
 
 ```html
-<div class="💖" style="width:150px; height:100px;"></div>
-<div class="🦄" style="width:150px; height:100px;"></div>
-<div class="(///)" style="width:150px; height:100px;"></div>
+<div class="🍒"></div>
+<div class="🍷"></div>
+<div class="🦄"></div>
+<div class="(///)"></div>
 ```
 
-<div class="💖" style="width:150px; height:100px;"></div>
-<div class="🦄" style="width:150px; height:100px;"></div>
-<div class="(///)" style="width:150px; height:100px;"></div>
+<div style="display: grid; grid: auto-flow 100px/ repeat(auto-fill, minmax(140px, 1fr)); gap: 10px">
+<div class="🍒"></div>
+<div class="🍷"></div>
+<div class="🦄"></div>
+<div class="(///)"></div>
+</div>
 
 ### Misc
 

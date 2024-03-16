@@ -31,7 +31,7 @@ const changeDir = (dir: 'top' | 'left' | 'right' | 'bottom') => {
       <div style="width: 500%; height: 1000px">
         <div ref="a" class="a"></div>
         <Teleport to="body">
-          <div ref="b" class="b 💖">lorem</div>
+          <div ref="b" class="b 🍒">lorem</div>
         </Teleport>
       </div>
     </div>

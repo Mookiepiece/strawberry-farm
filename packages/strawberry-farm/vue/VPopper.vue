@@ -45,7 +45,7 @@ const toggle = () => {
       class="sf-levitated fixed (///)"
     >
       <Transition appear @after-leave="leaving = false">
-        <div v-show="open" class="sf-popper 💖 p-6">
+        <div v-show="open" class="sf-popper 🍒 p-6">
           Content
         </div>
       </Transition>

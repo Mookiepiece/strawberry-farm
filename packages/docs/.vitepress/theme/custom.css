@@ -21,7 +21,12 @@ body.VPBodyDefaultFont {
     BlinkMacSystemFont,
     sans-serif; */
 
-  font-family: PingFang SC,Microsoft YaHei,system-ui,-apple-system,sans-serif;
+  font-family:
+    PingFang SC,
+    Microsoft YaHei,
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 body > * {
@@ -69,7 +74,7 @@ html.dark .shiki span {
   --vp-header-h: 50px;
 }
 
-:where(.💖) {
+:where(.🍒) {
   position: relative;
   padding: 5px 5px;
   border-radius: 5px 7px;
@@ -90,14 +95,6 @@ html.dark .shiki span {
       inset -1px -1px #c878;
   }
 }
-/* 
-イナ ノム jβ
-
-イセ めろ めろ の
-
-ホホ オヒ
-
-oβす ヌす ヌす */
 
 .🦄 {
   box-shadow:
@@ -113,24 +110,6 @@ oβす ヌす ヌす */
   color: var(--black-text1);
 
   background:
-    /* radial-gradient(#fff1 0px, #fff1 2px, #fff0 6px, #fff0 10px) 5px 5px / 11px
-      11px,
-    radial-gradient(#fff1 0px, #fff1 2px, #fff0 6px, #fff0 10px) 5px 5px / 17px
-      17px,
-    repeating-radial-gradient(
-        transparent 0px,
-        transparent 5px,
-        #fff1 6px,
-        #fff1 10px
-      )
-      5px 5px / 10px 10px,
-    repeating-radial-gradient(
-        transparent 0px,
-        transparent 5px,
-        #fff1 6px,
-        #fff1 10px
-      )
-      0 0 / 10px 10px, */
     linear-gradient(
       120deg,
       transparent,
@@ -173,6 +152,87 @@ oβす ヌす ヌす */
     #333 5px,
     #333 10px
   );
+}
+
+.🦄 {
+  box-shadow:
+    inset 1px 1px rgba(156, 197, 255, 0.533),
+    inset 3px 3px #fffc,
+    inset -2px -2px rgba(93, 140, 211, 0.533);
+
+  --vp-unicon-b: #f8f8f8;
+  --vp-unicon-c: #acf;
+  --t1: color-mix(in oklab, var(--vp-unicon-c), #0000 90%);
+  --t2: color-mix(in oklab, var(--vp-unicon-c), #0000 60%);
+
+  color: var(--black-text1);
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent,
+      transparent,
+      transparent 66%,
+      #fff8 67%,
+      transparent 85%
+    ),
+    radial-gradient(#ffe0d7b9 0%, transparent 50%) 25% 100%/ 200% 200% no-repeat,
+    linear-gradient(
+      120deg,
+      transparent,
+      var(--t1),
+      var(--t1),
+      var(--t2),
+      var(--t1),
+      transparent
+    ),
+    var(--vp-unicon-b);
+
+  &:is(.dark *) {
+    filter: brightness(0.66) contrast(2);
+  }
+}
+
+.🍷 {
+  position: relative;
+  color: var(--white-text1);
+
+  box-shadow: inset 0 0 0 1px #f003;
+  background:
+    linear-gradient(90deg, #fff8, #fff, #fffc, #fffa, #fff0, #fffa, #fff0) 0 0 /
+      100% 2px no-repeat,
+    linear-gradient(180deg, #fff8, #fff, #fffc, #fffa, #fff0, #fffa, #fff0) 0 0 /
+      2px 100% no-repeat,
+    linear-gradient(180deg, #fff0, #fffc, #fff0, #fffc, #fff0) 100% 0 / 2px 100%
+      no-repeat,
+    linear-gradient(100deg, #fdd2dc, #ffa1c8, #ff8dbd);
+
+  overflow: clip;
+
+  &::before,
+  &::after {
+    position: absolute;
+    inset: 0;
+    top: 0;
+    left: 7%;
+    width: 50%;
+    height: 120%;
+    display: block;
+    background: linear-gradient(170deg, #fffa, #fff3 10%, #fff0 100%);
+    transform: skewX(60deg);
+    transform-origin: top left;
+    content: '';
+  }
+
+  &::after {
+    left: -20%;
+    width: 15%;
+    height: 110%;
+  }
+
+  &:is(.dark *) {
+    filter: brightness(0.94);
+  }
 }
 
 :where(samp) {
