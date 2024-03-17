@@ -4,13 +4,9 @@ import { ref } from 'vue';
 
 const v = ref();
 
+const options = ['Yes', 'No', { value: "I'm not sure", disabled: true }];
 </script>
 
 <template>
-  <label>
-      <span>
-        if this work
-      </span>
-    <VRadioGroup v-model="v" :options="[1,2,3,4,5]" />
-  </label>
+  <VRadioGroup v-model="v" :options="options" />
 </template>

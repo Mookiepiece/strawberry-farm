@@ -80,7 +80,7 @@ type CommonChoice =
   | boolean
   | null
   | {
-      label: string;
+      label?: string;
       value: any;
       disabled?: boolean;
     };

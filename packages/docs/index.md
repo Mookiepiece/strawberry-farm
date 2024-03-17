@@ -1,6 +1,6 @@
 # Strawberry Farm
 
-这是一个集合了 CSS 、Javascript 函数、Web Components、 Vue.js 组件、以及一个内置主题设计系统的什锦工具箱。作为各种网页效果的参考。
+这是一个什锦工具箱。作为各种网页效果的参考。
 
 优先使用 CSS、DOM API、Web Components， 以实现不依赖于 Javascript 框架的更高的兼容性。
 

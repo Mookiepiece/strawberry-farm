@@ -35,6 +35,7 @@ type AdvancedAttributeChangedCallback = (
 ) => () => void;
 
 export class SFElement extends HTMLElement {
+  static props: Record<string,any> = {};
   emit: SFEmit & { bubbles: SFEmit };
   $: AdvancedQuerySelector;
   $$: AdvancedQuerySelectorAll;

@@ -7,9 +7,8 @@ type CommonChoice =
   | number
   | boolean
   | null
-  | undefined
   | {
-      label: string;
+      label?: string;
       value: any;
       disabled?: boolean;
     };
@@ -31,10 +30,14 @@ const props = withDefaults(
 
 const options = computed(() =>
   props.options.map(o => ({
-    label: typeof o === 'object' && o ? o.label : '' + o,
+    label: typeof o === 'object' && o ? o.label ?? o.value : '' + o,
     value: typeof o === 'object' && o ? o.value : o,
     disabled: typeof o === 'object' && o ? o.disabled : false,
   })),
+);
+
+const anchored = computed(() =>
+  options.value.map((o, index) => ({ ...o, index })),
 );
 
 const trap = computed(() => {
@@ -50,30 +53,34 @@ const onChange = (value: any) => {
 const el = ref<HTMLDivElement | null>(null);
 
 const prev = () => {
-  if (trap.value === -1) return; // didn't happen
-  const index = options.value
-    .slice(0, trap.value)
-    .findLastIndex(o => !o.disabled);
-  if (index !== -1) {
+  const before = anchored.value.slice(0, trap.value);
+  const after = anchored.value.slice(trap.value + 1);
+  const index = [...after, ...before].findLast(o => !o.disabled)?.index;
+
+  if (typeof index === 'number') {
     model.value = options.value[index].value;
-    ([...el.value!.children][index] as HTMLDivElement).focus();
+    (
+      el.value?.querySelectorAll('[role="radio"]')[index] as HTMLDivElement
+    ).focus();
   }
 };
 
 const next = () => {
-  if (trap.value === -1) return; // didn't happen
+  const before = anchored.value.slice(0, trap.value);
+  const after = anchored.value.slice(trap.value + 1);
+  const index = [...after, ...before].find(o => !o.disabled)?.index;
 
-  const index = options.value.findIndex(
-    (o, i) => i > trap.value && !o.disabled,
-  );
-  if (index !== -1) {
+  if (typeof index === 'number') {
     model.value = options.value[index].value;
-    ([...el.value!.children][index] as HTMLDivElement).focus();
+    (
+      el.value?.querySelectorAll('[role="radio"]')[index] as HTMLDivElement
+    ).focus();
   }
 };
 
 const onKeyDownExact = (e: KeyboardEvent) => {
-  if ((e.target as HTMLDivElement).parentElement !== el.value) return;
+  if (!(e.target instanceof Element)) return;
+  if (!e.target.matches('[role="radio"]')) return;
 
   switch (e.key) {
     case 'ArrowUp':
@@ -105,10 +112,9 @@ const onKeyDownExact = (e: KeyboardEvent) => {
     <div
       v-for="(o, index) in options"
       :key="o.value"
-      class="sf-radio"
       role="radio"
       :aria-checked="o.value === model"
-      :aria-disabled="props.disabled"
+      :aria-disabled="props.disabled || o.disabled"
       :tabindex="index === trap ? 0 : -1"
       @focus="index === trap ? onChange(o.value) : undefined"
       @click="!o.disabled ? onChange(o.value) : undefined"
@@ -117,31 +123,3 @@ const onKeyDownExact = (e: KeyboardEvent) => {
     </div>
   </div>
 </template>
-
-<style>
-.sf-radio-group {
-  border: 2px solid var(--mat-solid-15);
-}
-
-.sf-radio {
-  --mat-shadow: 0 0 0 0 transparent;
-  transition: box-shadow 0.2s;
-
-  padding: 10px;
-
-  &:not([aira-disabled='true']):hover {
-    background-color: var(--mat-solid-1);
-  }
-
-  &[aria-checked='true'] {
-    outline: 2px solid var(---main);
-    outline-offset: -1px;
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(---main);
-    outline-offset: -1px;
-    box-shadow: 0 0 0 6px var(---foam);
-  }
-}
-</style>

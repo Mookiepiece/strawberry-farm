@@ -7,3 +7,14 @@
   top: 0;
   left: 0;
 }
+
+kbd {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1.2;
+  font-family: inherit;
+  border: 1px solid var(--mat-solid-15);
+  padding: 1px 5px;
+  border-radius: 3px;
+  box-shadow: 0 2px 0 -1px var(--mat-solid-15);
+}
