@@ -1,5 +1,7 @@
 # Typography
 
+注意：`Emmet` 不支持中括号
+
 ## Text Align
 
 参考 Github Markdown Extension 表格语法，实现文本对齐。
@@ -24,8 +26,8 @@
 
 ## Text Overflow
 
-| Class | CSS                                                                         |
-| ----- | --------------------------------------------------------------------------- |
+| Class   | CSS                                                                         |
+| ------- | --------------------------------------------------------------------------- |
 | `[...]` | `overflow: hidden;`<br>`text-overflow: ellipsis;`<br>`white-space: nowrap;` |
 
 ```html {3}
@@ -173,9 +175,11 @@ Flex Items 和 Grid Items 默认的 `min-width:auto`、 `min-height:auto` 等同
 ::: details 在 Grid Layout 中，`100%` 代表其所在格子的宽度。
 
 > Percentages are resolved against the width/height, as appropriate, of the box’s containing block.
+>
 > https://www.w3.org/TR/css-sizing-3/#sizing-values
 >
 > A grid item is sized within the containing block defined by its grid area.
+>
 > https://www.w3.org/TR/css-grid-1/#grid-item-sizing
 
 :::

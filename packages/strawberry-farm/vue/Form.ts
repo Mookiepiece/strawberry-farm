@@ -1,20 +1,10 @@
-import { ComputedRef, computed } from 'vue';
-import { RuleS } from '../functions/validator';
+import { ComputedRef, computed, reactive } from 'vue';
+import { IRuleType, RuleS } from '../functions/validator';
 
 type IForm15Pro = {
-  // name: string;
-  // type: 'A' | 'B' | 'C';
-
   rating: number;
-  // temperature: number;
-
   usage: 'Good' | 'Bad' | 'other';
-  // otherDescrtion?: string;
-  // otherDescrtionScreenshot: Blob;
-
   otherDescritionPro?: {
-    // text?: string;
-    // screenshot: Blob;
     billings: { name: string; value: number; label?: string }[];
     billingRefs: string[];
   };
@@ -73,6 +63,39 @@ type PathValue<T, P extends Path<T>> = T extends Unpathed
           : never
         : never;
 
+export const pathValueGetter = <
+  Objective,
+  ObjectivePath extends Path<Objective>,
+>(
+  object: Objective,
+  path: ObjectivePath,
+) => {
+  const pathes = path.split('.');
+
+  let p: any = object;
+  for (const _ of pathes) p = p[_];
+
+  return p;
+};
+
+export const pathValueSetter = <
+  Objective,
+  ObjectivePath extends Path<Objective>,
+>(
+  object: Objective,
+  path: ObjectivePath,
+  value: PathValue<Objective, ObjectivePath>,
+) => {
+  const pathes = path.split('.');
+  const parents = pathes.slice(0, -1);
+  const last = pathes[pathes.length];
+
+  let p: any = object;
+  for (const _ of parents) p = p[_];
+
+  p[last] = value;
+};
+
 // TODO: get out
 type CommonChoice =
   | string
@@ -115,67 +138,89 @@ type FieldDescriptor<
   type: Type;
   props?: FieldTypes[Type];
 
-  rule?: RuleS;
-  rules?: RuleS[];
+  rule?: RuleS<keyof IRuleType, PathValue<Objective, ObjectivePath>>;
+  rules?: RuleS<keyof IRuleType, PathValue<Objective, ObjectivePath>>[];
 
-  initialValue: PathValue<Objective, ObjectivePath>;
+  initialValue?: PathValue<Objective, ObjectivePath>;
   // value: PathValue<Objective, ObjectivePath>;
   error?: string;
 };
 
-// type FieldRuntime<Objective, ObjectivePath extends Path<Objective>> = {
-//   descriptor:
-// }
+export type FormModel<Objective> = {
+  initialValue: Objective;
+  value: Objective;
 
-type SFFormModel<Objective> = {
-  reject(name?: Path<Objective>[], message?: 'string'): Promise<void>;
+  submit(): Promise<void>;
+  reset(name?: Path<Objective>[]): void;
+  reject(name?: Path<Objective>[], message?: 'string'): void;
   focus(name: Path<Objective>): void;
   validate(names?: Path<Objective>[]): Promise<void>;
-  submit(): Promise<void>;
   /**
    * Set the target field value, value are not able to be type analysed.
    */
   set(name: Path<Objective>, value: any): void;
 
-  action: (formValue: Objective) => Promise<void>;
+  action: (formValue: Objective) => void | Promise<void>;
 
-  fields: FieldDescriptor<Objective, any, any>;
+  fields: FieldDescriptor<Objective, any, any>[];
 };
 
-// const ComputedSymbol = Symbol('ComputedSymbol');
-
-const describeForm = <Objective>(
+export const describeForm = <Objective>(
   cb: (payload: {
     describeGroup: () => any;
     describeField: <PV extends Path<Objective>, Type extends keyof FieldTypes>(
       f: FieldDescriptor<Objective, PV, Type>,
     ) => FieldDescriptor<Objective, PV, Type>;
   }) => void,
-) => {};
+): FormModel<Objective> => {
+  const value = reactive({});
+
+  const describeField = <
+    PV extends Path<Objective>,
+    Type extends keyof FieldTypes,
+  >(
+    f: FieldDescriptor<Objective, PV, Type>,
+  ): FieldDescriptor<Objective, PV, Type> => {
+    return f;
+  };
+
+  return {
+    action(formValue) {},
+    fields: [],
+    focus(name) {},
+    value: 1 as any,
+    initialValue: 1 as any,
+    reject() {},
+    reset(name) {},
+    set(name, value) {},
+    async submit() {},
+    async validate(names) {},
+  };
+};
 
 const describeField = <Objective>() => {};
 
-const form = describeForm<IForm15Pro>(({ describeField }) => {
-  describeField({
+const form = describeForm<IForm15Pro>(({ describeField: i }) => {
+  i({
     initialValue: [null, null],
     name: 'duration',
     type: 'hidden',
   });
 
-  describeField({
+  i({
     initialValue: 'Good',
     name: 'usage',
     type: 'hidden',
   });
 
-  describeField({
+  i({
     initialValue: 0,
     name: 'rating',
     rule: 'string!',
     type: 'hidden',
   });
 
-  describeField({
+  i({
     initialValue: '1',
     name: 'billingRefs.0',
     rule: 'string!',
@@ -185,7 +230,7 @@ const form = describeForm<IForm15Pro>(({ describeField }) => {
     },
   });
 
-  describeField({
+  i({
     initialValue: ['1', '2', '3'],
     name: 'otherDescritionPro.billingRefs',
     rule: ['array!', [1, 3]],

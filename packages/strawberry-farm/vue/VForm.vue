@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { FormModel } from './Form';
 
-// const = defineProps()
+const props = defineProps<{
+  form: FormModel<any>;
+}>();
 
-const onSumbit = () => {};
 </script>
 
 <template>
-  <form class="sf-form" @submit.prevent="onSumbit">
+  <form class="sf-form" @submit.prevent="props.form.submit()">
     <slot />
   </form>
 </template>

@@ -1,5 +1,7 @@
 # Flexbox
 
+注意：`Emmet` 不支持中括号
+
 ## Flex Container
 
 用一个类名同时定义多个属性，仅三个主要类名。
@@ -10,7 +12,7 @@
 | Inline         | `[FS]`   | `align-items`, `justify-content` |
 | Multiple lines | `[[+S]]` | `align-content`, `flex-wrap`     |
 
-在本页中，表格中加粗的一行代表默认值。
+在本页中，表格中加粗的一行代表 CSS 的缺省值。
 
 ### 方向
 

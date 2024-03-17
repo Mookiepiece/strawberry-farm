@@ -10,16 +10,22 @@ export interface IRuleType {
   type: any;
 }
 
-export interface IRule<T extends keyof IRuleType = keyof IRuleType> {
+export interface IRule<
+  T extends keyof IRuleType = keyof IRuleType,
+  ValueType = any,
+> {
   type?: T;
   config?: IRuleType[T];
   required?: boolean;
-  validator?(value: unknown): string | undefined | Promise<string | undefined>;
+  validator?(value: ValueType): string | void | Promise<string | void>;
   message?: string;
 }
 
-export type RuleS<T extends keyof IRuleType = keyof IRuleType> =
-  | IRule<T>
+export type RuleS<
+  T extends keyof IRuleType = keyof IRuleType,
+  ValueType = any,
+> =
+  | IRule<T, ValueType>
   | T
   | `${T}!`
   | [T | `${T}!`]

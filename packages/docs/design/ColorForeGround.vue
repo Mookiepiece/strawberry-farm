@@ -7,7 +7,7 @@ const colors = ref(['var(--text1)', 'var(--text2)', 'var(--text3)']);
 <template>
   <div class="good" style="">
     <button
-      class="mat:air f1 [:-] p-3"
+      class="mat:air f1 [:-] p-1"
       v-for="c in colors"
       :style="{ color: c }"
     >
@@ -19,8 +19,7 @@ const colors = ref(['var(--text1)', 'var(--text2)', 'var(--text3)']);
 <style scoped>
 .good {
   display: grid;
-  grid-template: 40px / 1fr;
-  gap: var(--3);
+  grid-template: auto / 1fr;
   justify-content: start;
 }
 
