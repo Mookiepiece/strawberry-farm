@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { describeForm } from '@mookiepiece/strawberry-farm/vue/Form';
+import { Form } from '@mookiepiece/strawberry-farm/vue/Form';
+import { provide } from 'vue';
 
 type LoginFormValue = {
   name: string;
@@ -14,7 +15,7 @@ type LoginFormValue = {
   ratings: { name: string; rating: number }[];
 };
 
-const signupForm = describeForm<LoginFormValue>(({ describeField: i }) => {
+const signupForm = Form.describe<LoginFormValue>(({ describeField: i }) => {
   i({
     name: 'name',
     type: 'text',
@@ -93,7 +94,7 @@ const signupForm = describeForm<LoginFormValue>(({ describeField: i }) => {
       },
     ],
   });
-  
+
   i({
     name: 'ratings',
     type: 'list',
@@ -108,6 +109,9 @@ const signupForm = describeForm<LoginFormValue>(({ describeField: i }) => {
     ],
   });
 });
+
+provide('VForm', signupForm);
+
 </script>
 
 <template>

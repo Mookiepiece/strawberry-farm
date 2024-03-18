@@ -3,6 +3,8 @@ const props = withDefaults(
   defineProps<{
     class?: any;
     type?: 'submit' | 'reset' | 'button';
+    disabled?: boolean;
+    loading?: boolean;
   }>(),
   {
     type: 'button',
@@ -11,5 +13,12 @@ const props = withDefaults(
 </script>
 
 <template>
-  <button class="sf-button" :class="props.class" :type="props.type"><slot /></button>
+  <button
+    class="sf-button"
+    :class="[props.class, props.loading && '--loading']"
+    :type="props.type"
+    :disabled="props.loading || props.disabled"
+  >
+    <slot />
+  </button>
 </template>

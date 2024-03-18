@@ -1,18 +1,5 @@
-import { ComputedRef, computed, reactive } from 'vue';
+import { Component, ComputedRef, computed, reactive } from 'vue';
 import { IRuleType, RuleS } from '../functions/validator';
-
-type IForm15Pro = {
-  rating: number;
-  usage: 'Good' | 'Bad' | 'other';
-  otherDescritionPro?: {
-    billings: { name: string; value: number; label?: string }[];
-    billingRefs: string[];
-  };
-
-  duration: [Date | null, Date | null];
-  billings: { name: string; value: number; label?: string }[];
-  billingRefs: string[];
-};
 
 // react-hook-form
 type Unpathed =
@@ -148,6 +135,7 @@ type FieldDescriptor<
 > = {
   label?: string;
   name: ObjectivePath;
+  visible?: boolean;
 
   type: Type;
   props?: FieldTypes[Type];
@@ -212,7 +200,27 @@ export const describeForm = <Objective>(
   };
 };
 
+export const registry = new Map<keyof FieldTypes, Component>();
+
 const describeField = <Objective>() => {};
+
+export const Form = {
+  describe: describeForm,
+  registry,
+};
+
+type IForm15Pro = {
+  rating: number;
+  usage: 'Good' | 'Bad' | 'other';
+  otherDescritionPro?: {
+    billings: { name: string; value: number; label?: string }[];
+    billingRefs: string[];
+  };
+
+  duration: [Date | null, Date | null];
+  billings: { name: string; value: number; label?: string }[];
+  billingRefs: string[];
+};
 
 const form = describeForm<IForm15Pro>(({ describeField: i }) => {
   i({

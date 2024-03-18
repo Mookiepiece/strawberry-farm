@@ -39,7 +39,7 @@ const unpack = <T extends keyof IRuleType>(mini: RuleS<T>): IRule<T> => {
     Array.isArray(mini) ? mini[1] : undefined,
   ];
 
-  let rule: IRule<T> = {
+  const rule: IRule<T> = {
     type: (a.endsWith('!') ? a.slice(0, -1) : a) as T,
   };
 
@@ -260,9 +260,9 @@ export const validate = <T extends keyof IRuleType>(
     return rule.message ?? messages.required.replace(sRE, name);
   }
 
-  let storedValidatorErrorMessage = v?.type?.(value, rule.config);
-  if (typeof storedValidatorErrorMessage === 'string') {
-    return rule.message ?? storedValidatorErrorMessage.replace(sRE, name);
+  const presetErrorMessage = v?.type?.(value, rule.config);
+  if (typeof presetErrorMessage === 'string') {
+    return rule.message ?? presetErrorMessage.replace(sRE, name);
   }
 
   return rule.validator?.(value);

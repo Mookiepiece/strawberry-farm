@@ -7,7 +7,7 @@ interface IBag {
  * To collect and unsubscribe clean up functions.
  */
 export const Bag = (): IBag => {
-  let set = new Set<(() => void) | AbortController>();
+  const set = new Set<(() => void) | AbortController>();
 
   const bag = (cb => {
     if (cb) {
