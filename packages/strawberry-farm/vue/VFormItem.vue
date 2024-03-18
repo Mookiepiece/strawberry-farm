@@ -8,6 +8,8 @@ const props = defineProps<{
 
 const form: FormModel<any> = inject('VForm')!;
 
+// form.fields.
+
 const v = ref();
 </script>
 

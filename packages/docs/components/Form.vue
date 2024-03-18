@@ -8,7 +8,10 @@ type LoginFormValue = {
   agreement: boolean;
   phoneNumber: string;
   code: string;
+  luckyNumber: number;
   subscribe: boolean;
+  interests: string[];
+  ratings: { name: string; rating: number }[];
 };
 
 const signupForm = describeForm<LoginFormValue>(({ describeField: i }) => {
@@ -62,6 +65,48 @@ const signupForm = describeForm<LoginFormValue>(({ describeField: i }) => {
     name: 'subscribe',
     type: 'any',
   });
+
+  i({
+    name: 'luckyNumber',
+    type: 'number',
+    rules: [
+      {
+        validator(value) {
+          if (value < 1000) {
+            throw 'Value cannot be less than 1000';
+          }
+        },
+      },
+    ],
+  });
+
+  i({
+    name: 'interests',
+    type: 'list',
+    rules: [
+      ['array!', [0, 1]],
+      {
+        validator(value) {
+          if (value.join('').length > 10)
+            throw 'Total length of strings cannot be greater than 10';
+        },
+      },
+    ],
+  });
+  
+  i({
+    name: 'ratings',
+    type: 'list',
+    rules: [
+      ['array!', [0, 1]],
+      {
+        validator(value) {
+          if (value.join('').length > 10)
+            throw 'Total length of strings cannot be greater than 10';
+        },
+      },
+    ],
+  });
 });
 </script>
 
@@ -80,7 +125,6 @@ const signupForm = describeForm<LoginFormValue>(({ describeField: i }) => {
       <button>Send Code</button>
     </div>
     <v-form-item name="code" />
-    
   </v-form>
 </template>
 

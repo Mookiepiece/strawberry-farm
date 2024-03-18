@@ -113,17 +113,31 @@ type ValueOrReactive<T> = T | ComputedRef<T>;
 interface FieldTypes {
   any: ValueOrReactive<any>;
   text: ValueOrReactive<number | (number | null | undefined)[] | RegExp>;
+  number: ValueOrReactive<any>;
+  checkbox: ValueOrReactive<any>;
+  switch: ValueOrReactive<any>;
+  checkboxgroup: ValueOrReactive<{
+    options: ValueOrReactive<CommonChoice[]>;
+  }>;
+  select: ValueOrReactive<{
+    options: ValueOrReactive<CommonChoice[]>;
+  }>;
   radio: ValueOrReactive<{
     options: ValueOrReactive<CommonChoice[]>;
   }>;
+  list: ValueOrReactive<any>;
   hidden: undefined;
 }
 
 interface FieldTypeBindings {
   any: any;
   text: string;
-  number: number;
+  number: number | null;
+  checkbox: boolean;
+  switch: boolean;
+  checkboxgroup: any[];
   radio: any;
+  list: any[];
   hidden: any;
 }
 
