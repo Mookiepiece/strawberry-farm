@@ -1,7 +1,6 @@
 import {
   Component,
   ComputedRef,
-  computed,
   reactive,
   shallowReactive,
 } from 'vue';
@@ -93,7 +92,7 @@ export const pathValueSetter = <
 ) => {
   const pathes = path.split('.');
   const parents = pathes.slice(0, -1);
-  const last = pathes[pathes.length];
+  const last = pathes[pathes.length - 1];
 
   let p: any = object;
   for (const _ of parents) p = p[_];
@@ -113,7 +112,7 @@ export type CommonChoice =
       disabled?: boolean;
     };
 
-type ValueOrReactive<T> = T | ComputedRef<T>;
+type ValueOrReactive<T> = ComputedRef<T>;
 
 interface FieldTypes {
   any: ValueOrReactive<any>;
@@ -126,10 +125,10 @@ interface FieldTypes {
     options: ValueOrReactive<CommonChoice[]>;
   }>;
   select: ValueOrReactive<{
-    options: ValueOrReactive<CommonChoice[]>;
+    options: CommonChoice[];
   }>;
   radio: ValueOrReactive<{
-    options: ValueOrReactive<CommonChoice[]>;
+    options: string[];
   }>;
   list: ValueOrReactive<any>;
   hidden: undefined;

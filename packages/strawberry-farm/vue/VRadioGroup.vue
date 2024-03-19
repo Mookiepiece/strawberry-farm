@@ -6,7 +6,7 @@ const model = defineModel<any>();
 
 const props = withDefaults(
   defineProps<{
-    options: CommonChoice[];
+    options?: CommonChoice[];
     disabled?: boolean;
     class?: any;
     style?: StyleValue;
@@ -18,7 +18,7 @@ const props = withDefaults(
 );
 
 const options = computed(() =>
-  props.options.map(o => ({
+  (props.options ?? []).map(o => ({
     label: typeof o === 'object' && o ? o.label ?? o.value : '' + o,
     value: typeof o === 'object' && o ? o.value : o,
     disabled: typeof o === 'object' && o ? o.disabled : false,

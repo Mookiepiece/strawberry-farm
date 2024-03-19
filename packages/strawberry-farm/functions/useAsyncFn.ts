@@ -1,12 +1,5 @@
 import { reactive } from 'vue';
-
-export type FunctionReturningPromise = (...args: any[]) => Promise<any>;
-
-type AsyncState<T> = {
-  loading: boolean;
-  error?: any;
-  value?: T;
-};
+import { AsyncState, FunctionReturningPromise } from './misc';
 
 /**
  * @license MIT https://github.com/streamich/react-use/blob/ade8d3905f544305515d010737b4ae604cc51024/src/useAsyncFn.ts#L36
@@ -24,7 +17,7 @@ export const useAsyncFn = <T extends FunctionReturningPromise>(fn: T) => {
     return fn(...args)
       .then(v => {
         if (_key === key) {
-          return (state.value = v);
+          return (state.data = v);
         } else {
           throw new DOMException('', 'AbortError');
         }

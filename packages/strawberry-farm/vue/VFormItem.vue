@@ -21,11 +21,13 @@ const model = computed({
   },
 });
 
+const fieldProps = descriptor.props
+
 </script>
 
 <template>
   <label>{{ descriptor.label }}</label>
   <slot>
-    <component :is="as" v-model="model" />
+    <component :is="as" v-model="model" v-bind="fieldProps" />
   </slot>
 </template>

@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { computed, provide } from 'vue';
 import { Form } from '@mookiepiece/strawberry-farm/vue/Form';
 import VForm from '@mookiepiece/strawberry-farm/vue/VForm.vue';
 import VFormItem from '@mookiepiece/strawberry-farm/vue/VFormItem.vue';
-import { provide } from 'vue';
 
 type LoginFormValue = {
+  usage: 'Good' | 'Bad' | 'other';
   name: string;
   password: string;
   // confirmPassword: string;
@@ -19,21 +20,31 @@ type LoginFormValue = {
 
 const signupForm = Form.describe<LoginFormValue>(
   {
+    usage: 'Good',
     name: '1',
     password: '2',
   },
   ({ describeField: i }) => {
     i({
+      name: 'usage',
+      label: 'Usage',
+      type: 'radio',
+      props: computed(() => ({
+        options: ['Good', 'Bad', 'other'],
+      })),
+    });
+
+    i({
       name: 'name',
-      type: 'text',
       label: 'Name',
+      type: 'text',
       rules: [['string!', [3, 10]]],
     });
 
     i({
       name: 'password',
-      type: 'text',
       label: 'Password',
+      type: 'text',
       rules: [['string!', [6, 30]]],
     });
 
@@ -125,6 +136,7 @@ provide('VForm', signupForm);
 
 <template>
   <VForm :form="signupForm">
+    <VFormItem name="usage" />
     <VFormItem name="name" />
     <VFormItem name="password" />
   </VForm>
