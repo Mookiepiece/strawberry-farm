@@ -19,19 +19,5 @@
   - `strawberry-farm` 的 `<VFormItem />` 会将 `validator` 的 Range 修饰翻译成 `min` `max-length` `aria-value-min` 等 HTML 原生属性作用在自定义控件上，使用者在实现自定义控件时可以考虑支持。
 :::
 
-###### 接入响应式系统
-
-经过思考，由于不同数据格式在响应式系统的运行时方面差异过大，兼容多种格式可能耗费的成本会和重写相当。以下需求放弃：
-
-- @vue/reactivity
-  - 条件属性：使用 `computed (vue)`
-  - 触发器：使用 `watch/watchEffect/effect (vue)`
-- signal （暂未支持）
-  - （饼）条件属性：使用 `computed`
-  - （饼）触发器：使用 `effect`
-- 无响应式系统 （暂未支持）
-  - （饼）条件属性：使用 `{ [Symbol]: () => { } }`
-  - （饼）触发器：使用 `callback`
-
 :::demo components/Form
 :::

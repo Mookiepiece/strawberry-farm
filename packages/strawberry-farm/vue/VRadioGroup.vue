@@ -1,17 +1,6 @@
 <script setup lang="ts">
 import { StyleValue, computed, ref } from 'vue';
-
-// TODO: get out
-type CommonChoice =
-  | string
-  | number
-  | boolean
-  | null
-  | {
-      label?: string;
-      value: any;
-      disabled?: boolean;
-    };
+import { CommonChoice } from './Form';
 
 const model = defineModel<any>();
 

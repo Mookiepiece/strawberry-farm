@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { inject, ref } from 'vue';
-import { FormModel } from './Form';
+import { computed, inject } from 'vue';
+import { Form, FormModel } from './Form';
 
 const props = defineProps<{
   name: string;
@@ -8,14 +8,24 @@ const props = defineProps<{
 
 const form: FormModel<any> = inject('VForm')!;
 
-// form.fields.
+const descriptor = form.fields[props.name];
 
-const v = ref();
+const as = Form.registry.get(descriptor.type);
+
+const model = computed({
+  get() {
+    return Form.pathValueGetter(form.value, descriptor.name);
+  },
+  set(value: any) {
+    Form.pathValueSetter(form.value, descriptor.name, value);
+  },
+});
+
 </script>
 
 <template>
-  <label>
-    <span> if this work </span>
-  </label>
-  <VRadioGroup v-model="v" :options="[1, 2, 3, 4, 5]" />
+  <label>{{ descriptor.label }}</label>
+  <slot>
+    <component :is="as" v-model="model" />
+  </slot>
 </template>

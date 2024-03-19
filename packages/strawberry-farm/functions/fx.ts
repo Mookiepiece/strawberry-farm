@@ -45,7 +45,8 @@ const transition = (el: HTMLElement, options: TransitionInit) => {
     bag(off);
 
     // If some transition properties didn't get changed during the transition
-    // it will not fires and TransitionEvent.
+    // it will not fires an TransitionEvent.
+    // Thus we need this fallback
     // https://github.com/vuejs/core/blob/9a936aaec489c79433a32791ecf5ddb1739a62bd/packages/runtime-dom/src/components/Transition.ts#L357
     const timeout = Math.max(
       ...transitionDelays.map((s, index) => {
@@ -103,16 +104,10 @@ const cssTransition = (
   });
 };
 
+/**
+ * Inspired by https://vuejs.org/guide/built-ins/transition.html
+ */
 export const fx = {
   transition,
   cssTransition,
 };
-
-// // Inspired by https://vuejs.org/guide/built-ins/transition.html
-// export const transition = (cssname: string = 'v') => {
-//   return {
-//     enter(el: HTMLElement) {
-
-//     },
-//   };
-// };

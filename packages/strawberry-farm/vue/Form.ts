@@ -1,7 +1,17 @@
-import { Component, ComputedRef, computed, reactive } from 'vue';
+import {
+  Component,
+  ComputedRef,
+  computed,
+  reactive,
+  shallowReactive,
+} from 'vue';
 import { IRuleType, RuleS } from '../functions/validator';
+import VRadioGroup from './VRadioGroup.vue';
+import VInput from './VInput.vue';
 
-// react-hook-form
+/**
+ * @license MIT react-hook-form
+ */
 type Unpathed =
   | number
   | string
@@ -15,21 +25,29 @@ type Unpathed =
   | File
   | Blob;
 
-// react-hook-form
+/**
+ * @license MIT react-hook-form
+ */
 type PathImpl<K extends string | number, V> = V extends Unpathed
   ? `${K}`
   : `${K}` | `${K}.${PathInternal<V>}`;
 
-// react-hook-form
+/**
+ * @license MIT react-hook-form
+ */
 type PathInternal<T> =
   T extends Array<infer I>
     ? PathImpl<number, I>
     : { [K in keyof T]-?: PathImpl<K & string, T[K]> }[keyof T];
 
-// react-hook-form
+/**
+ * @license MIT react-hook-form
+ */
 export type Path<T> = T extends any ? PathInternal<T> : never;
 
-// react-hook-form
+/**
+ * @license MIT react-hook-form
+ */
 type PathValue<T, P extends Path<T>> = T extends Unpathed
   ? T
   : P extends `${infer A}.${infer B}`
@@ -84,7 +102,7 @@ export const pathValueSetter = <
 };
 
 // TODO: get out
-type CommonChoice =
+export type CommonChoice =
   | string
   | number
   | boolean
@@ -100,6 +118,7 @@ type ValueOrReactive<T> = T | ComputedRef<T>;
 interface FieldTypes {
   any: ValueOrReactive<any>;
   text: ValueOrReactive<number | (number | null | undefined)[] | RegExp>;
+  textarea: ValueOrReactive<number | (number | null | undefined)[] | RegExp>;
   number: ValueOrReactive<any>;
   checkbox: ValueOrReactive<any>;
   switch: ValueOrReactive<any>;
@@ -119,6 +138,7 @@ interface FieldTypes {
 interface FieldTypeBindings {
   any: any;
   text: string;
+  textarea: string;
   number: number | null;
   checkbox: boolean;
   switch: boolean;
@@ -164,10 +184,13 @@ export type FormModel<Objective> = {
 
   action: (formValue: Objective) => void | Promise<void>;
 
-  fields: FieldDescriptor<Objective, any, any>[];
+  fields: {
+    [P in Path<Objective>]: FieldDescriptor<Objective, P, any>;
+  };
 };
 
-export const describeForm = <Objective>(
+export const describeForm = <Objective extends object>(
+  initialValue: Objective,
   cb: (payload: {
     describeGroup: () => any;
     describeField: <PV extends Path<Objective>, Type extends keyof FieldTypes>(
@@ -175,7 +198,9 @@ export const describeForm = <Objective>(
     ) => FieldDescriptor<Objective, PV, Type>;
   }) => void,
 ): FormModel<Objective> => {
-  const value = reactive({});
+  const value = reactive<Objective>(initialValue as any);
+
+  const fields = shallowReactive<FormModel<Objective>['fields']>({} as any);
 
   const describeField = <
     PV extends Path<Objective>,
@@ -183,14 +208,23 @@ export const describeForm = <Objective>(
   >(
     f: FieldDescriptor<Objective, PV, Type>,
   ): FieldDescriptor<Objective, PV, Type> => {
+    if ('initialValue' in f)
+      pathValueSetter(value as Objective, f.name, f.initialValue);
+
+    (fields as any)[f.name] = f;
     return f;
   };
 
+  cb({
+    describeGroup() {},
+    describeField,
+  });
+
   return {
     action(formValue) {},
-    fields: [],
+    fields,
     focus(name) {},
-    value: 1 as any,
+    value: value as any,
     initialValue: 1 as any,
     reject() {},
     reset(name) {},
@@ -200,65 +234,70 @@ export const describeForm = <Objective>(
   };
 };
 
-export const registry = new Map<keyof FieldTypes, Component>();
+export const fieldTypes = new Map<keyof FieldTypes, Component>();
+
+fieldTypes.set('radio', VRadioGroup);
+fieldTypes.set('text', VInput);
 
 const describeField = <Objective>() => {};
 
 export const Form = {
+  pathValueGetter,
+  pathValueSetter,
   describe: describeForm,
-  registry,
+  registry: fieldTypes,
 };
 
-type IForm15Pro = {
-  rating: number;
-  usage: 'Good' | 'Bad' | 'other';
-  otherDescritionPro?: {
-    billings: { name: string; value: number; label?: string }[];
-    billingRefs: string[];
-  };
+// type IForm15Pro = {
+//   rating: number;
+//   usage: 'Good' | 'Bad' | 'other';
+//   otherDescritionPro?: {
+//     billings: { name: string; value: number; label?: string }[];
+//     billingRefs: string[];
+//   };
 
-  duration: [Date | null, Date | null];
-  billings: { name: string; value: number; label?: string }[];
-  billingRefs: string[];
-};
+//   duration: [Date | null, Date | null];
+//   billings: { name: string; value: number; label?: string }[];
+//   billingRefs: string[];
+// };
 
-const form = describeForm<IForm15Pro>(({ describeField: i }) => {
-  i({
-    initialValue: [null, null],
-    name: 'duration',
-    type: 'hidden',
-  });
+// const form = describeForm<IForm15Pro>(({ describeField: i }) => {
+//   i({
+//     initialValue: [null, null],
+//     name: 'duration',
+//     type: 'hidden',
+//   });
 
-  i({
-    initialValue: 'Good',
-    name: 'usage',
-    type: 'hidden',
-  });
+//   i({
+//     initialValue: 'Good',
+//     name: 'usage',
+//     type: 'hidden',
+//   });
 
-  i({
-    initialValue: 0,
-    name: 'rating',
-    rule: 'string!',
-    type: 'hidden',
-  });
+//   i({
+//     initialValue: 0,
+//     name: 'rating',
+//     rule: 'string!',
+//     type: 'hidden',
+//   });
 
-  i({
-    initialValue: '1',
-    name: 'billingRefs.0',
-    rule: 'string!',
-    type: 'radio',
-    props: {
-      options: computed(() => ['1']),
-    },
-  });
+//   i({
+//     initialValue: '1',
+//     name: 'billingRefs.0',
+//     rule: 'string!',
+//     type: 'radio',
+//     props: {
+//       options: computed(() => ['1']),
+//     },
+//   });
 
-  i({
-    initialValue: ['1', '2', '3'],
-    name: 'otherDescritionPro.billingRefs',
-    rule: ['array!', [1, 3]],
-    type: 'radio',
-    props: {
-      options: computed(() => ['1']),
-    },
-  });
-});
+//   i({
+//     initialValue: ['1', '2', '3'],
+//     name: 'otherDescritionPro.billingRefs',
+//     rule: ['array!', [1, 3]],
+//     type: 'radio',
+//     props: {
+//       options: computed(() => ['1']),
+//     },
+//   });
+// });
