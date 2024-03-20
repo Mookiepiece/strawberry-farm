@@ -23,6 +23,12 @@
   --white-text3: #e6e4e255;
 
   --bg: #ffffff;
+  
+  --s: 30px;
+  --m: 40px;
+  --l: 50px;
+  ---size: var(--m);
+  ---f: var(--f2);
 }
 
 :root,

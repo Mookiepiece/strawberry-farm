@@ -5,8 +5,8 @@
   display: flex;
   align-items: center;
   width: 100%;
-  height: var(--sf-input-h);
-  font-size: var(--sf-input-fs);
+  height: var(---size);
+  font-size: var(---f);
   line-height: 1.6;
   color: var(--text1);
   outline: 1px solid var(--mat-solid-15);
@@ -49,8 +49,8 @@
 
 /* NOTE: Webkit 居然还能有这种 Bug，涨见识了，而且还是只对中文生效的： input输入框向下偏移，输入中文，字符数字下移一像素问题 */
 :where(.sf-input > input) {
-  height: var(--sf-input-h);
-  line-height: var(--sf-input-h);
+  height: var(---size);
+  line-height: var(---size);
 }
 
 :where(.sf-input.--textarea > textarea) {
@@ -60,8 +60,8 @@
 
 :where(.sf-input-icon, .sf-input-clean) {
   flex-shrink: 0;
-  width: var(--sf-input-h);
-  height: var(--sf-input-h);
+  width: var(---size);
+  height: var(---size);
   font-size: 120%;
   color: var(--text2);
   pointer-events: none;
@@ -114,7 +114,7 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  font-size: var(--sf-input-fs);
+  font-size: var(---f);
 }
 
 :where(.sf-group > .sf-input) {
@@ -126,7 +126,7 @@
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
-  height: var(--sf-input-h);
+  height: var(---size);
   padding: 0 10px;
   border: 1px solid var(--mat-solid-15);
   background: var(--mat-air-05);
@@ -143,24 +143,19 @@
   border-right: none;
 }
 
-:root {
-  --sf-input-h: 40px;
-  --sf-input-fs: var(--f2);
-}
-
 :where(:is(.sf-group, .sf-input, .sf-button).size-s) {
-  --sf-input-h: 30px;
-  --sf-input-fs: var(--f3);
+  ---size: var(--s);
+  ---f: var(--f3);
 }
 
 :where(:is(.sf-group, .sf-input, .sf-button).size-m) {
-  --sf-input-h: 40px;
-  --sf-input-fs: var(--f2);
+  ---size: var(--m);
+  ---f: var(--f2);
 }
 
 :where(:is(.sf-group, .sf-input, .sf-button).size-l) {
-  --sf-input-h: 40px;
-  --sf-input-fs: var(--f2);
+  ---size: var(--l);
+  ---f: var(--f1);
 }
 
 /* BUTTON */
@@ -169,7 +164,7 @@
   display: flex;
   align-items: center;
   padding: 0 10px;
-  height: var(--sf-input-h);
+  height: var(---size);
 }
 
 /* RADIO */

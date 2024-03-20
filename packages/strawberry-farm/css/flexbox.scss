@@ -99,7 +99,8 @@
       F: stretch,
     );
     @each $a, $b in $ALGINCONTENT {
-      .#{w($bp)}\[\[\+#{$a}\]\], .#{w($bp)}\[\[\-#{$a}\]\] {
+      .#{w($bp)}\[\[\+#{$a}\]\],
+      .#{w($bp)}\[\[\-#{$a}\]\] {
         align-content: #{$b};
       }
     }

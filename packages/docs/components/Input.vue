@@ -174,7 +174,12 @@ const model = ref('');
 
     <div class="sf-group size-s">
       <ins>https://</ins>
-      <VButton class="mat:ruby" aria-pressed="true">Button</VButton>
+      <VButton class="mat:ruby" aria-pressed="true">
+        <div class="[B] gap-1">
+          <i-feather i="airplay" />
+          <span>Button</span>
+        </div>
+      </VButton>
       <VInput v-model="model" placeholder="東方神霊廟 〜 Ten Desires." />
       <ins>.w3.org/?q=</ins>
       <VButton class="mat:air-crown" aria-pressed="true">Button</VButton>
