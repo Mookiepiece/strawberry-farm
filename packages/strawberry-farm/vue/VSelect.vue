@@ -4,14 +4,11 @@ import VInput from './VInput.vue';
 const props = withDefaults(
   defineProps<{
     class?: any;
-    type?: 'submit' | 'reset' | 'button';
   }>(),
-  {
-    type: 'button',
-  },
+  {},
 );
 </script>
 
 <template>
-  <VInput />
+  <VInput readonly />
 </template>

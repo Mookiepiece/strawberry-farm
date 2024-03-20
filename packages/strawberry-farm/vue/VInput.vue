@@ -8,6 +8,7 @@ const model = defineModel<string>({
 
 const props = withDefaults(
   defineProps<{
+    readonly?: boolean;
     placeholder?: string;
     textarea?: boolean;
     trim?: boolean;
@@ -92,6 +93,7 @@ defineExpose({ focus });
     <input
       v-else
       ref="input"
+      :readonly="props.readonly"
       @input="handleInput"
       @blur="handleBlur"
       :placeholder="props.placeholder"
