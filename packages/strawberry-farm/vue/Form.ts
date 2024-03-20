@@ -159,7 +159,6 @@ type FieldDescriptor<
   type: Type;
   props?: FieldTypes[Type];
 
-  rule?: RuleS<keyof IRuleType, PathValue<Objective, ObjectivePath>>;
   rules?: RuleS<keyof IRuleType, PathValue<Objective, ObjectivePath>>[];
 
   initialValue?: PathValue<Objective, ObjectivePath>;

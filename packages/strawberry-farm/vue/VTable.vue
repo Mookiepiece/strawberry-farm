@@ -104,7 +104,6 @@ const data = [
   table {
     --count: 8;
     width: 100%;
-    height: 1px;
     border-collapse: collapse;
     table-layout: fixed;
   }
@@ -131,7 +130,7 @@ const data = [
   .__cell {
     display: block;
     width: 100%;
-    height: 100%;
+    height: 50px;
     padding: 10px;
     background: var(---foam);
   }
@@ -150,7 +149,6 @@ const data = [
   }
 
   table {
-    font-family: sans-serif;
     font-size: 0.8rem;
     letter-spacing: 1px;
   }

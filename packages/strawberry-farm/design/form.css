@@ -229,3 +229,27 @@
   box-shadow: 0 0 0 6px var(---foam);
   transition: box-shadow 0.2s;
 }
+
+:where(.sf-form-item label) {
+  display: block;
+  margin-bottom: 2px;
+  font-size: var(--f2);
+  line-height: 1.6;
+  font-weight: 600;
+}
+
+:where(.sf-form-item .__alert) {
+  padding-block: 2px;
+  display: flex;
+  font-size: var(--f2);
+  line-height: 1.6;
+  color: var(---main);
+}
+
+:where(.sf-form-item .__message) {
+  padding-inline-start: var(--1);
+}
+
+:where(.sf-form-item) {
+  margin-bottom: var(--2);
+}

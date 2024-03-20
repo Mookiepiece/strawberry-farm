@@ -62,6 +62,9 @@ const clean = () => {
   handleInput({ target: { value: '' } } as any);
   input.value?.focus();
 };
+
+const focus = () => input.value?.focus();
+defineExpose({ focus });
 </script>
 
 <template>

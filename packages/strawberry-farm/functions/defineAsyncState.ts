@@ -4,7 +4,7 @@ import { AsyncState, FunctionReturningPromise } from './misc';
 /**
  * @license MIT https://github.com/streamich/react-use/blob/ade8d3905f544305515d010737b4ae604cc51024/src/useAsyncFn.ts#L36
  */
-export const useAsyncFn = <T extends FunctionReturningPromise>(fn: T) => {
+export const defineAsyncState = <T extends FunctionReturningPromise>(fn: T) => {
   const state = reactive<AsyncState<Awaited<ReturnType<T>>>>({
     loading: false,
   });

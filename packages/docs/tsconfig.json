@@ -18,7 +18,8 @@
     "**/*.ts",
     "**/*.vue",
     ".vitepress/**/*.ts",
-    ".vitepress/**/*.vue"
+    ".vitepress/**/*.vue",
+    "../strawberry-farm/ce.d.ts"
   ],
   "exclude": ["**/node_modules/**", "**/dist/**", "**/cache/**"]
 }

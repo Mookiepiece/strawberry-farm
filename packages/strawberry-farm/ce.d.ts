@@ -1,4 +1,7 @@
 import type { DefineComponent } from 'vue';
+import { IFeatherElement } from './html/IFeatherElement';
+
+// TSD copy from https://shoelace.style/ for test use.
 
 type ToastBarProps = {
   /** The path to the image to load. */
@@ -17,6 +20,11 @@ type ToastBarProps = {
   onSlLoad?: (e: CustomEvent<never>) => void;
   /** Emitted when the image fails to load. */
   onSlError?: (e: CustomEvent<never>) => void;
+};
+
+type IFeatherProps = {
+  /** The icon name. */
+  i: keyof typeof IFeatherElement.names;
 };
 
 export type CustomElements = {
@@ -41,6 +49,7 @@ export type CustomElements = {
    *  - **control-box** - The container that surrounds the pause/play icons and provides their background.
    */
   'toast-bar': DefineComponent<ToastBarProps>;
+  'i-feather': DefineComponent<IFeatherProps>;
 };
 
 declare module 'vue' {

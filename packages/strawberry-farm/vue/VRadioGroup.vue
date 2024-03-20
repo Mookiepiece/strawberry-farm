@@ -87,6 +87,16 @@ const onKeyDownExact = (e: KeyboardEvent) => {
       break;
   }
 };
+
+const focus = () => {
+  (
+    el.value?.querySelector('[role="radio"][tabindex="0"]') as HTMLDivElement
+  )?.focus();
+};
+
+defineExpose({
+  focus,
+});
 </script>
 
 <template>
