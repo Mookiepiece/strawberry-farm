@@ -27,22 +27,29 @@
   --s: 30px;
   --m: 40px;
   --l: 50px;
+  --gap-s: 15px;
+  --gap-m: 20px;
+  --gap-l: 25px;
   ---size: var(--m);
+  ---gap: var(--gap-m);
   ---f: var(--f2);
 }
 
 :where(.size-s) {
   ---size: var(--s);
+  ---gap: var(--gap-s);
   ---f: var(--f3);
 }
 
 :where(.size-m) {
   ---size: var(--m);
+  ---gap: var(--gap-m);
   ---f: var(--f2);
 }
 
 :where(.size-l) {
   ---size: var(--l);
+  ---gap: var(--gap-l);
   ---f: var(--f1);
 }
 

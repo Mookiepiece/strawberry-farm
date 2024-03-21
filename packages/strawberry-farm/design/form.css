@@ -6,6 +6,8 @@
   align-items: center;
   width: 100%;
   height: var(---size);
+  padding-inline: calc(var(---gap) / 2);
+  gap: calc(var(---gap) / 2);
   font-size: var(---f);
   line-height: 1.6;
   color: var(--text1);
@@ -36,7 +38,7 @@
   height: 100%;
   color: inherit;
   font: inherit;
-  padding-inline: 10px;
+  /* padding-inline: 10px; */
 }
 
 :where(.sf-input > :is(input, textarea)::placeholder) {
@@ -58,7 +60,7 @@
   resize: vertical;
 }
 
-:where(.sf-input-icon, .sf-input-clean) {
+:where(.sf-input-clean) {
   flex-shrink: 0;
   width: var(---size);
   height: var(---size);
@@ -66,14 +68,14 @@
   color: var(--text2);
   pointer-events: none;
 }
-
+/* 
 :where(.sf-input.--has-prefix > :is(input, textarea)) {
   padding-inline-start: 0;
 }
 
 :where(.sf-input.--has-suffix > :is(input, textarea)) {
   padding-inline-end: 0;
-}
+} */
 
 :where(.sf-input-clean) {
   cursor: pointer;
@@ -96,19 +98,13 @@
   pointer-events: none;
 }
 
-:where(.sf-input-prepend) {
+/* :where(.sf-input-prepend) {
   padding-left: 10px;
 }
 
 :where(.sf-input-append) {
   padding-right: 10px;
-}
-
-:where(:is(.sf-input-prepend, .sf-input-append) ins) {
-  all: unset;
-  color: var(--text2);
-  pointer-events: none;
-}
+} */
 
 :where(.sf-group) {
   width: 100%;
@@ -148,9 +144,20 @@
 :where(.sf-button) {
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  gap: 10px;
+  justify-content: center;
+  padding-inline: 10px;
+  padding-inline: 20px;
   height: var(---size);
+  min-width: var(---size);
   font-size: var(---f);
+}
+
+:where(.sf-button:not(:has(*))) {
+  /* padding-inline: 20px; */
+}
+.Content {
+  /* padding-inline: 10px; */
 }
 
 /* RADIO */
