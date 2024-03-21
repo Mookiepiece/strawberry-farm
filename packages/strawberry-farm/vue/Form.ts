@@ -146,10 +146,6 @@ interface FieldTypeBindings {
   hidden: any;
 }
 
-type FormRuleExtesion<T extends RuleS> = T extends IRule
-  ? T & { when?: 'blur' | 'input' | 'submit' }
-  : T;
-
 type FieldDescriptor<
   Objective,
   ObjectivePath extends Path<Objective>,
@@ -162,22 +158,12 @@ type FieldDescriptor<
   type?: Type;
   props?: FieldTypes[Type];
 
-  rules?: FormRuleExtesion<
-    RuleS<keyof IRuleType, PathValue<Objective, ObjectivePath>>
-  >[];
+  rules?:  RuleS<keyof IRuleType, PathValue<Objective, ObjectivePath>>[];
 
   initialValue?: PathValue<Objective, ObjectivePath>;
   // value: PathValue<Objective, ObjectivePath>;
   error?: string;
 };
-
-const filterBlurRules: (
-  r: NonNullable<FormRuleExtesion<RuleS>>,
-) => boolean = r => typeof r === 'object' && 'when' in r && r.when === 'blur';
-const filterSubmitRules: (
-  r: NonNullable<FormRuleExtesion<RuleS>>,
-) => boolean = r => typeof r === 'object' && 'when' in r && r.when === 'submit';
-const filterInputRules: typeof filterBlurRules = r => !filterBlurRules(r) && !filterSubmitRules(r);
 
 export type FormModel<Objective> = {
   initialValue: Objective;
@@ -253,8 +239,6 @@ fieldTypes.set('text', VInput);
 export const Form = {
   pathValueGetter,
   pathValueSetter,
-  filterBlurRules,
-  filterInputRules,
   describe: describeForm,
   registry: fieldTypes,
 };

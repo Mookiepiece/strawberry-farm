@@ -4,18 +4,18 @@ import { Form, FormModel } from './Form';
 import { validate } from '../functions/validator';
 import { Bag } from '../functions';
 import { unref } from 'vue';
-import { reactive } from 'vue';
 
 const props = defineProps<{
   name: string;
 }>();
 
+const emit = defineEmits<{
+  input: [any];
+  blur: [];
+}>();
+
 const slots = defineSlots<{
-  default(props: {
-    props: any;
-    onBlur(): void;
-    model: WritableComputedRef<any>;
-  }): any;
+  default(props: { props: any; model: WritableComputedRef<any> }): any;
 }>();
 
 const form: FormModel<any> = inject('VForm')!;
@@ -29,15 +29,16 @@ const model = computed({
     return Form.pathValueGetter(form.value, descriptor.name);
   },
   set(value: any) {
-    validateSelf(Form.filterInputRules).then(v => (errorMessage.value = v));
     Form.pathValueSetter(form.value, descriptor.name, value);
+    emit('input', value);
+    validateSelf().then(v => (errorMessage.value = v));
   },
 });
 
 const errorMessage = ref<string | undefined>();
 
 const bag = Bag();
-const validateSelf = async (filter?: typeof Form.filterInputRules) => {
+const validateSelf = async () => {
   bag();
   const signal = bag(new AbortController()).signal;
 
@@ -47,7 +48,6 @@ const validateSelf = async (filter?: typeof Form.filterInputRules) => {
   if (rules) {
     let ans: void | string;
     for (const rule of rules) {
-      if (filter?.(rule) === false) continue;
       ans = await validate(value, rule, label);
       if (signal.aborted) throw new DOMException('', 'AbortError');
       if (ans) {
@@ -55,10 +55,6 @@ const validateSelf = async (filter?: typeof Form.filterInputRules) => {
       }
     }
   }
-};
-
-const onBlur = () => {
-  validateSelf(Form.filterBlurRules).then(v => (errorMessage.value = v));
 };
 
 const control = ref<any>();
@@ -69,13 +65,13 @@ const fieldProps = computed(() => unref(descriptor.props));
 <template>
   <div class="sf-form-item">
     <label @click="control?.focus()">{{ descriptor.label }}</label>
-    <slot :props="fieldProps" :model="model" :onBlur="onBlur">
+    <slot :props="fieldProps" :model="model">
       <component
         ref="control"
         :is="as"
         v-model="model"
         v-bind="fieldProps"
-        @blur="onBlur"
+        @blur="emit('blur')"
       />
     </slot>
     <div class="__description">
@@ -87,9 +83,9 @@ const fieldProps = computed(() => unref(descriptor.props));
         adipisci.
       </div>
     </div>
-    <div class="__alert tone:reimu" v-if="errorMessage">
+    <div class="Alert tone:reimu" v-if="errorMessage">
       <i-feather i="x-octagon" />
-      <div class="__message">{{ errorMessage }}</div>
+      <div class="Message">{{ errorMessage }}</div>
     </div>
   </div>
 </template>

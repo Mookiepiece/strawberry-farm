@@ -14,11 +14,14 @@ const props = withDefaults(
 
 <template>
   <button
-    class="sf-button"
+    class="Button"
     :class="[props.class, props.loading && '--loading']"
     :type="props.type"
     :disabled="props.loading || props.disabled"
   >
-    <slot />
+    <slot name="icon"></slot>
+    <div v-if="$slots.default" class="Content">
+      <slot />
+    </div>
   </button>
 </template>

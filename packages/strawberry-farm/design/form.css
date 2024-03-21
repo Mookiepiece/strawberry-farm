@@ -141,23 +141,18 @@
 
 /* BUTTON */
 
-:where(.sf-button) {
+:where(.Button) {
   display: flex;
   align-items: center;
-  gap: 10px;
   justify-content: center;
-  padding-inline: 10px;
-  padding-inline: 20px;
+  padding-inline: 15px;
   height: var(---size);
   min-width: var(---size);
   font-size: var(---f);
 }
 
-:where(.sf-button:not(:has(*))) {
-  /* padding-inline: 20px; */
-}
-.Content {
-  /* padding-inline: 10px; */
+:where(.Content) {
+  padding-inline: 5px;
 }
 
 /* RADIO */
@@ -232,7 +227,7 @@
   line-height: 1.6;
 }
 
-:where(.sf-form-item .__alert) {
+:where(.sf-form-item .Alert) {
   padding-block: 2px;
   display: flex;
   font-size: var(--f2);
@@ -240,7 +235,7 @@
   color: var(---main);
 }
 
-:where(.sf-form-item .__message) {
+:where(.sf-form-item .Message) {
   padding-inline-start: var(--1);
 }
 

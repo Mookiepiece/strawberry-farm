@@ -5,16 +5,22 @@ import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
 <template>
   <div class="[A] [SS]" style="gap: 20px">
     <VButton class="mat:ruby size-s" aria-pressed="true">
-      <i-feather i="airplay" />
+      <template #icon>
+        <i-feather i="airplay" />
+      </template>
     </VButton>
     <VButton class="mat:ruby size-s" aria-pressed="true">Button</VButton>
     <VButton class="mat:ruby" aria-pressed="true">
-      <i-feather i="airplay" />
+      <template #icon>
+        <i-feather i="airplay" />
+      </template>
     </VButton>
     <VButton class="mat:ruby" aria-pressed="true">Button</VButton>
     <VButton class="mat:ruby" aria-pressed="true">
-      <i-feather i="airplay" />
-      <span class="Content">Button</span>
+      <template #icon>
+        <i-feather i="airplay" />
+      </template>
+      Button
     </VButton>
     <VButton class="mat:ruby size-l" aria-pressed="true">Button</VButton>
 
@@ -27,16 +33,22 @@ import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
     <VButton class="mat:air size-l">Button</VButton>
 
     <VButton class="mat:air size-s">
-      <i-feather i="airplay" />
-      <span class="Content">Button</span>
+      <template #icon>
+        <i-feather i="airplay" />
+      </template>
+      Button
     </VButton>
     <VButton class="mat:air">
-      <i-feather i="airplay" />
-      <span class="Content">Button</span>
+      <template #icon>
+        <i-feather i="airplay" />
+      </template>
+      Button
     </VButton>
     <VButton class="mat:air size-l">
-      <i-feather i="airplay" />
-      <span class="Content">Button</span>
+      <template #icon>
+        <i-feather i="airplay" />
+      </template>
+      Button
     </VButton>
   </div>
 </template>
