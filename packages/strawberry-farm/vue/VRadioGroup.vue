@@ -17,6 +17,11 @@ const props = withDefaults(
   },
 );
 
+const emit = defineEmits<{
+  focus: [];
+  blur: [];
+}>();
+
 const options = computed(() =>
   (props.options ?? []).map(o => ({
     label: typeof o === 'object' && o ? o.label ?? o.value : '' + o,
@@ -88,6 +93,12 @@ const onKeyDownExact = (e: KeyboardEvent) => {
   }
 };
 
+const onFocusOut = (e: FocusEvent) => {
+  if (e.relatedTarget instanceof Node && !el.value?.contains(e.relatedTarget)) {
+    emit('blur');
+  }
+};
+
 const focus = () => {
   (
     el.value?.querySelector('[role="radio"][tabindex="0"]') as HTMLDivElement
@@ -106,6 +117,7 @@ defineExpose({
     :class="props.class"
     role="radiogroup"
     ref="el"
+    @focusout="onFocusOut"
     @keydown.exact="onKeyDownExact"
   >
     <div
@@ -115,7 +127,7 @@ defineExpose({
       :aria-checked="o.value === model"
       :aria-disabled="props.disabled || o.disabled"
       :tabindex="index === trap ? 0 : -1"
-      @focus="index === trap ? onChange(o.value) : undefined"
+      @focus="index === trap ? ($emit('focus'), onChange(o.value)) : undefined"
       @click="!o.disabled ? onChange(o.value) : undefined"
     >
       {{ o.label }}

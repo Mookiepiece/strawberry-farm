@@ -38,7 +38,14 @@ const signupForm = Form.describe<LoginFormValue>(
       name: 'name',
       label: 'Name',
       type: 'text',
-      rules: [['string!', [3, 10]]],
+      rules: [
+        'string',
+        {
+          type: 'string',
+          required: true,
+          config: [3, 10],
+        },
+      ],
     });
 
     i({

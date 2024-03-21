@@ -4,10 +4,9 @@ import { on } from './on';
 // Inspired by vueuse usePointerSwipe
 export const trackPointer = (
   el: HTMLElement,
-  onStart?: (p: {
-    subscribe(cb: (p2: { e: PointerEvent; done: boolean }) => void): void;
-    e: PointerEvent;
-  }) => void,
+  onStart?: (
+    e: PointerEvent,
+  ) => ((p2: { e: PointerEvent; done: boolean }) => void) | void,
 ) => {
   const bag = Bag();
 
@@ -42,10 +41,8 @@ export const trackPointer = (
         return;
       };
 
-      onStart?.({
-        subscribe,
-        e: ev,
-      });
+      const subscription = onStart?.(ev);
+      if (subscription) subscribe(subscription);
     }),
   );
 

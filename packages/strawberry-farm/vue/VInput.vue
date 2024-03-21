@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { IFeatherElement } from '../html/IFeatherElement';
+import { type IFeatherElement } from '../html/IFeatherElement';
 
 const model = defineModel<string>({
   default: '',
@@ -23,6 +23,11 @@ const props = withDefaults(
 const slots = defineSlots<{
   prepend: any;
   append: any;
+}>();
+
+const emit = defineEmits<{
+  focus: [];
+  blur: [];
 }>();
 
 const input = ref<HTMLInputElement | HTMLTextAreaElement>();
@@ -56,6 +61,7 @@ const handleInput = (e: Event) => {
 };
 
 const handleBlur = () => {
+  emit('blur');
   if (props.trim) input.value!.value = input.value!.value.trim();
 };
 
@@ -87,6 +93,7 @@ defineExpose({ focus });
       v-if="props.textarea"
       ref="input"
       @input="handleInput"
+      @focus="$emit('focus')"
       @blur="handleBlur"
       :placeholder="props.placeholder"
     />

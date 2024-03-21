@@ -10,11 +10,11 @@ onMounted(() => {
   const [el, c] = [elRef.value, container.value];
   if (!el || !c) return;
 
-  trackPointer(el, ({ subscribe, e }) => {
+  trackPointer(el, e => {
     const start = { x: e.clientX, y: e.clientY };
     let relative = { x: 0, y: 0 };
 
-    subscribe(({ e, done }) => {
+    return ({ e, done }) => {
       relative = {
         x: e.clientX - start.x,
         y: e.clientY - start.y,
@@ -34,7 +34,7 @@ onMounted(() => {
         el.style.setProperty('transform', `translate(0px, 0px)`);
         el.style.setProperty('transition', `transform .3s`);
       }
-    });
+    };
   });
 });
 </script>

@@ -8,13 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <form class="sf-form" @submit.prevent="props.form.submit()">
+  <form class="VForm" @submit.prevent="props.form.submit()">
     <slot />
   </form>
 </template>
-
-<style>
-.sf-form {
-  height: 100%;
-}
-</style>

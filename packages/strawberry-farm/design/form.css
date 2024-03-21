@@ -143,21 +143,6 @@
   border-right: none;
 }
 
-:where(:is(.sf-group, .sf-input, .sf-button).size-s) {
-  ---size: var(--s);
-  ---f: var(--f3);
-}
-
-:where(:is(.sf-group, .sf-input, .sf-button).size-m) {
-  ---size: var(--m);
-  ---f: var(--f2);
-}
-
-:where(:is(.sf-group, .sf-input, .sf-button).size-l) {
-  ---size: var(--l);
-  ---f: var(--f1);
-}
-
 /* BUTTON */
 
 :where(.sf-button) {
@@ -227,10 +212,17 @@
 
 :where(.sf-form-item label) {
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 5px;
   font-size: var(--f2);
   line-height: 1.6;
   font-weight: 600;
+}
+
+:where(.sf-form-item .__description) {
+  padding-block: 2px;
+  display: flex;
+  font-size: var(--f2);
+  line-height: 1.6;
 }
 
 :where(.sf-form-item .__alert) {
@@ -246,5 +238,9 @@
 }
 
 :where(.sf-form-item) {
-  margin-bottom: var(--2);
+  margin-bottom: 10px;
+}
+
+:where(.VForm) {
+  height: 100%;
 }

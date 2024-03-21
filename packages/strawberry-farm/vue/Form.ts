@@ -1,10 +1,11 @@
 import {
   Component,
   ComputedRef,
+  MaybeRef,
   reactive,
   shallowReactive,
 } from 'vue';
-import { IRuleType, RuleS } from '../functions/validator';
+import { IRule, IRuleType, RuleS } from '../functions/validator';
 import VRadioGroup from './VRadioGroup.vue';
 import VInput from './VInput.vue';
 
@@ -112,25 +113,23 @@ export type CommonChoice =
       disabled?: boolean;
     };
 
-type ValueOrReactive<T> = ComputedRef<T>;
-
 interface FieldTypes {
-  any: ValueOrReactive<any>;
-  text: ValueOrReactive<number | (number | null | undefined)[] | RegExp>;
-  textarea: ValueOrReactive<number | (number | null | undefined)[] | RegExp>;
-  number: ValueOrReactive<any>;
-  checkbox: ValueOrReactive<any>;
-  switch: ValueOrReactive<any>;
-  checkboxgroup: ValueOrReactive<{
-    options: ValueOrReactive<CommonChoice[]>;
-  }>;
-  select: ValueOrReactive<{
+  any: MaybeRef<any>;
+  text: MaybeRef<number | (number | null | undefined)[] | RegExp>;
+  textarea: MaybeRef<number | (number | null | undefined)[] | RegExp>;
+  number: MaybeRef<any>;
+  checkbox: MaybeRef<any>;
+  switch: MaybeRef<any>;
+  checkboxgroup: MaybeRef<{
     options: CommonChoice[];
   }>;
-  radio: ValueOrReactive<{
+  select: MaybeRef<{
+    options: CommonChoice[];
+  }>;
+  radio: MaybeRef<{
     options: string[];
   }>;
-  list: ValueOrReactive<any>;
+  list: MaybeRef<any>;
   hidden: undefined;
 }
 
@@ -147,6 +146,10 @@ interface FieldTypeBindings {
   hidden: any;
 }
 
+type FormRuleExtesion<T extends RuleS> = T extends IRule
+  ? T & { when?: 'blur' | 'input' | 'submit' }
+  : T;
+
 type FieldDescriptor<
   Objective,
   ObjectivePath extends Path<Objective>,
@@ -156,15 +159,25 @@ type FieldDescriptor<
   name: ObjectivePath;
   visible?: boolean;
 
-  type: Type;
+  type?: Type;
   props?: FieldTypes[Type];
 
-  rules?: RuleS<keyof IRuleType, PathValue<Objective, ObjectivePath>>[];
+  rules?: FormRuleExtesion<
+    RuleS<keyof IRuleType, PathValue<Objective, ObjectivePath>>
+  >[];
 
   initialValue?: PathValue<Objective, ObjectivePath>;
   // value: PathValue<Objective, ObjectivePath>;
   error?: string;
 };
+
+const filterBlurRules: (
+  r: NonNullable<FormRuleExtesion<RuleS>>,
+) => boolean = r => typeof r === 'object' && 'when' in r && r.when === 'blur';
+const filterSubmitRules: (
+  r: NonNullable<FormRuleExtesion<RuleS>>,
+) => boolean = r => typeof r === 'object' && 'when' in r && r.when === 'submit';
+const filterInputRules: typeof filterBlurRules = r => !filterBlurRules(r) && !filterSubmitRules(r);
 
 export type FormModel<Objective> = {
   initialValue: Objective;
@@ -237,11 +250,11 @@ export const fieldTypes = new Map<keyof FieldTypes, Component>();
 fieldTypes.set('radio', VRadioGroup);
 fieldTypes.set('text', VInput);
 
-const describeField = <Objective>() => {};
-
 export const Form = {
   pathValueGetter,
   pathValueSetter,
+  filterBlurRules,
+  filterInputRules,
   describe: describeForm,
   registry: fieldTypes,
 };
