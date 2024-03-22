@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Ref } from 'vue';
 import { ref, watch } from 'vue';
 
 const model = defineModel<string>({
@@ -20,6 +21,7 @@ const props = withDefaults(
 const emit = defineEmits<{
   focus: [];
   blur: [];
+  click: [MouseEvent];
 }>();
 
 const input = ref<HTMLInputElement | HTMLTextAreaElement>();
@@ -63,8 +65,8 @@ const clean = () => {
 };
 
 const focus = () => input.value?.focus();
-const el = ref<HTMLDivElement | null>(null);
-defineExpose({ focus });
+const el = ref() as Ref<HTMLDivElement>;
+defineExpose({ focus, el });
 </script>
 
 <template>
@@ -72,6 +74,7 @@ defineExpose({ focus });
     class="sf-input"
     :class="[props.textarea && '--textarea', props.disabled && '--disabled']"
     @click.self="input?.focus()"
+    @click="e => emit('click', e)"
     ref="el"
   >
     <div class="sf-input-prefix" v-if="$slots.prefix">
@@ -84,7 +87,7 @@ defineExpose({ focus });
       v-if="props.textarea"
       ref="input"
       @input="handleInput"
-      @focus="$emit('focus')"
+      @focus="emit('focus')"
       @blur="handleBlur"
       :placeholder="props.placeholder"
     />

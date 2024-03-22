@@ -4,12 +4,18 @@ import VInput from './VInput.vue';
 import { Bag, levitate } from '../functions';
 import { watch } from 'vue';
 import { onBeforeUnmount } from 'vue';
-import { VNode } from 'vue';
+
+const props = withDefaults(
+  defineProps<{
+    class?: any;
+  }>(),
+  {},
+);
 
 const open = ref(false);
 const leaving = ref(false);
 
-const reference = ref<VNode<typeof VInput>>();
+const reference = ref<InstanceType<typeof VInput> | null>(null);
 const popper = ref<HTMLDivElement>();
 
 const flip = levitate.plugins.flip();
@@ -20,35 +26,37 @@ onBeforeUnmount(bag);
 watch(
   () => [popper.value, open.value] as const,
   ([el, open]) => {
-
-    console.log(reference.value)
     bag();
     if (open && el) {
-      // bag(
-      //   levitate.auto(reference.value!.el, () => {
-      //     levitate(
-      //       reference.value!,
-      //       el,
-      //       {
-      //         offset: 10,
-      //       },
-      //       flip,
-      //     );
-      //   }),
-      // );
+      bag(
+        levitate.auto(reference.value!.el, () => {
+          levitate(
+            reference.value!.el,
+            el,
+            {
+              offset: 10,
+            },
+            flip,
+          );
+        }),
+      );
     }
   },
 );
-const props = withDefaults(
-  defineProps<{
-    class?: any;
-  }>(),
-  {},
-);
+
+const toggle = () => {
+  if (!open.value) {
+    open.value = true;
+    leaving.value = true;
+  } else {
+    open.value = false;
+  }
+};
+
 </script>
 
 <template>
-  <VInput ref="reference" readonly />
+  <VInput ref="reference" readonly @click="toggle" />
 
   <Teleport v-if="open || leaving" to="body">
     <div
@@ -79,5 +87,4 @@ const props = withDefaults(
   transform: translateX(200px);
   opacity: 0;
 }
-
 </style>
