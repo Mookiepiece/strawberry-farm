@@ -72,11 +72,4 @@ const toggle = () => {
   opacity: 0;
 }
 
-.vp-demo-levitate-vue-animated.v-enter-active,
-.vp-demo-levitate-vue-animated.v-leave-active {}
-
-.vp-demo-levitate-vue-animated.v-enter-to,
-.vp-demo-levitate-vue-animated.v-leave-from {
-  /* transform: scale(1); */
-}
 </style>

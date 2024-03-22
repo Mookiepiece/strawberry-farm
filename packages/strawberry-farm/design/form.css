@@ -6,8 +6,6 @@
   align-items: center;
   width: 100%;
   height: var(---size);
-  padding-inline: calc(var(---gap) / 2);
-  gap: calc(var(---gap) / 2);
   font-size: var(---f);
   line-height: 1.6;
   color: var(--text1);
@@ -38,7 +36,8 @@
   height: 100%;
   color: inherit;
   font: inherit;
-  /* padding-inline: 10px; */
+  order: 2;
+  padding-inline: 10px;
 }
 
 :where(.sf-input > :is(input, textarea)::placeholder) {
@@ -90,53 +89,31 @@
   background-color: var(--mat-air-2);
 }
 
-:where(.sf-input-prepend, .sf-input-append) {
+:where(.sf-input-prefix, .sf-input-suffix) {
   flex-shrink: 0;
   padding: 0;
   color: var(--text2);
+  min-width: var(---size);
   white-space: nowrap;
   pointer-events: none;
 }
 
-/* :where(.sf-input-prepend) {
-  padding-left: 10px;
+:where(.sf-input-prefix) {
+  order: 1;
+  padding-inline: 5px;
 }
 
-:where(.sf-input-append) {
-  padding-right: 10px;
-} */
-
-:where(.sf-group) {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  font-size: var(---f);
+:where(.sf-input-suffix) {
+  order: 3;
+  padding-inline: 5px;
 }
 
-:where(.sf-group > .sf-input) {
-  width: fit-content;
-  flex-grow: 1;
+:where(.sf-input-prefix ~ :is(input, textarea)) {
+  padding-left: 0;
 }
 
-:where(.sf-group > ins) {
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  height: var(---size);
-  padding: 0 10px;
-  border: 1px solid var(--mat-solid-15);
-  background: var(--mat-air-05);
-  color: var(--text2);
-  text-decoration: unset;
-  white-space: nowrap;
-}
-
-:where(.sf-group > ins:not(:first-child)) {
-  border-left: none;
-}
-
-:where(.sf-group > ins:not(:last-child)) {
-  border-right: none;
+:where(.sf-input-suffix ~ :is(input, textarea)) {
+  padding-right: 0;
 }
 
 /* BUTTON */

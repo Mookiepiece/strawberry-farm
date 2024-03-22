@@ -11,6 +11,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   input: [any];
+  focus: [];
   blur: [];
 }>();
 
@@ -71,6 +72,7 @@ const fieldProps = computed(() => unref(descriptor.props));
         :is="as"
         v-model="model"
         v-bind="fieldProps"
+        @focus="emit('focus')"
         @blur="emit('blur')"
       />
     </slot>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { type IFeatherElement } from '../html/IFeatherElement';
 
 const model = defineModel<string>({
   default: '',
@@ -12,18 +11,11 @@ const props = withDefaults(
     placeholder?: string;
     textarea?: boolean;
     trim?: boolean;
-    prefix?: keyof typeof IFeatherElement.names;
-    suffix?: keyof typeof IFeatherElement.names;
     clearable?: boolean;
     disabled?: boolean;
   }>(),
   { trim: true },
 );
-
-const slots = defineSlots<{
-  prepend: any;
-  append: any;
-}>();
 
 const emit = defineEmits<{
   focus: [];
@@ -71,24 +63,23 @@ const clean = () => {
 };
 
 const focus = () => input.value?.focus();
+const el = ref<HTMLDivElement | null>(null);
 defineExpose({ focus });
 </script>
 
 <template>
   <div
     class="sf-input"
-    :class="[
-      props.textarea && '--textarea',
-      props.disabled && '--disabled',
-      props.prefix && '--has-prefix',
-      props.suffix && '--has-suffix',
-    ]"
+    :class="[props.textarea && '--textarea', props.disabled && '--disabled']"
     @click.self="input?.focus()"
+    ref="el"
   >
-    <div class="sf-input-prepend" v-if="$slots.prepend">
-      <slot name="prepend"></slot>
+    <div class="sf-input-prefix" v-if="$slots.prefix">
+      <slot name="prefix"></slot>
     </div>
-    <i-feather v-if="props.prefix" :i="props.prefix" class="sf-input-icon" />
+    <div class="sf-input-suffix" v-if="$slots.suffix">
+      <slot name="suffix"></slot>
+    </div>
     <textarea
       v-if="props.textarea"
       ref="input"
@@ -112,9 +103,5 @@ defineExpose({ focus });
       tabindex="-1"
       @click="clean"
     />
-    <i-feather v-if="props.suffix" :i="props.suffix" class="sf-input-icon" />
-    <div class="sf-input-append" v-if="$slots.append">
-      <slot name="append"></slot>
-    </div>
   </div>
 </template>
