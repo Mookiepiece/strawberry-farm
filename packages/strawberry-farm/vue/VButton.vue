@@ -20,7 +20,7 @@ const props = withDefaults(
     :disabled="props.loading || props.disabled"
   >
     <slot name="icon"></slot>
-    <div v-if="$slots.default" class="Content">
+    <div v-if="$slots.default" class="Trunk">
       <slot />
     </div>
   </button>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref, shallowRef, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { highlight } from './_shikiji';
 
 const props = defineProps<{

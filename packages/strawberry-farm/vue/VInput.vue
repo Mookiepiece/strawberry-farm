@@ -8,6 +8,9 @@ const model = defineModel<string>({
 
 const props = withDefaults(
   defineProps<{
+    id?: string;
+    name?: string;
+
     readonly?: boolean;
     placeholder?: string;
     textarea?: boolean;
@@ -77,34 +80,40 @@ defineExpose({ focus, el });
     @click="e => emit('click', e)"
     ref="el"
   >
-    <div class="sf-input-prefix" v-if="$slots.prefix">
+    <div aria-label="Input Prefix" v-if="$slots.prefix">
       <slot name="prefix"></slot>
     </div>
-    <div class="sf-input-suffix" v-if="$slots.suffix">
+    <div aria-label="Input Suffix" v-if="$slots.suffix">
       <slot name="suffix"></slot>
     </div>
+    <i-feather
+      v-if="props.clearable && filled"
+      i="x-circle"
+      class="sf-input-clean"
+      tabindex="-1"
+      @click="clean"
+    />
     <textarea
       v-if="props.textarea"
       ref="input"
+      :readonly="props.readonly"
+      :placeholder="props.placeholder"
+      :id="props.id"
+      :name="props.name"
       @input="handleInput"
       @focus="emit('focus')"
       @blur="handleBlur"
-      :placeholder="props.placeholder"
     />
     <input
       v-else
       ref="input"
       :readonly="props.readonly"
-      @input="handleInput"
-      @blur="handleBlur"
       :placeholder="props.placeholder"
-    />
-    <i-feather
-      v-if="props.clearable && filled"
-      i="x"
-      class="sf-input-clean"
-      tabindex="-1"
-      @click="clean"
+      :id="props.id"
+      :name="props.name"
+      @input="handleInput"
+      @focus="emit('focus')"
+      @blur="handleBlur"
     />
   </div>
 </template>

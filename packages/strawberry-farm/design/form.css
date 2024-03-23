@@ -60,11 +60,11 @@
 }
 
 :where(.sf-input-clean) {
+  order: 3;
   flex-shrink: 0;
   width: var(---size);
   height: var(---size);
-  font-size: 120%;
-  color: var(--text2);
+  color: var(--text3);
   pointer-events: none;
 }
 /* 
@@ -89,23 +89,21 @@
   background-color: var(--mat-air-2);
 }
 
-:where(.sf-input-prefix, .sf-input-suffix) {
+:where([aria-label='Input Prefix'], [aria-label='Input Suffix']) {
   flex-shrink: 0;
-  padding: 0;
+  padding-inline: 5px;
   color: var(--text2);
   min-width: var(---size);
   white-space: nowrap;
   pointer-events: none;
 }
 
-:where(.sf-input-prefix) {
+:where([aria-label='Input Prefix']) {
   order: 1;
-  padding-inline: 5px;
 }
 
-:where(.sf-input-suffix) {
-  order: 3;
-  padding-inline: 5px;
+:where([aria-label='Input Suffix']) {
+  order: 4;
 }
 
 :where(.sf-input-prefix ~ :is(input, textarea)) {
@@ -126,10 +124,6 @@
   height: var(---size);
   min-width: var(---size);
   font-size: var(---f);
-}
-
-:where(.Content) {
-  padding-inline: 5px;
 }
 
 /* RADIO */
@@ -189,35 +183,22 @@
   transition: box-shadow 0.2s;
 }
 
-:where(.sf-form-item label) {
+:where(.FormItemHeader) {
+  font-size: var(--f2);
+  line-height: 1.6;
+}
+
+:where(.FormItemTitle) {
   display: block;
-  margin-bottom: 5px;
-  font-size: var(--f2);
-  line-height: 1.6;
   font-weight: 600;
+  cursor: default;
 }
 
-:where(.sf-form-item .__description) {
-  padding-block: 2px;
+:where(.FormItem) {
   display: flex;
-  font-size: var(--f2);
-  line-height: 1.6;
-}
-
-:where(.sf-form-item .Alert) {
-  padding-block: 2px;
-  display: flex;
-  font-size: var(--f2);
-  line-height: 1.6;
-  color: var(---main);
-}
-
-:where(.sf-form-item .Message) {
-  padding-inline-start: var(--1);
-}
-
-:where(.sf-form-item) {
-  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 20px;
 }
 
 :where(.VForm) {

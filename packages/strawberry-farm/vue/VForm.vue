@@ -1,14 +1,17 @@
-<script setup lang="ts">
-import { FormModel } from './Form';
+<script setup lang="ts" generic="T">
+import { provide } from 'vue';
+import { FormModel, Path } from './Form';
 
 const props = defineProps<{
-  form: FormModel<any>;
+  form: FormModel<T>;
 }>();
+
+provide('VForm', props.form);
 
 </script>
 
 <template>
   <form class="VForm" @submit.prevent="props.form.submit()">
-    <slot />
+    <slot :i="props.form.i" />
   </form>
 </template>

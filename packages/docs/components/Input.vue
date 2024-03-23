@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import VInput from '@mookiepiece/strawberry-farm/vue/VInput.vue';
-import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
 import { ref } from 'vue';
 
 const model = ref('');
@@ -112,8 +111,6 @@ const model = ref('');
       v-model="model"
       class="size-s"
       placeholder="東方神霊廟 〜 Ten Desires."
-      prefix="compass"
-      suffix="compass"
       clearable
     >
       <template #prefix>$ =</template>
@@ -122,8 +119,6 @@ const model = ref('');
     <VInput
       v-model="model"
       placeholder="東方神霊廟 〜 Ten Desires."
-      prefix="compass"
-      suffix="compass"
       clearable
     >
       <template #prefix>$ =</template>
@@ -133,8 +128,6 @@ const model = ref('');
       v-model="model"
       class="size-l"
       placeholder="東方神霊廟 〜 Ten Desires."
-      prefix="compass"
-      suffix="compass"
       clearable
     >
       <template #prefix>$ =</template>
@@ -144,8 +137,6 @@ const model = ref('');
       v-model="model"
       class="size-s"
       placeholder="東方神霊廟 〜 Ten Desires."
-      prefix="compass"
-      suffix="compass"
       clearable
     >
       <template #prefix>$ =</template>
@@ -154,8 +145,6 @@ const model = ref('');
     <VInput
       v-model="model"
       placeholder="東方神霊廟 〜 Ten Desires."
-      prefix="compass"
-      suffix="compass"
       clearable
     >
       <template #prefix>sina=[2tan(a/2)]/[1+tan²(a/2)]</template>
@@ -165,8 +154,6 @@ const model = ref('');
       v-model="model"
       class="size-l"
       placeholder="東方神霊廟 〜 Ten Desires."
-      prefix="compass"
-      suffix="compass"
       clearable
     >
       <template #prefix>sina=[2tan(a/2)]/[1+tan²(a/2)]</template>

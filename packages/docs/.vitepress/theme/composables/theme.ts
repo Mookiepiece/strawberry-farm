@@ -57,6 +57,7 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Sizing', link: '/design/Sizing' },
         { text: 'Interaction', link: '/design/Interaction' },
         { text: 'Collapse', link: '/design/Collapse' },
+        { text: 'Alert', link: '/design/Alert' },
       ],
     },
     {

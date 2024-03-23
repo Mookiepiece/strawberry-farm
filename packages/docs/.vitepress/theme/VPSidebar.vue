@@ -8,8 +8,8 @@ import VPSidebarItem from './VPSidebarItem.vue';
 import { useData } from './composables';
 
 const props = defineProps<{
-  open:boolean
-}>()
+  open: boolean;
+}>();
 
 const { theme, isDark } = useData();
 
@@ -50,13 +50,13 @@ const toggleTheme = async (e: MouseEvent) => {
 };
 
 const isToggledFontFamily = ref(!!sessionStorage.getItem('VPBodyDefaultFont'));
-watch(isToggledFontFamily, is => {
-  is
+watch(isToggledFontFamily, _ => {
+  _
     ? sessionStorage.setItem('VPBodyDefaultFont', '1')
     : sessionStorage.removeItem('VPBodyDefaultFont');
 });
-watch(isToggledFontFamily, is => {
-  is
+watch(isToggledFontFamily, _ => {
+  _
     ? document.body.classList.add('VPBodyDefaultFont')
     : document.body.classList.remove('VPBodyDefaultFont');
 });

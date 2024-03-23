@@ -1,7 +1,6 @@
 @each $i in (1, 2, 3) {
   :where(.h#{$i}, .h#{$i}-1, .h#{$i}-2, .h#{$i}-3) {
     font-size: var(--h#{$i});
-    color: var(--text1);
   }
 
   :where(.h#{$i}-1) {
@@ -20,7 +19,6 @@
 @each $i in (1, 2, 3) {
   :where(.f#{$i}, .f#{$i}-1, .f#{$i}-2, .f#{$i}-3) {
     font-size: var(--f#{$i});
-    color: var(--text1);
   }
 
   :where(.f#{$i}-1) {

@@ -144,7 +144,19 @@ provide('VForm', signupForm);
 <template>
   <VForm :form="signupForm">
     <VFormItem name="usage" />
-    <VFormItem name="name" />
+    <VFormItem name="name">
+      <template #subtitle>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi adipisci
+        nam commodi, recusandae cupiditate possimus ut quam sapiente mollitia
+        fuga temporibus iure illo vitae at sed facilis fugit, explicabo
+        officiis!
+      </template>
+      <template #description>
+        <div class="clr-3">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        </div>
+      </template>
+    </VFormItem>
     <VFormItem name="password" />
   </VForm>
   <!-- </v-form>

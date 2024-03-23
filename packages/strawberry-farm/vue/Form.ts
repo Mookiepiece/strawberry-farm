@@ -1,13 +1,16 @@
 import {
   Component,
+  ComponentPropsOptions,
   ComputedRef,
   MaybeRef,
+  Prop,
   reactive,
   shallowReactive,
 } from 'vue';
 import { IRule, IRuleType, RuleS } from '../functions/validator';
 import VRadioGroup from './VRadioGroup.vue';
 import VInput from './VInput.vue';
+import { inc } from '../functions';
 
 /**
  * @license MIT react-hook-form
@@ -115,7 +118,7 @@ export type CommonChoice =
 
 interface FieldTypes {
   any: MaybeRef<any>;
-  text: MaybeRef<number | (number | null | undefined)[] | RegExp>;
+  text: MaybeRef<InstanceType<typeof VInput>['$props'] & Record<string, any>>;
   textarea: MaybeRef<number | (number | null | undefined)[] | RegExp>;
   number: MaybeRef<any>;
   checkbox: MaybeRef<any>;
@@ -158,7 +161,7 @@ type FieldDescriptor<
   type?: Type;
   props?: FieldTypes[Type];
 
-  rules?:  RuleS<keyof IRuleType, PathValue<Objective, ObjectivePath>>[];
+  rules?: RuleS<keyof IRuleType, PathValue<Objective, ObjectivePath>>[];
 
   initialValue?: PathValue<Objective, ObjectivePath>;
   // value: PathValue<Objective, ObjectivePath>;
@@ -184,13 +187,18 @@ export type FormModel<Objective> = {
   fields: {
     [P in Path<Objective>]: FieldDescriptor<Objective, P, any>;
   };
+
+  i: (name: Path<Objective>) => Path<Objective>;
 };
 
 export const describeForm = <Objective extends object>(
   initialValue: Objective,
   cb: (payload: {
     describeGroup: () => any;
-    describeField: <PV extends Path<Objective>, Type extends keyof FieldTypes>(
+    describeField: <
+      PV extends Path<Objective>,
+      Type extends keyof FieldTypes = 'text',
+    >(
       f: FieldDescriptor<Objective, PV, Type>,
     ) => FieldDescriptor<Objective, PV, Type>;
   }) => void,
@@ -228,6 +236,7 @@ export const describeForm = <Objective extends object>(
     set(name, value) {},
     async submit() {},
     async validate(names) {},
+    i: name => name,
   };
 };
 
@@ -237,6 +246,7 @@ fieldTypes.set('radio', VRadioGroup);
 fieldTypes.set('text', VInput);
 
 export const Form = {
+  uuid: inc('VForm__'),
   pathValueGetter,
   pathValueSetter,
   describe: describeForm,

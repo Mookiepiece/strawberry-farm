@@ -18,9 +18,13 @@
 :where(body) {
   margin: 0;
   font-size: 0;
-  white-space: pre-wrap; // Forbidden to add spaces among tags or tag and it's text contents, be careful
   overflow-wrap: break-word; // CSS IS AWESOME
   line-height: 1.2; // Default line height in Firefox, but different in Google Chrome
+}
+
+:where(pre) {
+  all: unset;
+  white-space: pre-wrap;
 }
 
 :where(table) {

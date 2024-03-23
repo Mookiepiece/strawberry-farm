@@ -9,14 +9,11 @@ const props = defineProps<{
   name: string;
 }>();
 
-const emit = defineEmits<{
-  input: [any];
-  focus: [];
-  blur: [];
-}>();
-
 const slots = defineSlots<{
   default(props: { props: any; model: WritableComputedRef<any> }): any;
+  subtitle: any;
+  description: any;
+  alert: any;
 }>();
 
 const form: FormModel<any> = inject('VForm')!;
@@ -31,7 +28,6 @@ const model = computed({
   },
   set(value: any) {
     Form.pathValueSetter(form.value, descriptor.name, value);
-    emit('input', value);
     validateSelf().then(v => (errorMessage.value = v));
   },
 });
@@ -64,30 +60,37 @@ const fieldProps = computed(() => unref(descriptor.props));
 </script>
 
 <template>
-  <div class="sf-form-item">
-    <label @click="control?.focus()">{{ descriptor.label }}</label>
+  <div class="FormItem">
+    <div class="FormItemHeader" v-if="descriptor.label">
+      <div class="FormItemTitle" @click="control?.focus()">
+        {{ descriptor.label }}
+      </div>
+
+      <div v-if="$slots.subtitle" class="f3">
+        <slot name="subtitle" />
+      </div>
+    </div>
+
     <slot :props="fieldProps" :model="model">
       <component
+        :name="descriptor.name"
         ref="control"
         :is="as"
         v-model="model"
         v-bind="fieldProps"
-        @focus="emit('focus')"
-        @blur="emit('blur')"
       />
     </slot>
-    <div class="__description">
-      <i-feather i="info" />
-      <div class="__message">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus
-        voluptates sit ipsum eius aliquid deleniti qui dolores consectetur rem.
-        Explicabo illum similique placeat debitis! Fuga nam veniam esse incidunt
-        adipisci.
-      </div>
+
+    <div v-if="$slots.description" class="f3">
+      <slot name="description" />
     </div>
-    <div class="Alert tone:reimu" v-if="errorMessage">
+
+    <div v-if="$slots.alert">
+      <slot v-if="errorMessage" name="alert" />
+    </div>
+    <div v-else-if="errorMessage" class="[B] f2 tone:reimu Alert">
       <i-feather i="x-octagon" />
-      <div class="Message">{{ errorMessage }}</div>
+      <div class="px-1">{{ errorMessage }}</div>
     </div>
   </div>
 </template>
