@@ -13,7 +13,7 @@
 - 泛型只限制输入值，而输出值由于存在修剪功能不能保证。
 - `<VFormItem />` 不是泛型组件，大多数和类型推导相关的功能都应该在脚本里处理。
 - `strawberry-farm` 的 `<VFormItem />` 会将 `validator` 的 Range 修饰翻译成 `min` `max-length` `aria-value-min` 等 HTML 原生属性作用在自定义控件上，使用者在实现自定义控件时可以考虑支持。
-- 上述所有的聚焦行为不仅包括 `Element.focus()`，还包括 `Element.scrollIntoView()`。
+- 上述所有的聚焦行为不仅包括 `Element.focus()`，还包括 `Element.scrollIntoView()`。聚焦会尝试查找引用的 `focus()` 函数（针对 Input 的优化，必须用 `div` 包住 `<input />` 实现布局），如果没有，则会调用 `el`，自定义组件必须支持 `el`。
 - HTML 标准规定 `<form />` 元素不能嵌套（可以用对话框（ `<Teleport to="body" />` ）将业务逻辑拆分以避免嵌套）
 - HTML `<form />` 元素不会提交 `disabled` 的控件（`react-hook-form` 也是这么处理的），然而在 `strawberry-farm` 里， 只有不可见控件的值才会被裁剪。这种处理比较主观，但是如果用 `readonly` 替代，诸如 `<select>` `[type="radio"]` `[type="checkbox"]` 反而不支持这个 `readonly` 属性，真是鸡肋，所以还是按照可见即提交吧，毕竟这个年头很难见到原生 HTML `<form />` 发起真正的提交了。
 

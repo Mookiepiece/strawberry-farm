@@ -8,5 +8,15 @@ const options = ['Yes', 'No', { value: "I'm not sure", disabled: true }];
 </script>
 
 <template>
-  <VRadioGroup v-model="v" :options="options" />
+  <div class="[B] gap-2">
+    <div>
+      <VRadioGroup v-model="v" :options="options" />
+    </div>
+    <div>
+      <VRadioGroup clearable v-model="v" :options="options" />
+    </div>
+    <div>
+      <VRadioGroup disabled clearable v-model="v" :options="options" />
+    </div>
+  </div>
 </template>

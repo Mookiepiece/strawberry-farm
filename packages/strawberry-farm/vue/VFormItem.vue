@@ -16,6 +16,8 @@ const slots = defineSlots<{
   alert: any;
 }>();
 
+const id = Form.uuid();
+
 const form: FormModel<any> = inject('VForm')!;
 
 const descriptor = form.fields[props.name];
@@ -62,7 +64,12 @@ const fieldProps = computed(() => unref(descriptor.props));
 <template>
   <div class="FormItem">
     <div class="FormItemHeader" v-if="descriptor.label">
-      <div class="FormItemTitle" @click="control?.focus()">
+      <div
+        class="FormItemTitle"
+        :id="id"
+        @click="control?.focus()"
+        aria-hidden="true"
+      >
         {{ descriptor.label }}
       </div>
 
@@ -78,6 +85,7 @@ const fieldProps = computed(() => unref(descriptor.props));
         :is="as"
         v-model="model"
         v-bind="fieldProps"
+        :aria-labelledby="id"
       />
     </slot>
 

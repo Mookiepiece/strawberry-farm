@@ -7,7 +7,6 @@ const model = defineModel<any>();
 
 const props = defineProps<{
   options?: CommonChoice[];
-  clearable?: boolean;
   disabled?: boolean;
   class?: any;
   style?: StyleValue;
@@ -21,5 +20,5 @@ defineExpose({
 </script>
 
 <template>
-  <VPicker ref="picker" :class="[props.class, 'VRadioGroup']" v-model="model" v-bind="props" />
+  <VPicker multi ref="picker" :class="[props.class, 'VRadioGroup']" v-model="model" v-bind="props" />
 </template>

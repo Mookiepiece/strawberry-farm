@@ -10,6 +10,8 @@ const props = withDefaults(
   defineProps<{
     id?: string;
     name?: string;
+    ariaLabel?: string;
+    ariaLabelledby?:string;
 
     readonly?: boolean;
     placeholder?: string;
@@ -89,9 +91,10 @@ defineExpose({ focus, el });
     <i-feather
       v-if="props.clearable && filled"
       i="x-circle"
-      class="sf-input-clean"
+      class="VInputEraser"
       tabindex="-1"
       @click="clean"
+      aria-hidden="true"
     />
     <textarea
       v-if="props.textarea"
@@ -103,6 +106,8 @@ defineExpose({ focus, el });
       @input="handleInput"
       @focus="emit('focus')"
       @blur="handleBlur"
+      :aria-label="props.ariaLabel"
+      :aria-labelledby="props.ariaLabelledby"
     />
     <input
       v-else
@@ -114,6 +119,8 @@ defineExpose({ focus, el });
       @input="handleInput"
       @focus="emit('focus')"
       @blur="handleBlur"
+      :aria-label="props.ariaLabel"
+      :aria-labelledby="props.ariaLabelledby"
     />
   </div>
 </template>

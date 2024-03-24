@@ -246,7 +246,7 @@ fieldTypes.set('radio', VRadioGroup);
 fieldTypes.set('text', VInput);
 
 export const Form = {
-  uuid: inc('VForm__'),
+  uuid: inc('ARIA'),
   pathValueGetter,
   pathValueSetter,
   describe: describeForm,
