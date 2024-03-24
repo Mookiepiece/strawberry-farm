@@ -1,6 +1,7 @@
 node_modules
 
 packages/docs/.vitepress/cache
+packages/docs/.vitepress/dist
 packages/_docs
 packages/_strawberry-farm
 packages/strawberry-farm/html/svg

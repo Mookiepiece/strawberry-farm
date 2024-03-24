@@ -23,7 +23,7 @@ const outline = defineModel<boolean>('outline');
     >
       Sidebar
     </button>
-    <img src="/favicon.ico" />
+    <img src="../.././favicon.ico" />
     <button
       v-if="features.outline"
       class="mat:air px-5"

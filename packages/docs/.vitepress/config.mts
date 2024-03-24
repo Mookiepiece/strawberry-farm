@@ -7,6 +7,7 @@ export default defineConfig({
   title: 'Strawberry Farm',
   description: 'Web Development Notes',
   head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
+  srcDir: './examples',
   markdown: {
     config: mdPlugin,
   },

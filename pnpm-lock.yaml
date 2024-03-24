@@ -51,6 +51,9 @@ importers:
       '@types/markdown-it':
         specifier: ^13.0.7
         version: 13.0.7
+      '@types/markdown-it-container':
+        specifier: ^2.0.9
+        version: 2.0.9
       '@types/node':
         specifier: ^20.11.19
         version: 20.11.19
@@ -715,6 +718,12 @@ packages:
 
   /@types/linkify-it@3.0.5:
     resolution: {integrity: sha512-yg6E+u0/+Zjva+buc3EIb+29XEg4wltq7cSmd4Uc2EE/1nUVmxyzpX6gUXD0V8jIrG0r7YeOGVIbYRkxeooCtw==}
+    dev: true
+
+  /@types/markdown-it-container@2.0.9:
+    resolution: {integrity: sha512-pW2W5ibThEXN/wKXTCsORMRJ0zKdFae/v+/n2YV8p6L/1gWQKIaW9KovmckuNV+v9u6yInMV1cXtfmDj+Q52NA==}
+    dependencies:
+      '@types/markdown-it': 13.0.7
     dev: true
 
   /@types/markdown-it@13.0.7:

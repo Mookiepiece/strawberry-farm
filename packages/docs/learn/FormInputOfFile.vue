@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { on } from '../../strawberry-farm/functions/on';
+import { Bag } from '@mookiepiece/strawberry-farm/functions';
 
 const props = defineProps<{
   disabled?: boolean;
@@ -10,7 +11,7 @@ const info = ref('');
 const dragging = ref(false);
 const dragover = ref(false);
 
-const handleChange = e => {
+const handleChange = (e: Event) => {
   const { files } = e.target as HTMLInputElement;
   const file = files![0];
 
@@ -69,15 +70,15 @@ const handleChange = e => {
   }
 };
 
-watchEffect(onCleanup => {
+watchEffect(onCleanUp => {
   if (!props.disabled) {
-    onCleanup(
-      on(document.body, 'dragover', () => {
+    onCleanUp(
+      on(document.body).dragover(() => {
         dragging.value = true;
       }),
     );
-    onCleanup(
-      on(document.body, 'dragleave', () => {
+    onCleanUp(
+      on(document.body).dragleave(() => {
         dragging.value = false;
       }),
     );
@@ -101,7 +102,7 @@ const handleDrop = (e: DragEvent) => {
     >
       <input type="file" @change="handleChange" />
     </label>
-    <div style="max-height: 100px;">
+    <div style="max-height: 100px">
       {{ info }}
     </div>
   </div>
