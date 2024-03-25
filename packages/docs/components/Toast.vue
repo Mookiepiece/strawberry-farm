@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { Toast, ToastBarElement } from '@mookiepiece/strawberry-farm/vue/Toast';
+import { Toast } from '@mookiepiece/strawberry-farm/vue/Toast';
+
 import { h } from 'vue';
 import { createApp } from 'vue';
 import { ref } from 'vue';
-
-ToastBarElement.install();
 
 const complex = () => {
   const span = document.createElement('span');

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useRoute } from 'vitepress';
+import { useRoute, withBase } from 'vitepress';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -8,29 +8,32 @@ const props = defineProps<{
   noIcon?: boolean;
   target?: string;
   rel?: string;
-  judgeActive?: (active: boolean) => boolean;
   exact?: boolean;
-  active?:() =>boolean
+  active?: () => boolean;
 }>();
 
 const route = useRoute();
 
 const isActive = computed(() => {
-  let pathname = new URL(window.location.origin + route.path).pathname;
+  let pathname = route.path;
   pathname = pathname.endsWith('.html') ? pathname.slice(0, -5) : pathname;
 
-  const to = new URL(window.location.origin + (props.href ?? '/404')).pathname;
+  const to = (props.href && withBase(props.href)) ?? '/404';
 
-  const active = typeof props.active === 'function' ? props.active() : props.exact ? pathname === to : pathname.startsWith(to);
+  const active =
+    typeof props.active === 'function'
+      ? props.active()
+      : props.exact
+        ? pathname === to
+        : pathname.startsWith(to);
 
-  if (props.judgeActive) {
-    return props.judgeActive(active);
-  }
   return active;
 });
 
 const tag = computed(() => props.tag ?? (props.href ? 'a' : 'span'));
 const isExternal = computed(() => props.href && props.href.startsWith('http'));
+
+const href = computed(() => props.href && withBase(props.href));
 </script>
 
 <template>

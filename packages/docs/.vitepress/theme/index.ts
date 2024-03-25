@@ -8,9 +8,18 @@ import { Theme } from 'vitepress';
 
 import './vp-doc.css';
 import './custom.css';
-import { IFeatherElement } from '@mookiepiece/strawberry-farm/html/IFeatherElement';
 
-IFeatherElement.install();
+if (!import.meta.env.SSR) {
+  import('@mookiepiece/strawberry-farm/html/IFeatherElement').then(
+    ({ IFeatherElement }) => IFeatherElement.install(),
+  );
+
+  import('@mookiepiece/strawberry-farm/html/ToastBarElement').then(
+    ({ ToastBarElement }) => {
+      ToastBarElement.install();
+    },
+  );
+}
 
 const theme: Theme = {
   Layout,

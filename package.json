@@ -6,6 +6,8 @@
     "vp": "pnpm --filter docs dev",
     "dev": "pnpm --filter docs dev",
     "gg": "pnpm --filter docs build",
+    "preview": "pnpm --filter docs preview",
+    "gh": "pnpm --filter docs gh",
     "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {

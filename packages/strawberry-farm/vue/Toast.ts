@@ -1,12 +1,9 @@
 import { cx } from '../functions/cx';
 import { sf7 } from '../html/sf7';
 import {
-  ToastBarElement,
   toastPrimitive,
   ToastPrimitiveConfig,
 } from './ToastPrimitive';
-
-export { ToastBarElement };
 
 type ToastConfig = ToastPrimitiveConfig | string | Node;
 type ToastType = 'blank' | 'error' | 'success' | 'loading' | 'custom';

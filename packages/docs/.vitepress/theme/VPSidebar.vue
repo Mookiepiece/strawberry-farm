@@ -6,6 +6,7 @@ import {
 } from '@pictogrammers/memory/src/icons';
 import VPSidebarItem from './VPSidebarItem.vue';
 import { useData } from './composables';
+import { onMounted } from 'vue';
 
 const props = defineProps<{
   open: boolean;
@@ -13,12 +14,12 @@ const props = defineProps<{
 
 const { theme, isDark } = useData();
 
-// https://github.com/vuejs/vitepress/blob/20511006dba516ca8c06ed1dd3516547af668a0e/docs/zh/guide/extending-default-theme.md?plain=1#L236
-const enableTransitions =
-  'startViewTransition' in document &&
-  window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
-
 const toggleTheme = async (e: MouseEvent) => {
+  // https://github.com/vuejs/vitepress/blob/20511006dba516ca8c06ed1dd3516547af668a0e/docs/zh/guide/extending-default-theme.md?plain=1#L236
+  const enableTransitions =
+    'startViewTransition' in document &&
+    window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+
   if (!enableTransitions) {
     isDark.value = !isDark.value;
     return;
@@ -49,16 +50,20 @@ const toggleTheme = async (e: MouseEvent) => {
   );
 };
 
-const isToggledFontFamily = ref(!!sessionStorage.getItem('VPBodyDefaultFont'));
-watch(isToggledFontFamily, _ => {
-  _
-    ? sessionStorage.setItem('VPBodyDefaultFont', '1')
-    : sessionStorage.removeItem('VPBodyDefaultFont');
-});
-watch(isToggledFontFamily, _ => {
-  _
-    ? document.body.classList.add('VPBodyDefaultFont')
-    : document.body.classList.remove('VPBodyDefaultFont');
+const isToggledFontFamily = ref(false);
+
+onMounted(() => {
+  isToggledFontFamily.value = !!sessionStorage.getItem('VPBodyDefaultFont');
+  watch(isToggledFontFamily, _ => {
+    _
+      ? sessionStorage.setItem('VPBodyDefaultFont', '1')
+      : sessionStorage.removeItem('VPBodyDefaultFont');
+  });
+  watch(isToggledFontFamily, _ => {
+    _
+      ? document.body.classList.add('VPBodyDefaultFont')
+      : document.body.classList.remove('VPBodyDefaultFont');
+  });
 });
 
 const sidebarGroups = theme.value.sidebar;

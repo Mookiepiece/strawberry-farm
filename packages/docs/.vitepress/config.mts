@@ -4,10 +4,10 @@ import path from 'node:path'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  base:'/strawberry-farm/',
   title: 'Strawberry Farm',
   description: 'Web Development Notes',
   head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
-  srcDir: './examples',
   markdown: {
     config: mdPlugin,
   },
