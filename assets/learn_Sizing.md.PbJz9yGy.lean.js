@@ -1,1 +1,0 @@
-import{I as t,o as i,h as s,J as a}from"./chunks/framework.q6r8hxCe.js";const g=JSON.parse('{"title":"Sizing","description":"","frontmatter":{},"headers":[],"relativePath":"learn/Sizing.md","filePath":"learn/Sizing.md"}'),e={name:"learn/Sizing.md"},n=a("",8),l=[n];function o(h,p,r,d,k,c){return i(),s("div",null,l)}const E=t(e,[["render",o]]);export{g as __pageData,E as default};

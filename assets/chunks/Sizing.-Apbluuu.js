@@ -1,1 +1,0 @@
-import{I as t,o as a,h as s,F as r,i as o,l as c,k as n}from"./framework.q6r8hxCe.js";const l={},i={class:"good [A] (///)"},d=["aria-label"];function _(f,m){return a(),s("div",i,[(a(),s(r,null,o(8,e=>c("div",{class:"i f3",style:n(`width: var(--${e});`),"aria-label":""+e},null,12,d)),64))])}const h=t(l,[["render",_],["__scopeId","data-v-d65bf5ce"]]);export{h as default};
