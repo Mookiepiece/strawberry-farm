@@ -10,19 +10,17 @@ type Levitate = typeof _levitate & {
 };
 
 type PopConfigs = {
-  $up: Element;
-  $fan: HTMLElement;
+  $ref: Element;
+  $pop: HTMLElement;
+  ref: DOMRect;
+  pop: DOMRect;
 
   dir: Direction;
   offset: number;
   alignment?: Alignment;
 
-  up: DOMRect;
-  fan: DOMRect;
   map: DOMRect;
   viewport: DOMRect;
-
-  glitch?: boolean;
 
   x?: number;
   y?: number;
@@ -68,20 +66,17 @@ const clamp = (min = 0, a: number, max = 100) =>
 
 const availableSpace4: Record<
   Direction,
-  ([[up], view]: [[DOMRect], DOMRect], offset: number) => DOMRect
+  ([[ref], view]: [[DOMRect], DOMRect], offset: number) => DOMRect
 > = {
   // prettier-ignore
-  top: ([[up], viewport], offset) => { const height = clamp(0, up.top - viewport.top - offset, viewport.height); const bottom = viewport.top + height; return ({ ...viewport, bottom, height }) },
+  top: ([[ref], viewport], offset) => { const height = clamp(0, ref.top - viewport.top - offset, viewport.height); const bottom = viewport.top + height; return ({ ...viewport, bottom, height }) },
   // prettier-ignore
-  right: ([[up], viewport], offset) => { const width = clamp(0, viewport.right - up.right - offset, viewport.width); const x = viewport.right - width; return ({ ...viewport, left: x, x, width }) },
+  right: ([[ref], viewport], offset) => { const width = clamp(0, viewport.right - ref.right - offset, viewport.width); const x = viewport.right - width; return ({ ...viewport, left: x, x, width }) },
   // prettier-ignore
-  bottom: ([[up], viewport], offset) => { const height = clamp(0, viewport.bottom - up.bottom - offset, viewport.height); const y = viewport.bottom - height; return ({ ...viewport, top: y , y, height }) },
+  bottom: ([[ref], viewport], offset) => { const height = clamp(0, viewport.bottom - ref.bottom - offset, viewport.height); const y = viewport.bottom - height; return ({ ...viewport, top: y , y, height }) },
   // prettier-ignore
-  left: ([[up], viewport], offset) => { const width = clamp(0, up.left - viewport.left - offset, viewport.width); const right = viewport.left + width; return ({ ...viewport, right, width }) },
+  left: ([[ref], viewport], offset) => { const width = clamp(0, ref.left - viewport.left - offset, viewport.width); const right = viewport.left + width; return ({ ...viewport, right, width }) },
 };
-
-// const smaller = ([[fan], map]: [[DOMRect], DOMRect]) =>
-//   fan.width < map.width && fan.height < map.height;
 
 type LogicalBox = {
   main: number;
@@ -95,10 +90,6 @@ const logicalBoxes: Record<Direction, (rect: DOMRect) => LogicalBox> = {
   left: ({ width, height }) => ({ main: width, cross: height }),
   right: ({ width, height }) => ({ main: width, cross: height }),
 };
-
-const area = (rect: DOMRect) => rect.width * rect.height;
-
-// Flip
 
 const defaultFlipFallbacks: Record<Direction, Direction[]> = {
   top: ['bottom', 'left', 'right'],
@@ -114,7 +105,7 @@ const mainAxisFlipFallbacks: Record<Direction, Direction[]> = {
   right: ['left'],
 };
 
-const flipAll =
+const flipAny =
   (
     settings?: (config: PopConfigs) => {
       limit?: number;
@@ -122,17 +113,17 @@ const flipAll =
     },
   ) =>
   (config: PopConfigs): PopConfigs => {
-    let { up, fan, viewport, dir, offset } = config;
-    let map = availableSpace4[dir]([[up], viewport], offset);
+    let { ref, pop, viewport, dir, offset } = config;
+    let map = availableSpace4[dir]([[ref], viewport], offset);
 
     const _settings = settings?.(config);
-    const limit = _settings?.limit ?? logicalBoxes[dir](fan).main;
+    const limit = _settings?.limit ?? logicalBoxes[dir](pop).main;
     const fallbacks = _settings?.fallback ?? defaultFlipFallbacks[dir];
 
     if (logicalBoxes[dir](map).main < limit) {
       for (const _dir of fallbacks) {
-        let _map = availableSpace4[_dir]([[up], viewport], offset);
-        if (area(_map) > area(map)) {
+        let _map = availableSpace4[_dir]([[ref], viewport], offset);
+        if (_map.width * _map.height > map.width * map.height) {
           map = _map;
           dir = _dir;
           break;
@@ -143,83 +134,66 @@ const flipAll =
     return { ...config, dir, map };
   };
 
-const flip: typeof flipAll = settings =>
-  flipAll(config => ({
+const flip: typeof flipAny = settings =>
+  flipAny(config => ({
     fallback: mainAxisFlipFallbacks[config.dir],
     ...settings?.(config),
   }));
 
-// Align
-
 const align = (config: PopConfigs): PopConfigs => {
-  let { up, fan, dir, alignment } = config;
+  let { ref, pop, dir, alignment } = config;
   let map = config.map!;
 
   let x = 0,
     y = 0;
 
   if (dir === 'top' || dir === 'bottom') {
-    y = dir === 'top' ? map.bottom - fan.height : map.top;
+    y = dir === 'top' ? map.bottom - pop.height : map.top;
 
     if (alignment === 'start') {
-      x = up.left;
+      x = ref.left;
     } else if (alignment === 'end') {
-      x = up.right - fan.width;
+      x = ref.right - pop.width;
     } else {
-      x = Math.round((up.left + up.right) / 2 - fan.width / 2);
+      x = Math.round((ref.left + ref.right) / 2 - pop.width / 2);
     }
-    x = clamp(map.left, x, map.right - fan.width);
+    x = clamp(map.left, x, map.right - pop.width);
   } else {
-    x = dir === 'left' ? map.right - fan.width : map.left;
+    x = dir === 'left' ? map.right - pop.width : map.left;
 
     if (alignment === 'start') {
-      y = up.top;
+      y = ref.top;
     } else if (alignment === 'end') {
-      y = up.bottom - fan.height;
+      y = ref.bottom - pop.height;
     } else {
-      y = Math.round((up.top + up.bottom) / 2 - fan.height / 2);
+      y = Math.round((ref.top + ref.bottom) / 2 - pop.height / 2);
     }
-    y = clamp(map.top, y, map.bottom - fan.height);
+    y = clamp(map.top, y, map.bottom - pop.height);
   }
 
   return { ...config, x, y };
 };
 
-// const inside = ([[fan], map]: [[DOMRect], DOMRect]) =>
-//   fan.left > map.left &&
-//   fan.top > map.top &&
-//   fan.bottom < map.bottom &&
-//   fan.right < map.right;
-
-// const shiftRange = (
-//   [[up, fan], map]: [[DOMRect, DOMRect], DOMRect],
-//   dir: Direction,
-// ): [0, number] => {
-//   if (dir === 'bottom' || dir === 'top') {
-//     return [0, map.width - fan.width];
-//   }
-//   return [0, map.height - fan.height];
-// };
-
 // TODO: how to remove data attr
 const dataAttr = (config: PopConfigs) => {
-  const { dir, $fan } = config;
-  $fan.setAttribute('data-dir', dir);
+  const { dir, $pop } = config;
+  $pop.setAttribute('data-dir', dir);
   return config;
 };
 
 const plugins = {
   flip,
-  flipAll,
+  flipAny,
 };
 
 const _levitate = (
-  $up: Element,
-  $fan: HTMLElement,
+  $ref: Element,
+  $pop: HTMLElement,
   {
     dir = 'bottom',
     alignment,
     offset = 0,
+    viewport: _viewport,
   }: {
     dir?: Direction;
     offset?: number;
@@ -231,7 +205,7 @@ const _levitate = (
   },
   ...plugins: PopPlugins[]
 ) => {
-  const viewport: DOMRect = {
+  const viewport = _viewport || {
     x: 0,
     y: 0,
     top: 0,
@@ -243,18 +217,18 @@ const _levitate = (
     toJSON() {},
   };
 
-  const up = $up.getBoundingClientRect();
-  const fan = $fan.getBoundingClientRect();
+  const ref = $ref.getBoundingClientRect();
+  const pop = $pop.getBoundingClientRect();
 
-  const map = availableSpace4[dir]([[up], viewport], offset);
+  const map = availableSpace4[dir]([[ref], viewport], offset);
 
   let config: PopConfigs = {
-    $up,
-    $fan,
+    $ref,
+    $pop,
     dir,
     alignment,
-    up,
-    fan,
+    ref,
+    pop,
     offset,
     viewport,
     map,
@@ -264,14 +238,11 @@ const _levitate = (
 
   config = align(config);
 
-  if (!config.glitch) {
-    $fan.style.setProperty('--x', config.x + 'px');
-    $fan.style.setProperty('--y', config.y + 'px');
-    $fan.style.setProperty('transform', 'translate(var(--x), var(--y))');
+  $pop.style.setProperty('--x', config.x + 'px');
+  $pop.style.setProperty('--y', config.y + 'px');
+  $pop.style.setProperty('transform', 'translate(var(--x), var(--y))');
 
-    return config.glitch;
-  }
-  return config.glitch;
+  return config;
 };
 
 export const levitate: Levitate = Object.assign(_levitate, { auto, plugins });
