@@ -21,7 +21,7 @@
       </button>
       <div class="vpx-body"></div>
       <button class="vpx-action [B] [CC] mat:air p-2 px-2 f2 ">
-        <span style="color: var(--text1)">Cancel</span>
+        <span style="color: var(--txt-1)">Cancel</span>
       </button>
     </div>
 
@@ -35,7 +35,7 @@
           class="vpx-action [B] [CC] mat:air p-2 px-2 f2 "
           style="flex: 1 1 50%"
         >
-          <span style="color: var(--text1)">Cancel</span>
+          <span style="color: var(--txt-1)">Cancel</span>
         </button>
         <div
           style="height: 40px; width: 1px; background-color: var(--mat-air-15)"
@@ -59,7 +59,7 @@
       </button>
       <div class="vpx-body"></div>
       <button class="vpx-action [B] [CC] mat:air p-2 px-2 f2 ">
-        <span style="color: var(--text1)">Cancel</span>
+        <span style="color: var(--txt-1)">Cancel</span>
       </button>
     </div>
 

@@ -169,7 +169,7 @@ const v = signupForm.value;
       <VFormItem name="repeatPassword" />
       <VFormItem name="phoneNumber" />
       <VButton class="mat:air">
-        <template #icon>
+        <template #prefix>
           <i-feather i="message-circle" />
         </template>
       </VButton>

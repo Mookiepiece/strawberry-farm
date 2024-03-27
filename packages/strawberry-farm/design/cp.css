@@ -15,12 +15,12 @@
   --f2: 14px;
   --f3: 12px;
 
-  --black-text1: #131314;
-  --black-text2: #131314bb;
-  --black-text3: #13133455;
-  --white-text1: #e6e4e2;
-  --white-text2: #e6e4e2bb;
-  --white-text3: #e6e4e255;
+  --black-txt-1: #131314;
+  --black-txt-2: #131314bb;
+  --black-txt-3: #13133455;
+  --white-txt-1: #e6e4e2;
+  --white-txt-2: #e6e4e2bb;
+  --white-txt-3: #e6e4e255;
 
   --bg: #ffffff;
 
@@ -48,14 +48,14 @@
 
 :root,
 .light {
-  --text1: var(--black-text1);
-  --text2: var(--black-text2);
-  --text3: var(--black-text3);
+  --txt-1: var(--black-txt-1);
+  --txt-2: var(--black-txt-2);
+  --txt-3: var(--black-txt-3);
 }
 .dark {
-  --text1: var(--white-text1);
-  --text2: var(--white-text2);
-  --text3: var(--white-text3);
+  --txt-1: var(--white-txt-1);
+  --txt-2: var(--white-txt-2);
+  --txt-3: var(--white-txt-3);
 }
 
 /* Material */

@@ -50,7 +50,7 @@
 }
 
 :where(.VRadioGroup [role='option'][aria-disabled='true']) {
-  color: var(--text3);
+  color: var(--txt-3);
   background-color: var(--mat-solid-05);
   cursor: not-allowed;
 }

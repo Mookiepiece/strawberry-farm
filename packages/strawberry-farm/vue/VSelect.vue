@@ -4,6 +4,8 @@ import VInput from './VInput.vue';
 import { Bag, levitate } from '../functions';
 import { watch } from 'vue';
 import { onBeforeUnmount } from 'vue';
+import { onClickAway } from '../html/onClickAway';
+import { watchEffect } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -44,6 +46,18 @@ watch(
   },
 );
 
+watchEffect(onCleanup => {
+  const a = popper.value;
+  const b = reference.value?.el;
+  onCleanup(
+    onClickAway([a, b].filter(Boolean) as any[], () => {
+      console.log(1);
+
+      open.value = false;
+    }),
+  );
+});
+
 const toggle = () => {
   if (!open.value) {
     open.value = true;
@@ -52,7 +66,6 @@ const toggle = () => {
     open.value = false;
   }
 };
-
 </script>
 
 <template>

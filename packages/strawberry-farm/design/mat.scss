@@ -1,9 +1,45 @@
+:where(:is(.AirMat, .AiryMat)) {
+  color: var(--txt-1);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  appearance: none;
+}
+
+:where(:is(.AirMat, .AiryMat):not(:disabled, [aria-disabled='true'], .disabled):hover) {
+  background: var(--mat-solid-1);
+}
+
+:where(:is(.AirMat, .AiryMat):not(:disabled, [aria-disabled='true'], .disabled):active) {
+  background: var(--mat-solid-2);
+}
+
+:where(.AirMat, .AiryMat):where(
+    [aria-selected='true'],
+    [aria-checked='true'],
+    [aria-pressed='true'],
+    .active
+  ) {
+  color: var(---ink);
+}
+
+:where(.AirMat:is(:disabled, [aria-disabled='true'],.disabled)) {
+  color: var(--txt-3);
+}
+
+:where(.AirMat:focus-visible) {
+  outline: 2px solid var(---main);
+  outline-offset: -1px;
+}
+
+
+
+
 @mixin ActiveQuery() {
   @at-root &:where(
         [aria-selected='true'],
         [aria-checked='true'],
         [aria-pressed='true'],
-        :is(details[open] > summary),
         .active
       ) {
     @content;
@@ -48,7 +84,7 @@
 .mat\:air-crown,
 .mat\:solid,
 .mat\:solid-crown {
-  color: var(--text1);
+  color: var(--txt-1);
   @include ActiveQuery() {
     color: var(---ink);
   }
@@ -56,14 +92,14 @@
 
 .mat\:airy,
 .mat\:solidity {
-  color: var(--text2);
+  color: var(--txt-2);
   @include ActiveQuery() {
-    color: var(---text1);
+    color: var(---txt-1);
   }
 }
 
 .mat\:ruby {
-  color: var(--text1);
+  color: var(--txt-1);
   border: 0;
   background: var(--mat-air-0);
   outline: 0;
@@ -85,9 +121,9 @@
       background: color-mix(in oklab, var(---main), #000 13%);
     }
 
-    --text1: #fff;
-    --text2: #fff;
-    --text3: #fff;
+    --txt-1: #fff;
+    --txt-2: #fff;
+    --txt-3: #fff;
   }
 }
 
@@ -115,7 +151,7 @@
 }
 
 .mat\:dust {
-  color: var(--text1);
+  color: var(--txt-1);
   @include ActiveQuery() {
     color: var(---ink);
   }
@@ -153,7 +189,7 @@
 .mat\:dust,
 .mat\:dusty {
   @include DisabledQuery() {
-    color: var(--text3);
+    color: var(--txt-3);
   }
 }
 

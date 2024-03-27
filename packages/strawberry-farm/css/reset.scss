@@ -23,8 +23,8 @@
 }
 
 :where(pre) {
-  all: unset;
   display: block;
+  font-family: inherit;
   white-space: pre-wrap;
 }
 

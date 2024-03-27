@@ -1,5 +1,178 @@
-
-
-:where(button.SF) {
-
+:where(.Button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(---size);
+  min-width: var(---size);
+  padding-inline: 15px;
+  appearance: none;
+  color: var(---txt-1);
+  text-decoration: none;
+  background: transparent;
+  font-size: var(---f);
+  line-height: 1.6;
+  border: 0;
+  outline: 0;
 }
+
+:where(.Button:not(:has(> .Trunk))) {
+  padding-inline: 0;
+}
+
+:where(.TextButton:not(:disabled, [aria-disabled='true']):hover) {
+  background-color: var(--mat-solid-1);
+}
+
+:where(.TextButton:not(:disabled, [aria-disabled='true']):active) {
+  background-color: var(--mat-solid-2);
+}
+
+:where(.TextButton:is(:disabled, [aria-disabled='true'])) {
+  color: var(--txt-3);
+}
+
+:where(.TextButton:focus-visible) {
+  outline: 2px solid var(---main);
+  outline-offset: -1px;
+}
+
+:where(.TextButton[aria-pressed='true']) {
+  background-color: var(--mat-solid-1);
+}
+
+:where(
+    .TextButton[aria-pressed='true']:not(
+        :disabled,
+        [aria-disabled='true']
+      ):hover
+  ) {
+  background-color: var(--mat-solid-2);
+}
+
+:where(
+    .TextButton[aria-pressed='true']:not(
+        :disabled,
+        [aria-disabled='true']
+      ):active
+  ) {
+  background-color: var(--mat-solid-3);
+}
+
+:where(.GrayButton) {
+  background-color: var(--mat-solid-1);
+}
+
+:where(.GrayButton:not(:disabled, [aria-disabled='true']):hover) {
+  background-color: var(--mat-solid-2);
+}
+
+:where(.GrayButton:not(:disabled, [aria-disabled='true']):active) {
+  background-color: var(--mat-solid-3);
+}
+
+:where(.GrayButton:is(:disabled, [aria-disabled='true'])) {
+  color: var(--txt-3);
+}
+
+:where(.GrayButton:focus-visible) {
+  outline: 2px solid var(---main);
+  outline-offset: -1px;
+}
+
+:where(.TextButton[aria-pressed='true']) {
+  color: var(---main);
+}
+
+:where(.OutlinedButton) {
+  padding-inline: 14px;
+  border: 1px solid var(--mat-solid-15);
+}
+
+:where(.OutlinedButton:not(:disabled, [aria-disabled='true']):hover) {
+  background-color: var(--mat-solid-1);
+}
+
+:where(.OutlinedButton:not(:disabled, [aria-disabled='true']):active) {
+  background-color: var(--mat-solid-2);
+}
+
+:where(.OutlinedButton:is(:disabled, [aria-disabled='true'])) {
+  color: var(--txt-3);
+}
+
+:where(.OutlinedButton:focus-visible) {
+  outline: 2px solid var(---main);
+  outline-offset: -1px;
+}
+
+:where(.SolidButton) {
+  color: white;
+  background: var(---main);
+}
+
+:where(.SolidButton:not(:disabled, [aria-disabled='true']):hover) {
+  background: color-mix(in oklab, var(---main), #000 5%);
+}
+
+:where(.SolidButton:not(:disabled, [aria-disabled='true']):active) {
+  background: color-mix(in oklab, var(---main), #000 13%);
+}
+
+:where(.SolidButton:is(:disabled, [aria-disabled='true'])) {
+  background: var(---mat-solid-4);
+}
+
+:where(.SolidButton:focus-visible) {
+  outline: 2px solid var(---main);
+  outline-offset: -1px;
+}
+
+:where(.TonalButton) {
+  color: var(---ink);
+  background: color-mix(in oklab, var(---foam), transparent 50%);
+}
+
+:where(.TonalButton:not(:disabled, [aria-disabled='true']):hover) {
+  background: color-mix(in oklab, var(---foam), transparent 25%);
+}
+
+:where(.TonalButton:not(:disabled, [aria-disabled='true']):active) {
+  background: color-mix(in oklab, var(---foam), transparent 0%);
+}
+
+:where(.TonalButton:is(:disabled, [aria-disabled='true'])) {
+  color: var(--txt-3);
+}
+
+:where(.TonalButton:focus-visible) {
+  outline: 2px solid var(---main);
+  outline-offset: -1px;
+}
+
+/* :where(.GrayButton) {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+:where(.OutlinedButton) {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+:where(.SolidButton) {
+  font-size: inherit;
+  line-height: inherit;
+} */
+
+/* 
+:where(.TextButton:not(:disabled, [aria-disabled='true']):hover) {
+  background-color: var(--mat-solid-1);
+}
+
+:where(.TextButton:not(:disabled, [aria-disabled='true']):active) {
+  background-color: var(--mat-solid-2);
+}
+
+:where(.TextButton:is(:disabled, [aria-disabled='true'])) {
+  color: var(--txt-3);
+} */

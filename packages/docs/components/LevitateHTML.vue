@@ -59,7 +59,7 @@ const changeDir = (dir: 'top' | 'left' | 'right' | 'bottom') => {
 .a {
   width: 100px;
   height: 100px;
-  color: var(--black-text1);
+  color: var(--black-txt-1);
   background-color: #def;
 }
 .b {
