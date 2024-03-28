@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { StyleValue, computed, ref } from 'vue';
-import { CommonChoice } from './Form';
+import { CommonChoice } from './misc';
 import VPicker from './VPicker.vue';
 
 const model = defineModel<any>();

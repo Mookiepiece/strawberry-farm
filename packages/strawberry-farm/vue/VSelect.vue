@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { StyleValue, onBeforeUnmount, ref, watch, watchEffect } from 'vue';
 import VInput from './VInput.vue';
 import { Bag, levitate } from '../functions';
-import { watch } from 'vue';
-import { onBeforeUnmount } from 'vue';
 import { onClickAway } from '../html/onClickAway';
-import { watchEffect } from 'vue';
+import { CommonChoice } from './misc';
+import VPicker from './VPicker.vue';
 
 const props = withDefaults(
   defineProps<{
+    options?: CommonChoice[];
+    disabled?: boolean;
     class?: any;
+    style?: StyleValue;
   }>(),
   {},
 );
@@ -25,19 +27,37 @@ const flip = levitate.plugins.flip();
 const bag = Bag();
 onBeforeUnmount(bag);
 
+const sameWidth: typeof flip = config => {
+  let width: any = config.$pop.style.getPropertyValue('width');
+  if (!width.endsWith('px')) width = '';
+  width = Number(width.slice(0, -2));
+
+  const shouldBe = config.$ref.offsetWidth;
+
+  if (width !== shouldBe) {
+    config.$pop.style.setProperty('width', shouldBe + 'px');
+
+    const pop = config.$pop.getBoundingClientRect();
+    return { ...config, pop };
+  }
+  return config;
+};
+
 watch(
   () => [popper.value, open.value] as const,
-  ([el, open]) => {
+  ([$pop, open]) => {
     bag();
-    if (open && el) {
+    if (open && $pop) {
+      const $ref = reference.value!.el;
       bag(
-        levitate.auto(reference.value!.el, () => {
+        levitate.auto($ref, () => {
           levitate(
-            reference.value!.el,
-            el,
+            $ref,
+            $pop,
             {
               offset: 10,
             },
+            sameWidth,
             flip,
           );
         }),
@@ -47,12 +67,12 @@ watch(
 );
 
 watchEffect(onCleanup => {
-  const a = popper.value;
-  const b = reference.value?.el;
-  onCleanup(
-    onClickAway([a, b].filter(Boolean) as any[], () => {
-      console.log(1);
+  if (!open.value) return;
 
+  const a = popper.value!;
+  const b = reference.value!.el;
+  onCleanup(
+    onClickAway([a, b], () => {
       open.value = false;
     }),
   );
@@ -72,13 +92,10 @@ const toggle = () => {
   <VInput ref="reference" readonly @click="toggle" />
 
   <Teleport v-if="open || leaving" to="body">
-    <div
-      ref="popper"
-      class="vp-demo-levitate-vue-animated-container fixed (///)"
-    >
+    <div ref="popper" class="(///)" style="position: fixed; top: 0; left: 0">
       <Transition appear @after-leave="leaving = false">
-        <div v-show="open" class="vp-demo-levitate-vue-animated 🍒 p-6">
-          Content
+        <div v-show="open" class="vp-demo-levitate-vue-animated">
+          <VPicker :options="props.options" class="VRadioGroup [A]" />
         </div>
       </Transition>
     </div>
@@ -86,12 +103,7 @@ const toggle = () => {
 </template>
 
 <style>
-.vp-demo-levitate-vue-animated-container {
-  z-index: 1;
-}
-
 .vp-demo-levitate-vue-animated {
-  width: 100px;
   transition: all 1s var(--curve-wave);
 }
 

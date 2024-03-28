@@ -10,7 +10,7 @@ type Levitate = typeof _levitate & {
 };
 
 type PopConfigs = {
-  $ref: Element;
+  $ref: HTMLElement;
   $pop: HTMLElement;
   ref: DOMRect;
   pop: DOMRect;
@@ -26,7 +26,7 @@ type PopConfigs = {
   y?: number;
 };
 
-interface PopPlugins {
+interface PopPlugin {
   (configs: PopConfigs): PopConfigs;
 }
 
@@ -91,7 +91,7 @@ const logicalBoxes: Record<Direction, (rect: DOMRect) => LogicalBox> = {
   right: ({ width, height }) => ({ main: width, cross: height }),
 };
 
-const defaultFlipFallbacks: Record<Direction, Direction[]> = {
+const allFlipFallbacks: Record<Direction, Direction[]> = {
   top: ['bottom', 'left', 'right'],
   bottom: ['top', 'left', 'right'],
   left: ['right', 'top', 'bottom'],
@@ -118,7 +118,7 @@ const flipAny =
 
     const _settings = settings?.(config);
     const limit = _settings?.limit ?? logicalBoxes[dir](pop).main;
-    const fallbacks = _settings?.fallback ?? defaultFlipFallbacks[dir];
+    const fallbacks = _settings?.fallback ?? allFlipFallbacks[dir];
 
     if (logicalBoxes[dir](map).main < limit) {
       for (const _dir of fallbacks) {
@@ -187,7 +187,7 @@ const plugins = {
 };
 
 const _levitate = (
-  $ref: Element,
+  $ref: HTMLElement,
   $pop: HTMLElement,
   {
     dir = 'bottom',
@@ -203,7 +203,7 @@ const _levitate = (
     dir: 'bottom',
     offset: 0,
   },
-  ...plugins: PopPlugins[]
+  ...plugins: PopPlugin[]
 ) => {
   const viewport = _viewport || {
     x: 0,

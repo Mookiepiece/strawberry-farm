@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { StyleValue, computed, ref } from 'vue';
-import { CommonChoice } from './Form';
+import { CommonChoice } from './misc';
 import { wai } from '../functions';
 
 const model = defineModel<any>();
@@ -139,8 +139,6 @@ defineExpose({
       :key="o.value"
       :id="id + index"
       @click="!o.disabled ? toggle(o.value) : undefined"
-      :style="props.style"
-      :class="props.class"
       role="option"
       :aria-selected="props.multi ? model.includes(o.value) : o.value === model"
       :aria-current="index === current || undefined"

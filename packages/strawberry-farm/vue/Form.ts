@@ -1,16 +1,9 @@
-import {
-  Component,
-  ComponentPropsOptions,
-  ComputedRef,
-  MaybeRef,
-  Prop,
-  reactive,
-  shallowReactive,
-} from 'vue';
-import { IRule, IRuleType, RuleS } from '../functions/validator';
+import { Component, MaybeRef, reactive, shallowReactive } from 'vue';
+import { IRuleType, RuleS } from '../functions/validator';
 import VRadioGroup from './VRadioGroup.vue';
 import VInput from './VInput.vue';
 import { inc } from '../functions';
+import { CommonChoice } from './misc';
 
 /**
  * @license MIT react-hook-form
@@ -103,18 +96,6 @@ export const pathValueSetter = <
 
   p[last] = value;
 };
-
-// TODO: get out
-export type CommonChoice =
-  | string
-  | number
-  | boolean
-  | null
-  | {
-      label?: string;
-      value: any;
-      disabled?: boolean;
-    };
 
 interface FieldTypes {
   any: MaybeRef<any>;
