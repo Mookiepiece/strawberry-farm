@@ -3,6 +3,8 @@
 @import './tone.scss';
 @import './button.css';
 @import './typography.scss';
+@import './Input.css';
+@import './Select.css';
 @import './form.css';
 @import './VRadioGroup.css';
 @import './toast.scss';

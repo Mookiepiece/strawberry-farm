@@ -35,52 +35,7 @@ switch (dirname) {
 </template>
 
 <style>
-.VPDemo {
-  margin: 20px 0;
-
-  > div:first-child {
-    padding: 20px;
-    --a: var(--mat-solid-15);
-
-    --x: 18px;
-    --y: 40px;
-    --z: 2px;
-    background:
-      linear-gradient(var(--a), var(--a)) var(--x) 0 / var(--z) var(--y)
-        no-repeat,
-      linear-gradient(var(--a), var(--a)) 0 var(--x) / var(--y) var(--z)
-        no-repeat,
-      linear-gradient(var(--a), var(--a)) calc(100% - var(--x)) 0 / var(--z)
-        var(--y) no-repeat,
-      linear-gradient(var(--a), var(--a)) 100% var(--x) / var(--y) var(--z)
-        no-repeat,
-      linear-gradient(var(--a), var(--a)) 0 calc(100% - var(--x)) / var(--y)
-        var(--z) no-repeat,
-      linear-gradient(var(--a), var(--a)) var(--x) 100% / var(--z) var(--y)
-        no-repeat,
-      linear-gradient(var(--a), var(--a)) 100% calc(100% - var(--x)) / var(--y)
-        var(--z) no-repeat,
-      linear-gradient(var(--a), var(--a)) calc(100% - var(--x)) 100% / var(--z)
-        var(--y) no-repeat,
-      transparent;
-  }
-  summary {
-    padding: 10px;
-    cursor: pointer;
-    user-select: none;
-
-    svg {
-      display: block;
-      width: 24px;
-      height: 24px;
-      fill: currentColor;
-    }
-  }
-  summary::marker {
-    content: '';
-    width: 0;
-    height: 0;
-    display: none;
-  }
+.VPSourceCode {
+  /*  */
 }
 </style>

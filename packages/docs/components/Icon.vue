@@ -16,9 +16,8 @@ onMounted(() => {
 
 <template>
   <div class="good">
-    <div class="good-cell [A] [CC] mat:air p-6" v-for="k in z">
+    <div class="good-cell [A] [CC] mat:air gap-1 p-2" v-for="k in z">
       <i-feather style="font-size: 24px" :i="k"></i-feather>
-      <span class="f3 [--]">{{ k }}</span>
     </div>
   </div>
 </template>
@@ -26,7 +25,7 @@ onMounted(() => {
 <style scoped>
 .good {
   display: grid;
-  grid: auto-flow 1fr / repeat(auto-fill, 150px);
+  grid: auto-flow 1fr / repeat(auto-fill, 50px);
 }
 
 .good-cell {

@@ -1,14 +1,37 @@
 <script setup lang="ts">
 import { StyleValue, computed, ref } from 'vue';
-import { CommonChoice } from './misc';
+import { CommonOption, CommonOptionGroup } from './misc';
 import { wai } from '../functions';
+import { h } from 'vue';
 
 const model = defineModel<any>();
 
 const props = defineProps<{
+  /**
+   * Multiselectable.
+   */
   multi?: boolean;
-  options?: CommonChoice[];
+  options?: (CommonOption | CommonOptionGroup)[];
+  /**
+   * Select the same option will unselect it.
+   *
+   * Only available in **single** option mode.
+   *
+   * Otherwise **the same value is assigned to the model**, which can trigger model change and thus close dropdown in `<Select />`.
+   */
   clearable?: boolean;
+  /**
+   * Select current option when navigating, this is to simulate `<input type="radio"/>` behaviour
+   *
+   * You may disable this when implementing this picker as dropdown.
+   *
+   * Only available in **single** option mode and `clearable` is not set.
+   */
+  powerCursor?: boolean;
+  /**
+   * Enter to submit clostest form or [role='form'].
+   */
+  formItem?: boolean;
   disabled?: boolean;
   class?: any;
   style?: StyleValue;
@@ -16,7 +39,7 @@ const props = defineProps<{
   itemStyle?: StyleValue;
 }>();
 
-defineSlots<{
+const slots = defineSlots<{
   default(props: {
     option: {
       label: any;
@@ -29,30 +52,49 @@ defineSlots<{
 
 const id = wai();
 
-const options = computed(() =>
-  (props.options ?? []).map((o, index) => ({
+const groupOrOptions = computed(() => {
+  let index = 0;
+
+  const normalize = (o: CommonOption) => ({
     label: typeof o === 'object' && o ? o.label ?? o.value : '' + o,
     value: typeof o === 'object' && o ? o.value : o,
     disabled: typeof o === 'object' && o ? o.disabled : false,
-    index,
-  })),
+    index: index++,
+  });
+
+  return (props.options ?? []).map(i => {
+    if (i && typeof i === 'object' && 'options' in i)
+      return {
+        ...i,
+        options: i.options.map(normalize),
+      };
+    return normalize(i);
+  });
+});
+
+// What's going wrong with my eslint plugin vue?
+// eslint-disable-next-line vue/no-dupe-keys
+const options = computed(() =>
+  groupOrOptions.value.flatMap(i =>
+    i && typeof i === 'object' && 'options' in i ? i.options : i,
+  ),
 );
 
 const current = ref(-1);
 
-const onFocus = () => {
+const powerCursor = computed(
+  () => props.powerCursor && !props.multi && !props.clearable,
+);
+
+const checkCursorOnFocus = () => {
   if (current.value < 0 || current.value >= options.value.length) {
     current.value = options.value.findIndex(
-      i => i.value === model.value && !i.disabled,
+      i =>
+        i.value ===
+        (props.multi ? (model.value as any[]).includes(i.value) : model.value),
     );
 
-    if (current.value === -1)
-      current.value = options.value.findIndex(o => !o.disabled);
-
-    if (current.value !== -1) {
-      if (!props.multi && !props.clearable)
-        toggle(options.value[current.value].value);
-    }
+    if (current.value === -1 && options.value.length) current.value = 0;
   }
 };
 
@@ -64,8 +106,8 @@ const toggle = (value: any) => {
     return;
   }
 
-  if (value !== model.value) model.value = value;
-  else if (props.clearable) model.value = null;
+  if (props.clearable && model.value === value) model.value = null;
+  else model.value = value;
 };
 
 const el = ref<HTMLDivElement | null>(null);
@@ -82,7 +124,7 @@ const nav = (delta: -1 | 1) => {
     const index = options.value.indexOf(option);
     current.value = index;
 
-    if (!props.multi && !props.clearable) toggle(option.value);
+    if (powerCursor.value) toggle(option.value);
 
     return index;
   }
@@ -107,10 +149,12 @@ const onKeyDownExact = (e: KeyboardEvent) => {
       toggle(options.value[current.value].value);
       break;
     case 'Enter':
-      e.preventDefault();
-      (
-        el.value!.closest('form, [role="form"]') as { submit?: () => void }
-      )?.submit?.();
+      if (props.formItem) {
+        e.preventDefault();
+        (
+          el.value!.closest('form, [role="form"]') as { submit?: () => void }
+        )?.submit?.();
+      }
       break;
   }
 };
@@ -118,6 +162,7 @@ const onKeyDownExact = (e: KeyboardEvent) => {
 defineExpose({
   el,
 });
+
 </script>
 
 <template>
@@ -126,7 +171,7 @@ defineExpose({
     :id="id"
     :style="props.style"
     :class="props.class"
-    @focus="onFocus"
+    @focus="checkCursorOnFocus"
     @keydown.self.exact="onKeyDownExact"
     role="listbox"
     :tabindex="props.disabled ? -1 : 0"
@@ -134,19 +179,48 @@ defineExpose({
     :aria-activedescendant="current === -1 ? '' : id + current"
     :aria-multiselectable="props.multi"
   >
-    <div
-      v-for="(o, index) in options"
-      :key="o.value"
-      :id="id + index"
-      @click="!o.disabled ? toggle(o.value) : undefined"
-      role="option"
-      :aria-selected="props.multi ? model.includes(o.value) : o.value === model"
-      :aria-current="index === current || undefined"
-      :aria-disabled="props.disabled || o.disabled || undefined"
+    <template
+      v-for="g in groupOrOptions"
+      :key="
+        g && typeof g === 'object' && 'options' in g
+          ? 'g' + g.label
+          : 'i' + g.value
+      "
     >
-      <slot :option="o">
-        {{ o.label }}
-      </slot>
-    </div>
+      <div role="group" v-if="g && typeof g === 'object' && 'options' in g">
+        <div
+          v-for="i in g.options"
+          :key="i.value"
+          :id="id + i.index"
+          @click="!i.disabled ? toggle(i.value) : undefined"
+          role="option"
+          :aria-selected="
+            props.multi
+              ? model.includes(i.value)
+              : i.value === model
+          "
+          :aria-current="i.index === current || undefined"
+          :aria-disabled="props.disabled || i.disabled || undefined"
+        >
+          {{ i.label }}
+        </div>
+      </div>
+      <template v-else>
+        <div
+          :id="id + g.index"
+          @click="!g.disabled ? toggle(g.value) : undefined"
+          role="option"
+          :aria-selected="
+            props.multi
+              ? model.includes(g.value)
+              : g.value === model
+          "
+          :aria-current="g.index === current || undefined"
+          :aria-disabled="props.disabled || g.disabled || undefined"
+        >
+          {{ g.label }}
+        </div>
+      </template>
+    </template>
   </div>
 </template>

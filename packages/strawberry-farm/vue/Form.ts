@@ -3,7 +3,7 @@ import { IRuleType, RuleS } from '../functions/validator';
 import VRadioGroup from './VRadioGroup.vue';
 import VInput from './VInput.vue';
 import { inc } from '../functions';
-import { CommonChoice } from './misc';
+import { CommonOption, CommonOptionGroup } from './misc';
 
 /**
  * @license MIT react-hook-form
@@ -105,10 +105,10 @@ interface FieldTypes {
   checkbox: MaybeRef<any>;
   switch: MaybeRef<any>;
   checkboxgroup: MaybeRef<{
-    options: CommonChoice[];
+    options: (CommonOption | CommonOptionGroup)[];
   }>;
   select: MaybeRef<{
-    options: CommonChoice[];
+    options: (CommonOption | CommonOptionGroup)[];
   }>;
   radio: MaybeRef<{
     options: string[];

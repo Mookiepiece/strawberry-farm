@@ -23,6 +23,7 @@ const form: FormModel<any> = inject('VForm')!;
 const descriptor = form.fields[props.name];
 
 const as = Form.registry.get(descriptor.type || 'text');
+const fieldProps = computed(() => unref(descriptor.props));
 
 const model = computed({
   get() {
@@ -58,7 +59,16 @@ const validateSelf = async () => {
 
 const control = ref<any>();
 
-const fieldProps = computed(() => unref(descriptor.props));
+const focus = () => {
+  if (control.value.el instanceof HTMLElement) {
+    control.value.el.focus?.(); // Strawberry Farm Vue Component exposes `el`.
+  } else if (control.value.$el instanceof HTMLElement) {
+    control.value.$el.focus?.(); // Vue Component which has root node
+  } else {
+    control.value.focus?.(); // Native HTML Elements
+  }
+};
+
 </script>
 
 <template>
@@ -67,7 +77,7 @@ const fieldProps = computed(() => unref(descriptor.props));
       <div
         class="FormItemTitle"
         :id="id"
-        @click="control?.focus()"
+        @click="focus"
         aria-hidden="true"
       >
         {{ descriptor.label }}

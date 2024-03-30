@@ -76,8 +76,7 @@ defineExpose({ focus, el });
 
 <template>
   <div
-    class="sf-input"
-    :class="[props.textarea && '--textarea', props.disabled && '--disabled']"
+    class="VInput"
     @click.self="input?.focus()"
     @click="e => emit('click', e)"
     ref="el"

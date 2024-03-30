@@ -1,5 +1,10 @@
+export type CommonOptionGroup = {
+  label?: string;
+  options: CommonOption[];
+};
 
-export type CommonChoice =
+
+export type CommonOption =
   | string
   | number
   | boolean

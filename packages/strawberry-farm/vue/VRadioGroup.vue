@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { StyleValue, computed, ref } from 'vue';
-import { CommonChoice } from './misc';
+import { CommonOption, CommonOptionGroup } from './misc';
 import VPicker from './VPicker.vue';
 
 const model = defineModel<any>();
 
 const props = defineProps<{
-  options?: CommonChoice[];
+  options?: (CommonOption | CommonOptionGroup)[];
   clearable?: boolean;
   disabled?: boolean;
   class?: any;
@@ -21,5 +21,12 @@ defineExpose({
 </script>
 
 <template>
-  <VPicker ref="picker" :class="[props.class, 'VRadioGroup']" v-model="model" v-bind="props" />
+  <VPicker
+    ref="picker"
+    powerCursor
+    formItem
+    :class="[props.class, 'VRadioGroup']"
+    v-model="model"
+    v-bind="props"
+  />
 </template>

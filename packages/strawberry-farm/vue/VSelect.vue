@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { StyleValue, onBeforeUnmount, ref, watch, watchEffect } from 'vue';
-import VInput from './VInput.vue';
-import { Bag, levitate } from '../functions';
+import { Bag, levitate, trap } from '../functions';
 import { onClickAway } from '../html/onClickAway';
-import { CommonChoice } from './misc';
+import { CommonOption, CommonOptionGroup } from './misc';
 import VPicker from './VPicker.vue';
+import { computed } from 'vue';
+
+const model = defineModel<any>();
 
 const props = withDefaults(
   defineProps<{
-    options?: CommonChoice[];
+    multi?: boolean;
+    options?: (CommonOption | CommonOptionGroup)[];
     disabled?: boolean;
     class?: any;
     style?: StyleValue;
@@ -19,7 +22,7 @@ const props = withDefaults(
 const open = ref(false);
 const leaving = ref(false);
 
-const reference = ref<InstanceType<typeof VInput> | null>(null);
+const reference = ref<HTMLDivElement | null>(null);
 const popper = ref<HTMLDivElement>();
 
 const flip = levitate.plugins.flip();
@@ -48,7 +51,7 @@ watch(
   ([$pop, open]) => {
     bag();
     if (open && $pop) {
-      const $ref = reference.value!.el;
+      const $ref = reference.value!;
       bag(
         levitate.auto($ref, () => {
           levitate(
@@ -66,18 +69,6 @@ watch(
   },
 );
 
-watchEffect(onCleanup => {
-  if (!open.value) return;
-
-  const a = popper.value!;
-  const b = reference.value!.el;
-  onCleanup(
-    onClickAway([a, b], () => {
-      open.value = false;
-    }),
-  );
-});
-
 const toggle = () => {
   if (!open.value) {
     open.value = true;
@@ -86,16 +77,71 @@ const toggle = () => {
     open.value = false;
   }
 };
+
+{
+  const bag = Bag();
+  onBeforeUnmount(bag);
+  watchEffect(() => {
+    bag();
+    if (!open.value || !popper.value) return;
+
+    const a = popper.value!;
+    bag(trap(a));
+  });
+}
+
+{
+  const bag = Bag();
+  onBeforeUnmount(bag);
+  watchEffect(() => {
+    bag();
+    if (!popper.value || !reference.value) return;
+
+    const a = popper.value!;
+    const b = reference.value!;
+    bag(onClickAway([a, b], () => (open.value = false)));
+  });
+}
+
+const pickerModel = computed({
+  get() {
+    return model.value;
+  },
+  set(value) {
+    // if (!props.multi) {
+    //   toggle();
+    // }
+    model.value = value;
+  },
+});
 </script>
 
 <template>
-  <VInput ref="reference" readonly @click="toggle" />
+  <div
+    class="VSelect"
+    tabindex="0"
+    ref="reference"
+    @click="toggle"
+    @keydown.space="toggle"
+    @keydown.up="toggle"
+    @keydown.down="toggle"
+    :aria-expanded="open"
+  />
 
   <Teleport v-if="open || leaving" to="body">
-    <div ref="popper" class="(///)" style="position: fixed; top: 0; left: 0">
+    <div
+      ref="popper"
+      class="Positioner"
+      @keydown.esc="toggle"
+      style="position: fixed; top: 0; left: 0"
+    >
       <Transition appear @after-leave="leaving = false">
-        <div v-show="open" class="vp-demo-levitate-vue-animated">
-          <VPicker :options="props.options" class="VRadioGroup [A]" />
+        <div v-show="open" class="PopperAnimator">
+          <VPicker
+            v-model="pickerModel"
+            :options="props.options"
+            class="VSelectPicker"
+          />
         </div>
       </Transition>
     </div>
@@ -103,12 +149,12 @@ const toggle = () => {
 </template>
 
 <style>
-.vp-demo-levitate-vue-animated {
+.PopperAnimator {
   transition: all 1s var(--curve-wave);
 }
 
-.vp-demo-levitate-vue-animated.v-enter-from,
-.vp-demo-levitate-vue-animated.v-leave-to {
+.PopperAnimator.v-enter-from,
+.PopperAnimator.v-leave-to {
   transform: translateX(200px);
   opacity: 0;
 }
