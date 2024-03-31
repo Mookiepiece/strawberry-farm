@@ -10,13 +10,13 @@ const options = ['Yes', 'No', { value: "I'm not sure", disabled: true }];
 <template>
   <div class="[B] gap-2">
     <div>
-      <VRadioGroup clearable v-model="v" :options="options" />
+      <VRadioGroup mode="clearable" v-model="v" :options="options" />
     </div>
     <div>
       <VRadioGroup v-model="v" :options="options" />
     </div>
     <div>
-      <VRadioGroup disabled clearable v-model="v" :options="options" />
+      <VRadioGroup disabled mode="clearable" v-model="v" :options="options" />
     </div>
   </div>
 </template>

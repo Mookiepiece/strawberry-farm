@@ -21,8 +21,8 @@ defineExpose({
 
 <template>
   <VPicker
-    multi
     ref="picker"
+    mode="multi"
     :class="[props.class, 'VRadioGroup']"
     v-model="model"
     v-bind="props"

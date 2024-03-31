@@ -17,9 +17,9 @@
   cursor: pointer;
 }
 
-:where(.VSelect:is(:focus-visible, [aria-expanded='true'])) {
-  /* outline: 2px solid var(---flame); */
-  box-shadow: 0 0 0 6px var(---foam);
+:where(.VSelect:is(:focus, [aria-expanded='true'])) {
+  outline: 2px solid var(---flame);
+  /* box-shadow: 0 0 0 6px var(---foam); */
 }
 
 :where(.VSelectPicker) {
@@ -37,7 +37,8 @@
   transition: box-shadow 0.2s; */
   background-color: var(--mat-solid-0);
   box-shadow: var(--shadow);
-  outline: 0;
+  outline: 1px solid var(--mat-solid-15);
+  outline-offset: -1px; 
 }
 
 :where(.VSelectPicker [role='option']) {
@@ -45,27 +46,15 @@
   align-items: center;
   gap: 5px;
   height: var(---size);
+  padding: 10px;
   font-size: var(---f);
   line-height: 1.6;
-  /* position: relative;
-  width: 100%;
-  height: var(---size);
-  font-size: var(---f);
-  line-height: 1.6;
-  color: var(--txt-1);
-  outline: 1px solid var(--mat-solid-15);
-  outline-offset: -1px;
-  box-shadow: 0 0 0 0 var(---foam);
-  transition: box-shadow 0.2s; */
-  /* background-color: var(--mat-solid-1); */
-  /* box-shadow: var(--shadow-1); */
 }
 
-:where(.VSelectPicker [role='option']:not([aria-diabled='true']):hover) {
-  background-color: var(--mat-solid-1);
-}
-
-:where(.VSelectPicker [role='option']:not([aria-diabled='true'])[aria-current='true']) {
+:where(
+    .VSelectPicker
+      [role='option']:not([aria-diabled='true'])[aria-current='true']
+  ) {
   background-color: var(--mat-solid-1);
 }
 
@@ -80,14 +69,14 @@
 
 :where(
     .VSelectPicker
-      [role='option'][aria-disabled='true']:not([aria-diabled='true']):hover
+      [role='option'][aria-selected='true']:not([aria-diabled='true']):hover
   ) {
   background: color-mix(in oklab, var(---foam), transparent 25%);
 }
 
 :where(
     .VSelectPicker
-      [role='option'][aria-disabled='true']:not([aria-diabled='true']):active
+      [role='option'][aria-selected='true']:not([aria-diabled='true']):active
   ) {
   background: color-mix(in oklab, var(---foam), transparent 0%);
 }

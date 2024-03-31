@@ -23,7 +23,7 @@ defineExpose({
 <template>
   <VPicker
     ref="picker"
-    powerCursor
+    mode="powerCursor"
     formItem
     :class="[props.class, 'VRadioGroup']"
     v-model="model"

@@ -1,12 +1,7 @@
 import { on } from '../functions';
 
 /**
- *
- * Vueuse has encountered this problem
- * https://github.com/vueuse/vueuse/pull/2405
- *
- * But they said, it seems this issue is fixed in the latest version of Safari.
- *
+ * Using pointerdown, otherwise click other interactive elements will lost their focus but focus on the popper reference.
  */
 export const onClickAway = (
   ref: HTMLElement | HTMLElement[],
@@ -14,7 +9,7 @@ export const onClickAway = (
 ) => {
   const elements = Array.isArray(ref) ? ref : [ref];
 
-  return on(document).click(e => {
+  return on(document).pointerdown(e => {
     if (elements.every(el => el?.contains(e.target as Node) === false)) cb();
   });
 };

@@ -68,18 +68,12 @@ const focus = () => {
     control.value.focus?.(); // Native HTML Elements
   }
 };
-
 </script>
 
 <template>
   <div class="FormItem">
     <div class="FormItemHeader" v-if="descriptor.label">
-      <div
-        class="FormItemTitle"
-        :id="id"
-        @click="focus"
-        aria-hidden="true"
-      >
+      <div class="FormItemTitle" :id="id" @click="focus">
         {{ descriptor.label }}
       </div>
 
@@ -95,7 +89,7 @@ const focus = () => {
         :is="as"
         v-model="model"
         v-bind="fieldProps"
-        :aria-labelledby="id"
+        :aria-labelledby="descriptor.label ? id : undefined"
       />
     </slot>
 

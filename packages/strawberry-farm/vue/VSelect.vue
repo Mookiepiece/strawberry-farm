@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { StyleValue, onBeforeUnmount, ref, watch, watchEffect } from 'vue';
-import { Bag, levitate, trap } from '../functions';
+import { Bag, fx, levitate, trap } from '../functions';
 import { onClickAway } from '../html/onClickAway';
 import { CommonOption, CommonOptionGroup } from './misc';
 import VPicker from './VPicker.vue';
@@ -20,7 +20,7 @@ const props = withDefaults(
 );
 
 const open = ref(false);
-const leaving = ref(false);
+const appeared = ref(false);
 
 const reference = ref<HTMLDivElement | null>(null);
 const popper = ref<HTMLDivElement>();
@@ -46,6 +46,12 @@ const sameWidth: typeof flip = config => {
   return config;
 };
 
+const dataAttr: typeof flip = config => {
+  const { $pop, dir } = config;
+  $pop.setAttribute('data-pop-dir', dir);
+  return config;
+};
+
 watch(
   () => [popper.value, open.value] as const,
   ([$pop, open]) => {
@@ -62,7 +68,9 @@ watch(
             },
             sameWidth,
             flip,
+            dataAttr,
           );
+          appeared.value = true;
         }),
       );
     }
@@ -72,7 +80,6 @@ watch(
 const toggle = () => {
   if (!open.value) {
     open.value = true;
-    leaving.value = true;
   } else {
     open.value = false;
   }
@@ -81,12 +88,10 @@ const toggle = () => {
 {
   const bag = Bag();
   onBeforeUnmount(bag);
-  watchEffect(() => {
+  watchEffect(async () => {
     bag();
-    if (!open.value || !popper.value) return;
-
-    const a = popper.value!;
-    bag(trap(a));
+    if (!open.value || !appeared.value || !popper.value) return;
+    bag(trap(popper.value));
   });
 }
 
@@ -103,14 +108,44 @@ const toggle = () => {
   });
 }
 
+{
+  const bag = Bag();
+  onBeforeUnmount(bag);
+  watchEffect(() => {
+    bag();
+    if (!appeared.value || !popper.value) return;
+
+    const body = popper.value.querySelector(
+      '.PopperAnimator',
+    )! as HTMLDivElement;
+
+    if (open.value) {
+      fx.transition(body, {
+        to(bag) {
+          body.classList.add('appear');
+          bag(() => body.classList.remove('appear'));
+        },
+      });
+    } else {
+      fx.transition(body, {
+        to(bag) {
+          body.classList.remove('appear');
+          bag(() => body.classList.add('appear'));
+        },
+        done() {
+          appeared.value = false;
+        },
+      });
+    }
+  });
+}
+
 const pickerModel = computed({
   get() {
     return model.value;
   },
   set(value) {
-    // if (!props.multi) {
-    //   toggle();
-    // }
+    open.value = false;
     model.value = value;
   },
 });
@@ -128,34 +163,47 @@ const pickerModel = computed({
     :aria-expanded="open"
   />
 
-  <Teleport v-if="open || leaving" to="body">
+  <Teleport v-if="open || appeared" to="body">
     <div
       ref="popper"
       class="Positioner"
       @keydown.esc="toggle"
       style="position: fixed; top: 0; left: 0"
     >
-      <Transition appear @after-leave="leaving = false">
-        <div v-show="open" class="PopperAnimator">
-          <VPicker
-            v-model="pickerModel"
-            :options="props.options"
-            class="VSelectPicker"
-          />
-        </div>
-      </Transition>
+      <div class="PopperAnimator">
+        <VPicker
+          power-pointer
+          v-model="pickerModel"
+          :options="props.options"
+          assign-same-value
+          class="VSelectPicker"
+        />
+      </div>
     </div>
   </Teleport>
 </template>
 
 <style>
-.PopperAnimator {
-  transition: all 1s var(--curve-wave);
+.Positioner:not([data-pop-dir]) {
+  visibility: hidden;
 }
 
-.PopperAnimator.v-enter-from,
-.PopperAnimator.v-leave-to {
-  transform: translateX(200px);
-  opacity: 0;
+.Positioner[data-pop-dir='top'] {
+  .PopperAnimator {
+    transform-origin: bottom;
+  }
+}
+.Positioner[data-pop-dir='bottom'] {
+  .PopperAnimator {
+    transform-origin: top;
+  }
+}
+
+.PopperAnimator {
+  transform: scaleY(0);
+  transition: transform 0.3s var(--curve-wave);
+}
+.PopperAnimator.appear {
+  transform: scaleY(1);
 }
 </style>

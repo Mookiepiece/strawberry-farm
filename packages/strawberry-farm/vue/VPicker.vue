@@ -2,36 +2,39 @@
 import { StyleValue, computed, ref } from 'vue';
 import { CommonOption, CommonOptionGroup } from './misc';
 import { wai } from '../functions';
-import { h } from 'vue';
 
 const model = defineModel<any>();
 
 const props = defineProps<{
   /**
-   * Multiselectable.
+   *  - 'clearable' Single option, select the same option will unselect it.
+   *  - 'powerCursor' Single option, select current option when navigating, this is to simulate `<input type="radio"/>` behaviour
+   *  - 'multi' Multiselectable, model must be an array.
    */
-  multi?: boolean;
+  mode?: 'clearable' | 'powerCursor' | 'multi';
+  /**
+   * Pointer move events will change current option
+   */
+  powerPointer?: boolean;
+  // /**
+  //  * Enter will trigger selection other than submit the form.
+  //  */
+  // powerEnter?: boolean;
+  /**
+   *  **The same value is assigned to the model** when click, which can trigger model change and thus close dropdown in `<Select />`.
+   *
+   *  Will have no effect when `mode='clearalbe'`.
+   *
+   *  Turn this off to simulate `<input type="radio"/>` behaviour, default is `false`.
+   */
+  assignSameValue?: boolean;
+  /**
+   * By default, arrow top left navigates to -1 and arrow right bottom navigates to 1.
+   *
+   * Use this if partical arrow keys are used for special actions e.g. cascade or tree select.
+   */
+  keydownAdvanced?: (e: KeyboardEvent) => boolean | void;
   options?: (CommonOption | CommonOptionGroup)[];
-  /**
-   * Select the same option will unselect it.
-   *
-   * Only available in **single** option mode.
-   *
-   * Otherwise **the same value is assigned to the model**, which can trigger model change and thus close dropdown in `<Select />`.
-   */
-  clearable?: boolean;
-  /**
-   * Select current option when navigating, this is to simulate `<input type="radio"/>` behaviour
-   *
-   * You may disable this when implementing this picker as dropdown.
-   *
-   * Only available in **single** option mode and `clearable` is not set.
-   */
-  powerCursor?: boolean;
-  /**
-   * Enter to submit clostest form or [role='form'].
-   */
-  formItem?: boolean;
   disabled?: boolean;
   class?: any;
   style?: StyleValue;
@@ -39,7 +42,7 @@ const props = defineProps<{
   itemStyle?: StyleValue;
 }>();
 
-const slots = defineSlots<{
+defineSlots<{
   default(props: {
     option: {
       label: any;
@@ -48,6 +51,7 @@ const slots = defineSlots<{
       index: number;
     };
   }): any;
+  groupLabel(props: { group: CommonOptionGroup }): any;
 }>();
 
 const id = wai();
@@ -82,16 +86,20 @@ const options = computed(() =>
 
 const current = ref(-1);
 
-const powerCursor = computed(
-  () => props.powerCursor && !props.multi && !props.clearable,
+const currentValid = computed(
+  () => current.value >= 0 && current.value < options.value.length,
 );
 
+const clearable = computed(() => props.mode === 'clearable');
+const multi = computed(() => props.mode === 'multi');
+const powerCursor = computed(() => props.mode === 'powerCursor');
+
 const checkCursorOnFocus = () => {
-  if (current.value < 0 || current.value >= options.value.length) {
+  if (!currentValid.value) {
     current.value = options.value.findIndex(
       i =>
         i.value ===
-        (props.multi ? (model.value as any[]).includes(i.value) : model.value),
+        (multi.value ? (model.value as any[]).includes(i.value) : model.value),
     );
 
     if (current.value === -1 && options.value.length) current.value = 0;
@@ -99,15 +107,15 @@ const checkCursorOnFocus = () => {
 };
 
 const toggle = (value: any) => {
-  if (props.multi) {
+  if (multi.value) {
     const set = new Set(model.value);
     set.has(value) ? set.delete(value) : set.add(value);
     model.value = [...set];
     return;
   }
 
-  if (props.clearable && model.value === value) model.value = null;
-  else model.value = value;
+  if (clearable.value && model.value === value) model.value = null;
+  else if (model.value !== value || props.assignSameValue) model.value = value;
 };
 
 const el = ref<HTMLDivElement | null>(null);
@@ -131,7 +139,15 @@ const nav = (delta: -1 | 1) => {
   return -1;
 };
 
+const toggleCurrent = () => {
+  if (currentValid.value) toggle(options.value[current.value].value);
+};
+
 const onKeyDownExact = (e: KeyboardEvent) => {
+  if (props.disabled) return;
+
+  if (props.keydownAdvanced?.(e)) return;
+
   switch (e.key) {
     case 'ArrowUp':
     case 'ArrowLeft':
@@ -144,25 +160,28 @@ const onKeyDownExact = (e: KeyboardEvent) => {
       nav(1);
       break;
     case ' ':
-      e.preventDefault();
-      if (current.value < 0 || current.value >= options.value.length) return;
-      toggle(options.value[current.value].value);
-      break;
     case 'Enter':
-      if (props.formItem) {
-        e.preventDefault();
-        (
-          el.value!.closest('form, [role="form"]') as { submit?: () => void }
-        )?.submit?.();
-      }
+      e.preventDefault();
+      toggleCurrent();
       break;
+    // if (props.powerEnter) {
+    //   e.preventDefault();
+    //   toggleCurrent();
+    //   break;
+    // }
+    // if (props.formItem) {
+    //   e.preventDefault();
+    //   (
+    //     el.value!.closest('form, [role="form"]') as { submit?: () => void }
+    //   )?.submit?.();
+    // }
+    // break;
   }
 };
 
 defineExpose({
   el,
 });
-
 </script>
 
 <template>
@@ -176,8 +195,8 @@ defineExpose({
     role="listbox"
     :tabindex="props.disabled ? -1 : 0"
     :aira-disabled="props.disabled"
-    :aria-activedescendant="current === -1 ? '' : id + current"
-    :aria-multiselectable="props.multi"
+    :aria-activedescendant="currentValid ? id + current : undefined"
+    :aria-multiselectable="multi"
   >
     <template
       v-for="g in groupOrOptions"
@@ -187,22 +206,33 @@ defineExpose({
           : 'i' + g.value
       "
     >
-      <div role="group" v-if="g && typeof g === 'object' && 'options' in g">
+      <div
+        role="group"
+        :aria-label="g.label"
+        v-if="g && typeof g === 'object' && 'options' in g"
+      >
+        <div role="none" v-if="$slots.groupLabel">
+          <slot name="groupLabel" :group="g" />
+        </div>
+        <!--
+          This two role="option" <div/>s are duplicated,
+          I don't make them components here because
+          I don't want to introduce new tree node in Vue devtool.
+        -->
         <div
           v-for="i in g.options"
           :key="i.value"
           :id="id + i.index"
           @click="!i.disabled ? toggle(i.value) : undefined"
           role="option"
-          :aria-selected="
-            props.multi
-              ? model.includes(i.value)
-              : i.value === model
-          "
+          :aria-selected="multi ? model.includes(i.value) : i.value === model"
           :aria-current="i.index === current || undefined"
+          @pointermove="props.powerPointer ? (current = i.index) : undefined"
           :aria-disabled="props.disabled || i.disabled || undefined"
         >
-          {{ i.label }}
+          <slot :option="i">
+            {{ i.label }}
+          </slot>
         </div>
       </div>
       <template v-else>
@@ -210,15 +240,14 @@ defineExpose({
           :id="id + g.index"
           @click="!g.disabled ? toggle(g.value) : undefined"
           role="option"
-          :aria-selected="
-            props.multi
-              ? model.includes(g.value)
-              : g.value === model
-          "
+          @pointermove="props.powerPointer ? (current = g.index) : undefined"
+          :aria-selected="multi ? model.includes(g.value) : g.value === model"
           :aria-current="g.index === current || undefined"
           :aria-disabled="props.disabled || g.disabled || undefined"
         >
-          {{ g.label }}
+          <slot :option="g">
+            {{ g.label }}
+          </slot>
         </div>
       </template>
     </template>
