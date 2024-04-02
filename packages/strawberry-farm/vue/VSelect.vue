@@ -25,7 +25,9 @@ const appeared = ref(false);
 const reference = ref<HTMLDivElement | null>(null);
 const popper = ref<HTMLDivElement>();
 
-const flip = levitate.plugins.flip();
+const flip = levitate.plugins.flip(() => ({
+  limit: 200,
+}));
 
 const bag = Bag();
 onBeforeUnmount(bag);
@@ -52,6 +54,12 @@ const dataAttr: typeof flip = config => {
   return config;
 };
 
+const autoHeight: typeof flip = config => {
+  const { $pop, map } = config;
+  $pop.style.setProperty('--max-height', Math.floor(map.height - 20) + 'px');
+  return { ...config, pop: $pop.getBoundingClientRect() };
+};
+
 watch(
   () => [popper.value, open.value] as const,
   ([$pop, open]) => {
@@ -64,11 +72,12 @@ watch(
             $ref,
             $pop,
             {
-              offset: 10,
+              offset: 5,
             },
             sameWidth,
             flip,
             dataAttr,
+            autoHeight,
           );
           appeared.value = true;
         }),
@@ -115,9 +124,7 @@ const toggle = () => {
     bag();
     if (!appeared.value || !popper.value) return;
 
-    const body = popper.value.querySelector(
-      '.PopperAnimator',
-    )! as HTMLDivElement;
+    const body = popper.value.querySelector('.PopperBody')! as HTMLDivElement;
 
     if (open.value) {
       fx.transition(body, {
@@ -158,8 +165,11 @@ const pickerModel = computed({
     ref="reference"
     @click="toggle"
     @keydown.space="toggle"
+    @keydown.enter="toggle"
     @keydown.up="toggle"
     @keydown.down="toggle"
+    role="button"
+    aria-haspopup="true"
     :aria-expanded="open"
   />
 
@@ -170,7 +180,7 @@ const pickerModel = computed({
       @keydown.esc="toggle"
       style="position: fixed; top: 0; left: 0"
     >
-      <div class="PopperAnimator">
+      <div class="PopperBody">
         <VPicker
           power-pointer
           v-model="pickerModel"
@@ -189,21 +199,13 @@ const pickerModel = computed({
 }
 
 .Positioner[data-pop-dir='top'] {
-  .PopperAnimator {
+  .PopperBody {
     transform-origin: bottom;
   }
 }
 .Positioner[data-pop-dir='bottom'] {
-  .PopperAnimator {
+  .PopperBody {
     transform-origin: top;
   }
-}
-
-.PopperAnimator {
-  transform: scaleY(0);
-  transition: transform 0.3s var(--curve-wave);
-}
-.PopperAnimator.appear {
-  transform: scaleY(1);
 }
 </style>

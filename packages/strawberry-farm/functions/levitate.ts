@@ -174,13 +174,6 @@ const align = (config: PopConfigs): PopConfigs => {
   return { ...config, x, y };
 };
 
-// TODO: how to remove data attr
-const dataAttr = (config: PopConfigs) => {
-  const { dir, $pop } = config;
-  $pop.setAttribute('data-dir', dir);
-  return config;
-};
-
 const plugins = {
   flip,
   flipAny,
@@ -235,7 +228,7 @@ const _levitate = (
   };
 
   for (let p of plugins) config = p(config);
-
+console.log('z', config)
   config = align(config);
 
   $pop.style.setProperty('--x', config.x + 'px');

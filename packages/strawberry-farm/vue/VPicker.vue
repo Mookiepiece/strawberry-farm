@@ -16,10 +16,6 @@ const props = defineProps<{
    * Pointer move events will change current option
    */
   powerPointer?: boolean;
-  // /**
-  //  * Enter will trigger selection other than submit the form.
-  //  */
-  // powerEnter?: boolean;
   /**
    *  **The same value is assigned to the model** when click, which can trigger model change and thus close dropdown in `<Select />`.
    *
@@ -164,18 +160,6 @@ const onKeyDownExact = (e: KeyboardEvent) => {
       e.preventDefault();
       toggleCurrent();
       break;
-    // if (props.powerEnter) {
-    //   e.preventDefault();
-    //   toggleCurrent();
-    //   break;
-    // }
-    // if (props.formItem) {
-    //   e.preventDefault();
-    //   (
-    //     el.value!.closest('form, [role="form"]') as { submit?: () => void }
-    //   )?.submit?.();
-    // }
-    // break;
   }
 };
 

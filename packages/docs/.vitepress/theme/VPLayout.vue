@@ -81,6 +81,7 @@ const outline = ref(false);
 <style>
 .VPLayout {
   position: relative;
+  z-index: 0;
   display: grid;
   grid: 1fr/1fr;
   height: 100vh;

@@ -14,6 +14,7 @@
 }
 
 :where(.VSelect:not([aria-disabled='true']):hover) {
+  outline-color: var(---flame);
   cursor: pointer;
 }
 
@@ -22,23 +23,25 @@
   /* box-shadow: 0 0 0 6px var(---foam); */
 }
 
-:where(.VSelectPicker) {
-  /* position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: var(---size);
-  font-size: var(---f);
-  line-height: 1.6;
-  color: var(--txt-1);
-  outline: 1px solid var(--mat-solid-15);
-  outline-offset: -1px;
-  box-shadow: 0 0 0 0 var(---foam);
-  transition: box-shadow 0.2s; */
-  background-color: var(--mat-solid-0);
+:where(.PopperBody) {
+  transform: scaleY(0);
+  transition: transform 0.2s var(--curve-wave);
+
+  max-height: var(--max-height, auto);
+  overflow: auto;
+
   box-shadow: var(--shadow);
   outline: 1px solid var(--mat-solid-15);
-  outline-offset: -1px; 
+  outline-offset: -1px;
+}
+
+:where(.PopperBody.appear) {
+  transform: scaleY(1);
+}
+
+:where(.VSelectPicker) {
+  background-color: var(--mat-solid-0);
+  outline: 0;
 }
 
 :where(.VSelectPicker [role='option']) {
@@ -49,6 +52,10 @@
   padding: 10px;
   font-size: var(---f);
   line-height: 1.6;
+}
+
+:where(.VSelectPicker [role='option']:not([aria-diabled='true'])) {
+  cursor: pointer;
 }
 
 :where(
