@@ -1,8 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { IRuleType, RuleS, validate, defineRule } from '../validator';
 
-const d = defineRule;
-
 describe('vadliator', () => {
   const $ =
     (...rulesss: RuleS<keyof IRuleType>[]) =>

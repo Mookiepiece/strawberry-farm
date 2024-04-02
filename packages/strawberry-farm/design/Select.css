@@ -24,8 +24,9 @@
 }
 
 :where(.PopperBody) {
-  transform: scaleY(0);
-  transition: transform 0.2s var(--curve-wave);
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: opacity 0.2s  var(--curve-wave), transform 0.2s var(--curve-wave);
 
   max-height: var(--max-height, auto);
   overflow: auto;
@@ -37,6 +38,7 @@
 
 :where(.PopperBody.appear) {
   transform: scaleY(1);
+  opacity: 1;
 }
 
 :where(.VSelectPicker) {

@@ -1,19 +1,6 @@
-import { Bag, makeTimeout, nextFrame, on } from '.';
+import { Bag, Bags, makeTimeout, nextFrame, on } from '.';
 
-const bins = new WeakMap<HTMLElement, ReturnType<typeof Bag>>();
-
-const resetBag = (el: HTMLElement) => {
-  let bag = bins.get(el);
-
-  if (bag) {
-    bag();
-  } else {
-    bag = Bag();
-    bins.set(el, bag);
-  }
-
-  return bag;
-};
+const { resetBag } = Bags();
 
 type TransitionInit = {
   from?: (bag: ReturnType<typeof Bag>) => (() => void) | void;

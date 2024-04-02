@@ -35,7 +35,6 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Flexbox', link: '/css/Flexbox' },
         { text: 'Typography', link: '/css/Typography' },
         { text: 'Box', link: '/css/Box' },
-        { text: 'Positioning', link: '/css/Positioning' },
       ],
     },
     {

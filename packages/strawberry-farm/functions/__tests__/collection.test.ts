@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
-import { Bag } from '../collection';
+import { Bag, Bags } from '../collection';
 
 describe('collection', () => {
   describe('Bag', () => {
-    it('Very good', () => {
+    it('works', () => {
       const bag = Bag();
-      
+
       // Callback Fn
       const f1 = vi.fn();
       bag(f1);
@@ -28,6 +28,23 @@ describe('collection', () => {
 
       bag();
       expect(a1.signal.aborted).toBeTruthy();
+    });
+  });
+
+  describe('Bags', () => {
+    it('works', () => {
+      const { getBag, resetBag, weakMap } = Bags();
+
+      const a = {};
+      const bag = resetBag(a);
+
+      const s1 = bag(new AbortController()).signal;
+
+      expect(getBag(a)).toBe(weakMap.get(a));
+      expect(s1.aborted).toBe(false);
+
+      expect(resetBag(a)).toBe(weakMap.get(a));
+      expect(s1.aborted).toBe(true);
     });
   });
 });

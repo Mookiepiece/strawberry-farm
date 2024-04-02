@@ -24,25 +24,22 @@ export const Bag = (): IBag => {
   return bag;
 };
 
-/**
- * @experimental
- */
 export const Bags = <T extends object>() => {
   const weakMap = new WeakMap<T, IBag>();
 
-  const get = (i: T) => {
+  const getBag = (i: T) => {
     if (weakMap.has(i)) {
-      return weakMap.get(i);
+      return weakMap.get(i)!;
     }
     const bag = Bag();
     weakMap.set(i, bag);
     return bag;
   };
 
-  const flush = (i: T) => {
+  const resetBag = (i: T) => {
     weakMap.get(i)?.();
-    return get(i);
+    return getBag(i);
   };
 
-  return { get, flush, weakMap };
+  return { getBag, resetBag, weakMap };
 };
