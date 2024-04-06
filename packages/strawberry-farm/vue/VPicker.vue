@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { StyleValue, computed, ref } from 'vue';
-import { CommonOption, CommonOptionGroup } from './misc';
+import { CommonOption, CommonOptionGroup, CommonOptionsInput } from './misc';
 import { wai } from '../functions';
 
 const model = defineModel<any>();
@@ -30,7 +30,7 @@ const props = defineProps<{
    * Use this if partical arrow keys are used for special actions e.g. cascade or tree select.
    */
   keydownAdvanced?: (e: KeyboardEvent) => boolean | void;
-  options?: (CommonOption | CommonOptionGroup)[];
+  options?: CommonOptionsInput[];
   disabled?: boolean;
   class?: any;
   style?: StyleValue;
@@ -39,23 +39,17 @@ const props = defineProps<{
 }>();
 
 defineSlots<{
-  default(props: {
-    option: {
-      label: any;
-      value: any;
-      disabled: boolean | undefined;
-      index: number;
-    };
-  }): any;
+  default(props: { option: CommonOption & { index: number } }): any;
   groupLabel(props: { group: CommonOptionGroup }): any;
-}>();
 
+}>();
 const id = wai();
 
 const groupOrOptions = computed(() => {
   let index = 0;
 
-  const normalize = (o: CommonOption) => ({
+  const normalize = (o: CommonOption): CommonOption & { index: number } => ({
+    ...(typeof o === 'object' ? o : {}),
     label: typeof o === 'object' && o ? o.label ?? o.value : '' + o,
     value: typeof o === 'object' && o ? o.value : o,
     disabled: typeof o === 'object' && o ? o.disabled : false,
@@ -65,8 +59,8 @@ const groupOrOptions = computed(() => {
   return (props.options ?? []).map(i => {
     if (i && typeof i === 'object' && 'options' in i)
       return {
-        ...i,
-        options: i.options.map(normalize),
+        ...(i as CommonOptionGroup),
+        options: (i as CommonOptionGroup).options.map(normalize),
       };
     return normalize(i);
   });
@@ -127,6 +121,8 @@ const nav = (delta: -1 | 1) => {
   if (option) {
     const index = options.value.indexOf(option);
     current.value = index;
+
+    document.getElementById(id + current.value)?.scrollIntoView();
 
     if (powerCursor.value) toggle(option.value);
 
@@ -196,7 +192,7 @@ defineExpose({
         v-if="g && typeof g === 'object' && 'options' in g"
       >
         <div role="none" v-if="$slots.groupLabel">
-          <slot name="groupLabel" :group="g" />
+          <slot name="groupLabel" :group="g">{{ g.label }}</slot>
         </div>
         <!--
           This two role="option" <div/>s are duplicated,
@@ -229,7 +225,7 @@ defineExpose({
           :aria-current="g.index === current || undefined"
           :aria-disabled="props.disabled || g.disabled || undefined"
         >
-          <slot :option="g">
+          <slot :option="g as any">
             {{ g.label }}
           </slot>
         </div>

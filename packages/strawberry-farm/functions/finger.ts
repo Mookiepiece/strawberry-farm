@@ -2,7 +2,7 @@ import { Bag } from './collection';
 import { on } from './on';
 
 // Inspired by vueuse usePointerSwipe
-export const trackPointer = (
+export const swipe = (
   el: HTMLElement,
   onStart?: (
     e: PointerEvent,

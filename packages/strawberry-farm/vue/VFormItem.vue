@@ -50,7 +50,7 @@ const validateSelf = async () => {
     for (const rule of rules) {
       ans = await validate(value, rule, label);
       if (signal.aborted) throw new DOMException('', 'AbortError');
-      if (ans) {
+      if (typeof ans === 'string') {
         return ans;
       }
     }
@@ -71,9 +71,9 @@ const focus = () => {
 </script>
 
 <template>
-  <div class="FormItem">
-    <div class="FormItemHeader" v-if="descriptor.label">
-      <div class="FormItemTitle" :id="id" @click="focus">
+  <div class="VFormItem" :class="{ invalid: typeof errorMessage === 'string' }">
+    <div class="VFormItemHeader" v-if="descriptor.label">
+      <div class="VFormItemLabel" :id="id" @click="focus">
         {{ descriptor.label }}
       </div>
 

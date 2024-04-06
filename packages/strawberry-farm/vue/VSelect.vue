@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { StyleValue, onBeforeUnmount, ref, watch, watchEffect } from 'vue';
+import { onBeforeUnmount, ref, watch, watchEffect } from 'vue';
 import { Bag, fx, levitate, trap } from '../functions';
 import { onClickAway } from '../html/onClickAway';
 import { CommonOption, CommonOptionGroup } from './misc';
@@ -13,11 +13,16 @@ const props = withDefaults(
     multi?: boolean;
     options?: (CommonOption | CommonOptionGroup)[];
     disabled?: boolean;
-    class?: any;
-    style?: StyleValue;
+    placeholder?: string;
+    clearable?: boolean;
   }>(),
   {},
 );
+
+defineSlots<{
+  prefix: any;
+  suffix: any;
+}>();
 
 const open = ref(false);
 const appeared = ref(false);
@@ -147,6 +152,11 @@ const toggle = () => {
   });
 }
 
+const erase = () => {
+  model.value = null;
+  reference.value?.focus();
+};
+
 const pickerModel = computed({
   get() {
     return model.value;
@@ -160,10 +170,10 @@ const pickerModel = computed({
 
 <template>
   <div
-    class="VSelect"
+    class="VInput VSelect"
     tabindex="0"
     ref="reference"
-    @click="toggle"
+    @click.self="toggle"
     @keydown.space="toggle"
     @keydown.enter="toggle"
     @keydown.up="toggle"
@@ -171,10 +181,33 @@ const pickerModel = computed({
     role="button"
     aria-haspopup="true"
     :aria-expanded="open"
-  />
-
-  <Teleport v-if="open || appeared" to="body">
+    v-bind="$attrs"
+  >
+    <div class="VInputPrefix" v-if="$slots.prefix">
+      <slot name="prefix"></slot>
+    </div>
+    <div class="VInputSuffix" v-if="$slots.suffix">
+      <slot name="suffix"></slot>
+    </div>
+    <i-feather
+      v-if="props.clearable && model != null"
+      i="x"
+      class="VInputEraser"
+      tabindex="-1"
+      @click="erase"
+      aria-hidden="true"
+    />
     <div
+      class="VInputTrunk"
+      :class="model == null ? 'VInputTrunkPlaceholder' : undefined"
+    >
+      {{ model ?? props.placeholder }}
+    </div>
+  </div>
+
+  <Teleport to="body">
+    <div
+      v-show="open || appeared"
       ref="popper"
       class="Positioner"
       @keydown.esc="toggle"

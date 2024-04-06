@@ -34,6 +34,19 @@ const signupForm = Form.describe<LoginFormValue>(
     i({
       name: 'password',
       label: 'Password',
+      rules: [
+        {
+          validator(password) {
+            if (
+              password.includes(' ') ||
+              password.length < 6 ||
+              password.length > 12 ||
+              password === '123456'
+            )
+              return '';
+          },
+        },
+      ],
     });
 
     i({
@@ -56,71 +69,6 @@ const signupForm = Form.describe<LoginFormValue>(
         clearable: true,
       },
     });
-
-    // i({
-    //   name: 'phoneNumber',
-    //   type: 'text',
-    //   rules: [['string!', 11]],
-    // });
-
-    // i({
-    //   name: 'code',
-    //   type: 'text',
-    //   rules: [['string!', 6]],
-    // });
-
-    // i({
-    //   name: 'agreement',
-    //   type: 'text',
-    //   rules: ['checked!'],
-    // });
-
-    // i({
-    //   name: 'subscribe',
-    //   type: 'any',
-    // });
-
-    // i({
-    //   name: 'luckyNumber',
-    //   type: 'number',
-    //   rules: [
-    //     {
-    //       validator(value) {
-    //         if (value < 1000) {
-    //           throw 'Value cannot be less than 1000';
-    //         }
-    //       },
-    //     },
-    //   ],
-    // });
-
-    // i({
-    //   name: 'interests',
-    //   type: 'list',
-    //   rules: [
-    //     ['array!', [0, 1]],
-    //     {
-    //       validator(value) {
-    //         if (value.join('').length > 10)
-    //           throw 'Total length of strings cannot be greater than 10';
-    //       },
-    //     },
-    //   ],
-    // });
-
-    // i({
-    //   name: 'ratings',
-    //   type: 'list',
-    //   rules: [
-    //     ['array!', [0, 1]],
-    //     {
-    //       validator(value) {
-    //         if (value.join('').length > 10)
-    //           throw 'Total length of strings cannot be greater than 10';
-    //       },
-    //     },
-    //   ],
-    // });
   },
 );
 const v = signupForm.value;
@@ -138,7 +86,6 @@ const v = signupForm.value;
                 v-if="v.password.includes(' ')"
                 i="x"
                 class="clr-main tone:reimu"
-                data-invalid
               />
               <i-feather v-else i="check" class="clr-1" />
               Password cannot contain spaces.
@@ -148,7 +95,6 @@ const v = signupForm.value;
                 v-if="v.password.length < 6 || v.password.length > 12"
                 i="x"
                 class="clr-main tone:reimu"
-                data-invalid
               />
               <i-feather v-else i="check" class="clr-1" />
               Password should between 6 - 12 characters.
@@ -158,7 +104,6 @@ const v = signupForm.value;
                 v-if="v.password === '123456'"
                 i="x"
                 class="clr-main tone:reimu"
-                data-invalid
               />
               <i-feather v-else i="check" class="clr-1" />
               Password cannot be 123456 because that's the admin's password.

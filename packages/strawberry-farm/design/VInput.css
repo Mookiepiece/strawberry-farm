@@ -1,0 +1,24 @@
+:where(.VTextInput:not(:has(:is(input, textarea):disabled)):hover) {
+  outline-color: var(---flame);
+  cursor: text;
+}
+
+:where(.VTextInput:focus-within) {
+  outline: 2px solid var(---flame);
+  box-shadow: 0 0 0 4px var(---foam);
+}
+
+/* NOTE: Webkit 居然还能有这种 Bug，涨见识了，而且还是只对中文生效的： input输入框向下偏移，输入中文，字符数字下移一像素问题 */
+:where(.VTextInput > input) {
+  height: var(---size);
+  line-height: var(---size);
+}
+
+:where(.VTextInput > textarea) {
+  padding-block: 10px;
+  resize: vertical;
+}
+
+:where(.VTextInput:has(textarea)) {
+  height: unset;
+}

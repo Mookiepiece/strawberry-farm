@@ -13,20 +13,9 @@
   transition: box-shadow 0.2s;
 }
 
-:where(.VInput:not(:has(:is(input, textarea):disabled)):hover) {
-  outline-color: var(---flame);
-  cursor: text;
-}
-
-:where(.VInput:focus-within) {
-  outline: 2px solid var(---flame);
-  box-shadow: 0 0 0 4px var(---foam);
-}
-
-:where(.VInput > :is(input, textarea)) {
+:where(.VInputTrunk) {
   order: 2;
   width: 100%;
-  height: 100%;
   background: transparent;
   border: 0;
   color: inherit;
@@ -36,23 +25,9 @@
   padding-inline: 10px;
 }
 
-:where(.VInput > :is(input, textarea)::placeholder) {
+
+:where(.VInputTrunk::placeholder, .VInputTrunkPlaceholder) {
   color: var(--txt-3);
-}
-
-:where(.VInput:has(textarea)) {
-  height: unset;
-}
-
-/* NOTE: Webkit 居然还能有这种 Bug，涨见识了，而且还是只对中文生效的： input输入框向下偏移，输入中文，字符数字下移一像素问题 */
-:where(.VInput > input) {
-  height: var(---size);
-  line-height: var(---size);
-}
-
-:where(.VInput > textarea) {
-  padding-block: 10px;
-  resize: vertical;
 }
 
 :where(.VInputEraser) {
@@ -77,27 +52,36 @@
   background-color: var(--mat-air-2);
 }
 
-:where([aria-label='Input Prefix'], [aria-label='Input Suffix']) {
+:where(.VInputPrefix, .VInputSuffix) {
   flex-shrink: 0;
   padding-inline: 5px;
   color: var(--txt-2);
   min-width: var(---size);
   white-space: nowrap;
+}
+
+:where(.VInputPrefix, .VInputSuffix) {
+  user-select: none;
   pointer-events: none;
 }
 
-:where([aria-label='Input Prefix']) {
+:where(.VInputPrefix) {
   order: 1;
 }
 
-:where([aria-label='Input Suffix']) {
+:where(.VInputSuffix) {
   order: 4;
 }
 
-:where([aria-label='Input Prefix'] ~ :is(input, textarea)) {
+:where(.VInputPrefix ~ .VInputTrunk) {
   padding-left: 0;
 }
 
-:where([aria-label='Input Suffix'] ~ :is(input, textarea)) {
+:where(.VInputSuffix ~ .VInputTrunk) {
   padding-right: 0;
+}
+
+
+:where(.VFormItem.invalid .VInput) {
+  outline: 1px solid var(--tone-reimu);
 }

@@ -11,7 +11,7 @@ const props = withDefaults(
     id?: string;
     name?: string;
     ariaLabel?: string;
-    ariaLabelledby?:string;
+    ariaLabelledby?: string;
 
     readonly?: boolean;
     placeholder?: string;
@@ -22,6 +22,11 @@ const props = withDefaults(
   }>(),
   { trim: true },
 );
+
+defineSlots<{
+  prefix: any;
+  suffix: any;
+}>();
 
 const emit = defineEmits<{
   focus: [];
@@ -64,7 +69,7 @@ const handleBlur = () => {
   if (props.trim) input.value!.value = input.value!.value.trim();
 };
 
-const clean = () => {
+const erase = () => {
   handleInput({ target: { value: '' } } as any);
   input.value?.focus();
 };
@@ -76,28 +81,30 @@ defineExpose({ focus, el });
 
 <template>
   <div
-    class="VInput"
+    class="VInput VTextInput"
     @click.self="input?.focus()"
     @click="e => emit('click', e)"
     ref="el"
+    v-bind="$attrs"
   >
-    <div aria-label="Input Prefix" v-if="$slots.prefix">
+    <div class="VInputPrefix" v-if="$slots.prefix">
       <slot name="prefix"></slot>
     </div>
-    <div aria-label="Input Suffix" v-if="$slots.suffix">
+    <div class="VInputSuffix" v-if="$slots.suffix">
       <slot name="suffix"></slot>
     </div>
     <i-feather
       v-if="props.clearable && filled"
-      i="x-circle"
+      i="x"
       class="VInputEraser"
       tabindex="-1"
-      @click="clean"
+      @click="erase"
       aria-hidden="true"
     />
     <textarea
       v-if="props.textarea"
       ref="input"
+      class="VInputTrunk"
       :readonly="props.readonly"
       :placeholder="props.placeholder"
       :id="props.id"
@@ -111,6 +118,7 @@ defineExpose({ focus, el });
     <input
       v-else
       ref="input"
+      class="VInputTrunk"
       :readonly="props.readonly"
       :placeholder="props.placeholder"
       :id="props.id"

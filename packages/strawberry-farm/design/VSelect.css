@@ -1,16 +1,11 @@
-:where(.VSelect) {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: var(---size);
-  font-size: var(---f);
-  line-height: 1.6;
-  color: var(--txt-1);
-  outline: 1px solid var(--mat-solid-15);
-  outline-offset: -1px;
-  box-shadow: 0 0 0 0 var(---foam);
-  transition: box-shadow 0.2s;
+:where(.VSelect .VInputTrunk) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:where(.VSelect .VInputTrunk) {
+  pointer-events: none;
 }
 
 :where(.VSelect:not([aria-disabled='true']):hover) {
@@ -18,15 +13,20 @@
   cursor: pointer;
 }
 
-:where(.VSelect:is(:focus, [aria-expanded='true'])) {
+:where(.VSelect:is(:focus-within, [aria-expanded='true'])) {
   outline: 2px solid var(---flame);
-  /* box-shadow: 0 0 0 6px var(---foam); */
+}
+
+:where(.VSelect[aria-expanded='true']) {
+  box-shadow: 0 0 0 4px var(---foam);
 }
 
 :where(.PopperBody) {
   transform: translateY(-10px);
   opacity: 0;
-  transition: opacity 0.2s  var(--curve-wave), transform 0.2s var(--curve-wave);
+  transition:
+    opacity 0.2s var(--curve-wave),
+    transform 0.2s var(--curve-wave);
 
   max-height: var(--max-height, auto);
   overflow: auto;
@@ -54,6 +54,10 @@
   padding: 10px;
   font-size: var(---f);
   line-height: 1.6;
+
+  white-space: nowrap;
+  /* text-overflow: ellipsis; unavailable */
+  overflow: hidden;
 }
 
 :where(.VSelectPicker [role='option']:not([aria-diabled='true'])) {

@@ -26,20 +26,12 @@ onMounted(() => {
 .good {
   display: grid;
   grid: auto-flow 1fr / repeat(auto-fill, 50px);
+  place-items: center;
 }
 
 .good-cell {
   border-radius: var(--2);
   cursor: pointer;
   user-select: none;
-}
-svg {
-  width: 24px;
-  height: 24px;
-  fill: none;
-  color: var(---ink);
-  path {
-    fill: currentColor;
-  }
 }
 </style>

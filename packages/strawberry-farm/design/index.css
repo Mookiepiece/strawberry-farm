@@ -3,8 +3,9 @@
 @import './tone.scss';
 @import './button.css';
 @import './typography.scss';
-@import './Input.css';
-@import './Select.css';
+@import './VInputBase.css';
+@import './VInput.css';
+@import './VSelect.css';
 @import './form.css';
 @import './VRadioGroup.css';
 @import './toast.scss';

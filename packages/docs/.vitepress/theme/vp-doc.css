@@ -198,7 +198,7 @@
   font-family: var(--vp-font-family-mono);
 }
 /* inline code */
-.vp-doc :not(pre, h1, h2, h3, h4, h5, h6) > code {
+:where(.vp-doc :not(pre, h1, h2, h3, h4, h5, h6) > code) {
   font-size: var(--vp-code-font-size);
   color: var(--vp-code-color);
 }
@@ -213,18 +213,8 @@
 }
 
 .vp-doc a > code {
-  color: var(--vp-code-link-color);
+  color: inherit;
 }
-
-.vp-doc a:hover > code {
-  color: var(--vp-code-link-hover-color);
-}
-
-/* .vp-doc h1 > code,
-.vp-doc h2 > code,
-.vp-doc h3 > code {
-  font-size: 0.9em;
-} */
 
 .vp-doc div[class*='language-'],
 .vp-block {

@@ -1,18 +1,16 @@
-/* INPUT */
-
-:where(.FormItemHeader) {
+:where(.VFormItemHeader) {
   font-size: var(--f2);
   line-height: 1.6;
 }
 
-:where(.FormItemTitle) {
+:where(.VFormItemLabel) {
   display: block;
   font-size: 13px;
   font-weight: 600;
   cursor: default;
 }
 
-:where(.FormItem) {
+:where(.VFormItem) {
   display: flex;
   flex-direction: column;
   gap: 5px;

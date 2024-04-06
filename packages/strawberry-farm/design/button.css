@@ -111,11 +111,11 @@
 }
 
 :where(.SolidButton:not(:disabled, [aria-disabled='true']):hover) {
-  background: color-mix(in oklab, var(---main), #000 5%);
+  background: color-mix(in oklab, var(---main), #000 6%);
 }
 
 :where(.SolidButton:not(:disabled, [aria-disabled='true']):active) {
-  background: color-mix(in oklab, var(---main), #000 13%);
+  background: color-mix(in oklab, var(---main), #000 12%);
 }
 
 :where(.SolidButton:is(:disabled, [aria-disabled='true'])) {
@@ -129,15 +129,15 @@
 
 :where(.TonalButton) {
   color: var(---ink);
-  background: color-mix(in oklab, var(---foam), transparent 50%);
+  background-color: var(---foam);
 }
 
 :where(.TonalButton:not(:disabled, [aria-disabled='true']):hover) {
-  background: color-mix(in oklab, var(---foam), transparent 25%);
+  background: color-mix(in oklab, var(---foam), var(---main) 8%);
 }
 
 :where(.TonalButton:not(:disabled, [aria-disabled='true']):active) {
-  background: color-mix(in oklab, var(---foam), transparent 0%);
+  background: color-mix(in oklab, var(---foam), var(---main) 20%);
 }
 
 :where(.TonalButton:is(:disabled, [aria-disabled='true'])) {

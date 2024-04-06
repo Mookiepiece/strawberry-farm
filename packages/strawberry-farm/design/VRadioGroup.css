@@ -1,5 +1,3 @@
-/* RADIO */
-
 :where(.VRadioGroup) {
   display: flex;
   flex-wrap: wrap;
@@ -20,6 +18,7 @@
   outline: 1px solid var(--mat-solid-15);
   outline-offset: -1px;
   cursor: pointer;
+  user-select: none;
 }
 
 :where(.VRadioGroup [role='option']:not([aria-disabled='true']):hover) {
@@ -39,14 +38,14 @@
     .VRadioGroup
       [role='option']:not([aria-disabled='true'])[aria-selected='true']:hover
   ) {
-  background-color: color-mix(in oklab, var(---foam) 15%, var(--mat-solid-1));
+  background-color: color-mix(in oklab, var(---foam), transparent 75%);
 }
 
 :where(
     .VRadioGroup
       [role='option']:not([aria-disabled='true'])[aria-selected='true']:active
   ) {
-  background-color: color-mix(in oklab, var(---foam) 35%, var(--mat-solid-1));
+  background-color: color-mix(in oklab, var(---foam), transparent 50%);
 }
 
 :where(.VRadioGroup [role='option'][aria-disabled='true']) {
