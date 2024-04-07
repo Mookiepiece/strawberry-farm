@@ -13,12 +13,14 @@ const slots = defineSlots<{
   default(props: { props: any; model: WritableComputedRef<any> }): any;
   subtitle: any;
   description: any;
-  alert(props: { message: string }): any;
+  alert: any;
 }>();
+
+const id = Form.uuid();
 
 const form: FormModel<any> = inject('VForm')!;
 
-const descriptor = form._i[props.name];
+const descriptor = form.fields[props.name];
 
 const as = Form.registry.get(descriptor.type || 'text');
 const fieldProps = computed(() => unref(descriptor.props));
@@ -37,7 +39,8 @@ const errorMessage = ref<string | undefined>();
 
 const bag = Bag();
 const validateSelf = async () => {
-  const signal = (bag(), bag(new AbortController()).signal);
+  bag();
+  const signal = bag(new AbortController()).signal;
 
   const value = model.value;
   const rules = descriptor.rules;
@@ -65,20 +68,12 @@ const focus = () => {
     control.value.focus?.(); // Native HTML Elements
   }
 };
-
-form.items[props.name] = {
-  focus,
-};
-
-defineExpose({
-  focus,
-});
 </script>
 
 <template>
   <div class="VFormItem" :class="{ invalid: typeof errorMessage === 'string' }">
     <div class="VFormItemHeader" v-if="descriptor.label">
-      <div class="VFormItemLabel" @click="focus">
+      <div class="VFormItemLabel" :id="id" @click="focus">
         {{ descriptor.label }}
       </div>
 
@@ -94,6 +89,7 @@ defineExpose({
         :is="as"
         v-model="model"
         v-bind="fieldProps"
+        :aria-labelledby="descriptor.label ? id : undefined"
       />
     </slot>
 
@@ -102,7 +98,7 @@ defineExpose({
     </div>
 
     <div v-if="$slots.alert">
-      <slot v-if="errorMessage" :message="errorMessage" name="alert" />
+      <slot v-if="errorMessage" name="alert" />
     </div>
     <div v-else-if="errorMessage" class="[B] f2 tone:reimu Alert">
       <i-feather i="x-octagon" />

@@ -18,13 +18,13 @@ type LoginFormValue = {
   // ratings: { name: string; rating: number }[];
 };
 
-const signupForm = Form.define<LoginFormValue>(
+const signupForm = Form.describe<LoginFormValue>(
   {
     usage: 'Good',
     name: '1',
     password: '2',
   },
-  ({ i: i }) => {
+  ({ describeField: i }) => {
     i({
       name: 'usage',
       label: 'Usage',
