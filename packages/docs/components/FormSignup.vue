@@ -9,75 +9,119 @@ type LoginFormValue = {
   password: string;
   repeatPassword: string;
   phoneNumber: string;
+
+  dateRange: [Date, Date];
+
+  chara: {
+    name: string;
+    weapon: string;
+    shot: string;
+    spellCard: string;
+  };
+
+  charas: {
+    name: string;
+    weapon: string;
+    shot: string;
+    spellCard: string;
+  }[];
 };
 
-const signupForm = Form.describe<LoginFormValue>(
-  {
+const signupForm = Form.define<LoginFormValue>({
+  initialValue: {
     name: '霧雨魔理沙',
     password: '',
     repeatPassword: '',
     phoneNumber: '',
+
+    chara: {
+      name: '',
+      weapon: '',
+      shot: '',
+      spellCard: '',
+    },
+
+    charas: [],
   },
-  ({ describeField: i }) => {
-    i({
-      name: 'name',
-      label: 'Name',
-      rules: [
-        {
-          type: 'string',
-          required: true,
-          config: [3, 10],
-        },
-      ],
-    });
+});
 
-    i({
-      name: 'password',
-      label: 'Password',
-      rules: [
-        {
-          validator(password) {
-            if (
-              password.includes(' ') ||
-              password.length < 6 ||
-              password.length > 12 ||
-              password === '123456'
-            )
-              return '';
-          },
+signupForm.defineHierarchy({
+  name: {
+    label: 'Name',
+    rules: [
+      {
+        type: 'string',
+        required: true,
+        config: [3, 10],
+      },
+    ],
+  },
+  password: {
+    label: 'Password',
+    rules: [
+      {
+        validator(password) {
+          if (
+            password.includes(' ') ||
+            password.length < 6 ||
+            password.length > 12 ||
+            password === '123456'
+          )
+            return '';
         },
-      ],
-    });
-
-    i({
-      name: 'repeatPassword',
-      label: 'Repeat Password',
-      rules: [
-        {
-          validator(value) {
-            if (value !== signupForm.value.password)
-              return 'Passwords are not equal';
-          },
+      },
+    ],
+  },
+  repeatPassword: {
+    label: 'Repeat Password',
+    rules: [
+      {
+        validator(value) {
+          if (value !== signupForm.value.password)
+            return 'Passwords are not equal';
         },
-      ],
-    });
+      },
+    ],
+  },
 
-    i({
-      name: 'phoneNumber',
-      props: {
+  phoneNumber: {
+    type: {
+      text: {
         placeholder: 'Phone Number',
         clearable: true,
       },
-    });
+    },
   },
-);
+  chara: {
+    type: {
+      hidden: undefined,
+    },
+    _: {
+      name: {},
+    },
+  },
+
+  charas: {
+    type: {
+      list: {
+        add: () => ({
+          name: '',
+          weapon: '',
+          shot: '',
+          spellCard: '',
+        }),
+      },
+    },
+  },
+});
+
 const v = signupForm.value;
 </script>
 
 <template>
   <VForm :form="signupForm">
-    <template v-slot="{ i }">
-      <VFormItem :name="i('name')" />
+    <template>
+      <VFormItem name="name" />
       <VFormItem name="password">
         <template #description>
           <div class="[A]">
@@ -113,6 +157,7 @@ const v = signupForm.value;
       </VFormItem>
       <VFormItem name="repeatPassword" />
       <VFormItem name="phoneNumber" />
+      <VFormItem name="charas"> </VFormItem>
       <VButton class="mat:air">
         <template #prefix>
           <i-feather i="message-circle" />
