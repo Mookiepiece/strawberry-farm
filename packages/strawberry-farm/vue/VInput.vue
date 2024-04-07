@@ -74,17 +74,18 @@ const erase = () => {
   input.value?.focus();
 };
 
-const focus = () => input.value?.focus();
 const el = ref() as Ref<HTMLDivElement>;
-defineExpose({ focus, el });
+defineExpose({ el });
 </script>
 
 <template>
   <div
     class="VInput VTextInput"
     @click.self="input?.focus()"
+    @focus="input?.focus()"
     @click="e => emit('click', e)"
     ref="el"
+    tabindex="-1"
     v-bind="$attrs"
   >
     <div class="VInputPrefix" v-if="$slots.prefix">

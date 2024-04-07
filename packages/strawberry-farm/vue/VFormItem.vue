@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { WritableComputedRef, computed, inject, ref } from 'vue';
+import {
+  WritableComputedRef,
+  computed,
+  inject,
+  onBeforeMount,
+  ref,
+} from 'vue';
 import { Form, FormModel } from './Form';
 import { validate } from '../functions/validator';
 import { Bag } from '../functions';
@@ -20,7 +26,7 @@ const id = Form.uuid();
 
 const form: FormModel<any> = inject('VForm')!;
 
-const descriptor = form.fields[props.name];
+const descriptor = form.descriptors[props.name];
 
 const as = Form.registry.get(descriptor.type || 'text');
 const fieldProps = computed(() => unref(descriptor.props));
@@ -31,11 +37,11 @@ const model = computed({
   },
   set(value: any) {
     Form.pathValueSetter(form.value, descriptor.name, value);
-    validateSelf().then(v => (errorMessage.value = v));
+    validateSelf().then(v => (message.value = v));
   },
 });
 
-const errorMessage = ref<string | undefined>();
+const message = ref<string | undefined>();
 
 const bag = Bag();
 const validateSelf = async () => {
@@ -68,10 +74,18 @@ const focus = () => {
     control.value.focus?.(); // Native HTML Elements
   }
 };
+
+form.items[props.name] = {
+  focus,
+};
+
+onBeforeMount(() => {
+  delete form.items[props.name];
+});
 </script>
 
 <template>
-  <div class="VFormItem" :class="{ invalid: typeof errorMessage === 'string' }">
+  <div class="VFormItem" :class="{ invalid: typeof message === 'string' }">
     <div class="VFormItemHeader" v-if="descriptor.label">
       <div class="VFormItemLabel" :id="id" @click="focus">
         {{ descriptor.label }}
@@ -98,11 +112,11 @@ const focus = () => {
     </div>
 
     <div v-if="$slots.alert">
-      <slot v-if="errorMessage" name="alert" />
+      <slot v-if="message" name="alert" />
     </div>
-    <div v-else-if="errorMessage" class="[B] f2 tone:reimu Alert">
+    <div v-else-if="message" class="[B] f2 tone:reimu Alert">
       <i-feather i="x-octagon" />
-      <div class="px-1">{{ errorMessage }}</div>
+      <div class="px-1">{{ message }}</div>
     </div>
   </div>
 </template>

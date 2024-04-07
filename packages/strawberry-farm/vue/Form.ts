@@ -1,4 +1,4 @@
-import { Component, MaybeRef, reactive, shallowReactive } from 'vue';
+import { Component, MaybeRef, Ref, reactive, shallowReactive } from 'vue';
 import { IRuleType, RuleS } from '../functions/validator';
 import VRadioGroup from './VRadioGroup.vue';
 import VInput from './VInput.vue';
@@ -74,7 +74,10 @@ export const pathValueGetter = <
   const pathes = path.split('.');
 
   let p: any = object;
-  for (const _ of pathes) p = p[_];
+  for (const _ of pathes) {
+    p = p[_];
+    if (!p) return p;
+  }
 
   return p;
 };
@@ -92,133 +95,118 @@ export const pathValueSetter = <
   const last = pathes[pathes.length - 1];
 
   let p: any = object;
-  for (const _ of parents) p = p[_];
+  for (const _ of parents) {
+    p = p[_];
+    if (!p) return;
+  }
 
   p[last] = value;
 };
 
 interface FieldTypes {
-  any: MaybeRef<any>;
-  text: MaybeRef<InstanceType<typeof VInput>['$props'] & Record<string, any>>;
-  textarea: MaybeRef<number | (number | null | undefined)[] | RegExp>;
-  number: MaybeRef<any>;
-  checkbox: MaybeRef<any>;
-  switch: MaybeRef<any>;
-  checkboxgroup: MaybeRef<{
+  any: any;
+  text: InstanceType<typeof VInput>['$props'] & Record<string, any>;
+  textarea: number | (number | null | undefined)[] | RegExp;
+  number: any;
+  checkbox: any;
+  switch: any;
+  checkboxgroup: {
     options: (CommonOption | CommonOptionGroup)[];
-  }>;
-  select: MaybeRef<{
+  };
+  select: {
     options: (CommonOption | CommonOptionGroup)[];
-  }>;
-  radio: MaybeRef<{
-    options: string[];
-  }>;
-  list: MaybeRef<any>;
+  };
+  radio: 
+  InstanceType<typeof VRadioGroup>['$props'] & Record<string, any>;
+  list: any;
   hidden: undefined;
 }
 
-interface FieldTypeBindings {
-  any: any;
-  text: string;
-  textarea: string;
-  number: number | null;
-  checkbox: boolean;
-  switch: boolean;
-  checkboxgroup: any[];
-  radio: any;
-  list: any[];
-  hidden: any;
-}
-
-type FieldDescriptor<
-  Objective,
-  ObjectivePath extends Path<Objective>,
-  Type extends keyof FieldTypes,
-> = {
+type FieldDescriptor<T, P extends Path<T>, Type extends keyof FieldTypes> = {
   label?: string;
-  name: ObjectivePath;
-  visible?: boolean;
+  name: P;
+  visible?: Ref<boolean>;
 
   type?: Type;
-  props?: FieldTypes[Type];
+  props?: MaybeRef<FieldTypes[Type]>;
 
-  rules?: RuleS<keyof IRuleType, PathValue<Objective, ObjectivePath>>[];
+  rules?: RuleS<keyof IRuleType, PathValue<T, P>>[];
 
-  initialValue?: PathValue<Objective, ObjectivePath>;
-  // value: PathValue<Objective, ObjectivePath>;
   error?: string;
 };
 
-export type FormModel<Objective> = {
-  initialValue: Objective;
-  value: Objective;
+export type FormModel<T> = {
+  initialValue: T;
+  value: T;
 
   submit(): Promise<void>;
-  reset(name?: Path<Objective>[]): void;
-  reject(name?: Path<Objective>[], message?: 'string'): void;
-  focus(name: Path<Objective>): void;
-  validate(names?: Path<Objective>[]): Promise<void>;
+  reset(name?: Path<T>[]): void;
+  reject(name?: Path<T>[], message?: string): void;
+  focus(name: Path<T>): void;
+  validate(names?: Path<T>[]): Promise<void>;
   /**
    * Set the target field value, value are not able to be type analysed.
    */
-  set(name: Path<Objective>, value: any): void;
+  set(name: Path<T>, value: any): void;
 
-  action: (formValue: Objective) => void | Promise<void>;
-
-  fields: {
-    [P in Path<Objective>]: FieldDescriptor<Objective, P, any>;
+  descriptors: {
+    [P in Path<T>]: FieldDescriptor<T, P, any>;
   };
 
-  i: (name: Path<Objective>) => Path<Objective>;
+  name: (name: Path<T>) => Path<T>;
+
+  hierarchy(
+    cb: (payload: {
+      group: () => any;
+      i: <PV extends Path<T>, Type extends keyof FieldTypes = 'text'>(
+        f: FieldDescriptor<T, PV, Type>,
+      ) => FieldDescriptor<T, PV, Type>;
+    }) => void,
+  ): void;
+
+  items: {
+    [P in Path<T>]?: {
+      focus(): void;
+    };
+  };
 };
 
-export const describeForm = <Objective extends object>(
-  initialValue: Objective,
-  cb: (payload: {
-    describeGroup: () => any;
-    describeField: <
-      PV extends Path<Objective>,
-      Type extends keyof FieldTypes = 'text',
-    >(
-      f: FieldDescriptor<Objective, PV, Type>,
-    ) => FieldDescriptor<Objective, PV, Type>;
-  }) => void,
-): FormModel<Objective> => {
-  const value = reactive<Objective>(initialValue as any);
+export const define = <T extends object>(param: {
+  initialValue: T;
+  action?(value: T): void | Promise<void>;
+}): FormModel<T> => {
+  const descriptors = shallowReactive<FormModel<T>['descriptors']>({} as any);
 
-  const fields = shallowReactive<FormModel<Objective>['fields']>({} as any);
-
-  const describeField = <
-    PV extends Path<Objective>,
-    Type extends keyof FieldTypes,
-  >(
-    f: FieldDescriptor<Objective, PV, Type>,
-  ): FieldDescriptor<Objective, PV, Type> => {
-    if ('initialValue' in f)
-      pathValueSetter(value as Objective, f.name, f.initialValue);
-
-    (fields as any)[f.name] = f;
+  const i = <PV extends Path<T>, Type extends keyof FieldTypes>(
+    f: FieldDescriptor<T, PV, Type>,
+  ): FieldDescriptor<T, PV, Type> => {
+    (descriptors as any)[f.name] = f;
     return f;
   };
 
-  cb({
-    describeGroup() {},
-    describeField,
-  });
-
-  return {
-    action(formValue) {},
-    fields,
+  const _form: FormModel<T> = {
+    descriptors,
     focus(name) {},
-    value: value as any,
-    initialValue: 1 as any,
+    value: param.initialValue,
+    initialValue: param.initialValue,
     reject() {},
     reset(name) {},
     set(name, value) {},
-    async submit() {},
+    async submit() {
+      return await param.action?.(_form.value);
+    },
     async validate(names) {},
-    i: name => name,
+    name: _ => _,
+
+    items: {},
+
+    hierarchy(cb) {
+      cb({ group() {}, i });
+    },
   };
+
+  const form = reactive(_form) as any;
+  return form;
 };
 
 export const fieldTypes = new Map<keyof FieldTypes, Component>();
@@ -230,60 +218,6 @@ export const Form = {
   uuid: inc('ARIA'),
   pathValueGetter,
   pathValueSetter,
-  describe: describeForm,
+  define,
   registry: fieldTypes,
 };
-
-// type IForm15Pro = {
-//   rating: number;
-//   usage: 'Good' | 'Bad' | 'other';
-//   otherDescritionPro?: {
-//     billings: { name: string; value: number; label?: string }[];
-//     billingRefs: string[];
-//   };
-
-//   duration: [Date | null, Date | null];
-//   billings: { name: string; value: number; label?: string }[];
-//   billingRefs: string[];
-// };
-
-// const form = describeForm<IForm15Pro>(({ describeField: i }) => {
-//   i({
-//     initialValue: [null, null],
-//     name: 'duration',
-//     type: 'hidden',
-//   });
-
-//   i({
-//     initialValue: 'Good',
-//     name: 'usage',
-//     type: 'hidden',
-//   });
-
-//   i({
-//     initialValue: 0,
-//     name: 'rating',
-//     rule: 'string!',
-//     type: 'hidden',
-//   });
-
-//   i({
-//     initialValue: '1',
-//     name: 'billingRefs.0',
-//     rule: 'string!',
-//     type: 'radio',
-//     props: {
-//       options: computed(() => ['1']),
-//     },
-//   });
-
-//   i({
-//     initialValue: ['1', '2', '3'],
-//     name: 'otherDescritionPro.billingRefs',
-//     rule: ['array!', [1, 3]],
-//     type: 'radio',
-//     props: {
-//       options: computed(() => ['1']),
-//     },
-//   });
-// });

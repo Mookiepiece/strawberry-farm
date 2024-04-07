@@ -18,125 +18,126 @@ type LoginFormValue = {
   // ratings: { name: string; rating: number }[];
 };
 
-const signupForm = Form.describe<LoginFormValue>(
-  {
+const signupForm = Form.define<LoginFormValue>({
+  initialValue: {
     usage: 'Good',
     name: '1',
     password: '2',
   },
-  ({ describeField: i }) => {
-    i({
-      name: 'usage',
-      label: 'Usage',
-      type: 'radio',
-      props: computed(() => ({
-        options: ['Good', 'Bad', 'other'],
-      })),
-    });
+});
 
-    i({
-      name: 'name',
-      label: 'Name',
-      type: 'text',
-      rules: [
-        'string',
-        {
-          type: 'string',
-          required: true,
-          config: [3, 10],
-        },
-      ],
-    });
+signupForm.hierarchy(({ i: i }) => {
+  i({
+    name: 'usage',
+    label: 'Usage',
+    type: 'radio',
+    props: computed(() => ({
+      options: ['Good', 'Bad', 'other'],
+    })),
+  });
 
-    i({
-      name: 'password',
-      label: 'Password',
-      type: 'text',
-      rules: [['string!', [6, 30]]],
-    });
+  i({
+    name: 'name',
+    label: 'Name',
+    type: 'text',
+    rules: [
+      'string',
+      {
+        type: 'string',
+        required: true,
+        config: [3, 10],
+      },
+    ],
+  });
 
-    // i({
-    //   name: 'confirmPassword',
-    //   type: 'text',
-    //   rules: [
-    //     ['string!', [6, 30]],
-    //     {
-    //       validator(value) {
-    //         // 能不能自动收集依赖？
-    //         if (signupForm.value.code !== value) {
-    //           return 'Passwords are not equal.';
-    //         }
-    //       },
-    //     },
-    //   ],
-    // });
+  i({
+    name: 'password',
+    label: 'Password',
+    type: 'text',
+    rules: [['string!', [6, 30]]],
+  });
 
-    // i({
-    //   name: 'phoneNumber',
-    //   type: 'text',
-    //   rules: [['string!', 11]],
-    // });
+  // i({
+  //   name: 'confirmPassword',
+  //   type: 'text',
+  //   rules: [
+  //     ['string!', [6, 30]],
+  //     {
+  //       validator(value) {
+  //         // 能不能自动收集依赖？
+  //         if (signupForm.value.code !== value) {
+  //           return 'Passwords are not equal.';
+  //         }
+  //       },
+  //     },
+  //   ],
+  // });
 
-    // i({
-    //   name: 'code',
-    //   type: 'text',
-    //   rules: [['string!', 6]],
-    // });
+  // i({
+  //   name: 'phoneNumber',
+  //   type: 'text',
+  //   rules: [['string!', 11]],
+  // });
 
-    // i({
-    //   name: 'agreement',
-    //   type: 'text',
-    //   rules: ['checked!'],
-    // });
+  // i({
+  //   name: 'code',
+  //   type: 'text',
+  //   rules: [['string!', 6]],
+  // });
 
-    // i({
-    //   name: 'subscribe',
-    //   type: 'any',
-    // });
+  // i({
+  //   name: 'agreement',
+  //   type: 'text',
+  //   rules: ['checked!'],
+  // });
 
-    // i({
-    //   name: 'luckyNumber',
-    //   type: 'number',
-    //   rules: [
-    //     {
-    //       validator(value) {
-    //         if (value < 1000) {
-    //           throw 'Value cannot be less than 1000';
-    //         }
-    //       },
-    //     },
-    //   ],
-    // });
+  // i({
+  //   name: 'subscribe',
+  //   type: 'any',
+  // });
 
-    // i({
-    //   name: 'interests',
-    //   type: 'list',
-    //   rules: [
-    //     ['array!', [0, 1]],
-    //     {
-    //       validator(value) {
-    //         if (value.join('').length > 10)
-    //           throw 'Total length of strings cannot be greater than 10';
-    //       },
-    //     },
-    //   ],
-    // });
+  // i({
+  //   name: 'luckyNumber',
+  //   type: 'number',
+  //   rules: [
+  //     {
+  //       validator(value) {
+  //         if (value < 1000) {
+  //           throw 'Value cannot be less than 1000';
+  //         }
+  //       },
+  //     },
+  //   ],
+  // });
 
-    // i({
-    //   name: 'ratings',
-    //   type: 'list',
-    //   rules: [
-    //     ['array!', [0, 1]],
-    //     {
-    //       validator(value) {
-    //         if (value.join('').length > 10)
-    //           throw 'Total length of strings cannot be greater than 10';
-    //       },
-    //     },
-    //   ],
-    // });
-  },
-);
+  // i({
+  //   name: 'interests',
+  //   type: 'list',
+  //   rules: [
+  //     ['array!', [0, 1]],
+  //     {
+  //       validator(value) {
+  //         if (value.join('').length > 10)
+  //           throw 'Total length of strings cannot be greater than 10';
+  //       },
+  //     },
+  //   ],
+  // });
+
+  // i({
+  //   name: 'ratings',
+  //   type: 'list',
+  //   rules: [
+  //     ['array!', [0, 1]],
+  //     {
+  //       validator(value) {
+  //         if (value.join('').length > 10)
+  //           throw 'Total length of strings cannot be greater than 10';
+  //       },
+  //     },
+  //   ],
+  // });
+});
 
 provide('VForm', signupForm);
 </script>
