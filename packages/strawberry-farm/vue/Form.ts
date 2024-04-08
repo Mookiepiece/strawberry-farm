@@ -1,4 +1,11 @@
-import { Component, MaybeRef, Ref, reactive, shallowReactive } from 'vue';
+import {
+  Component,
+  MaybeRef,
+  Ref,
+  reactive,
+  shallowReactive,
+  toRaw,
+} from 'vue';
 import { IRuleType, RuleS } from '../functions/validator';
 import VRadioGroup from './VRadioGroup.vue';
 import VInput from './VInput.vue';
@@ -116,8 +123,7 @@ interface FieldTypes {
   select: {
     options: (CommonOption | CommonOptionGroup)[];
   };
-  radio: 
-  InstanceType<typeof VRadioGroup>['$props'] & Record<string, any>;
+  radio: InstanceType<typeof VRadioGroup>['$props'] & Record<string, any>;
   list: any;
   hidden: undefined;
 }
@@ -136,18 +142,14 @@ type FieldDescriptor<T, P extends Path<T>, Type extends keyof FieldTypes> = {
 };
 
 export type FormModel<T> = {
-  initialValue: T;
   value: T;
-
+  setInitialValue(cb: () => T): void;
+  submitting: boolean;
   submit(): Promise<void>;
-  reset(name?: Path<T>[]): void;
-  reject(name?: Path<T>[], message?: string): void;
+  reset(): void;
+  reject(name: Path<T>, message?: string): void;
   focus(name: Path<T>): void;
-  validate(names?: Path<T>[]): Promise<void>;
-  /**
-   * Set the target field value, value are not able to be type analysed.
-   */
-  set(name: Path<T>, value: any): void;
+  validate(name?: Path<T>): Promise<string | void>;
 
   descriptors: {
     [P in Path<T>]: FieldDescriptor<T, P, any>;
@@ -158,7 +160,7 @@ export type FormModel<T> = {
   hierarchy(
     cb: (payload: {
       group: () => any;
-      i: <PV extends Path<T>, Type extends keyof FieldTypes = 'text'>(
+      i: <PV extends Path<T>, Type extends keyof FieldTypes>(
         f: FieldDescriptor<T, PV, Type>,
       ) => FieldDescriptor<T, PV, Type>;
     }) => void,
@@ -167,12 +169,14 @@ export type FormModel<T> = {
   items: {
     [P in Path<T>]?: {
       focus(): void;
+      validate(): Promise<string | void>;
+      message: Ref<string | undefined>;
     };
   };
 };
 
 export const define = <T extends object>(param: {
-  initialValue: T;
+  initialValue: () => T;
   action?(value: T): void | Promise<void>;
 }): FormModel<T> => {
   const descriptors = shallowReactive<FormModel<T>['descriptors']>({} as any);
@@ -184,18 +188,58 @@ export const define = <T extends object>(param: {
     return f;
   };
 
-  const _form: FormModel<T> = {
+  let initialValue = param.initialValue;
+
+  const form = reactive<FormModel<T>>({
+    value: param.initialValue(),
     descriptors,
-    focus(name) {},
-    value: param.initialValue,
-    initialValue: param.initialValue,
-    reject() {},
-    reset(name) {},
-    set(name, value) {},
-    async submit() {
-      return await param.action?.(_form.value);
+    focus(name) {
+      form.items[name]?.focus();
     },
-    async validate(names) {},
+    reject(name, message) {
+      const m = form.items[name]?.message;
+      if (m) m.value = message;
+    },
+    setInitialValue(cb) {
+      initialValue = cb;
+    },
+    reset() {
+      form.value = initialValue();
+    },
+    submitting: false,
+    async submit() {
+      form.submitting = true;
+      try {
+        const v = toRaw(form.value);
+        if (typeof (await form.validate()) !== 'string')
+          return await param.action?.(v);
+        throw new DOMException('', 'AbortError');
+      } finally {
+        form.submitting = false;
+      }
+    },
+    async validate(names) {
+      const filter = ([k]: [string, any]) => !names || names.includes(k);
+
+      const tasks = Object.entries(form.items)
+        .filter(filter)
+        .map(
+          ([k, i]) =>
+            [
+              k,
+              (i as NonNullable<(typeof form.items)[Path<T>]>).validate(),
+            ] as [Path<T>, Promise<string | void>],
+        );
+
+      const ans = await Promise.all(tasks.map(([, t]) => t));
+
+      const index = ans.findIndex(a => typeof a === 'string');
+      if (index !== -1) {
+        const name= tasks[index][0]
+        form.items[name]?.focus();
+        return ans[index];
+      }
+    },
     name: _ => _,
 
     items: {},
@@ -203,9 +247,8 @@ export const define = <T extends object>(param: {
     hierarchy(cb) {
       cb({ group() {}, i });
     },
-  };
+  }) as FormModel<T>;
 
-  const form = reactive(_form) as any;
   return form;
 };
 
@@ -215,7 +258,7 @@ fieldTypes.set('radio', VRadioGroup);
 fieldTypes.set('text', VInput);
 
 export const Form = {
-  uuid: inc('ARIA'),
+  uuid: inc('FORM'),
   pathValueGetter,
   pathValueSetter,
   define,

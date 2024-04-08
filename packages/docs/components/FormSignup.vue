@@ -28,7 +28,7 @@ type LoginFormValue = {
 };
 
 const signupForm = Form.define<LoginFormValue>({
-  initialValue: {
+  initialValue: () => ({
     name: '霧雨魔理沙',
     password: '',
     repeatPassword: '',
@@ -44,7 +44,7 @@ const signupForm = Form.define<LoginFormValue>({
     },
 
     charas: [],
-  },
+  }),
   action: alert,
 });
 
@@ -99,6 +99,14 @@ signupForm.hierarchy(({ i }) => {
       clearable: true,
     },
   });
+
+  i({
+    name: 'chara.name',
+    type: 'radio',
+    props: {
+      options: ['博麗霊夢', '霧雨魔理沙'],
+    },
+  });
 });
 
 const v = signupForm.value;
@@ -142,6 +150,7 @@ const v = signupForm.value;
     </VFormItem>
     <VFormItem name="repeatPassword" />
     <VFormItem name="phoneNumber" />
+    <VFormItem :name="signupForm.name('chara.name')" />
     <VButton class="mat:air">
       <template #prefix>
         <i-feather i="message-circle" />

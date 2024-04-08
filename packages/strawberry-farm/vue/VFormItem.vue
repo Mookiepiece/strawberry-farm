@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import {
-  WritableComputedRef,
-  computed,
-  inject,
-  onBeforeMount,
-  ref,
-} from 'vue';
+import { WritableComputedRef, computed, inject, onBeforeMount, ref } from 'vue';
 import { Form, FormModel } from './Form';
 import { validate } from '../functions/validator';
 import { Bag } from '../functions';
@@ -37,17 +31,13 @@ const model = computed({
   },
   set(value: any) {
     Form.pathValueSetter(form.value, descriptor.name, value);
-    validateSelf().then(v => (message.value = v));
+    validateLocked().then(v => (message.value = v));
   },
 });
 
 const message = ref<string | undefined>();
 
-const bag = Bag();
-const validateSelf = async () => {
-  bag();
-  const signal = bag(new AbortController()).signal;
-
+const _validate = async () => {
   const value = model.value;
   const rules = descriptor.rules;
   const label = descriptor.label;
@@ -55,12 +45,20 @@ const validateSelf = async () => {
     let ans: void | string;
     for (const rule of rules) {
       ans = await validate(value, rule, label);
-      if (signal.aborted) throw new DOMException('', 'AbortError');
       if (typeof ans === 'string') {
         return ans;
       }
     }
   }
+};
+
+const bag = Bag();
+const validateLocked = async () => {
+  bag();
+  const signal = bag(new AbortController()).signal;
+  const ans = await _validate();
+  if (signal.aborted) return new Promise<never>(() => Infinity);
+  return ans;
 };
 
 const control = ref<any>();
@@ -77,6 +75,8 @@ const focus = () => {
 
 form.items[props.name] = {
   focus,
+  validate: _validate,
+  message,
 };
 
 onBeforeMount(() => {
