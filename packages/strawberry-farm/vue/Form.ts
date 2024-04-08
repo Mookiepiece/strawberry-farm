@@ -138,7 +138,15 @@ type FieldDescriptor<T, P extends Path<T>, Type extends keyof FieldTypes> = {
 
   rules?: RuleS<keyof IRuleType, PathValue<T, P>>[];
 
-  error?: string;
+  childInit?: PathValue<T, P> extends Array<infer I> ? () => I : undefined;
+  children?: PathValue<T, P> extends Array<infer I>
+    ?
+        | ((
+            row: I,
+            index: number,
+          ) => FieldDescriptor<I, Path<I>, keyof FieldTypes>[])
+        | FieldDescriptor<I, Path<I>, keyof FieldTypes>[]
+    : undefined;
 };
 
 export type FormModel<T> = {
@@ -235,7 +243,7 @@ export const define = <T extends object>(param: {
 
       const index = ans.findIndex(a => typeof a === 'string');
       if (index !== -1) {
-        const name= tasks[index][0]
+        const name = tasks[index][0];
         form.items[name]?.focus();
         return ans[index];
       }

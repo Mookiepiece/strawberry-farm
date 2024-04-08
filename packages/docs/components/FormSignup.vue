@@ -3,6 +3,7 @@ import { Form } from '@mookiepiece/strawberry-farm/vue/Form';
 import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
 import VForm from '@mookiepiece/strawberry-farm/vue/VForm.vue';
 import VFormItem from '@mookiepiece/strawberry-farm/vue/VFormItem.vue';
+import { computed } from 'vue';
 
 type LoginFormValue = {
   name: string;
@@ -107,6 +108,43 @@ signupForm.hierarchy(({ i }) => {
       options: ['博麗霊夢', '霧雨魔理沙'],
     },
   });
+
+  i({
+    name: 'charas',
+    type: 'list',
+
+    childInit() {
+      return {
+        name: '',
+        shot: '',
+        spellCard: '',
+        weapon: '',
+      };
+    },
+    children: row => [
+      {
+        name: 'name',
+        rules: [
+          'string!',
+          {
+            validator(value) {
+              if (
+                row.name.startsWith('a') &&
+                value.length >
+                  signupForm.value.charas.reduce((a, b) => a + b, '').length / 2
+              ) {
+                return 'An item which starts with letter [a] cannot participate more than 50% characters inside the list.';
+              }
+            },
+          },
+        ],
+      },
+      {
+        name: 'spellCard',
+        visible: computed(() => !!row.name),
+      },
+    ],
+  });
 });
 
 const v = signupForm.value;
@@ -151,6 +189,7 @@ const v = signupForm.value;
     <VFormItem name="repeatPassword" />
     <VFormItem name="phoneNumber" />
     <VFormItem :name="signupForm.name('chara.name')" />
+    <VFormItem :name="signupForm.name('charas')" />
     <VButton class="mat:air">
       <template #prefix>
         <i-feather i="message-circle" />
