@@ -25,7 +25,6 @@
   padding-inline: 10px;
 }
 
-
 :where(.VInputTrunk::placeholder, .VInputTrunkPlaceholder) {
   color: var(--txt-3);
 }
@@ -80,7 +79,6 @@
 :where(.VInputSuffix ~ .VInputTrunk) {
   padding-right: 0;
 }
-
 
 :where(.VFormItem.invalid .VInput) {
   outline: 1px solid var(--tone-reimu);

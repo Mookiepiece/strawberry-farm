@@ -10,8 +10,6 @@ const props = withDefaults(
   defineProps<{
     id?: string;
     name?: string;
-    ariaLabel?: string;
-    ariaLabelledby?: string;
 
     readonly?: boolean;
     placeholder?: string;
@@ -101,8 +99,8 @@ defineExpose({ el });
       @click="erase"
       aria-hidden="true"
     />
-    <textarea
-      v-if="props.textarea"
+    <component
+      :is="props.textarea ? 'textarea' : 'input'"
       ref="input"
       class="VInputTrunk"
       :readonly="props.readonly"
@@ -112,22 +110,6 @@ defineExpose({ el });
       @input="handleInput"
       @focus="emit('focus')"
       @blur="handleBlur"
-      :aria-label="props.ariaLabel"
-      :aria-labelledby="props.ariaLabelledby"
-    />
-    <input
-      v-else
-      ref="input"
-      class="VInputTrunk"
-      :readonly="props.readonly"
-      :placeholder="props.placeholder"
-      :id="props.id"
-      :name="props.name"
-      @input="handleInput"
-      @focus="emit('focus')"
-      @blur="handleBlur"
-      :aria-label="props.ariaLabel"
-      :aria-labelledby="props.ariaLabelledby"
     />
   </div>
 </template>
