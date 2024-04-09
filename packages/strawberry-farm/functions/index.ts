@@ -6,7 +6,7 @@ export * from './Mitt';
 export * from './store';
 export * from './scheduler';
 export * from './collection';
-export * from './finger';
+export * from './gesture';
 export * from './trap';
 export * from './fx';
 export * from './levitate';
