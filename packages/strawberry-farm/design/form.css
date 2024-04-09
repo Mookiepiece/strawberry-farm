@@ -3,11 +3,10 @@
   line-height: 1.6;
 }
 
-:where(.VFormItemLabel) {
+:where(.VFormItem label) {
   display: block;
   font-size: 13px;
   font-weight: 600;
-  cursor: default;
 }
 
 :where(.VFormItem) {

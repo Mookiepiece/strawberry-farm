@@ -103,6 +103,7 @@ signupForm.hierarchy(({ i }) => {
 
   i({
     name: 'chara.name',
+    label:'Character',
     type: 'radio',
     props: {
       options: ['博麗霊夢', '霧雨魔理沙'],

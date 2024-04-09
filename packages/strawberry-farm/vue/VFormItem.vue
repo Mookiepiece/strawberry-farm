@@ -1,9 +1,17 @@
 <script setup lang="ts">
-import { WritableComputedRef, computed, inject, onBeforeMount, ref } from 'vue';
+import {
+  WritableComputedRef,
+  computed,
+  inject,
+  onBeforeMount,
+  provide,
+  ref,
+} from 'vue';
 import { Form, FormModel } from './Form';
 import { validate } from '../functions/validator';
 import { Bag } from '../functions';
 import { unref } from 'vue';
+import VFormLabel from './VFormLabel.vue';
 
 const props = defineProps<{
   name: string;
@@ -11,16 +19,16 @@ const props = defineProps<{
 
 const slots = defineSlots<{
   default(props: { props: any; model: WritableComputedRef<any> }): any;
-  subtitle: any;
+  title: any;
   description: any;
   alert: any;
 }>();
 
-const id = Form.uuid();
-
 const form: FormModel<any> = inject('VForm')!;
-
+const id = Form.uuid();
 const descriptor = form.descriptors[props.name];
+
+provide('VFormItemLabel', { id, label: descriptor.label });
 
 const as = Form.registry.get(descriptor.type || 'text');
 const fieldProps = computed(() => unref(descriptor.props));
@@ -86,15 +94,9 @@ onBeforeMount(() => {
 
 <template>
   <div class="VFormItem" :class="{ invalid: typeof message === 'string' }">
-    <div class="VFormItemHeader" v-if="descriptor.label">
-      <div class="VFormItemLabel" :id="id" @click="focus">
-        {{ descriptor.label }}
-      </div>
-
-      <div v-if="$slots.subtitle" class="f3">
-        <slot name="subtitle" />
-      </div>
-    </div>
+    <slot name="title">
+      <VFormLabel />
+    </slot>
 
     <slot :props="fieldProps" :model="model">
       <component
@@ -103,7 +105,7 @@ onBeforeMount(() => {
         :is="as"
         v-model="model"
         v-bind="fieldProps"
-        :aria-labelledby="descriptor.label ? id : undefined"
+        :id="id"
       />
     </slot>
 

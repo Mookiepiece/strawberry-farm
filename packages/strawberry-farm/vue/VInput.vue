@@ -81,7 +81,6 @@ defineExpose({ el });
 <template>
   <div
     class="VInput VTextInput"
-    @click.self="input?.focus()"
     @focus="input?.focus()"
     @click="e => emit('click', e)"
     ref="el"

@@ -163,6 +163,8 @@ export type FormModel<T> = {
     [P in Path<T>]: FieldDescriptor<T, P, any>;
   };
 
+  _getDescriptors(name: string): FieldDescriptor<T, Path<T>, any>;
+
   name: (name: Path<T>) => Path<T>;
 
   hierarchy(
@@ -251,6 +253,21 @@ export const define = <T extends object>(param: {
     name: _ => _,
 
     items: {},
+
+    _getDescriptors(name: string): any {
+      const names = name.split('.');
+      const pathes: string[] = [];
+
+      let i = '';
+      for (const j of names) {
+        i += (i ? '.' : '') + j;
+        if (form.descriptors[i as keyof typeof form.descriptors]?.children) {
+          //
+        }
+      }
+
+      return descriptors;
+    },
 
     hierarchy(cb) {
       cb({ group() {}, i });
