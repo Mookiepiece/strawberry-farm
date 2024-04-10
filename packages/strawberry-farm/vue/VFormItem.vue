@@ -21,7 +21,7 @@ const slots = defineSlots<{
   default(props: { props: any; model: WritableComputedRef<any> }): any;
   title: any;
   description: any;
-  alert: any;
+  alert(props: { message: string }): any;
 }>();
 
 const form: FormModel<any> = inject('VForm')!;

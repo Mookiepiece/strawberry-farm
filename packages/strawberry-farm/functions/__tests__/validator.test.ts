@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { IRuleType, RuleS, validate, defineRule } from '../validator';
+import { IRuleType, RuleSlim, validate } from '../validator';
 
 describe('vadliator', () => {
   const $ =
-    (...rulesss: RuleS<keyof IRuleType>[]) =>
+    (...rulesss: RuleSlim<keyof IRuleType>[]) =>
     (...turples: [any, string][]) => {
       rulesss.forEach(rules =>
         turples.forEach(([v, exp]) => {

@@ -21,7 +21,7 @@ export interface IRule<
   message?: string;
 }
 
-export type RuleS<
+export type RuleSlim<
   T extends keyof IRuleType = keyof IRuleType,
   ValueType = any,
 > =
@@ -31,12 +31,12 @@ export type RuleS<
   | [T | `${T}!`]
   | [T | `${T}!`, IRuleType[T]];
 
-const unpack = <T extends keyof IRuleType>(mini: RuleS<T>): IRule<T> => {
-  if (typeof mini === 'object' && !Array.isArray(mini)) return mini;
+const unpack = <T extends keyof IRuleType>(slim: RuleSlim<T>): IRule<T> => {
+  if (typeof slim === 'object' && !Array.isArray(slim)) return slim;
 
   const [a, b] = [
-    Array.isArray(mini) ? mini[0] : mini,
-    Array.isArray(mini) ? mini[1] : undefined,
+    Array.isArray(slim) ? slim[0] : slim,
+    Array.isArray(slim) ? slim[1] : undefined,
   ];
 
   const rule: IRule<T> = {
@@ -240,7 +240,7 @@ const testNullish = (value: unknown): value is null | undefined =>
 
 export const validate = <T extends keyof IRuleType>(
   value: unknown,
-  _rule: RuleS<T>,
+  _rule: RuleSlim<T>,
   name = defaults.fieldname,
 ): void | string | Promise<void | string> => {
   const rule = unpack(_rule);
@@ -268,4 +268,4 @@ export const validate = <T extends keyof IRuleType>(
   return rule.validator?.(value);
 };
 
-export const defineRule = <T extends keyof IRuleType>(_: RuleS<T>) => _;
+export const defineRule = <T extends keyof IRuleType>(_: RuleSlim<T>) => _;

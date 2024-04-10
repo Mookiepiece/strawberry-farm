@@ -12,6 +12,6 @@ provide('VForm', props.form);
 
 <template>
   <form class="VForm" @submit.prevent="props.form.submit()">
-    <slot  />
+    <slot />
   </form>
 </template>
