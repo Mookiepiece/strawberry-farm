@@ -95,25 +95,29 @@ signupForm.hierarchy(({ i }) => {
 
   i({
     name: 'phoneNumber',
-    props: {
-      placeholder: 'Phone Number',
-      clearable: true,
-    },
+    type: [
+      'text',
+      {
+        placeholder: 'Phone Number',
+        clearable: true,
+      },
+    ],
   });
 
   i({
     name: 'chara.name',
-    label:'Character',
-    type: 'radio',
-    props: {
-      options: ['博麗霊夢', '霧雨魔理沙'],
-    },
+    label: 'Character',
+    type: [
+      'radio',
+      {
+        options: ['博麗霊夢', '霧雨魔理沙'],
+      },
+    ],
   });
 
   i({
     name: 'charas',
-    type: 'list',
-
+    type: ['list'],
     childInit() {
       return {
         name: '',
@@ -123,7 +127,7 @@ signupForm.hierarchy(({ i }) => {
       };
     },
     children: row => [
-      {
+      i({
         name: 'name',
         rules: [
           'string!',
@@ -139,7 +143,7 @@ signupForm.hierarchy(({ i }) => {
             },
           },
         ],
-      },
+      }),
       {
         name: 'spellCard',
         visible: computed(() => !!row.name),

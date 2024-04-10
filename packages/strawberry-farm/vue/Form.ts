@@ -128,24 +128,24 @@ interface FieldTypes {
   hidden: undefined;
 }
 
-type FieldDescriptor<T, P extends Path<T>, Type extends keyof FieldTypes> = {
+type FiledTypesTurple = {
+  [K in keyof FieldTypes]: [K, FieldTypes[K]] | [K];
+}[keyof FieldTypes];
+
+type FieldDescriptor<T, P extends Path<T>> = {
   label?: string;
   name: P;
   visible?: Ref<boolean>;
 
-  type?: Type;
-  props?: MaybeRef<FieldTypes[Type]>;
+  type?: MaybeRef<FiledTypesTurple>;
 
   rules?: RuleS<keyof IRuleType, PathValue<T, P>>[];
 
   childInit?: PathValue<T, P> extends Array<infer I> ? () => I : undefined;
   children?: PathValue<T, P> extends Array<infer I>
     ?
-        | ((
-            row: I,
-            index: number,
-          ) => FieldDescriptor<I, Path<I>, keyof FieldTypes>[])
-        | FieldDescriptor<I, Path<I>, keyof FieldTypes>[]
+        | ((row: I, index: number) => FieldDescriptor<I, Path<I>>[])
+        | FieldDescriptor<I, Path<I>>[]
     : undefined;
 };
 
@@ -160,19 +160,16 @@ export type FormModel<T> = {
   validate(name?: Path<T>): Promise<string | void>;
 
   descriptors: {
-    [P in Path<T>]: FieldDescriptor<T, P, any>;
+    [P in Path<T>]: FieldDescriptor<T, P>;
   };
-
-  _getDescriptors(name: string): FieldDescriptor<T, Path<T>, any>;
 
   name: (name: Path<T>) => Path<T>;
 
   hierarchy(
     cb: (payload: {
-      group: () => any;
-      i: <PV extends Path<T>, Type extends keyof FieldTypes>(
-        f: FieldDescriptor<T, PV, Type>,
-      ) => FieldDescriptor<T, PV, Type>;
+      i: <O = T, P extends Path<O> = Path<O>>(
+        f: FieldDescriptor<O, P>,
+      ) => FieldDescriptor<O, P>;
     }) => void,
   ): void;
 
@@ -191,9 +188,9 @@ export const define = <T extends object>(param: {
 }): FormModel<T> => {
   const descriptors = shallowReactive<FormModel<T>['descriptors']>({} as any);
 
-  const i = <PV extends Path<T>, Type extends keyof FieldTypes>(
-    f: FieldDescriptor<T, PV, Type>,
-  ): FieldDescriptor<T, PV, Type> => {
+  const i = <O = T, P extends Path<O>>(
+    f: FieldDescriptor<O, P>,
+  ): FieldDescriptor<O, P> => {
     (descriptors as any)[f.name] = f;
     return f;
   };
@@ -254,23 +251,8 @@ export const define = <T extends object>(param: {
 
     items: {},
 
-    _getDescriptors(name: string): any {
-      const names = name.split('.');
-      const pathes: string[] = [];
-
-      let i = '';
-      for (const j of names) {
-        i += (i ? '.' : '') + j;
-        if (form.descriptors[i as keyof typeof form.descriptors]?.children) {
-          //
-        }
-      }
-
-      return descriptors;
-    },
-
     hierarchy(cb) {
-      cb({ group() {}, i });
+      cb({ i });
     },
   }) as FormModel<T>;
 
