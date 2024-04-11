@@ -238,7 +238,11 @@ defineExpose({
           :aria-current="g.index === current || undefined"
           :aria-disabled="props.disabled || g.disabled || undefined"
         >
-          <slot :option="g as any">
+          <slot
+            :option="g as any"
+            :selected="multi ? model.includes(g.value) : g.value === model"
+            :current="g.index === current"
+          >
             {{ g.label }}
           </slot>
         </div>

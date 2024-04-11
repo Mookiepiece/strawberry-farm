@@ -27,8 +27,8 @@ defineExpose({
     :class="[props.class, 'VRadioGroup']"
     :style="style"
     :disabled="disabled"
+    :options="options"
     v-model="model"
   >
-    <template></template>
   </VPicker>
 </template>

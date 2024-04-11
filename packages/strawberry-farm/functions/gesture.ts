@@ -9,40 +9,37 @@ export const swipe = (
   ) => ((p2: { e: PointerEvent; done: boolean }) => void) | void,
 ) => {
   const bag = Bag();
-
-  if (!el.style.getPropertyValue('touch-action')) {
-    el.style?.setProperty('touch-action', 'none');
-    bag(() => {
-      el.style?.removeProperty('touch-action');
-    });
-  }
-
   const smallBag = Bag();
 
   bag(
     on(el).pointerdown(async ev => {
-      el.setPointerCapture(ev.pointerId);
+      const subscription = onStart?.(ev);
+      if (subscription) {
+        el.setPointerCapture(ev.pointerId);
+        ev.preventDefault(); // Prevent from dragging selected text
 
-      const subscribe: (
-        cb: (p2: { e: PointerEvent; done: boolean }) => void,
-      ) => void = cb => {
+        // This is not perfect because sometimes we drag the children inside the container.
+        // Should mannually set `touch-action` for each draggable children instead.
+        // if (!el.style.getPropertyValue('touch-action')) {
+        //   el.style?.setProperty('touch-action', 'none');
+        //   smallBag(() => {
+        //     el.style?.removeProperty('touch-action');
+        //   });
+        // }
+
         smallBag(
           on(el).pointermove(e => {
-            cb({ e, done: false });
+            subscription({ e, done: false });
           }),
         );
 
         smallBag(
           on(el).pointerup(e => {
-            cb({ e, done: true });
+            subscription({ e, done: true });
             smallBag();
           }),
         );
-        return;
-      };
-
-      const subscription = onStart?.(ev);
-      if (subscription) subscribe(subscription);
+      }
     }),
   );
 

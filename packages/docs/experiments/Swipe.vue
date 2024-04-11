@@ -65,5 +65,6 @@ samp {
 .draggable {
   width: 50px;
   height: 50px;
+  touch-action: none;
 }
 </style>
