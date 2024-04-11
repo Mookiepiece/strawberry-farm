@@ -23,10 +23,12 @@ defineExpose({
 <template>
   <VPicker
     ref="picker"
-    mode="powerCursor"
-    formItem
+    :mode="clearable ? 'clearable' : 'powerCursor'"
     :class="[props.class, 'VRadioGroup']"
+    :style="style"
+    :disabled="disabled"
     v-model="model"
-    v-bind="props"
-  />
+  >
+    <template></template>
+  </VPicker>
 </template>

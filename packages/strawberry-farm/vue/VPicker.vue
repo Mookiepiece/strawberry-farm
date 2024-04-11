@@ -39,9 +39,17 @@ const props = defineProps<{
 }>();
 
 defineSlots<{
-  default(props: { option: CommonOption & { index: number } }): any;
+  default(props: {
+    option: {
+      label: any;
+      value: any;
+      disabled: boolean;
+      index: number;
+    } & Record<string, any>;
+    current: boolean;
+    selected: boolean;
+  }): any;
   groupLabel(props: { group: CommonOptionGroup }): any;
-
 }>();
 const id = wai();
 
@@ -174,7 +182,7 @@ defineExpose({
     @keydown.self.exact="onKeyDownExact"
     role="listbox"
     :tabindex="props.disabled ? -1 : 0"
-    :aira-disabled="props.disabled"
+    :aria-disabled="props.disabled"
     :aria-activedescendant="currentValid ? id + current : undefined"
     :aria-multiselectable="multi"
   >
@@ -199,6 +207,7 @@ defineExpose({
           I don't make them components here because
           I don't want to introduce new tree node in Vue devtool.
         -->
+        <VPickerOption />
         <div
           v-for="i in g.options"
           :key="i.value"
@@ -210,7 +219,11 @@ defineExpose({
           @pointermove="props.powerPointer ? (current = i.index) : undefined"
           :aria-disabled="props.disabled || i.disabled || undefined"
         >
-          <slot :option="i">
+          <slot
+            :option="i"
+            :selected="multi ? model.includes(i.value) : i.value === model"
+            :current="i.index === current"
+          >
             {{ i.label }}
           </slot>
         </div>

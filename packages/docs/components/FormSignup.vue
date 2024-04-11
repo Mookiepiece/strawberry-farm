@@ -29,7 +29,7 @@ type LoginFormValue = {
 };
 
 const signupForm = Form.define<LoginFormValue>({
-  initialValue: () => ({
+  init: () => ({
     name: '霧雨魔理沙',
     password: '',
     repeatPassword: '',
@@ -49,9 +49,8 @@ const signupForm = Form.define<LoginFormValue>({
   action: alert,
 });
 
-signupForm.hierarchy(({ i }) => {
-  i({
-    name: 'name',
+signupForm.hierarchy({
+  name: {
     label: 'Name',
     rules: [
       {
@@ -60,10 +59,8 @@ signupForm.hierarchy(({ i }) => {
         config: [3, 10],
       },
     ],
-  });
-
-  i({
-    name: 'password',
+  },
+  password: {
     label: 'Password',
     rules: [
       {
@@ -78,10 +75,18 @@ signupForm.hierarchy(({ i }) => {
         },
       },
     ],
-  });
-
-  i({
-    name: 'repeatPassword',
+  },
+  dateRange: {},
+  phoneNumber: {
+    type: [
+      'text',
+      {
+        placeholder: 'Phone Number',
+        clearable: true,
+      },
+    ],
+  },
+  repeatPassword: {
     label: 'Repeat Password',
     rules: [
       {
@@ -91,34 +96,28 @@ signupForm.hierarchy(({ i }) => {
         },
       },
     ],
-  });
-
-  i({
-    name: 'phoneNumber',
-    type: [
-      'text',
-      {
-        placeholder: 'Phone Number',
-        clearable: true,
+  },
+  chara: {
+    type: 'hidden',
+    keys: {
+      name: {
+        label: 'Character',
+        type: [
+          'radio',
+          {
+            options: ['博麗霊夢', '霧雨魔理沙'],
+          },
+        ],
       },
-    ],
-  });
+      shot: {},
+      spellCard: {},
+      weapon: {},
+    },
+  },
+  charas: {
+    type: 'list',
 
-  i({
-    name: 'chara.name',
-    label: 'Character',
-    type: [
-      'radio',
-      {
-        options: ['博麗霊夢', '霧雨魔理沙'],
-      },
-    ],
-  });
-
-  i({
-    name: 'charas',
-    type: ['list'],
-    childInit() {
+    init() {
       return {
         name: '',
         shot: '',
@@ -126,38 +125,76 @@ signupForm.hierarchy(({ i }) => {
         weapon: '',
       };
     },
-    children: row => [
-      i({
-        name: 'name',
-        rules: [
-          'string!',
-          {
-            validator(value) {
-              if (
-                row.name.startsWith('a') &&
-                value.length >
-                  signupForm.value.charas.reduce((a, b) => a + b, '').length / 2
-              ) {
-                return 'An item which starts with letter [a] cannot participate more than 50% characters inside the list.';
-              }
-            },
-          },
-        ],
-      }),
-      {
-        name: 'spellCard',
-        visible: computed(() => !!row.name),
+    item: {
+      type: 'hidden',
+      rules: [
+        {
+          validator(value) {},
+        },
+      ],
+      keys: {
+        name: {},
+        shot: {},
+        spellCard: {},
+        weapon: {},
       },
-    ],
-  });
+    },
+  },
 });
+
+//   i({
+//     name: 'chara.name',
+//     label: 'Character',
+//     type: [
+//       'radio',
+//       {
+//         options: ['博麗霊夢', '霧雨魔理沙'],
+//       },
+//     ],
+//   });
+
+//   i({
+//     name: 'charas',
+//     type: ['list'],
+//     childInit() {
+//       return {
+//         name: '',
+//         shot: '',
+//         spellCard: '',
+//         weapon: '',
+//       };
+//     },
+//     children: row => [
+//       i({
+//         name: 'name',
+//         rules: [
+//           'string!',
+//           {
+//             validator(value) {
+//               if (
+//                 row.name.startsWith('a') &&
+//                 value.length >
+//                   signupForm.value.charas.reduce((a, b) => a + b, '').length / 2
+//               ) {
+//                 return 'An item which starts with letter [a] cannot participate more than 50% characters inside the list.';
+//               }
+//             },
+//           },
+//         ],
+//       }),
+//       {
+//         name: 'spellCard',
+//         visible: computed(() => !!row.name),
+//       },
+//     ],
+//   });
 
 const v = signupForm.value;
 </script>
 
 <template>
   <VForm :form="signupForm">
-    <VFormItem :name="signupForm.name('name')" />
+    <VFormItem name="name" />
     <VFormItem name="password">
       <template #description>
         <div class="[A]">
@@ -193,8 +230,8 @@ const v = signupForm.value;
     </VFormItem>
     <VFormItem name="repeatPassword" />
     <VFormItem name="phoneNumber" />
-    <VFormItem :name="signupForm.name('chara.name')" />
-    <VFormItem :name="signupForm.name('charas')" />
+    <VFormItem :name="'chara.name'" />
+    <VFormItem :name="'charas'" />
     <VButton class="mat:air">
       <template #prefix>
         <i-feather i="message-circle" />
