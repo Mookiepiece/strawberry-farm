@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { StyleValue, computed, ref } from 'vue';
-import { CommonOption, CommonOptionGroup, CommonOptionsInput } from './misc';
+import {
+  CommonOptionGroup,
+  CommonOptionInput,
+  CommonOptionsInput,
+  NormalizedCommonOption,
+} from './misc';
 import { wai } from '../functions';
 
 const model = defineModel<any>();
@@ -30,7 +35,7 @@ const props = defineProps<{
    * Use this if partical arrow keys are used for special actions e.g. cascade or tree select.
    */
   keydownAdvanced?: (e: KeyboardEvent) => boolean | void;
-  options?: CommonOptionsInput[];
+  options?: CommonOptionsInput;
   disabled?: boolean;
   class?: any;
   style?: StyleValue;
@@ -39,36 +44,35 @@ const props = defineProps<{
 }>();
 
 defineSlots<{
-  default(props: {
-    option: {
-      label: any;
-      value: any;
-      disabled: boolean;
-      index: number;
-    } & Record<string, any>;
-    current: boolean;
-    selected: boolean;
-  }): any;
+  default(props: { option: NormalizedCommonOption }): any;
   groupLabel(props: { group: CommonOptionGroup }): any;
 }>();
 const id = wai();
 
 const groupOrOptions = computed(() => {
-  let index = 0;
+  let _index = 0;
 
-  const normalize = (o: CommonOption): CommonOption & { index: number } => ({
-    ...(typeof o === 'object' ? o : {}),
-    label: typeof o === 'object' && o ? o.label ?? o.value : '' + o,
-    value: typeof o === 'object' && o ? o.value : o,
-    disabled: typeof o === 'object' && o ? o.disabled : false,
-    index: index++,
-  });
+  const normalize = (o: CommonOptionInput): NormalizedCommonOption => {
+    const value = typeof o === 'object' && o ? o.value : o;
+    const index = _index++;
+
+    return {
+      label: typeof o === 'object' && o ? o.label ?? o.value : '' + o,
+      value,
+      disabled: typeof o === 'object' && o ? o.disabled || false : false,
+      index,
+      selected: multi.value
+        ? model.value.includes(value)
+        : value === model.value,
+      current: current.value === index,
+    };
+  };
 
   return (props.options ?? []).map(i => {
     if (i && typeof i === 'object' && 'options' in i)
       return {
-        ...(i as CommonOptionGroup),
-        options: (i as CommonOptionGroup).options.map(normalize),
+        ...i,
+        options: i.options.map(normalize),
       };
     return normalize(i);
   });
@@ -214,16 +218,12 @@ defineExpose({
           :id="id + i.index"
           @click="!i.disabled ? toggle(i.value) : undefined"
           role="option"
-          :aria-selected="multi ? model.includes(i.value) : i.value === model"
-          :aria-current="i.index === current || undefined"
+          :aria-selected="i.selected || undefined"
+          :aria-current="i.current || undefined"
           @pointermove="props.powerPointer ? (current = i.index) : undefined"
           :aria-disabled="props.disabled || i.disabled || undefined"
         >
-          <slot
-            :option="i"
-            :selected="multi ? model.includes(i.value) : i.value === model"
-            :current="i.index === current"
-          >
+          <slot :option="i">
             {{ i.label }}
           </slot>
         </div>
@@ -234,15 +234,11 @@ defineExpose({
           @click="!g.disabled ? toggle(g.value) : undefined"
           role="option"
           @pointermove="props.powerPointer ? (current = g.index) : undefined"
-          :aria-selected="multi ? model.includes(g.value) : g.value === model"
-          :aria-current="g.index === current || undefined"
+          :aria-selected="g.selected || undefined"
+          :aria-current="g.current || undefined"
           :aria-disabled="props.disabled || g.disabled || undefined"
         >
-          <slot
-            :option="g as any"
-            :selected="multi ? model.includes(g.value) : g.value === model"
-            :current="g.index === current"
-          >
+          <slot :option="g">
             {{ g.label }}
           </slot>
         </div>

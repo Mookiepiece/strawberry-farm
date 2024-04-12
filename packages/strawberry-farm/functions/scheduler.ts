@@ -60,14 +60,13 @@ export const share = <T extends FunctionReturningPromise>(fn: T) => {
 
 export const longPress = <T extends FunctionReturningPromise>(
   fn: T,
-  signal: AbortSignal,
+  signal?: AbortSignal,
 ) => {
   fn();
   debounce(
     () => {
-      if (signal.aborted) return;
       const i = setInterval(fn, 100);
-      signal.addEventListener('abort', () => clearInterval(i));
+      signal?.addEventListener('abort', () => clearInterval(i));
     },
     800,
     signal,
