@@ -13,7 +13,7 @@
   align-items: center;
 
   padding-inline: 20px;
-  height: 40px;
+  min-height: 40px;
 
   outline: 1px solid var(--mat-solid-15);
   outline-offset: -1px;

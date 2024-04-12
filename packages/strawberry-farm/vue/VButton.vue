@@ -25,7 +25,7 @@ defineSlots<{
 
 <template>
   <button
-    class="Button"
+    class="VButton"
     :class="[props.class, props.loading]"
     :aria-busy="props.loading ? 'true' : undefined"
     :aria-pressed="

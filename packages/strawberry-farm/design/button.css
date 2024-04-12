@@ -1,4 +1,4 @@
-:where(.Button) {
+:where(.VButton) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -15,7 +15,7 @@
   outline: 0;
 }
 
-:where(.Button:not(:has(> .Trunk))) {
+:where(.VButton:not(:has(> .Trunk))) {
   padding-inline: 0;
 }
 
@@ -148,31 +148,3 @@
   outline: 2px solid var(---main);
   outline-offset: -1px;
 }
-
-/* :where(.GrayButton) {
-  font-size: inherit;
-  line-height: inherit;
-}
-
-:where(.OutlinedButton) {
-  font-size: inherit;
-  line-height: inherit;
-}
-
-:where(.SolidButton) {
-  font-size: inherit;
-  line-height: inherit;
-} */
-
-/* 
-:where(.TextButton:not(:disabled, [aria-disabled='true']):hover) {
-  background-color: var(--mat-solid-1);
-}
-
-:where(.TextButton:not(:disabled, [aria-disabled='true']):active) {
-  background-color: var(--mat-solid-2);
-}
-
-:where(.TextButton:is(:disabled, [aria-disabled='true'])) {
-  color: var(--txt-3);
-} */

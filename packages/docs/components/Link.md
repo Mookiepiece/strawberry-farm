@@ -8,7 +8,7 @@
 #### DOM
 
 ```html
-<button type="Button">
+<button type="VButton">
   <slot name="icon"></slot>
   <div v-if="$slots.default" class="Trunk">
     <slot />

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { StyleValue, computed, ref } from 'vue';
-import { CommonOptionsInput } from './misc';
+import { CommonOptionsInput, NormalizedCommonOption } from './misc';
 import VPicker from './VPicker.vue';
 
 const model = defineModel<any>();
@@ -11,6 +11,10 @@ const props = defineProps<{
   disabled?: boolean;
   class?: any;
   style?: StyleValue;
+}>();
+
+defineSlots<{
+  default(props: { option: NormalizedCommonOption }): any;
 }>();
 
 const picker = ref<InstanceType<typeof VPicker>>();
@@ -29,6 +33,10 @@ defineExpose({
     :disabled="disabled"
     :options="options"
     v-model="model"
+    v-slot="{ option }"
   >
+    <slot :option="option">
+      {{ option.label }}
+    </slot>
   </VPicker>
 </template>
