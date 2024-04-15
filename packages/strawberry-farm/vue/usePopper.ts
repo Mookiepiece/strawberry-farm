@@ -2,18 +2,19 @@ import { Ref, ref, watch, watchEffect } from 'vue';
 import { PopPlugin, fx, levitate, trap } from '../functions';
 import { onClickAway } from '../html/onClickAway';
 
-// const reference = ref<HTMLElement>();
-// const popper = ref<HTMLElement>();
-
 export const usePopper = ({
-  anchor,
+  reference,
   popper,
   configs,
   plugins = [],
 }: {
-  anchor: Ref<HTMLElement | undefined>;
+  reference: Ref<HTMLElement | undefined>;
   popper: Ref<HTMLElement | undefined>;
-  configs?: Parameters<typeof levitate>[2];
+  configs?: Parameters<typeof levitate>[2] & {
+    trap?: boolean;
+    clickAway?: boolean;
+    animated?: boolean;
+  };
   plugins?: PopPlugin[];
 }) => {
   const open = ref(false);
@@ -23,7 +24,7 @@ export const usePopper = ({
     () => [popper.value, open.value] as const,
     ([$pop, open], _, onCleanup) => {
       if (open && $pop) {
-        const $ref = anchor.value!;
+        const $ref = reference.value!;
         onCleanup(
           levitate.auto($ref, () => {
             levitate($ref, $pop, configs, ...plugins);
@@ -35,20 +36,36 @@ export const usePopper = ({
   );
 
   watchEffect(onCleanup => {
+    if (!configs?.trap) return;
+    // visible: make sure the popper receives focus after body inited 
+    // open: make sure the reference immediately receive focus when existing
     if (!open.value || !visible.value || !popper.value) return;
     onCleanup(trap(popper.value));
   });
 
   watchEffect(onCleanup => {
-    if (!popper.value || !anchor.value) return;
+    if (!configs?.clickAway) return;
+    if (!popper.value || !reference.value) return;
+    if(!open.value) return;
 
-    const a = popper.value;
-    const b = anchor.value;
-    onCleanup(onClickAway([a, b], () => (open.value = false)));
+    const $ref = reference.value;
+    const $pop = popper.value;
+    onCleanup(onClickAway([$pop, $ref], () => {
+      open.value = false;
+      console.log(1);
+      
+    }));
   });
 
   watchEffect(() => {
     if (!visible.value || !popper.value) return;
+
+    if (!configs?.animated) {
+      if (!open.value) {
+        visible.value = false;
+        return;
+      }
+    }
 
     const body = popper.value.querySelector('.PopperBody') as
       | HTMLElement

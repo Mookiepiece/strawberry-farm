@@ -5,6 +5,7 @@ import { onClickAway } from '../html/onClickAway';
 import { CommonOption, CommonOptionGroup } from './misc';
 import VPicker from './VPicker.vue';
 import { computed } from 'vue';
+import { usePopper } from './usePopper';
 
 const model = defineModel<any>();
 
@@ -24,18 +25,12 @@ defineSlots<{
   suffix: any;
 }>();
 
-const open = ref(false);
-const visible = ref(false);
-
 const reference = ref<HTMLElement>();
 const popper = ref<HTMLElement>();
 
 const flip = levitate.plugins.flip(() => ({
   limit: 200,
 }));
-
-const bag = Bag();
-onBeforeUnmount(bag);
 
 const sameWidth: PopPlugin = config => {
   let width: any = config.$pop.style.getPropertyValue('width');
@@ -65,76 +60,16 @@ const autoHeight: PopPlugin = config => {
   return { ...config, pop: $pop.getBoundingClientRect() };
 };
 
-watch(
-  () => [popper.value, open.value] as const,
-  ([$pop, open]) => {
-    bag();
-    if (open && $pop) {
-      const $ref = reference.value!;
-      bag(
-        levitate.auto($ref, () => {
-          levitate(
-            $ref,
-            $pop,
-            {
-              offset: 5,
-            },
-            sameWidth,
-            flip,
-            dataAttr,
-            autoHeight,
-          );
-          visible.value = true;
-        }),
-      );
-    }
+const { open, visible } = usePopper({
+  popper,
+  reference,
+  configs: {
+    offset: 5,
+    animated: true,
+    trap: true,
+    clickAway: true,
   },
-);
-
-const toggle = () => {
-  if (!open.value) {
-    open.value = true;
-  } else {
-    open.value = false;
-  }
-};
-
-watchEffect(onCleanup => {
-  if (!open.value || !visible.value || !popper.value) return;
-  onCleanup(trap(popper.value));
-});
-
-watchEffect(onCleanup => {
-  if (!popper.value || !reference.value) return;
-
-  const a = popper.value!;
-  const b = reference.value!;
-  onCleanup(onClickAway([a, b], () => (open.value = false)));
-});
-
-watchEffect(() => {
-  if (!visible.value || !popper.value) return;
-
-  const body = popper.value.querySelector('.PopperBody')! as HTMLDivElement;
-
-  if (open.value) {
-    fx.transition(body, {
-      to(bag) {
-        body.classList.add('appear');
-        bag(() => body.classList.remove('appear'));
-      },
-    });
-  } else {
-    fx.transition(body, {
-      to(bag) {
-        body.classList.remove('appear');
-        bag(() => body.classList.add('appear'));
-      },
-      done() {
-        visible.value = false;
-      },
-    });
-  }
+  plugins: [sameWidth, flip, dataAttr, autoHeight],
 });
 
 const erase = () => {
@@ -158,11 +93,11 @@ const pickerModel = computed({
     class="VInput VSelect"
     tabindex="0"
     ref="reference"
-    @click.self="toggle"
-    @keydown.space="toggle"
-    @keydown.enter="toggle"
-    @keydown.up="toggle"
-    @keydown.down="toggle"
+    @click.self="open = !open"
+    @keydown.space="open = true"
+    @keydown.enter="open = true"
+    @keydown.up="open = true"
+    @keydown.down="open = true"
     role="button"
     aria-haspopup="true"
     :aria-expanded="open"
@@ -195,7 +130,7 @@ const pickerModel = computed({
       v-show="open || visible"
       ref="popper"
       class="Positioner"
-      @keydown.esc="toggle"
+      @keydown.esc="open = false"
       style="position: fixed; top: 0; left: 0"
     >
       <div class="PopperBody">
