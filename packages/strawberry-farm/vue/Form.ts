@@ -1,4 +1,4 @@
-import { Component, MaybeRef, Ref, reactive, toRaw } from 'vue';
+import { Component, MaybeRef, Ref, computed, reactive, toRaw } from 'vue';
 import { IRuleType, RuleSlim } from '../functions/validator';
 import VRadioGroup from './VRadioGroup.vue';
 import VInput from './VInput.vue';
@@ -21,7 +21,50 @@ type Unpathed =
   | File
   | Blob;
 
-export const pathValueGetter = <Objective>(object: Objective, path: string) => {
+/**
+ * @license MIT react-hook-form
+ */
+type PathImpl<K extends string | number, V> = V extends Unpathed
+  ? `${K}`
+  : `${K}` | `${K}.${PathInternal<V>}`;
+
+/**
+ * @license MIT react-hook-form
+ */
+type PathInternal<T> =
+  T extends Array<infer I>
+    ? PathImpl<number, I>
+    : { [K in keyof T]-?: PathImpl<K & string, T[K]> }[keyof T];
+
+/**
+ * @license MIT react-hook-form
+ */
+export type Path<T> = T extends any ? PathInternal<T> : never;
+
+/**
+ * @license MIT react-hook-form
+ */
+type PathValue<T, P extends Path<T>> = T extends Unpathed
+  ? T
+  : P extends `${infer A}.${infer B}`
+    ? A extends keyof T
+      ? B extends Path<T[A]>
+        ? PathValue<T[A], B>
+        : never
+      : B extends `${number}`
+        ? T extends Array<infer I>
+          ? PathValue<I, B & Path<I>>
+          : never
+        : never
+    : P extends keyof T
+      ? T[P]
+      : P extends `${number}`
+        ? T extends Array<infer I>
+          ? I
+          : never
+        : never;
+
+export const pathValueGetter = <T, P extends Path<T>>(object: T, path: P) => {
   const pathes = path.split('.');
 
   let p: any = object;
@@ -33,10 +76,10 @@ export const pathValueGetter = <Objective>(object: Objective, path: string) => {
   return p;
 };
 
-export const pathValueSetter = <Objective>(
-  object: Objective,
-  path: string,
-  value: any,
+export const pathValueSetter = <T, P extends Path<T>>(
+  object: T,
+  path: P,
+  value: PathValue<T, P>,
 ) => {
   const pathes = path.split('.');
   const parents = pathes.slice(0, -1);
@@ -82,60 +125,54 @@ type FieldDescriptor<T, K extends keyof T> = {
   rules?: RuleSlim<keyof IRuleType, T[K]>[];
 
   init?: T[K] extends Array<infer I> ? () => I : never;
-  item?: T[K] extends Array<infer I>
+  children?: T[K] extends Array<infer I>
     ?
         | ((row: I, index: number) => FieldDescriptor<T[K], number>)
         | FieldDescriptor<T[K], number>
-    : never;
-  keys?: T[K] extends Unpathed
-    ? never
-    : {
-        [K2 in keyof T[K]]: FieldDescriptor<T[K], K2>;
-      };
+    : T[K] extends Unpathed
+      ? never
+      : {
+          [K2 in NonNullable<keyof T[K]>]: FieldDescriptor<T[K], K2>;
+        };
 };
 
-type FormHierarchy<T> =
-  {
-    descriptor: FieldDescriptor<T, keyof T>;
-    model: Ref<T>;
-    message: string | undefined;
-    focus(): void;
-    reset(): void;
-    validate(): Promise<string | void>;
-  } & T extends Array<infer T>
-    ? Record<
-        number,
-        {
-          [K in keyof T]: FormHierarchy<T[K]>;
-        }
-      >
+export type FormHierarchy<T> = {
+  descriptor: FieldDescriptor<T, keyof T>;
+  model: Ref<T>;
+  message: string | undefined;
+  focus(): void;
+  reset(): void;
+  validate(): Promise<string | void>;
+} & (T extends Unpathed
+  ? Record<string, never>
+  : T extends Array<infer T>
+    ? {
+        children: FormHierarchy<T>;
+      }
     : {
-        [K in keyof T]: FormHierarchy<T[K]>;
-      };
+        [K in NonNullable<keyof T>]: FormHierarchy<T[K]>;
+      });
 
 export type FormModel<T> = {
   value: T;
   submitting: boolean;
   submit(): Promise<void>;
   reset(init: () => T): void;
-  validate(): Promise<string | void>;
+  reject(name: Path<T>, message?: string): void;
+  focus(name: Path<T>): void;
+  validate(name?: Path<T>): Promise<string | void>;
 
-  descriptor: {
-    [K in keyof T]: FieldDescriptor<T, K>;
-  };
-
-  _hierarchy: {
-    [K in keyof T]: FieldDescriptor<T, K>;
-  };
   hierarchy(f: {
-    [K in keyof T]: FieldDescriptor<T, K>;
+    [K in NonNullable<keyof T>]: FieldDescriptor<T, K>;
   }): void;
 
   items: {
-    [P in keyof T]?: {
+    [P in Path<T>]?: {
       focus(): void;
+      reset(): void;
       validate(): Promise<string | void>;
       message: Ref<string | undefined>;
+      descriptor: FieldDescriptor<PathValue<T, P>, keyof PathValue<T, P>>;
     };
   };
 };
@@ -146,14 +183,16 @@ export const define = <T extends object>(param: {
 }): FormModel<T> => {
   let init = param.init;
 
+  // const d = new Proxy()
+
   const form = reactive<FormModel<T>>({
     value: param.init(),
-    descriptor: {} as any,
     reset(_init) {
       if (_init) init = _init;
 
       form.value = init();
     },
+
     submitting: false,
     async submit() {
       form.submitting = true;
@@ -186,14 +225,33 @@ export const define = <T extends object>(param: {
 
     items: {},
 
-    _hierarchy: {} as any,
     hierarchy(h) {
-      form._hierarchy = h;
+      const toD = <T>(h: FieldDescriptor<T, keyof T>): FormHierarchy<T> => {
+        return {
+          descriptor: h,
+          model: computed(() => {
+            //
+            return {} as any;
+          }),
+          message: undefined,
+          focus() {
+            throw new Error('Not supported');
+          },
+          validate() {
+            throw new Error('Not supported');
+          },
+          reset() {
+            throw new Error('Not supported');
+          },
+        } as any;
+        // if (h && typeof h === 'object') {
+        // }
+      };
+
+      // const d: FormModel<T>['d'] = (form.d = h);
       // TODO
     },
   }) as FormModel<T>;
-
-  // const name =
 
   return form;
 };

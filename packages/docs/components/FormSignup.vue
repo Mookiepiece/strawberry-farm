@@ -3,7 +3,6 @@ import { Form } from '@mookiepiece/strawberry-farm/vue/Form';
 import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
 import VForm from '@mookiepiece/strawberry-farm/vue/VForm.vue';
 import VFormItem from '@mookiepiece/strawberry-farm/vue/VFormItem.vue';
-import { computed } from 'vue';
 
 type LoginFormValue = {
   name: string;
@@ -14,6 +13,13 @@ type LoginFormValue = {
   dateRange: [Date, Date];
 
   chara: {
+    name: string;
+    weapon: string;
+    shot: string;
+    spellCard: string;
+  };
+
+  charaDel?: {
     name: string;
     weapon: string;
     shot: string;
@@ -99,7 +105,7 @@ signupForm.hierarchy({
   },
   chara: {
     type: 'hidden',
-    keys: {
+    children: {
       name: {
         label: 'Character',
         type: [
@@ -114,6 +120,7 @@ signupForm.hierarchy({
       weapon: {},
     },
   },
+  charaDel: {},
   charas: {
     type: 'list',
 
@@ -125,14 +132,14 @@ signupForm.hierarchy({
         weapon: '',
       };
     },
-    item: {
+    children: {
       type: 'hidden',
       rules: [
         {
           validator(value) {},
         },
       ],
-      keys: {
+      children: {
         name: {},
         shot: {},
         spellCard: {},
@@ -190,11 +197,16 @@ signupForm.hierarchy({
 //   });
 
 const v = signupForm.value;
+
+signupForm.items['name'];
+signupForm.items['dateRange.0'];
+signupForm.items['charas.0.name'];
+
 </script>
 
 <template>
   <VForm :form="signupForm">
-    <VFormItem name="name" />
+    <!-- <VFormItem name="name" />
     <VFormItem name="password">
       <template #description>
         <div class="[A]">
@@ -231,7 +243,7 @@ const v = signupForm.value;
     <VFormItem name="repeatPassword" />
     <VFormItem name="phoneNumber" />
     <VFormItem :name="'chara.name'" />
-    <VFormItem :name="'charas'" />
+    <VFormItem :name="'charas'" /> -->
     <VButton class="mat:air">
       <template #prefix>
         <i-feather i="message-circle" />

@@ -29,7 +29,7 @@ const changeDir = (dir: 'top' | 'left' | 'right' | 'bottom') => {
   <div style="position: relative">
     <div style="position: relative; height: 300px; width: 100%; overflow: auto">
       <div style="width: 500%; height: 1000px">
-        <div ref="a" class="a"></div>
+        <div ref="a" class="a 🍒"></div>
         <Teleport to="body">
           <div ref="b" class="b 🍒">lorem</div>
         </Teleport>
@@ -59,8 +59,6 @@ const changeDir = (dir: 'top' | 'left' | 'right' | 'bottom') => {
 .a {
   width: 100px;
   height: 100px;
-  color: var(--black-txt-1);
-  background-color: #def;
 }
 .b {
   position: fixed;

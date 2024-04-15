@@ -36,7 +36,9 @@ defineExpose({
     v-slot="{ option }"
   >
     <slot :option="option">
-      {{ option.label }}
+      <div class="VRadioTrunk">
+        {{ option.label }}
+      </div>
     </slot>
   </VPicker>
 </template>

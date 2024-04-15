@@ -1,11 +1,10 @@
-:where(.opaque) {
-  opacity: 0;
+.noscrollbar {
+  scrollbar-width: none;
 }
 
-:where(.affix) {
-  position: fixed;
-  top: 0;
-  left: 0;
+.noscrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 kbd {

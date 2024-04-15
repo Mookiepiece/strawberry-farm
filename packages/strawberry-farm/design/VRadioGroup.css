@@ -9,10 +9,10 @@
 }
 
 :where(.VRadioGroup [role='option']) {
+  position: relative;
   display: flex;
   align-items: center;
 
-  padding-inline: 20px;
   min-height: 40px;
 
   outline: 1px solid var(--mat-solid-15);
@@ -21,12 +21,16 @@
   user-select: none;
 }
 
+:where(.VRadioTrunk) {
+  padding-inline: 20px;
+}
+
 :where(.VRadioGroup [role='option']:not([aria-disabled='true']):hover) {
-  background-color: var(--mat-solid-1);
+  background: var(--mat-solid-1);
 }
 
 :where(.VRadioGroup [role='option']:not([aria-disabled='true']):active) {
-  background-color: var(--mat-solid-2);
+  background: var(--mat-solid-2);
 }
 
 :where(.VRadioGroup [role='option']):where([aria-selected='true']) {
@@ -38,19 +42,19 @@
     .VRadioGroup
       [role='option']:not([aria-disabled='true'])[aria-selected='true']:hover
   ) {
-  background-color: color-mix(in oklab, var(---foam), transparent 75%);
+  background: color-mix(in oklab, var(---foam), transparent 75%);
 }
 
 :where(
     .VRadioGroup
       [role='option']:not([aria-disabled='true'])[aria-selected='true']:active
   ) {
-  background-color: color-mix(in oklab, var(---foam), transparent 50%);
+  background: color-mix(in oklab, var(---foam), transparent 50%);
 }
 
 :where(.VRadioGroup [role='option'][aria-disabled='true']) {
   color: var(--txt-3);
-  background-color: var(--mat-solid-05);
+  background: var(--mat-solid-05);
   cursor: not-allowed;
 }
 
@@ -71,4 +75,19 @@
   ) {
   outline-width: 2px;
   box-shadow: 0 0 0 6px var(---foam);
+}
+
+:where(.VRadioGroup [role='option']:not([aria-selected='true']) .VCheckboxIndicator) {
+  display: none;
+}
+
+:where(.VCheckboxIndicator) {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 15px;
+  height: 15px;
+  font-size: 15px;
+  color: var(--mat-solid-0);
+  background: var(---main);
 }

@@ -7,14 +7,14 @@ import {
   provide,
   ref,
 } from 'vue';
-import { Form, FormModel } from './Form';
+import { Form, FormHierarchy, FormModel } from './Form';
 import { validate } from '../functions/validator';
 import { Bag } from '../functions';
 import { unref } from 'vue';
 import VFormLabel from './VFormLabel.vue';
 
 const props = defineProps<{
-  name: string;
+  d?: FormHierarchy<any>;
 }>();
 
 const slots = defineSlots<{
@@ -26,12 +26,12 @@ const slots = defineSlots<{
 
 const form: FormModel<any> = inject('VForm')!;
 const id = Form.uuid();
-const descriptor = form.descriptors[props.name];
+const descriptor = props.d?.descriptor;
 
-provide('VFormItemLabel', { id, label: descriptor.label });
+provide('VFormItemLabel', { id, label: descriptor?.label });
 
-const as = Form.registry.get(descriptor.type || 'text');
-const fieldProps = computed(() => unref(descriptor.props));
+const as = Form.registry.get(descriptor?.type || 'text');
+const fieldProps = computed(() => unref(descriptor?.props));
 
 const model = computed({
   get() {

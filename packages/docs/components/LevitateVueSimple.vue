@@ -1,47 +1,34 @@
 <script setup lang="ts">
-import { onUnmounted, ref, watch } from 'vue';
-import { Bag, levitate } from '@mookiepiece/strawberry-farm/functions';
+import { ref, watchEffect } from 'vue';
+import { levitate } from '@mookiepiece/strawberry-farm/functions';
 
-const show = ref(false);
+const open = ref(false);
 
-const button = ref<Element>();
+const button = ref<HTMLElement>();
 const popper = ref<HTMLDivElement>();
 
-const bag = Bag();
-onUnmounted(bag);
-
-watch(
-  () => [popper.value, show.value] as const,
-  ([el, show]) => {
-    if (el) {
-      bag(
-        levitate.auto(button.value!, () => {
-          levitate(button.value!, el, {
-            offset: 100,
-          });
-        }),
-      );
-    } else {
-      if (!show) {
-        bag();
-      }
-    }
-  },
-);
+watchEffect(onCleanup => {
+  const $ref = button.value;
+  const $popper = popper.value;
+  const $open = open.value;
+  if ($ref && $popper && $open) {
+    onCleanup(
+      levitate.auto($ref, () => {
+        levitate($ref, $popper, {
+          offset: 100,
+        });
+      }),
+    );
+  }
+});
 </script>
 
 <template>
   <div style="position: relative; height: 300px; width: 100%; overflow: auto">
     <div style="width: 500%; height: 1000px">
-      <button
-        ref="button"
-        class="sf-button"
-        @click="show = !show"
-      >
-        Nike
-      </button>
+      <button ref="button" @click="open = !open">Reference</button>
       <Teleport to="body">
-        <div v-if="show" ref="popper" class="levitated fixed (///)">
+        <div v-if="open" ref="popper" class="levitated (///)">
           <div>Content</div>
         </div>
       </Teleport>
@@ -49,4 +36,10 @@ watch(
   </div>
 </template>
 
-<style></style>
+<style scoped>
+.levitated {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+</style>

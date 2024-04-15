@@ -105,13 +105,13 @@ import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
       Button
     </VButton>
 
-    <a href="#6" class="Button TextButton">
+    <a href="#6" class="VButton TextButton">
       <i-feather i="arrow-left" />
     </a>
-    <a href="#6" class="Button TextButton">
+    <a href="#6" class="VButton TextButton">
       <div class="Trunk">Anchor</div>
     </a>
-    <a href="#6" class="Button TextButton">
+    <a href="#6" class="VButton TextButton">
       <i-feather i="arrow-left" />
       <div class="Trunk">Anchor</div>
     </a>

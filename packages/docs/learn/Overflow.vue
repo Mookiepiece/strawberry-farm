@@ -18,15 +18,6 @@ defineProps<{
   scroll-snap-type: x mandatory;
 }
 
-.noscrollbar {
-  scrollbar-width: none;
-}
-
-.noscrollbar::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
 .a::after {
   content: 'Mouse Not Available';
   position: absolute;

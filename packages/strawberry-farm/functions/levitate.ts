@@ -9,7 +9,7 @@ type Levitate = typeof _levitate & {
   plugins: typeof plugins;
 };
 
-type PopConfigs = {
+export type PopConfigs = {
   $ref: HTMLElement;
   $pop: HTMLElement;
   ref: DOMRect;
@@ -26,7 +26,7 @@ type PopConfigs = {
   y?: number;
 };
 
-interface PopPlugin {
+export interface PopPlugin {
   (configs: PopConfigs): PopConfigs;
 }
 
@@ -228,7 +228,6 @@ const _levitate = (
   };
 
   for (let p of plugins) config = p(config);
-console.log('z', config)
   config = align(config);
 
   $pop.style.setProperty('--x', config.x + 'px');

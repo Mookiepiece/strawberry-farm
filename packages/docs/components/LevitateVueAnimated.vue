@@ -1,35 +1,29 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref, watch } from 'vue';
-import { Bag, levitate } from '@mookiepiece/strawberry-farm/functions';
+import { ref, watchEffect } from 'vue';
+import { levitate } from '@mookiepiece/strawberry-farm/functions';
+
+const flip = levitate.plugins.flip();
 
 const open = ref(false);
 const leaving = ref(false);
 
-const button = ref<Element>();
+const button = ref<HTMLElement>();
 const popper = ref<HTMLDivElement>();
 
-const bag = Bag();
-onBeforeUnmount(bag);
+watchEffect(onCleanup => {
+  const $ref = button.value;
+  const $popper = popper.value;
+  const $open = open.value;
+  if ($ref && $popper && $open) {
+    onCleanup(
+      levitate.auto($ref, () => {
+        levitate($ref, $popper, { offset: 100 }, flip);
+      }),
+    );
+  }
+});
 
-const flip = levitate.plugins.flip()
-
-watch(
-  () => [popper.value, open.value] as const,
-  ([el, open]) => {
-    bag();
-    if (open && el) {
-      bag(
-        levitate.auto(button.value!, () => {
-          levitate(button.value!, el, {
-            offset: 10,
-          }, flip);
-        }),
-      );
-    }
-  },
-);
-
-const toggle = () => {
+const show = () => {
   if (!open.value) {
     open.value = true;
     leaving.value = true;
@@ -42,9 +36,11 @@ const toggle = () => {
 <template>
   <div style="position: relative; height: 300px; width: 100%; overflow: auto">
     <div style="width: 500%; height: 1000px">
-      <button ref="button" class="sf-button mat:dusty" @click="toggle">Nike</button>
+      <button ref="button" class="sf-button mat:dusty" @click="show">
+        Nike
+      </button>
       <Teleport v-if="open || leaving" to="body">
-        <div ref="popper" class="vp-demo-levitate-vue-animated-container fixed (///)">
+        <div ref="popper" class="vp-demo-levitate-vue-animated-container (///)">
           <Transition appear @after-leave="leaving = false">
             <div v-show="open" class="vp-demo-levitate-vue-animated 🍒 p-6">
               Content
@@ -58,6 +54,9 @@ const toggle = () => {
 
 <style>
 .vp-demo-levitate-vue-animated-container {
+  position: fixed;
+  left: 0;
+  top: 0;
   z-index: 1;
 }
 
@@ -71,5 +70,4 @@ const toggle = () => {
   transform: translateX(200px);
   opacity: 0;
 }
-
 </style>

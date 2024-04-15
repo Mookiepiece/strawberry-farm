@@ -211,7 +211,6 @@ defineExpose({
           I don't make them components here because
           I don't want to introduce new tree node in Vue devtool.
         -->
-        <VPickerOption />
         <div
           v-for="i in g.options"
           :key="i.value"

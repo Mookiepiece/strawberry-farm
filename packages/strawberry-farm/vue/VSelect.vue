@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref, watch, watchEffect } from 'vue';
-import { Bag, fx, levitate, trap } from '../functions';
+import { Bag, PopPlugin, fx, levitate, trap } from '../functions';
 import { onClickAway } from '../html/onClickAway';
 import { CommonOption, CommonOptionGroup } from './misc';
 import VPicker from './VPicker.vue';
@@ -25,10 +25,10 @@ defineSlots<{
 }>();
 
 const open = ref(false);
-const appeared = ref(false);
+const visible = ref(false);
 
-const reference = ref<HTMLDivElement | null>(null);
-const popper = ref<HTMLDivElement>();
+const reference = ref<HTMLElement>();
+const popper = ref<HTMLElement>();
 
 const flip = levitate.plugins.flip(() => ({
   limit: 200,
@@ -37,7 +37,7 @@ const flip = levitate.plugins.flip(() => ({
 const bag = Bag();
 onBeforeUnmount(bag);
 
-const sameWidth: typeof flip = config => {
+const sameWidth: PopPlugin = config => {
   let width: any = config.$pop.style.getPropertyValue('width');
   if (!width.endsWith('px')) width = '';
   width = Number(width.slice(0, -2));
@@ -53,13 +53,13 @@ const sameWidth: typeof flip = config => {
   return config;
 };
 
-const dataAttr: typeof flip = config => {
+const dataAttr: PopPlugin = config => {
   const { $pop, dir } = config;
   $pop.setAttribute('data-pop-dir', dir);
   return config;
 };
 
-const autoHeight: typeof flip = config => {
+const autoHeight: PopPlugin = config => {
   const { $pop, map } = config;
   $pop.style.setProperty('--max-height', Math.floor(map.height - 20) + 'px');
   return { ...config, pop: $pop.getBoundingClientRect() };
@@ -84,7 +84,7 @@ watch(
             dataAttr,
             autoHeight,
           );
-          appeared.value = true;
+          visible.value = true;
         }),
       );
     }
@@ -99,58 +99,43 @@ const toggle = () => {
   }
 };
 
-{
-  const bag = Bag();
-  onBeforeUnmount(bag);
-  watchEffect(async () => {
-    bag();
-    if (!open.value || !appeared.value || !popper.value) return;
-    bag(trap(popper.value));
-  });
-}
+watchEffect(onCleanup => {
+  if (!open.value || !visible.value || !popper.value) return;
+  onCleanup(trap(popper.value));
+});
 
-{
-  const bag = Bag();
-  onBeforeUnmount(bag);
-  watchEffect(() => {
-    bag();
-    if (!popper.value || !reference.value) return;
+watchEffect(onCleanup => {
+  if (!popper.value || !reference.value) return;
 
-    const a = popper.value!;
-    const b = reference.value!;
-    bag(onClickAway([a, b], () => (open.value = false)));
-  });
-}
+  const a = popper.value!;
+  const b = reference.value!;
+  onCleanup(onClickAway([a, b], () => (open.value = false)));
+});
 
-{
-  const bag = Bag();
-  onBeforeUnmount(bag);
-  watchEffect(() => {
-    bag();
-    if (!appeared.value || !popper.value) return;
+watchEffect(() => {
+  if (!visible.value || !popper.value) return;
 
-    const body = popper.value.querySelector('.PopperBody')! as HTMLDivElement;
+  const body = popper.value.querySelector('.PopperBody')! as HTMLDivElement;
 
-    if (open.value) {
-      fx.transition(body, {
-        to(bag) {
-          body.classList.add('appear');
-          bag(() => body.classList.remove('appear'));
-        },
-      });
-    } else {
-      fx.transition(body, {
-        to(bag) {
-          body.classList.remove('appear');
-          bag(() => body.classList.add('appear'));
-        },
-        done() {
-          appeared.value = false;
-        },
-      });
-    }
-  });
-}
+  if (open.value) {
+    fx.transition(body, {
+      to(bag) {
+        body.classList.add('appear');
+        bag(() => body.classList.remove('appear'));
+      },
+    });
+  } else {
+    fx.transition(body, {
+      to(bag) {
+        body.classList.remove('appear');
+        bag(() => body.classList.add('appear'));
+      },
+      done() {
+        visible.value = false;
+      },
+    });
+  }
+});
 
 const erase = () => {
   model.value = null;
@@ -207,7 +192,7 @@ const pickerModel = computed({
 
   <Teleport to="body">
     <div
-      v-show="open || appeared"
+      v-show="open || visible"
       ref="popper"
       class="Positioner"
       @keydown.esc="toggle"

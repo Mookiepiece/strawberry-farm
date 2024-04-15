@@ -3,7 +3,7 @@
 ###### Spec
 
 - 未显示字段会在提交时会被自动裁剪。
-- 曾受 [`react-hook-form`](https://www.npmjs.com/package/react-hook-form) 的 tsd 启发使用字符串路径推导，但改成树形了。
+- 搬运 [`react-hook-form`](https://www.npmjs.com/package/react-hook-form) 的 tsd 为字段定义提供类型推导。
 - 由 [`async-validator`](https://github.com/yiminghe/async-validator) 启发的异步校验器，融入表单定义并可对 `valdator` 的参数提供类型推导。
 
 :::details 更多建议
