@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref, watch, watchEffect } from 'vue';
-import { Bag, PopPlugin, fx, levitate, trap } from '../functions';
-import { onClickAway } from '../html/onClickAway';
+import { computed, ref } from 'vue';
+import { PopPlugin, levitate } from '../functions';
 import { CommonOption, CommonOptionGroup } from './misc';
 import VPicker from './VPicker.vue';
-import { computed } from 'vue';
 import { usePopper } from './usePopper';
 
 const model = defineModel<any>();
@@ -129,11 +127,11 @@ const pickerModel = computed({
     <div
       v-show="open || visible"
       ref="popper"
-      class="Positioner"
+      class="VPositioner"
       @keydown.esc="open = false"
       style="position: fixed; top: 0; left: 0"
     >
-      <div class="PopperBody">
+      <div class="VPopperBody">
         <VPicker
           power-pointer
           v-model="pickerModel"
@@ -147,17 +145,17 @@ const pickerModel = computed({
 </template>
 
 <style>
-.Positioner:not([data-pop-dir]) {
+.VPositioner:not([data-pop-dir]) {
   visibility: hidden;
 }
 
-.Positioner[data-pop-dir='top'] {
-  .PopperBody {
+.VPositioner[data-pop-dir='top'] {
+  .VPopperBody {
     transform-origin: bottom;
   }
 }
-.Positioner[data-pop-dir='bottom'] {
-  .PopperBody {
+.VPositioner[data-pop-dir='bottom'] {
+  .VPopperBody {
     transform-origin: top;
   }
 }
