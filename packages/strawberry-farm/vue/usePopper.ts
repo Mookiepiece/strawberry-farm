@@ -67,7 +67,7 @@ export const usePopper = ({
       }
     }
 
-    const body = popper.value.querySelector('.PopperBody') as
+    const body = popper.value.querySelector('.VPopperBody') as
       | HTMLElement
       | undefined;
 

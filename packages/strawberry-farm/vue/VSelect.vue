@@ -1,4 +1,4 @@
-<script setup lang="ts">
+c<script setup lang="ts">
 import { computed, ref } from 'vue';
 import { PopPlugin, levitate } from '../functions';
 import { CommonOption, CommonOptionGroup } from './misc';
@@ -159,4 +159,25 @@ const pickerModel = computed({
     transform-origin: top;
   }
 }
+
+:where(.VPopperBody) {
+  transform: translateY(-10px);
+  opacity: 0;
+  transition:
+    opacity 0.2s var(--curve-wave),
+    transform 0.2s var(--curve-wave);
+
+  max-height: var(--max-height, auto);
+  overflow: auto;
+
+  box-shadow: var(--shadow);
+  outline: 1px solid var(--mat-solid-15);
+  outline-offset: -1px;
+}
+
+:where(.VPopperBody.appear) {
+  transform: scaleY(1);
+  opacity: 1;
+}
+
 </style>
