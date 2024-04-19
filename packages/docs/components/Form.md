@@ -2,7 +2,7 @@
 
 ###### Spec
 
-- 未显示字段会在提交时会被自动裁剪。
+- 由 `visible: false` 导致的未显示字段会在提交时会被自动裁剪。
 - 搬运 [`react-hook-form`](https://www.npmjs.com/package/react-hook-form) 的 tsd 为字段定义提供类型推导。
 - 由 [`async-validator`](https://github.com/yiminghe/async-validator) 启发的异步校验器，融入表单定义并可对 `valdator` 的参数提供类型推导。
 

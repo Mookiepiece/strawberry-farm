@@ -1,4 +1,4 @@
-import { Component, MaybeRef, Ref, computed, reactive, toRaw } from 'vue';
+import { Component, MaybeRef, Ref, reactive, toRaw } from 'vue';
 import { IRuleType, RuleSlim } from '../functions/validator';
 import VRadioGroup from './VRadioGroup.vue';
 import VInput from './VInput.vue';
@@ -64,7 +64,7 @@ type PathValue<T, P extends Path<T>> = T extends Unpathed
           : never
         : never;
 
-export const pathValueGetter = <T, P extends Path<T>>(object: T, path: P) => {
+export const getter = <T, P extends Path<T>>(object: T, path: P) => {
   const pathes = path.split('.');
 
   let p: any = object;
@@ -76,7 +76,7 @@ export const pathValueGetter = <T, P extends Path<T>>(object: T, path: P) => {
   return p;
 };
 
-export const pathValueSetter = <T, P extends Path<T>>(
+export const setter = <T, P extends Path<T>>(
   object: T,
   path: P,
   value: PathValue<T, P>,
@@ -136,23 +136,6 @@ type FieldDescriptor<T, K extends keyof T> = {
         };
 };
 
-export type FormHierarchy<T> = {
-  descriptor: FieldDescriptor<T, keyof T>;
-  model: Ref<T>;
-  message: string | undefined;
-  focus(): void;
-  reset(): void;
-  validate(): Promise<string | void>;
-} & (T extends Unpathed
-  ? Record<string, never>
-  : T extends Array<infer T>
-    ? {
-        children: FormHierarchy<T>;
-      }
-    : {
-        [K in NonNullable<keyof T>]: FormHierarchy<T[K]>;
-      });
-
 export type FormModel<T> = {
   value: T;
   submitting: boolean;
@@ -165,6 +148,9 @@ export type FormModel<T> = {
   hierarchy(f: {
     [K in NonNullable<keyof T>]: FieldDescriptor<T, K>;
   }): void;
+
+  d: (name: Path<T>) => FieldDescriptor<any, any>;
+  i: <P extends Path<T>>(name: P) => P;
 
   items: {
     [P in Path<T>]?: {
@@ -183,7 +169,17 @@ export const define = <T extends object>(param: {
 }): FormModel<T> => {
   let init = param.init;
 
-  // const d = new Proxy()
+  let _h: FieldDescriptor<any, any> = undefined as any;
+  const d = <P extends Path<T>>(name: P): FieldDescriptor<any, any> => {
+    let pathes = name.split('.');
+
+    let p: any = _h;
+    while (pathes.length) {
+      const i = pathes.shift()!;
+      p = p[i]?.children ?? p[i];
+    }
+    return p;
+  };
 
   const form = reactive<FormModel<T>>({
     value: param.init(),
@@ -192,6 +188,8 @@ export const define = <T extends object>(param: {
 
       form.value = init();
     },
+    reject(name, message) {},
+    focus(name) {},
 
     submitting: false,
     async submit() {
@@ -205,6 +203,10 @@ export const define = <T extends object>(param: {
         form.submitting = false;
       }
     },
+
+    d,
+    i: _ => _,
+
     async validate() {
       // const tasks = Object.entries(form.items)
       //   .map(
@@ -226,30 +228,7 @@ export const define = <T extends object>(param: {
     items: {},
 
     hierarchy(h) {
-      const toD = <T>(h: FieldDescriptor<T, keyof T>): FormHierarchy<T> => {
-        return {
-          descriptor: h,
-          model: computed(() => {
-            //
-            return {} as any;
-          }),
-          message: undefined,
-          focus() {
-            throw new Error('Not supported');
-          },
-          validate() {
-            throw new Error('Not supported');
-          },
-          reset() {
-            throw new Error('Not supported');
-          },
-        } as any;
-        // if (h && typeof h === 'object') {
-        // }
-      };
-
-      // const d: FormModel<T>['d'] = (form.d = h);
-      // TODO
+      _h = h;
     },
   }) as FormModel<T>;
 
@@ -263,8 +242,8 @@ fieldTypes.set('text', VInput);
 
 export const Form = {
   uuid: inc('FORM'),
-  pathValueGetter,
-  pathValueSetter,
+  pathValueGetter: getter,
+  pathValueSetter: setter,
   define,
   registry: fieldTypes,
 };

@@ -37,7 +37,7 @@ export const usePopper = ({
 
   watchEffect(onCleanup => {
     if (!configs?.trap) return;
-    // visible: make sure the popper receives focus after body inited 
+    // visible: make sure the popper receives focus after body inited
     // open: make sure the reference immediately receive focus when existing
     if (!open.value || !visible.value || !popper.value) return;
     onCleanup(trap(popper.value));
@@ -46,15 +46,16 @@ export const usePopper = ({
   watchEffect(onCleanup => {
     if (!configs?.clickAway) return;
     if (!popper.value || !reference.value) return;
-    if(!open.value) return;
+    if (!open.value) return;
 
     const $ref = reference.value;
     const $pop = popper.value;
-    onCleanup(onClickAway([$pop, $ref], () => {
-      open.value = false;
-      console.log(1);
-      
-    }));
+    onCleanup(
+      onClickAway([$pop, $ref], () => {
+        open.value = false;
+        console.log(1);
+      }),
+    );
   });
 
   watchEffect(() => {
@@ -74,18 +75,9 @@ export const usePopper = ({
     if (!body) return;
 
     if (open.value) {
-      fx.transition(body, {
-        to(bag) {
-          body.classList.add('appear');
-          bag(() => body.classList.remove('appear'));
-        },
-      });
+      fx.cssTransition(body, 'v-enter');
     } else {
-      fx.transition(body, {
-        to(bag) {
-          body.classList.remove('appear');
-          bag(() => body.classList.add('appear'));
-        },
+      fx.cssTransition(body, 'v-leave', {
         done() {
           visible.value = false;
         },

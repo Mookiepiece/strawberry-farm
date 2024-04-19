@@ -206,7 +206,7 @@ signupForm.items['charas.0.name'];
 
 <template>
   <VForm :form="signupForm">
-    <!-- <VFormItem name="name" />
+    <VFormItem name="name" />
     <VFormItem name="password">
       <template #description>
         <div class="[A]">
@@ -243,7 +243,7 @@ signupForm.items['charas.0.name'];
     <VFormItem name="repeatPassword" />
     <VFormItem name="phoneNumber" />
     <VFormItem :name="'chara.name'" />
-    <VFormItem :name="'charas'" /> -->
+    <VFormItem :name="'charas'" />
     <VButton class="mat:air">
       <template #prefix>
         <i-feather i="message-circle" />

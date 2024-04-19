@@ -68,7 +68,7 @@ export const longPress = <T extends FunctionReturningPromise>(
       const i = setInterval(fn, 100);
       signal?.addEventListener('abort', () => clearInterval(i));
     },
-    800,
+    300,
     signal,
-  );
+  )();
 };

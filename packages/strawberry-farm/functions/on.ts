@@ -77,14 +77,13 @@ export const on = <T extends EventTarget>(el: T) => {
 
       const codeVsKey: 'code' | 'key' = set.has('key') ? 'key' : 'code';
       set.delete('key');
-      let keyCode = '';
 
       const fn = (e: Event) => {
         for (const modifier of set) {
-          if (!modifierGuards[modifier]) keyCode = modifier;
-          else if (modifierGuards[modifier](e, set)) return;
+          if (!modifierGuards[modifier]) {
+            if (modifier !== (e as KeyboardEvent)[codeVsKey]) return;
+          } else if (modifierGuards[modifier](e, set)) return;
         }
-        if (keyCode && keyCode !== (e as KeyboardEvent)[codeVsKey]) return;
 
         argArray[0](e instanceof CustomEvent ? e.detail : e);
       };

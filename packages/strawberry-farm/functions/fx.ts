@@ -5,7 +5,7 @@ const { resetBag } = Bags();
 type TransitionInit = {
   from?: (bag: ReturnType<typeof Bag>) => (() => void) | void;
   to?: (bag: ReturnType<typeof Bag>) => (() => void) | void;
-  done?: (bag: ReturnType<typeof Bag>) => (() => void) | void;
+  done?: () => (() => void) | void;
 };
 
 const transition = (el: HTMLElement, options: TransitionInit) => {
@@ -23,13 +23,14 @@ const transition = (el: HTMLElement, options: TransitionInit) => {
       .transitionDuration.split(',');
 
     let count = 0;
-    const off = on(el).transitionend.self(_ => {
-      if (++count === transitionDurations.length) {
-        off();
-        options.done?.(bag);
-      }
-    });
-    bag(off);
+    bag(
+      on(el).transitionend.self(_ => {
+        if (++count === transitionDurations.length) {
+          bag();
+          options.done?.();
+        }
+      }),
+    );
 
     // If some transition properties didn't get changed during the transition
     // it will not fires an TransitionEvent.
@@ -51,7 +52,8 @@ const transition = (el: HTMLElement, options: TransitionInit) => {
       makeTimeout(() => {
         if (count < transitionDurations.length) {
           count = Number.NEGATIVE_INFINITY;
-          options.done?.(bag);
+          bag();
+          options.done?.();
         }
       }, timeout + 1),
     );
@@ -83,10 +85,10 @@ const cssTransition = (
 
       options?.to?.(bag);
     },
-    done(bag) {
+    done() {
       el.classList.remove(cssname + '-active');
       el.classList.remove(cssname + '-to');
-      options?.done?.(bag);
+      options?.done?.();
     },
   });
 };

@@ -3,18 +3,18 @@ import {
   WritableComputedRef,
   computed,
   inject,
-  onBeforeMount,
   provide,
   ref,
+  watchEffect,
 } from 'vue';
-import { Form, FormHierarchy, FormModel } from './Form';
+import { Form, FormModel } from './Form';
 import { validate } from '../functions/validator';
 import { Bag } from '../functions';
 import { unref } from 'vue';
 import VFormLabel from './VFormLabel.vue';
 
 const props = defineProps<{
-  d?: FormHierarchy<any>;
+  name?: string;
 }>();
 
 const slots = defineSlots<{
@@ -26,19 +26,26 @@ const slots = defineSlots<{
 
 const form: FormModel<any> = inject('VForm')!;
 const id = Form.uuid();
-const descriptor = props.d?.descriptor;
+const descriptor = props.name ? form.d(props.name) : undefined;
 
 provide('VFormItemLabel', { id, label: descriptor?.label });
 
-const as = Form.registry.get(descriptor?.type || 'text');
-const fieldProps = computed(() => unref(descriptor?.props));
+const control = computed(() => {
+  let _type = unref(descriptor?.type);
+  const [type, props] = Array.isArray(_type) ? _type : [_type || 'text'];
+  return { type, props };
+});
+
+const as = computed(() => Form.registry.get(control.value.type));
 
 const model = computed({
   get() {
-    return Form.pathValueGetter(form.value, descriptor.name);
+    if (!props.name) return;
+    return Form.pathValueGetter(form.value, props.name);
   },
   set(value: any) {
-    Form.pathValueSetter(form.value, descriptor.name, value);
+    if (!props.name) return;
+    Form.pathValueSetter(form.value, props.name, value);
     validateLocked().then(v => (message.value = v));
   },
 });
@@ -47,8 +54,8 @@ const message = ref<string | undefined>();
 
 const _validate = async () => {
   const value = model.value;
-  const rules = descriptor.rules;
-  const label = descriptor.label;
+  const rules = descriptor?.rules;
+  const label = descriptor?.label;
   if (rules) {
     let ans: void | string;
     for (const rule of rules) {
@@ -69,42 +76,41 @@ const validateLocked = async () => {
   return ans;
 };
 
-const control = ref<any>();
+const input = ref<any>();
+const focus = () =>
+  (input.value.el ?? input.value.$el ?? input.value)?.focus?.();
 
-const focus = () => {
-  if (control.value.el instanceof HTMLElement) {
-    control.value.el.focus?.(); // Strawberry Farm Vue Component exposes `el`.
-  } else if (control.value.$el instanceof HTMLElement) {
-    control.value.$el.focus?.(); // Vue Component which has root node
-  } else {
-    control.value.focus?.(); // Native HTML Elements
-  }
-};
-
-form.items[props.name] = {
-  focus,
-  validate: _validate,
-  message,
-};
-
-onBeforeMount(() => {
-  delete form.items[props.name];
+watchEffect(onCleanup => {
+  const name = props.name;
+  if (!name || !descriptor) return;
+  form.items[name] = {
+    focus,
+    reset() {},
+    descriptor,
+    validate: _validate,
+    message,
+  };
+  onCleanup(() => delete form.items[name]);
 });
 </script>
 
 <template>
-  <div class="VFormItem" :class="{ invalid: typeof message === 'string' }">
+  <div
+    class="VFormItem"
+    :class="{ invalid: typeof message === 'string' }"
+    v-if="name && descriptor"
+  >
     <slot name="title">
       <VFormLabel />
     </slot>
 
-    <slot :props="fieldProps" :model="model">
+    <slot :props="control.props" :model="model">
       <component
-        :name="descriptor.name"
-        ref="control"
+        :name="name"
+        ref="input"
         :is="as"
         v-model="model"
-        v-bind="fieldProps"
+        v-bind="control.props"
         :id="id"
       />
     </slot>
@@ -114,7 +120,7 @@ onBeforeMount(() => {
     </div>
 
     <div v-if="$slots.alert">
-      <slot v-if="message" name="alert" />
+      <slot v-if="message" name="alert" :message="message" />
     </div>
     <div v-else-if="message" class="[B] f2 tone:reimu Alert">
       <i-feather i="x-octagon" />
