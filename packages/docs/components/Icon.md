@@ -1,4 +1,0 @@
-# Icon
-
-:::demo components/Icon
-:::

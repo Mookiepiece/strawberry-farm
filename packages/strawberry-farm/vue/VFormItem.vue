@@ -4,7 +4,9 @@ import {
   computed,
   inject,
   provide,
+  reactive,
   ref,
+  watch,
   watchEffect,
 } from 'vue';
 import { Form, FormModel } from './Form';
@@ -25,37 +27,39 @@ const slots = defineSlots<{
 }>();
 
 const form: FormModel<any> = inject('VForm')!;
-const id = Form.uuid();
-const descriptor = props.name ? form.d(props.name) : undefined;
+const id = Form.inc();
+const descriptor = computed(() =>
+  props.name ? form._h(props.name) : undefined,
+);
 
-provide('VFormItemLabel', { id, label: descriptor?.label });
+provide('VFormItemLabel', { id, label: descriptor.value?.label });
 
 const control = computed(() => {
-  let _type = unref(descriptor?.type);
+  let _type = unref(descriptor.value?.type);
   const [type, props] = Array.isArray(_type) ? _type : [_type || 'text'];
-  return { type, props };
+  let rules = unref(descriptor.value?.rules);
+  return { type, props, rules };
 });
 
+const visible = computed(() => descriptor.value?.visible?.value !== false);
 const as = computed(() => Form.registry.get(control.value.type));
 
 const model = computed({
   get() {
     if (!props.name) return;
-    return Form.pathValueGetter(form.value, props.name);
+    return Form.getter(form.value, props.name);
   },
   set(value: any) {
     if (!props.name) return;
-    Form.pathValueSetter(form.value, props.name, value);
-    validateLocked().then(v => (message.value = v));
+    Form.setter(form.value, props.name, value);
+    validateLocked().then(v => (state.message = v));
   },
 });
 
-const message = ref<string | undefined>();
-
 const _validate = async () => {
   const value = model.value;
-  const rules = descriptor?.rules;
-  const label = descriptor?.label;
+  const rules = control.value.rules;
+  const label = descriptor.value?.label;
   if (rules) {
     let ans: void | string;
     for (const rule of rules) {
@@ -80,25 +84,34 @@ const input = ref<any>();
 const focus = () =>
   (input.value.el ?? input.value.$el ?? input.value)?.focus?.();
 
+const state = reactive<
+  NonNullable<(typeof form.items)[keyof typeof form.items]>
+>({
+  focus,
+  validate: () => {
+    bag();
+    return _validate();
+  },
+  _visible: visible.value,
+  message: undefined,
+});
+watch(visible, v => (state._visible = v), { immediate: true });
+
 watchEffect(onCleanup => {
   const name = props.name;
-  if (!name || !descriptor) return;
-  form.items[name] = {
-    focus,
-    reset() {},
-    descriptor,
-    validate: _validate,
-    message,
-  };
+  if (!name || !descriptor.value) return;
+  form.items[name] = state;
   onCleanup(() => delete form.items[name]);
 });
+
+const message = computed(() => state.message);
 </script>
 
 <template>
   <div
     class="VFormItem"
     :class="{ invalid: typeof message === 'string' }"
-    v-if="name && descriptor"
+    v-if="name && descriptor && visible"
   >
     <slot name="title">
       <VFormLabel />

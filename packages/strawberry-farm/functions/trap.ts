@@ -1,6 +1,6 @@
 import { on } from '.';
 
-const trapped: HTMLElement[] = [];
+const trapped: (HTMLElement | SVGElement)[] = [];
 
 /**
  * Focus Trap
@@ -10,10 +10,10 @@ const trapped: HTMLElement[] = [];
  *
  * when a new trap is set, current trap will temperary disabled and will recover when that pop.
  */
-export const trap = (el: HTMLElement) => {
+export const trap = (el: HTMLElement | SVGElement) => {
   trapped.push(el);
   const backTo = document.activeElement;
-  focusInside(el);
+  focusIn(el);
   const off = _trap(el);
 
   return () => {
@@ -22,17 +22,17 @@ export const trap = (el: HTMLElement) => {
     trapped.splice(trapped.indexOf(el), 1);
     off();
 
-    if (isTop) backTo instanceof HTMLElement && backTo.focus();
+    if (isTop) (backTo as any)?.focus?.();
   };
 };
 
-const _trap = (el: HTMLElement) =>
+const _trap = (el: HTMLElement | SVGElement) =>
   on(document).focusin(({ target: thief }) => {
     // Only trap the top most element
     const isTop = el === trapped[trapped.length - 1];
     if (!isTop) return;
 
-    if (thief && thief instanceof HTMLElement) {
+    if (thief && thief instanceof Element) {
       const i = el.compareDocumentPosition(thief);
       const direction =
         i === Node.DOCUMENT_POSITION_FOLLOWING
@@ -42,16 +42,16 @@ const _trap = (el: HTMLElement) =>
             : 0;
 
       if (direction) {
-        focusInside(el, direction === -1);
+        focusIn(el, direction === -1);
       }
     }
   });
 
-const focusInside = (el: HTMLElement, reversed = false) => {
+const focusIn = (el: HTMLElement | SVGElement, reversed = false) => {
   // focusable elements modified based on: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/dialog/
   // those are "maybe focusable" (e.g. <a> without herf attribute cannot be focusd), we have to try them out.
   const children = [
-    ...el.querySelectorAll<HTMLElement>(
+    ...el.querySelectorAll<HTMLElement | SVGElement>(
       ':is(a,input,button,select,textarea,[tabindex]:not([tabindex="-1"])):not(:disabled)',
     ),
   ];

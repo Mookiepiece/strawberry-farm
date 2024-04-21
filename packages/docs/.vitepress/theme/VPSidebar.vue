@@ -1,9 +1,5 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue';
-import {
-  MemoryLightbulb,
-  MemoryFormatBold,
-} from '@pictogrammers/memory/src/icons';
 import VPSidebarItem from './VPSidebarItem.vue';
 import { useData } from './composables';
 import { onMounted } from 'vue';
@@ -81,9 +77,7 @@ const _isDark = computed(() => isDark.value);
         :aria-pressed="_isDark"
         @click="toggleTheme"
       >
-        <svg viewBox="0 0 22 22">
-          <path :d="MemoryLightbulb" />
-        </svg>
+        <i-feather i="sun" />
       </button>
       <button
         class="mat:dust"
@@ -91,9 +85,7 @@ const _isDark = computed(() => isDark.value);
         :aria-pressed="isToggledFontFamily"
         @click="isToggledFontFamily = !isToggledFontFamily"
       >
-        <svg viewBox="0 0 22 22">
-          <path :d="MemoryFormatBold" />
-        </svg>
+        <i-feather i="type" />
       </button>
     </div>
     <nav
@@ -154,15 +146,12 @@ const _isDark = computed(() => isDark.value);
 
   button {
     padding: 10px 20px;
-    border-radius: 5px;
     border: 0;
+    font-size: 20px;
+    border-radius: 5px;
 
     svg {
-      margin: auto;
-      display: block;
-      width: 24px;
-      height: 24px;
-      fill: currentColor;
+      stroke: currentColor;
     }
   }
 }

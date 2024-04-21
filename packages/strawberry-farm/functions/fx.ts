@@ -1,4 +1,4 @@
-import { Bag, Bags, makeTimeout, nextFrame, on } from '.';
+import { Bag, Bags, onTimeout, nextFrame, on } from '.';
 
 const { resetBag } = Bags();
 
@@ -8,7 +8,7 @@ type TransitionInit = {
   done?: () => (() => void) | void;
 };
 
-const transition = (el: HTMLElement, options: TransitionInit) => {
+const transition = (el: HTMLElement | SVGElement, options: TransitionInit) => {
   const bag = resetBag(el);
   options.from?.(bag);
 
@@ -49,7 +49,7 @@ const transition = (el: HTMLElement, options: TransitionInit) => {
     );
 
     bag(
-      makeTimeout(() => {
+      onTimeout(() => {
         if (count < transitionDurations.length) {
           count = Number.NEGATIVE_INFINITY;
           bag();
@@ -61,7 +61,7 @@ const transition = (el: HTMLElement, options: TransitionInit) => {
 };
 
 const cssTransition = (
-  el: HTMLElement,
+  el: HTMLElement | SVGElement,
   cssname: string = 'v',
   options?: TransitionInit,
 ) => {

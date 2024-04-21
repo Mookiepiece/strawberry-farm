@@ -12,7 +12,7 @@ defineProps<{
   <div v-if="!('items' in item)" class="VPSidebarItem [#]">
     <VPLink
       v-if="item.link"
-      class="[...] [A] [FC] link px-6 f2 mat:air"
+      class="[...] [B] [CS] link px-6 f2 mat:air"
       :href="item.link"
       :rel="item.rel"
       :target="item.target"
@@ -23,7 +23,7 @@ defineProps<{
     <span v-else class="text" v-html="item.text" />
   </div>
 
-  <div v-else class="VPSidebarItem--Group f2 py-4" :aria-label="item.text">
+  <div v-else class="VPSidebarGroup f2 py-4" :aria-label="item.text">
     <VPSidebarItem
       v-for="i in item.items"
       :key="i.text"
@@ -39,7 +39,7 @@ defineProps<{
   font-weight: normal;
 }
 
-.VPSidebarItem--Group {
+.VPSidebarGroup {
   &::before {
     display: block;
     height: var(--7);

@@ -76,6 +76,9 @@ const outline = ref(false);
       <VPOutline :open="outline" />
     </div>
   </div>
+  <Teleport to="body">
+    <toast-bar id="ToastBarTopCenter" />
+  </Teleport>
 </template>
 
 <style>

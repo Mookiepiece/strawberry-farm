@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
 import VPHighlightVue from './VPHighlight.vue';
-import { MemoryNotebook } from '@pictogrammers/memory/src/icons';
 const props = defineProps<{
   path: string;
 }>();
@@ -33,14 +32,10 @@ switch (dirname) {
       mod => (raw.value = (mod.default as string).replace(/\r\n/g, '\n')), // Windows©️ is awesome
     );
     break;
-  case 'components':
-    import(`../components/${filename}.vue`).then(mod => (module.value = mod.default));
-    import(`../components/${filename}.vue?raw`).then(
-      mod => (raw.value = (mod.default as string).replace(/\r\n/g, '\n')), // Windows©️ is awesome
-    );
-    break;
   case 'experiments':
-    import(`../experiments/${filename}.vue`).then(mod => (module.value = mod.default));
+    import(`../experiments/${filename}.vue`).then(
+      mod => (module.value = mod.default),
+    );
     import(`../experiments/${filename}.vue?raw`).then(
       mod => (raw.value = (mod.default as string).replace(/\r\n/g, '\n')), // Windows©️ is awesome
     );
@@ -57,9 +52,7 @@ switch (dirname) {
     </div>
     <details>
       <summary class="mat:air p-10 f2 fw6 [B] [CS]">
-        <svg viewBox="0 0 22 22">
-          <path :d="MemoryNotebook" />
-        </svg>
+        <i-feather i="code" />
         Code
       </summary>
       <VPHighlightVue lang="vue" :raw="raw" />
@@ -98,16 +91,11 @@ switch (dirname) {
       transparent;
   }
   summary {
+    display: flex;
+    gap: 10px;
     padding: 10px;
     cursor: pointer;
     user-select: none;
-
-    svg {
-      display: block;
-      width: 24px;
-      height: 24px;
-      fill: currentColor;
-    }
   }
   summary::marker {
     content: '';

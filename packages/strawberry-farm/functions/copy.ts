@@ -8,5 +8,5 @@ export function copy(value = '') {
   document.execCommand('copy');
   textarea.remove();
 
-  _ instanceof HTMLElement && _.focus();
+  (_ as any)?.focus?.();
 }

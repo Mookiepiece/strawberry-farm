@@ -1,5 +1,0 @@
-# Input
-
-
-:::demo components/Input
-:::

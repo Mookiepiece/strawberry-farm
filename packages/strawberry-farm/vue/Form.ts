@@ -68,11 +68,7 @@ export const getter = <T, P extends Path<T>>(object: T, path: P) => {
   const pathes = path.split('.');
 
   let p: any = object;
-  for (const _ of pathes) {
-    p = p[_];
-    if (!p) return p;
-  }
-
+  for (const _ of pathes) p = p?.[_];
   return p;
 };
 
@@ -92,6 +88,20 @@ export const setter = <T, P extends Path<T>>(
   }
 
   p[last] = value;
+};
+
+export const deleter = <T, P extends Path<T>>(object: T, path: P) => {
+  const pathes = path.split('.');
+  const parents = pathes.slice(0, -1);
+  const last = pathes[pathes.length - 1];
+
+  let p: any = object;
+  for (const _ of parents) {
+    p = p[_];
+    if (!p) return;
+  }
+
+  delete p[last];
 };
 
 interface FieldTypes {
@@ -122,7 +132,7 @@ type FieldDescriptor<T, K extends keyof T> = {
 
   type?: MaybeRef<FiledTypesTurple>;
 
-  rules?: RuleSlim<keyof IRuleType, T[K]>[];
+  rules?: MaybeRef<RuleSlim<keyof IRuleType, T[K]>[]>;
 
   init?: T[K] extends Array<infer I> ? () => I : never;
   children?: T[K] extends Array<infer I>
@@ -138,98 +148,107 @@ type FieldDescriptor<T, K extends keyof T> = {
 
 export type FormModel<T> = {
   value: T;
-  submitting: boolean;
+  loading: boolean;
   submit(): Promise<void>;
   reset(init: () => T): void;
-  reject(name: Path<T>, message?: string): void;
-  focus(name: Path<T>): void;
-  validate(name?: Path<T>): Promise<string | void>;
+  validate(): Promise<string | void>;
 
   hierarchy(f: {
     [K in NonNullable<keyof T>]: FieldDescriptor<T, K>;
   }): void;
 
-  d: (name: Path<T>) => FieldDescriptor<any, any>;
+  _h: (name: Path<T>) => FieldDescriptor<any, any>;
   i: <P extends Path<T>>(name: P) => P;
 
   items: {
     [P in Path<T>]?: {
       focus(): void;
-      reset(): void;
       validate(): Promise<string | void>;
-      message: Ref<string | undefined>;
-      descriptor: FieldDescriptor<PathValue<T, P>, keyof PathValue<T, P>>;
+      _visible: boolean;
+      message: string | undefined;
     };
   };
 };
 
-export const define = <T extends object>(param: {
-  init: () => T;
-  action?(value: T): void | Promise<void>;
-}): FormModel<T> => {
-  let init = param.init;
-
+const init = <T extends object>(
+  _init: () => T,
+  param: {
+    action:
+      | ((value: T) => void | Promise<void>)
+      | [(value: T) => void | Promise<void>, (message: string) => void];
+  },
+): FormModel<T> => {
+  let init = _init;
   let _h: FieldDescriptor<any, any> = undefined as any;
-  const d = <P extends Path<T>>(name: P): FieldDescriptor<any, any> => {
-    let pathes = name.split('.');
 
-    let p: any = _h;
-    while (pathes.length) {
-      const i = pathes.shift()!;
-      p = p[i]?.children ?? p[i];
-    }
-    return p;
-  };
+  const [action, failedAction] = Array.isArray(param.action)
+    ? param.action
+    : [param.action];
 
   const form = reactive<FormModel<T>>({
-    value: param.init(),
+    value: init(),
     reset(_init) {
       if (_init) init = _init;
-
       form.value = init();
     },
-    reject(name, message) {},
-    focus(name) {},
 
-    submitting: false,
+    loading: false,
     async submit() {
-      form.submitting = true;
+      form.loading = true;
       try {
         const v = toRaw(form.value);
-        if (typeof (await form.validate()) !== 'string')
-          return await param.action?.(v);
-        throw new DOMException('', 'AbortError');
+
+        Object.entries(form.items)
+          .filter(
+            ([, i]) =>
+              !(i as NonNullable<(typeof form.items)[Path<T>]>)._visible,
+          )
+          .forEach(([name]) => deleter(v, name as Path<T>));
+
+        const message = await form.validate();
+        if (typeof message === 'string') {
+          failedAction?.(message);
+          throw new DOMException('', 'AbortError');
+        }
+
+        return await action?.(v);
       } finally {
-        form.submitting = false;
+        form.loading = false;
       }
     },
 
-    d,
+    _h: <P extends Path<T>>(name: P): FieldDescriptor<any, any> => {
+      let pathes = name.split('.');
+
+      let p: any = _h;
+      while (pathes.length) {
+        const i = pathes.shift()!;
+        p = p[i]?.children ?? p[i];
+      }
+      return p;
+    },
     i: _ => _,
 
     async validate() {
-      // const tasks = Object.entries(form.items)
-      //   .map(
-      //     ([k, i]) =>
-      //       [
-      //         k,
-      //         (i as NonNullable<(typeof form.items)[Path<T>]>).validate(),
-      //       ] as [Path<T>, Promise<string | void>],
-      //   );
-      // const ans = await Promise.all(tasks.map(([, t]) => t));
-      // const index = ans.findIndex(a => typeof a === 'string');
-      // if (index !== -1) {
-      //   const name = tasks[index][0];
-      //   form.items[name]?.focus();
-      //   return ans[index];
-      // }
+      const tasks = Object.entries(form.items).map(
+        ([k, i]) =>
+          [k, (i as NonNullable<(typeof form.items)[Path<T>]>).validate()] as [
+            Path<T>,
+            Promise<string | void>,
+          ],
+      );
+      const ans = await Promise.all(tasks.map(([, t]) => t));
+      const index = ans.findIndex(a => typeof a === 'string');
+      if (index !== -1) {
+        const name = tasks[index][0];
+        form.items[name]?.focus();
+        return ans[index];
+      }
     },
 
     items: {},
 
-    hierarchy(h) {
-      _h = h;
-    },
+    hierarchy: h => void (_h = h),
   }) as FormModel<T>;
 
   return form;
@@ -241,9 +260,9 @@ fieldTypes.set('radio', VRadioGroup);
 fieldTypes.set('text', VInput);
 
 export const Form = {
-  uuid: inc('FORM'),
-  pathValueGetter: getter,
-  pathValueSetter: setter,
-  define,
+  inc: inc('FORM'),
+  getter,
+  setter,
+  init,
   registry: fieldTypes,
 };

@@ -4,5 +4,5 @@
 
 ###### Spec
 
-:::demo components/Farm
+:::demo design/Farm
 :::

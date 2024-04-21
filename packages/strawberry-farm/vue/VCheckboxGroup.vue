@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { StyleValue, computed, ref } from 'vue';
 import { CommonOptionsInput, NormalizedCommonOption } from './misc';
-import VPicker from './VPicker.vue';
+import VListbox from './VListbox.vue';
 
 const model = defineModel<any>();
 
@@ -17,16 +17,13 @@ defineSlots<{
   indicator: any;
 }>();
 
-const picker = ref<InstanceType<typeof VPicker>>();
-
-defineExpose({
-  el: computed(() => picker.value?.el),
-});
+const el = ref<InstanceType<typeof VListbox>>();
+defineExpose({ el: computed(() => el.value?.el) });
 </script>
 
 <template>
-  <VPicker
-    ref="picker"
+  <VListbox
+    ref="el"
     mode="multi"
     :class="[props.class, 'VRadioGroup']"
     :style="style"
@@ -45,5 +42,5 @@ defineExpose({
         <i-feather i="check" />
       </div>
     </slot>
-  </VPicker>
+  </VListbox>
 </template>

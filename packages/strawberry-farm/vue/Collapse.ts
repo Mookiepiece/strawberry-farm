@@ -1,7 +1,7 @@
 import { fx } from '../functions';
 
 export const collapse = {
-  show(el: HTMLElement) {
+  show(el: HTMLElement | SVGElement) {
     return new Promise<void>(resolve => {
       fx.transition(el, {
         from() {
@@ -20,7 +20,7 @@ export const collapse = {
       });
     });
   },
-  hide(el: HTMLElement) {
+  hide(el: HTMLElement | SVGElement) {
     return new Promise<void>(resolve => {
       fx.transition(el, {
         from() {
@@ -39,7 +39,7 @@ export const collapse = {
       });
     });
   },
-  toggle(el: HTMLElement) {
+  toggle(el: HTMLElement | SVGElement) {
     el.classList.contains('collapsed') || // leaved
     el.style.getPropertyValue('--h') === '0' // leaving
       ? collapse.show(el)

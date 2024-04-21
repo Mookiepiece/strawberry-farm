@@ -10,8 +10,8 @@ type Levitate = typeof _levitate & {
 };
 
 export type PopConfigs = {
-  $ref: HTMLElement;
-  $pop: HTMLElement;
+  $ref: HTMLElement | SVGElement;
+  $pop: HTMLElement | SVGElement;
   ref: DOMRect;
   pop: DOMRect;
 
@@ -180,8 +180,8 @@ const plugins = {
 };
 
 const _levitate = (
-  $ref: HTMLElement,
-  $pop: HTMLElement,
+  $ref: HTMLElement | SVGElement,
+  $pop: HTMLElement | SVGElement,
   {
     dir = 'bottom',
     alignment,

@@ -8,8 +8,8 @@ export const usePopper = ({
   configs,
   plugins = [],
 }: {
-  reference: Ref<HTMLElement | undefined>;
-  popper: Ref<HTMLElement | undefined>;
+  reference: Ref<HTMLElement | SVGElement | undefined>;
+  popper: Ref<HTMLElement | SVGElement | undefined>;
   configs?: Parameters<typeof levitate>[2] & {
     trap?: boolean;
     clickAway?: boolean;

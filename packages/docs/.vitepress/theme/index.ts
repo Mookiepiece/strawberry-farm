@@ -1,6 +1,6 @@
 import 'vitepress/dist/client/theme-default/styles/vars.css';
-import '../../../strawberry-farm/css/index.scss';
 import '../../../strawberry-farm/design/index.css';
+import '../../../strawberry-farm/css/index.scss';
 
 import Layout from './VPLayout.vue';
 import VPDemo from '../VPDemo.vue';

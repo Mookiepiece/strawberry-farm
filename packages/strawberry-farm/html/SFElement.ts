@@ -15,10 +15,10 @@ interface SFEmit {
   (event: Event): void;
 }
 
-type AdvancedQuerySelector = <T extends Element = HTMLElement>(
+type AdvancedQuerySelector = <T extends Element = HTMLElement | SVGElement>(
   query: string,
 ) => T | null;
-type AdvancedQuerySelectorAll = <T extends Element = HTMLElement>(
+type AdvancedQuerySelectorAll = <T extends Element = HTMLElement | SVGElement>(
   query: string,
 ) => T[];
 type AdvancedSetup = (ctx: {

@@ -6,7 +6,7 @@ export class TDesignIconElement extends SFElement {
   constructor() {
     super();
     this.setup = () => {
-      const svg: HTMLElement = this.$('svg') ?? document.createElement('svg');
+      const svg: SVGElement = this.$('svg') ??  document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       if (!this.contains(svg)) {
         this.appendChild(svg);
       }

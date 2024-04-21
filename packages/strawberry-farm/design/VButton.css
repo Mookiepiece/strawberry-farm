@@ -1,7 +1,6 @@
 :where(.VButton) {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   height: var(---size);
   min-width: var(---size);
   padding-inline: 15px;
@@ -16,6 +15,7 @@
 }
 
 :where(.VButton:not(:has(> .Trunk))) {
+  justify-content: center;
   padding-inline: 0;
 }
 

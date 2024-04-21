@@ -7,5 +7,7 @@ const focus = () => document.getElementById(id as string)?.focus();
 </script>
 
 <template>
-  <label v-if="id && label" :for="id" @click="focus">{{ label }}</label>
+  <label v-if="id && label" :for="id" tabindex="-1" @focus="focus">{{
+    label
+  }}</label>
 </template>

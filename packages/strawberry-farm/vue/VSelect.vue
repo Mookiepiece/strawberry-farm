@@ -1,8 +1,9 @@
-c<script setup lang="ts">
+c
+<script setup lang="ts">
 import { computed, ref } from 'vue';
 import { PopPlugin, levitate } from '../functions';
 import { CommonOption, CommonOptionGroup } from './misc';
-import VPicker from './VPicker.vue';
+import VListbox from './VListbox.vue';
 import { usePopper } from './usePopper';
 
 const model = defineModel<any>();
@@ -35,7 +36,8 @@ const sameWidth: PopPlugin = config => {
   if (!width.endsWith('px')) width = '';
   width = Number(width.slice(0, -2));
 
-  const shouldBe = config.$ref.offsetWidth;
+  const shouldBe = config.$ref.getBoundingClientRect().width;
+  
 
   if (width !== shouldBe) {
     config.$pop.style.setProperty('width', shouldBe + 'px');
@@ -83,6 +85,10 @@ const pickerModel = computed({
     open.value = false;
     model.value = value;
   },
+});
+
+defineExpose({
+  el: reference,
 });
 </script>
 
@@ -132,7 +138,7 @@ const pickerModel = computed({
       style="position: fixed; top: 0; left: 0"
     >
       <div class="VPopperBody">
-        <VPicker
+        <VListbox
           power-pointer
           v-model="pickerModel"
           :options="props.options"

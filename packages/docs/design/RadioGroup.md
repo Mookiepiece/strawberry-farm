@@ -7,8 +7,8 @@
 - 单选模式下且不设置可清空则游标的移动会导致自动改值，多选或可清空则只移动游标，不会改变值。
 - 方向键移动游标，多选模式按空格或回车以选择。
 
-:::demo components/RadioGroup
+:::demo design/RadioGroup
 :::
 
-:::demo components/RadioGroupCheckboxGroup
+:::demo design/RadioGroupCheckboxGroup
 :::

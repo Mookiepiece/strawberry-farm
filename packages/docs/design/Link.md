@@ -17,5 +17,5 @@
 </button>
 ```
 
-:::demo components/Button
+:::demo design/Button
 :::

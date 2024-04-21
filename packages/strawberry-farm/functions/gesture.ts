@@ -3,7 +3,7 @@ import { on } from './on';
 
 // Inspired by vueuse usePointerSwipe
 export const swipe = (
-  el: HTMLElement,
+  el: HTMLElement | SVGElement,
   onStart?: (
     e: PointerEvent,
   ) => ((p2: { e: PointerEvent; done: boolean }) => void) | void,

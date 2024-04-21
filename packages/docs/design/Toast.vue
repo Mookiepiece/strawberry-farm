@@ -103,9 +103,6 @@ const a = ref(false);
     <div v-show="a" class="toast-i-error"></div>
     <div v-show="a" class="toast-i-success"></div>
     <div v-show="a" class="toast-i-info"></div>
-    <Teleport to="body">
-      <toast-bar id="ToastBarTopCenter" />
-    </Teleport>
   </div>
 </template>
 

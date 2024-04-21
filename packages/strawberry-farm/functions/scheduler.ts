@@ -19,7 +19,7 @@ export const debounce = <T extends (...args: any[]) => void>(
 /**
  * This function is **only** used for bags to collect in **complex** senario.
  */
-export const makeTimeout = <T extends (...args: any[]) => void>(
+export const onTimeout = <T extends (...args: any[]) => void>(
   fn: T,
   timeout = 300,
 ): (() => void) => {

@@ -5,8 +5,6 @@
 `Shopify/dawn` 广泛运用 Web Components 让我思考能否脱离框架设计组件以解决通用问题。
 Strawberry Farm 优先使用 CSS、DOM API、Web Components， 以实现不依赖于 Javascript 框架的更高的兼容性。
 
-注意：Strawberry Farm 追求轻量，不仅有很多约定，这更意味着弱。
-
 ::: details Motivation
 
 > However, as an application matures, development speed will inevitably slow down. On a poorly implemented product, development speed slows down quickly. But even on a beautifully implemented one, development speed still slows down over time. As the more code you add to an application, the slower development becomes, I view all code as technical debt.
