@@ -18,14 +18,9 @@ export const swipe = (
         el.setPointerCapture(ev.pointerId);
         ev.preventDefault(); // Prevent from dragging selected text
 
-        // This is not perfect because sometimes we drag the children inside the container.
-        // Should mannually set `touch-action` for each draggable children instead.
-        // if (!el.style.getPropertyValue('touch-action')) {
-        //   el.style?.setProperty('touch-action', 'none');
-        //   smallBag(() => {
-        //     el.style?.removeProperty('touch-action');
-        //   });
-        // }
+        // Sometimes we drag the children inside the container instead the container itself.
+        // Better to mannually set `touch-action` for each draggable children instead.
+        // el.style?.setProperty('touch-action', 'none');
 
         smallBag(
           on(el).pointermove(e => {
