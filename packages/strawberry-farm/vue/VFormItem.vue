@@ -9,7 +9,7 @@ import {
   watch,
   watchEffect,
 } from 'vue';
-import { Form, FormModel } from './Form';
+import { Form, FormModel, V_FORM_IN, V_FORM_ITEM_LABEL_IN } from './Form';
 import { validate } from '../functions/validator';
 import { Bag } from '../functions';
 import { unref } from 'vue';
@@ -26,13 +26,13 @@ const slots = defineSlots<{
   alert(props: { message: string }): any;
 }>();
 
-const form: FormModel<any> = inject('VForm')!;
+const form: FormModel<any> = inject(V_FORM_IN)!;
 const id = Form.inc();
 const descriptor = computed(() =>
   props.name ? form._h(props.name) : undefined,
 );
 
-provide('VFormItemLabel', { id, label: descriptor.value?.label });
+provide(V_FORM_ITEM_LABEL_IN, { id, label: descriptor.value?.label });
 
 const control = computed(() => {
   let _type = unref(descriptor.value?.type);

@@ -1,12 +1,12 @@
 <script setup lang="ts" generic="T">
 import { provide } from 'vue';
-import { FormModel } from './Form';
+import { FormModel, V_FORM_IN } from './Form';
 
 const props = defineProps<{
   form: FormModel<T>;
 }>();
 
-provide('VForm', props.form);
+provide(V_FORM_IN, props.form);
 
 </script>
 

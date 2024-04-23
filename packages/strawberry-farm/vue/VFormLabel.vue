@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { inject } from 'vue';
+import { V_FORM_ITEM_LABEL_IN } from './Form';
 
-const { id, label }: { id?: string; label?: string } =
-  inject('VFormItemLabel') || {};
-const focus = () => document.getElementById(id as string)?.focus();
+const { id, label } = inject(V_FORM_ITEM_LABEL_IN) || {};
+const focus = () => document.getElementById(id!)?.focus();
 </script>
 
 <template>

@@ -1,9 +1,17 @@
-import { Component, MaybeRef, Ref, reactive, toRaw } from 'vue';
+import { Component, InjectionKey, MaybeRef, Ref, reactive, toRaw } from 'vue';
 import { IRuleType, RuleSlim } from '../functions/validator';
 import VRadioGroup from './VRadioGroup.vue';
 import VInput from './VInput.vue';
 import { CommonOption, CommonOptionGroup } from './misc';
 import { inc } from '../functions';
+
+export const V_FORM_ITEM_LABEL_IN: InjectionKey<{
+  id: string;
+  label?: string;
+}> = Symbol('VFormItemLabel');
+
+export const V_FORM_IN: InjectionKey<FormModel<any>> =
+  Symbol('VForm');
 
 /**
  * @license MIT react-hook-form
