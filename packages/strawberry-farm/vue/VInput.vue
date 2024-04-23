@@ -35,7 +35,7 @@ const emit = defineEmits<{
 const input = ref<HTMLInputElement | HTMLTextAreaElement>();
 
 const userInput = ref<string | null>(null);
-const visibleInput = computed(() =>
+const userOutput = computed(() =>
   userInput.value === null ? model.value : userInput.value,
 );
 
@@ -76,7 +76,7 @@ defineExpose({ el });
       <slot name="suffix"></slot>
     </div>
     <i-feather
-      v-if="props.clearable && visibleInput"
+      v-if="props.clearable && userOutput"
       i="x"
       class="VInputEraser"
       tabindex="-1"
@@ -91,7 +91,7 @@ defineExpose({ el });
       :placeholder="props.placeholder"
       :id="props.id"
       :name="props.name"
-      :value="visibleInput"
+      :value="userOutput"
       @input="handleInput"
       @focus="emit('focus')"
       @blur="handleBlur"
