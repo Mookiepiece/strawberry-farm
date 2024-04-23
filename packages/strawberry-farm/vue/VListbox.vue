@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { StyleValue, computed, ref } from 'vue';
+import { StyleValue, computed, ref, watch } from 'vue';
 import {
   CommonOptionGroup,
   CommonOptionInput,
@@ -119,6 +119,18 @@ const toggle = (value: any) => {
   if (clearable.value && model.value === value) model.value = null;
   else if (model.value !== value || props.assignSameValue) model.value = value;
 };
+
+const invalid = computed(() =>
+  Array.isArray(model.value)
+    ? model.value.filter(i => !options.value.some(o => o.value === i))
+    : !options.value.some(o => o.value === model.value) && model.value != null
+      ? [model.value]
+      : [],
+);
+
+watch(invalid, invalid => {
+  if (invalid.length) invalid.forEach(i => toggle(i));
+});
 
 const el = ref<HTMLDivElement | null>(null);
 
