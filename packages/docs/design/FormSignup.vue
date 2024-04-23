@@ -4,6 +4,7 @@ import { Toast } from '@mookiepiece/strawberry-farm/vue/Toast';
 import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
 import VForm from '@mookiepiece/strawberry-farm/vue/VForm.vue';
 import VFormItem from '@mookiepiece/strawberry-farm/vue/VFormItem.vue';
+import VFormLabel from '@mookiepiece/strawberry-farm/vue/VFormLabel.vue';
 
 type LoginFormValue = {
   name: string;
@@ -109,7 +110,6 @@ signupForm.hierarchy({
     ],
   },
   chara: {
-    type: 'hidden',
     children: {
       name: {
         label: 'Character',
@@ -210,7 +210,14 @@ signupForm.items['charas.0.name'];
 
 <template>
   <VForm :form="signupForm">
-    <VFormItem :name="signupForm.i('name')" />
+    <VFormItem :name="signupForm.i('name')">
+      <template #title>
+        <div class="[B] gap-1">
+          <VFormLabel />
+          <i-feather i="arrow-right-circle" />
+        </div>
+      </template>
+    </VFormItem>
     <VFormItem :name="signupForm.i('password')">
       <template #description>
         <div class="[A]">
