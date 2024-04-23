@@ -10,8 +10,7 @@ export const V_FORM_ITEM_LABEL_IN: InjectionKey<{
   label?: string;
 }> = Symbol('VFormItemLabel');
 
-export const V_FORM_IN: InjectionKey<FormModel<any>> =
-  Symbol('VForm');
+export const V_FORM_IN: InjectionKey<FormModel<any>> = Symbol('VForm');
 
 /**
  * @license MIT react-hook-form
@@ -238,13 +237,17 @@ const init = <T extends object>(
     i: _ => _,
 
     async validate() {
-      const tasks = Object.entries(form.items).map(
-        ([k, i]) =>
-          [k, (i as NonNullable<(typeof form.items)[Path<T>]>).validate()] as [
-            Path<T>,
-            Promise<string | void>,
-          ],
-      );
+      const tasks = Object.entries(form.items)
+        .filter(
+          ([, i]) => (i as NonNullable<(typeof form.items)[Path<T>]>)._visible,
+        )
+        .map(
+          ([k, i]) =>
+            [
+              k,
+              (i as NonNullable<(typeof form.items)[Path<T>]>).validate(),
+            ] as [Path<T>, Promise<string | void>],
+        );
       const ans = await Promise.all(tasks.map(([, t]) => t));
       const index = ans.findIndex(a => typeof a === 'string');
       if (index !== -1) {

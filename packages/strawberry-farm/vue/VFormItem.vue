@@ -113,9 +113,11 @@ const message = computed(() => state.message);
     :class="{ invalid: typeof message === 'string' }"
     v-if="name && descriptor && visible"
   >
-    <slot name="title">
-      <VFormLabel />
-    </slot>
+    <div class="VFormItemTitle">
+      <slot name="title">
+        <VFormLabel />
+      </slot>
+    </div>
 
     <slot :props="control.props" :model="model">
       <component

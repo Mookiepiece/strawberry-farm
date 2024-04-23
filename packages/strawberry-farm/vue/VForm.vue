@@ -11,7 +11,7 @@ provide(V_FORM_IN, props.form);
 </script>
 
 <template>
-  <form class="VForm" @submit.prevent="props.form.submit()">
+  <form class="VForm" @submit.prevent="void props.form.submit()">
     <slot />
   </form>
 </template>
