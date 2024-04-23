@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Ref } from 'vue';
-import { ref, watch } from 'vue';
+import { Ref, computed } from 'vue';
+import { ref } from 'vue';
 
 const model = defineModel<string>({
   default: '',
@@ -34,41 +34,25 @@ const emit = defineEmits<{
 
 const input = ref<HTMLInputElement | HTMLTextAreaElement>();
 
-const filled = ref(false);
-
-// Reference: How vue "v-model.trim" behaves https://github.com/vuejs/core/blob/9a936aaec489c79433a32791ecf5ddb1739a62bd/packages/runtime-dom/src/directives/vModel.ts#L48
-watch(
-  () => ({ value: model.value, trim: props.trim, input: input.value }),
-  ({ value, trim, input }) => {
-    if (input) {
-      if (trim) {
-        if (input.value.trim() !== value.trim()) {
-          input.value = value.trim();
-          filled.value = !!value;
-        }
-      } else {
-        if (input.value !== value) {
-          input.value = value;
-          filled.value = !!value;
-        }
-      }
-    }
-  },
+const userInput = ref<string | null>(null);
+const visibleInput = computed(() =>
+  userInput.value === null ? model.value : userInput.value,
 );
 
-const handleInput = (e: Event) => {
-  let value = (e.target as HTMLInputElement | HTMLTextAreaElement).value;
-  model.value = value = props.trim ? value.trim() : value;
-  filled.value = !!value;
+const parse = (v: string) => (props.trim ? v.trim() : v);
+
+const handleInput = () => {
+  model.value = parse((userInput.value = input.value!.value));
 };
 
 const handleBlur = () => {
   emit('blur');
-  if (props.trim) input.value!.value = input.value!.value.trim();
+  userInput.value = null;
 };
 
 const erase = () => {
-  handleInput({ target: { value: '' } } as any);
+  userInput.value = null;
+  model.value = '';
   input.value?.focus();
 };
 
@@ -92,7 +76,7 @@ defineExpose({ el });
       <slot name="suffix"></slot>
     </div>
     <i-feather
-      v-if="props.clearable && filled"
+      v-if="props.clearable && visibleInput"
       i="x"
       class="VInputEraser"
       tabindex="-1"
@@ -107,6 +91,7 @@ defineExpose({ el });
       :placeholder="props.placeholder"
       :id="props.id"
       :name="props.name"
+      :value="visibleInput"
       @input="handleInput"
       @focus="emit('focus')"
       @blur="handleBlur"
