@@ -5,6 +5,9 @@ import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
 import VForm from '@mookiepiece/strawberry-farm/vue/VForm.vue';
 import VFormItem from '@mookiepiece/strawberry-farm/vue/VFormItem.vue';
 import VFormLabel from '@mookiepiece/strawberry-farm/vue/VFormLabel.vue';
+import VInput from '@mookiepiece/strawberry-farm/vue/VInput.vue';
+import VRadioGroup from '@mookiepiece/strawberry-farm/vue/VRadioGroup.vue';
+import { h } from 'vue';
 
 type LoginFormValue = {
   name: string;
@@ -113,12 +116,11 @@ signupForm.hierarchy({
     children: {
       name: {
         label: 'Character',
-        type: [
-          'radio',
-          {
+        render() {
+          return h(VRadioGroup, {
             options: ['博麗霊夢', '霧雨魔理沙'],
-          },
-        ],
+          });
+        },
       },
       shot: {},
       spellCard: {},
@@ -252,9 +254,10 @@ signupForm.items['charas.0.name'];
       </template>
     </VFormItem>
     <VFormItem name="repeatPassword" />
-    <VFormItem name="phoneNumber" />
+    <VFormItem name="phoneNumber" v-slot="{i}">
+      <VInput v-model="i.model" placehholder="666" clearable />
+    </VFormItem>
     <VFormItem :name="'chara.name'" />
-    <VFormItem :name="'charas'" />
     <VButton type="submit" class="mat:air">
       <template #prefix>
         <i-feather i="message-circle" />

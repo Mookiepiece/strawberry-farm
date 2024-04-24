@@ -1,8 +1,5 @@
-import { Component, InjectionKey, MaybeRef, Ref, reactive, toRaw } from 'vue';
+import { InjectionKey, MaybeRef, Ref, VNode, reactive, toRaw } from 'vue';
 import { IRuleType, RuleSlim } from '../functions/validator';
-import VRadioGroup from './VRadioGroup.vue';
-import VInput from './VInput.vue';
-import { CommonOption, CommonOptionGroup } from './misc';
 import { inc } from '../functions';
 
 export const V_FORM_ITEM_LABEL_IN: InjectionKey<{
@@ -111,33 +108,11 @@ export const deleter = <T, P extends Path<T>>(object: T, path: P) => {
   delete p[last];
 };
 
-interface FieldTypes {
-  any: any;
-  text: InstanceType<typeof VInput>['$props'] & Record<string, any>;
-  textarea: number | (number | null | undefined)[] | RegExp;
-  number: any;
-  checkbox: any;
-  switch: any;
-  checkboxgroup: {
-    options: (CommonOption | CommonOptionGroup)[];
-  };
-  select: {
-    options: (CommonOption | CommonOptionGroup)[];
-  };
-  radio: InstanceType<typeof VRadioGroup>['$props'] & Record<string, any>;
-  list: any;
-  hidden: undefined;
-}
-
-type FiledTypesTurple = {
-  [K in keyof FieldTypes]: [K, FieldTypes[K]] | K;
-}[keyof FieldTypes];
-
 type FieldDescriptor<T, K extends keyof T> = {
   label?: string;
   visible?: Ref<boolean>;
 
-  type?: MaybeRef<FiledTypesTurple>;
+  render?: MaybeRef<() => VNode>;
 
   rules?: MaybeRef<RuleSlim<keyof IRuleType, T[K]>[]>;
 
@@ -265,15 +240,9 @@ const init = <T extends object>(
   return form;
 };
 
-export const fieldTypes = new Map<keyof FieldTypes, Component>();
-
-fieldTypes.set('radio', VRadioGroup);
-fieldTypes.set('text', VInput);
-
 export const Form = {
   inc: inc('FORM'),
   getter,
   setter,
   init,
-  registry: fieldTypes,
 };

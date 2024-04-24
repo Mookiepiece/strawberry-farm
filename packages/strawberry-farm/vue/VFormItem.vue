@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import {
   WritableComputedRef,
+  cloneVNode,
   computed,
+  h,
   inject,
   provide,
   reactive,
@@ -14,13 +16,14 @@ import { validate } from '../functions/validator';
 import { Bag } from '../functions';
 import { unref } from 'vue';
 import VFormLabel from './VFormLabel.vue';
+import VInput from './VInput.vue';
 
 const props = defineProps<{
   name?: string;
 }>();
 
 const slots = defineSlots<{
-  default(props: { props: any; model: WritableComputedRef<any> }): any;
+  default(props: { i: { model: any } }): any;
   title: any;
   description: any;
   alert(props: { message: string }): any;
@@ -35,14 +38,11 @@ const descriptor = computed(() =>
 provide(V_FORM_ITEM_LABEL_IN, { id, label: descriptor.value?.label });
 
 const control = computed(() => {
-  let _type = unref(descriptor.value?.type);
-  const [type, props] = Array.isArray(_type) ? _type : [_type || 'text'];
   let rules = unref(descriptor.value?.rules);
-  return { type, props, rules };
+  return { rules };
 });
 
 const visible = computed(() => descriptor.value?.visible?.value !== false);
-const as = computed(() => Form.registry.get(control.value.type));
 
 const model = computed({
   get() {
@@ -55,6 +55,8 @@ const model = computed({
     validateLocked().then(v => (state.message = v));
   },
 });
+
+const i = reactive({ model });
 
 const _validate = async () => {
   const value = model.value;
@@ -105,6 +107,15 @@ watchEffect(onCleanup => {
 });
 
 const message = computed(() => state.message);
+
+const vn = computed(() =>
+  cloneVNode(unref(descriptor.value?.render)?.() ?? h(VInput), {
+    modelValue: model.value,
+    'onUpdate:modelValue': (v: any) => {
+      model.value = v;
+    },
+  }),
+);
 </script>
 
 <template>
@@ -119,15 +130,8 @@ const message = computed(() => state.message);
       </slot>
     </div>
 
-    <slot :props="control.props" :model="model">
-      <component
-        :name="name"
-        ref="input"
-        :is="as"
-        v-model="model"
-        v-bind="control.props"
-        :id="id"
-      />
+    <slot :i="i">
+      <component :name="name" ref="input" :is="vn" />
     </slot>
 
     <div v-if="$slots.description" class="f3">
