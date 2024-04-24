@@ -110,18 +110,6 @@ const toggle = (value: any) => {
   else model.value = value;
 };
 
-const invalid = computed(() =>
-  Array.isArray(model.value)
-    ? model.value.filter(i => !choices.value.some(o => o.value === i))
-    : !choices.value.some(o => o.value === model.value) && model.value != null
-      ? [model.value]
-      : [],
-);
-
-watch(invalid, invalid => {
-  if (invalid.length) invalid.forEach(i => toggle(i));
-});
-
 const el = ref<HTMLDivElement | null>(null);
 
 const nav = (delta: -1 | 1) => {
