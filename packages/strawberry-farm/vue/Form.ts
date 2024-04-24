@@ -5,6 +5,7 @@ import { inc } from '../functions';
 export const V_FORM_ITEM_LABEL_IN: InjectionKey<{
   id: string;
   label?: string;
+  asterisk: boolean;
 }> = Symbol('VFormItemLabel');
 
 export const V_FORM_IN: InjectionKey<FormModel<any>> = Symbol('VForm');
@@ -109,7 +110,7 @@ export const deleter = <T, P extends Path<T>>(object: T, path: P) => {
 };
 
 type FieldDescriptor<T, K extends keyof T> = {
-  label?: string;
+  label?: MaybeRef<string>;
   visible?: Ref<boolean>;
 
   render?: MaybeRef<() => VNode>;

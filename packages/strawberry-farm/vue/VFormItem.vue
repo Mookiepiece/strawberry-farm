@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {
-  WritableComputedRef,
   cloneVNode,
   computed,
   h,
@@ -20,10 +19,11 @@ import VInput from './VInput.vue';
 
 const props = defineProps<{
   name?: string;
+  label?: string;
 }>();
 
 const slots = defineSlots<{
-  default(props: { i: { model: any } }): any;
+  default?(): any;
   title: any;
   description: any;
   alert(props: { message: string }): any;
@@ -35,14 +35,22 @@ const descriptor = computed(() =>
   props.name ? form._h(props.name) : undefined,
 );
 
-provide(V_FORM_ITEM_LABEL_IN, { id, label: descriptor.value?.label });
+const label = computed(() => unref(descriptor.value?.label) ?? props.label);
 
-const control = computed(() => {
-  let rules = unref(descriptor.value?.rules);
-  return { rules };
-});
+const rules = computed(() => unref(descriptor.value?.rules));
+
+const asterisk = computed(
+  () =>
+    !!rules.value?.some(r => {
+      if (typeof r === 'string') return r.endsWith('!');
+      else if (Array.isArray(r)) return r[0].endsWith('!');
+      else return r.required;
+    }),
+);
 
 const visible = computed(() => descriptor.value?.visible?.value !== false);
+
+provide(V_FORM_ITEM_LABEL_IN, reactive({ id, label, asterisk }));
 
 const model = computed({
   get() {
@@ -56,16 +64,14 @@ const model = computed({
   },
 });
 
-const i = reactive({ model });
-
 const _validate = async () => {
   const value = model.value;
-  const rules = control.value.rules;
-  const label = descriptor.value?.label;
-  if (rules) {
+  const $rules = rules.value;
+  const $label = label.value;
+  if ($rules) {
     let ans: void | string;
-    for (const rule of rules) {
-      ans = await validate(value, rule, label);
+    for (const rule of $rules) {
+      ans = await validate(value, rule, $label);
       if (typeof ans === 'string') {
         return ans;
       }
@@ -109,12 +115,15 @@ watchEffect(onCleanup => {
 const message = computed(() => state.message);
 
 const vn = computed(() =>
-  cloneVNode(unref(descriptor.value?.render)?.() ?? h(VInput), {
-    modelValue: model.value,
-    'onUpdate:modelValue': (v: any) => {
-      model.value = v;
+  cloneVNode(
+    slots.default?.()[0] ?? unref(descriptor.value?.render)?.() ?? h(VInput),
+    {
+      modelValue: model.value,
+      'onUpdate:modelValue': (v: any) => {
+        model.value = v;
+      },
     },
-  }),
+  ),
 );
 </script>
 
@@ -130,9 +139,7 @@ const vn = computed(() =>
       </slot>
     </div>
 
-    <slot :i="i">
-      <component :name="name" ref="input" :is="vn" />
-    </slot>
+    <component :name="name" ref="input" :is="vn" />
 
     <div v-if="$slots.description" class="f3">
       <slot name="description" />

@@ -93,13 +93,7 @@ signupForm.hierarchy({
   },
   dateRange: {},
   phoneNumber: {
-    type: [
-      'text',
-      {
-        placeholder: 'Phone Number',
-        clearable: true,
-      },
-    ],
+    label: 'Phone',
   },
   repeatPassword: {
     label: 'Repeat Password',
@@ -129,8 +123,6 @@ signupForm.hierarchy({
   },
   charaDel: {},
   charas: {
-    type: 'list',
-
     init() {
       return {
         name: '',
@@ -140,12 +132,6 @@ signupForm.hierarchy({
       };
     },
     children: {
-      type: 'hidden',
-      rules: [
-        {
-          validator(value) {},
-        },
-      ],
       children: {
         name: {},
         shot: {},
@@ -254,8 +240,8 @@ signupForm.items['charas.0.name'];
       </template>
     </VFormItem>
     <VFormItem name="repeatPassword" />
-    <VFormItem name="phoneNumber" v-slot="{i}">
-      <VInput v-model="i.model" placehholder="666" clearable />
+    <VFormItem name="phoneNumber">
+      <VInput placehholder="666" clearable />
     </VFormItem>
     <VFormItem :name="'chara.name'" />
     <VButton type="submit" class="mat:air">

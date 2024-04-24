@@ -3,7 +3,7 @@
   line-height: 1.6;
 }
 
-:where(.VFormItem label) {
+:where(.VFormItemTitle) {
   font-size: 13px;
   font-weight: 600;
 }
