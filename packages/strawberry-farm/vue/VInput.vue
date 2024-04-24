@@ -32,28 +32,28 @@ const emit = defineEmits<{
   click: [MouseEvent];
 }>();
 
-const input = ref<HTMLInputElement | HTMLTextAreaElement>();
+const inputEl = ref<HTMLInputElement | HTMLTextAreaElement>();
 
-const userInput = ref<string | null>(null);
-const userOutput = computed(() =>
-  userInput.value === null ? model.value : userInput.value,
+const input = ref<string | null>(null);
+const output = computed(() =>
+  input.value === null ? model.value : input.value,
 );
 
 const parse = (v: string) => (props.trim ? v.trim() : v);
 
 const handleInput = () => {
-  model.value = parse((userInput.value = input.value!.value));
+  model.value = parse((input.value = inputEl.value!.value));
 };
 
 const handleBlur = () => {
   emit('blur');
-  userInput.value = null;
+  input.value = null;
 };
 
 const erase = () => {
-  userInput.value = null;
+  input.value = null;
   model.value = '';
-  input.value?.focus();
+  inputEl.value?.focus();
 };
 
 const el = ref() as Ref<HTMLDivElement>;
@@ -63,7 +63,7 @@ defineExpose({ el });
 <template>
   <div
     class="VInput VTextInput"
-    @focus="input?.focus()"
+    @focus="inputEl?.focus()"
     @click="e => emit('click', e)"
     ref="el"
     tabindex="-1"
@@ -76,7 +76,7 @@ defineExpose({ el });
       <slot name="suffix"></slot>
     </div>
     <i-feather
-      v-if="props.clearable && userOutput"
+      v-if="props.clearable && output"
       i="x"
       class="VInputEraser"
       tabindex="-1"
@@ -85,13 +85,13 @@ defineExpose({ el });
     />
     <component
       :is="props.textarea ? 'textarea' : 'input'"
-      ref="input"
+      ref="inputEl"
       class="VInputTrunk"
       :readonly="props.readonly"
       :placeholder="props.placeholder"
       :id="props.id"
       :name="props.name"
-      :value="userOutput"
+      :value="output"
       @input="handleInput"
       @focus="emit('focus')"
       @blur="handleBlur"

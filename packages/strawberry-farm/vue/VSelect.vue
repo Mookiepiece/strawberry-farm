@@ -2,7 +2,7 @@ c
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { PopPlugin, levitate } from '../functions';
-import { CommonOption, CommonOptionGroup } from './misc';
+import { CommonOptionsInput } from './misc';
 import VListbox from './VListbox.vue';
 import { usePopper } from './usePopper';
 
@@ -11,7 +11,7 @@ const model = defineModel<any>();
 const props = withDefaults(
   defineProps<{
     multi?: boolean;
-    options?: (CommonOption | CommonOptionGroup)[];
+    options?: CommonOptionsInput;
     disabled?: boolean;
     placeholder?: string;
     clearable?: boolean;
@@ -37,7 +37,6 @@ const sameWidth: PopPlugin = config => {
   width = Number(width.slice(0, -2));
 
   const shouldBe = config.$ref.getBoundingClientRect().width;
-  
 
   if (width !== shouldBe) {
     config.$pop.style.setProperty('width', shouldBe + 'px');
@@ -141,8 +140,7 @@ defineExpose({
         <VListbox
           power-pointer
           v-model="pickerModel"
-          :options="props.options"
-          assign-same-value
+          :options="options"
           class="VSelectPicker"
         />
       </div>

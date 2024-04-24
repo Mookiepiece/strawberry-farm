@@ -4,7 +4,13 @@ export type CommonOption = {
   disabled?: boolean;
 };
 
-export type CommonOptionInput = string | number | boolean | null | undefined | CommonOption;
+export type CommonOptionInput =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | CommonOption;
 
 export type CommonOptionGroup = {
   label?: string;

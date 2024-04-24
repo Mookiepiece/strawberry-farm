@@ -24,7 +24,7 @@ defineExpose({ el: computed(() => el.value?.el) });
 <template>
   <VListbox
     ref="el"
-    :mode="clearable ? 'clearable' : 'powerCursor'"
+    :mode="clearable ? 'clearable' : 'cursor'"
     :class="[props.class, 'VRadioGroup']"
     :style="style"
     :disabled="disabled"

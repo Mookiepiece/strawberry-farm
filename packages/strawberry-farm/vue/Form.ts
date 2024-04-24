@@ -125,7 +125,7 @@ type FieldDescriptor<T, K extends keyof T> = {
     : T[K] extends Unpathed
       ? never
       : {
-          [K2 in NonNullable<keyof T[K]>]: FieldDescriptor<T[K], K2>;
+          [K2 in NonNullable<keyof T[K]>]?: FieldDescriptor<T[K], K2>;
         };
 };
 
@@ -137,7 +137,7 @@ export type FormModel<T> = {
   validate(): Promise<string | void>;
 
   hierarchy(f: {
-    [K in NonNullable<keyof T>]: FieldDescriptor<T, K>;
+    [K in NonNullable<keyof T>]?: FieldDescriptor<T, K>;
   }): void;
 
   _h: (name: Path<T>) => FieldDescriptor<any, any>;
@@ -162,7 +162,7 @@ const init = <T extends object>(
   },
 ): FormModel<T> => {
   let init = _init;
-  let _h: FieldDescriptor<any, any> = undefined as any;
+  let _h: FieldDescriptor<any, any> = {} as any;
 
   const [action, failedAction] = Array.isArray(param.action)
     ? param.action
@@ -207,6 +207,7 @@ const init = <T extends object>(
       while (pathes.length) {
         const i = pathes.shift()!;
         p = p[i]?.children ?? p[i];
+        if(!p) return {}
       }
       return p;
     },

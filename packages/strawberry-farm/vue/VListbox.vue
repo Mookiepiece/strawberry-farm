@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { StyleValue, computed, ref, watch } from 'vue';
+import { StyleValue, computed, h, ref, watch } from 'vue';
 import {
   CommonOptionGroup,
   CommonOptionInput,
@@ -13,22 +13,14 @@ const model = defineModel<any>();
 const props = defineProps<{
   /**
    *  - 'clearable' Single option, select the same option will unselect it.
-   *  - 'powerCursor' Single option, select current option when navigating, this is to simulate `<input type="radio"/>` behaviour
+   *  - 'cursor' Single option, select current option when navigating, this is to simulate `<input type="radio"/>` behaviour
    *  - 'multi' Multiselectable, model must be an array.
    */
-  mode?: 'clearable' | 'powerCursor' | 'multi';
+  mode?: 'clearable' | 'cursor' | 'multi';
   /**
    * Pointer move events will change current option
    */
   powerPointer?: boolean;
-  /**
-   *  **The same value is assigned to the model** when click, which can trigger model change and thus close dropdown in `<Select />`.
-   *
-   *  Will have no effect when `mode='clearalbe'`.
-   *
-   *  Turn this off to simulate `<input type="radio"/>` behaviour, default is `false`.
-   */
-  assignSameValue?: boolean;
   /**
    * By default, arrow top left navigates to -1 and arrow right bottom navigates to 1.
    *
@@ -43,13 +35,13 @@ const props = defineProps<{
   itemStyle?: StyleValue;
 }>();
 
-defineSlots<{
-  default(props: { option: NormalizedCommonOption }): any;
-  groupLabel(props: { group: CommonOptionGroup }): any;
+const slots = defineSlots<{
+  default?(props: { option: NormalizedCommonOption }): any;
+  title?(props: { group: CommonOptionGroup }): any;
 }>();
 const id = wai();
 
-const groupOrOptions = computed(() => {
+const tree = computed(() => {
   let _index = 0;
 
   const normalize = (o: CommonOptionInput): NormalizedCommonOption => {
@@ -78,10 +70,8 @@ const groupOrOptions = computed(() => {
   });
 });
 
-// What's going wrong with my eslint plugin vue?
-// eslint-disable-next-line vue/no-dupe-keys
-const options = computed(() =>
-  groupOrOptions.value.flatMap(i =>
+const choices = computed(() =>
+  tree.value.flatMap(i =>
     i && typeof i === 'object' && 'options' in i ? i.options : i,
   ),
 );
@@ -89,22 +79,22 @@ const options = computed(() =>
 const current = ref(-1);
 
 const currentValid = computed(
-  () => current.value >= 0 && current.value < options.value.length,
+  () => current.value >= 0 && current.value < choices.value.length,
 );
 
 const clearable = computed(() => props.mode === 'clearable');
 const multi = computed(() => props.mode === 'multi');
-const powerCursor = computed(() => props.mode === 'powerCursor');
+const cursor = computed(() => props.mode === 'cursor');
 
 const checkCursorOnFocus = () => {
   if (!currentValid.value) {
-    current.value = options.value.findIndex(
+    current.value = choices.value.findIndex(
       i =>
         i.value ===
         (multi.value ? (model.value as any[]).includes(i.value) : model.value),
     );
 
-    if (current.value === -1 && options.value.length) current.value = 0;
+    if (current.value === -1 && choices.value.length) current.value = 0;
   }
 };
 
@@ -117,13 +107,13 @@ const toggle = (value: any) => {
   }
 
   if (clearable.value && model.value === value) model.value = null;
-  else if (model.value !== value || props.assignSameValue) model.value = value;
+  else model.value = value;
 };
 
 const invalid = computed(() =>
   Array.isArray(model.value)
-    ? model.value.filter(i => !options.value.some(o => o.value === i))
-    : !options.value.some(o => o.value === model.value) && model.value != null
+    ? model.value.filter(i => !choices.value.some(o => o.value === i))
+    : !choices.value.some(o => o.value === model.value) && model.value != null
       ? [model.value]
       : [],
 );
@@ -135,20 +125,20 @@ watch(invalid, invalid => {
 const el = ref<HTMLDivElement | null>(null);
 
 const nav = (delta: -1 | 1) => {
-  const before = options.value.slice(0, current.value);
-  const after = options.value.slice(current.value + 1);
+  const before = choices.value.slice(0, current.value);
+  const after = choices.value.slice(current.value + 1);
 
   const option = [...after, ...before][delta < 0 ? 'findLast' : 'find'](
     o => !o.disabled,
   );
 
   if (option) {
-    const index = options.value.indexOf(option);
+    const index = choices.value.indexOf(option);
     current.value = index;
 
     document.getElementById(id + current.value)?.scrollIntoView();
 
-    if (powerCursor.value) toggle(option.value);
+    if (cursor.value) toggle(option.value);
 
     return index;
   }
@@ -156,7 +146,7 @@ const nav = (delta: -1 | 1) => {
 };
 
 const toggleCurrent = () => {
-  if (currentValid.value) toggle(options.value[current.value].value);
+  if (currentValid.value) toggle(choices.value[current.value].value);
 };
 
 const onKeyDownExact = (e: KeyboardEvent) => {
@@ -186,6 +176,23 @@ const onKeyDownExact = (e: KeyboardEvent) => {
 defineExpose({
   el,
 });
+
+const renderOption = (i: NormalizedCommonOption) =>
+  h(
+    'div',
+    {
+      id: id + i.index,
+      onClick: !i.disabled ? () => toggle(i.value) : undefined,
+      role: 'option',
+      'aria-selected': i.selected || undefined,
+      'aria-current': i.current || undefined,
+      onPointermove: props.powerPointer
+        ? () => void (current.value = i.index)
+        : undefined,
+      'aria-disabled': props.disabled || i.disabled || undefined,
+    },
+    slots.default?.({ option: i }) || i.label,
+  );
 </script>
 
 <template>
@@ -203,7 +210,7 @@ defineExpose({
     :aria-multiselectable="multi"
   >
     <template
-      v-for="g in groupOrOptions"
+      v-for="g in tree"
       :key="
         g && typeof g === 'object' && 'options' in g
           ? 'g' + g.label
@@ -215,45 +222,16 @@ defineExpose({
         :aria-label="g.label"
         v-if="g && typeof g === 'object' && 'options' in g"
       >
-        <div role="none" v-if="$slots.groupLabel">
-          <slot name="groupLabel" :group="g">{{ g.label }}</slot>
+        <div role="none">
+          <slot name="title" :group="g">{{ g.label }}</slot>
         </div>
-        <!--
-          This two role="option" <div/>s are duplicated,
-          I don't make them components here because
-          I don't want to introduce new tree node in Vue devtool.
-        -->
-        <div
+        <component
           v-for="i in g.options"
-          :key="i.value"
-          :id="id + i.index"
-          @click="!i.disabled ? toggle(i.value) : undefined"
-          role="option"
-          :aria-selected="i.selected || undefined"
-          :aria-current="i.current || undefined"
-          @pointermove="props.powerPointer ? (current = i.index) : undefined"
-          :aria-disabled="props.disabled || i.disabled || undefined"
-        >
-          <slot :option="i">
-            {{ i.label }}
-          </slot>
-        </div>
+          :key="i.index"
+          :is="renderOption(i)"
+        />
       </div>
-      <template v-else>
-        <div
-          :id="id + g.index"
-          @click="!g.disabled ? toggle(g.value) : undefined"
-          role="option"
-          @pointermove="props.powerPointer ? (current = g.index) : undefined"
-          :aria-selected="g.selected || undefined"
-          :aria-current="g.current || undefined"
-          :aria-disabled="props.disabled || g.disabled || undefined"
-        >
-          <slot :option="g">
-            {{ g.label }}
-          </slot>
-        </div>
-      </template>
+      <component v-else :is="renderOption(g)" />
     </template>
   </div>
 </template>
