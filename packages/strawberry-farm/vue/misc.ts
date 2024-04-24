@@ -39,3 +39,14 @@ export type NormalizedCommonOption = {
   current: boolean;
   selected: boolean;
 };
+
+export const flatCommonOptionsInput = (i: CommonOptionsInput): CommonOption[] =>
+  i
+    .flatMap(o =>
+      o && typeof o === 'object' && 'options' in o ? o.options : o,
+    )
+    .map(o =>
+      o && typeof o === 'object' && 'value' in o
+        ? o
+        : { value: o, label: '' + o },
+    );

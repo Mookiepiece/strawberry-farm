@@ -5,8 +5,17 @@ import VSelect from '@mookiepiece/strawberry-farm/vue/VSelect.vue';
 <template>
   <div class="good">
     <VSelect
-      placeholder="Choose your favourite option"
-      :options="['Yes', 'No', 'I\'m not sure']"
+      placeholder="Spell Card"
+      :options="[
+        {
+          value: 0,
+          label: '魔符「ミルキーウェイ」',
+        },
+        {
+          value: 1,
+          label: '恋符「マスタースパーク」',
+        },
+      ]"
     />
     <VSelect
       :options="[

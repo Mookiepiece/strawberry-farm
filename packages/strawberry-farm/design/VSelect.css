@@ -28,7 +28,7 @@
 
 :where(.VSelectPicker [role='none']) {
   padding: 10px 10px 5px;
-  font-size: var(---f);
+  font-size: 13px;
   line-height: 1.6;
   font-weight: 600;
 }

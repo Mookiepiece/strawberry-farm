@@ -2,7 +2,7 @@ c
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { PopPlugin, levitate } from '../functions';
-import { CommonOptionsInput } from './misc';
+import { CommonOptionsInput, flatCommonOptionsInput } from './misc';
 import VListbox from './VListbox.vue';
 import { usePopper } from './usePopper';
 
@@ -53,7 +53,7 @@ const dataAttr: PopPlugin = config => {
   return config;
 };
 
-const autoHeight: PopPlugin = config => {
+const maxHeight: PopPlugin = config => {
   const { $pop, map } = config;
   $pop.style.setProperty('--max-height', Math.floor(map.height - 20) + 'px');
   return { ...config, pop: $pop.getBoundingClientRect() };
@@ -68,7 +68,7 @@ const { open, visible } = usePopper({
     trap: true,
     clickAway: true,
   },
-  plugins: [sameWidth, flip, dataAttr, autoHeight],
+  plugins: [sameWidth, flip, dataAttr, maxHeight],
 });
 
 const erase = () => {
@@ -84,6 +84,13 @@ const pickerModel = computed({
     open.value = false;
     model.value = value;
   },
+});
+
+const label = computed(() => {
+  if (!props.options) return model.value;
+  return flatCommonOptionsInput(props.options).find(
+    o => o.value === model.value,
+  )?.label;
 });
 
 defineExpose({
@@ -124,7 +131,7 @@ defineExpose({
       class="VInputTrunk"
       :class="model == null ? 'VInputTrunkPlaceholder' : undefined"
     >
-      {{ model ?? props.placeholder }}
+      {{ label ?? props.placeholder }}
     </div>
   </div>
 
