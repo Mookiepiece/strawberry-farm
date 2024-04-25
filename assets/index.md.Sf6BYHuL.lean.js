@@ -1,1 +1,0 @@
-import{J as e,o as t,i as o,K as a}from"./chunks/framework.p8HH8TNW.js";const h=JSON.parse('{"title":"Strawberry Farm","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),r={name:"index.md"},l=a("",5),s=[l];function p(n,i,c,m,d,u){return t(),o("div",null,s)}const b=e(r,[["render",p]]);export{h as __pageData,b as default};

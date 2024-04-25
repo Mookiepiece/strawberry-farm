@@ -1,0 +1,1 @@
+import{d as o,o as e,i as s,F as r,j as n,n as t,m as c,J as l}from"./framework.IkYOgTiJ.js";const _={class:"b 🦄"},i=o({__name:"Overflow",props:{i:{}},setup(p){return(a,d)=>(e(),s("div",{class:t(["a",{noscrollbar:a.i===2}])},[(e(),s(r,null,n(5,m=>c("div",_)),64))],2))}}),u=l(i,[["__scopeId","data-v-2a9c3714"]]);export{u as default};

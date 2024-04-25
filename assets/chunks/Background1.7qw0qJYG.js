@@ -1,1 +1,0 @@
-import{J as c,o as e,i as o}from"./framework.p8HH8TNW.js";const s={},t={class:"🍓"};function a(n,r){return e(),o("div",t)}const d=c(s,[["render",a],["__scopeId","data-v-fb3775d4"]]);export{d as default};
