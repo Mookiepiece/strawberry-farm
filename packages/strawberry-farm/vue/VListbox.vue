@@ -25,8 +25,6 @@ const props = defineProps<{
   disabled?: boolean;
   class?: any;
   style?: StyleValue;
-  itemClass?: any;
-  itemStyle?: StyleValue;
 }>();
 
 const slots = defineSlots<{
