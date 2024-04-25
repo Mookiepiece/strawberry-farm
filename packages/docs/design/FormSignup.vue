@@ -207,7 +207,7 @@ signupForm.items['charas.0.name'];
       </template>
     </VFormItem>
     <VFormItem :name="signupForm.i('password')">
-      <template #description>
+      <template #extra>
         <div class="[A]">
           <div class="[B] gap-1">
             <i-feather

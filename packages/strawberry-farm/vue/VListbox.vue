@@ -21,12 +21,6 @@ const props = defineProps<{
    * Pointer move events will change current option
    */
   powerPointer?: boolean;
-  /**
-   * By default, arrow top left navigates to -1 and arrow right bottom navigates to 1.
-   *
-   * Use this if partical arrow keys are used for special actions e.g. cascade or tree select.
-   */
-  keydownAdvanced?: (e: KeyboardEvent) => boolean | void;
   options?: CommonOptionsInput;
   disabled?: boolean;
   class?: any;
@@ -139,8 +133,6 @@ const toggleCurrent = () => {
 
 const onKeyDownExact = (e: KeyboardEvent) => {
   if (props.disabled) return;
-
-  if (props.keydownAdvanced?.(e)) return;
 
   switch (e.key) {
     case 'ArrowUp':

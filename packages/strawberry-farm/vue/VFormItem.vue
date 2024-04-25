@@ -25,7 +25,7 @@ const props = defineProps<{
 const slots = defineSlots<{
   default?(): any;
   title: any;
-  description: any;
+  extra: any;
   alert(props: { message: string }): any;
 }>();
 
@@ -141,8 +141,8 @@ const vn = computed(() =>
 
     <component :name="name" ref="input" :is="vn" />
 
-    <div v-if="$slots.description" class="f3">
-      <slot name="description" />
+    <div v-if="$slots.extra" class="f3">
+      <slot name="extra" />
     </div>
 
     <div v-if="$slots.alert">
