@@ -6,7 +6,7 @@
   height: var(---size);
   font-size: var(---f);
   line-height: 1.6;
-  color: var(--txt-1);
+  color: var(--text-1);
   outline: 1px solid var(--mat-solid-15);
   outline-offset: -1px;
   box-shadow: 0 0 0 0 var(---foam);
@@ -26,7 +26,7 @@
 }
 
 :where(.VInputTrunk::placeholder, .VInputTrunkPlaceholder) {
-  color: var(--txt-3);
+  color: var(--text-3);
 }
 
 :where(.VInputEraser) {
@@ -34,7 +34,7 @@
   flex-shrink: 0;
   width: var(---size);
   height: var(---size);
-  color: var(--txt-3);
+  color: var(--text-3);
   pointer-events: none;
 }
 
@@ -54,7 +54,7 @@
 :where(.VInputPrefix, .VInputSuffix) {
   flex-shrink: 0;
   padding-inline: 5px;
-  color: var(--txt-2);
+  color: var(--text-2);
   min-width: var(---size);
   white-space: nowrap;
 }

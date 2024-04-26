@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onUnmounted, ref } from 'vue';
-import { Bag, trap } from '../functions';
+import { Bag, onTimeout, trap } from '../functions';
 
 const model = defineModel();
 
@@ -23,6 +23,13 @@ const afterEnter = () => {
 };
 
 const close = () => void (!strong && (model.value = false));
+
+let down = false;
+const _bag = Bag();
+const handlePointerDown = () => (
+  (down = true), _bag(onTimeout(() => (down = false)))
+);
+const handlePointerUp = () => down && close();
 </script>
 
 <template>
@@ -36,7 +43,8 @@ const close = () => void (!strong && (model.value = false));
         v-if="model"
         @keydown.esc="close"
         class="SFCurtain"
-        @click.self="close"
+        @pointerdown.self.prevent="handlePointerDown"
+        @pointerup.self.prevent="handlePointerUp"
         tabindex="-1"
         ref="surface"
       >

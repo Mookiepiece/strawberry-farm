@@ -1,5 +1,5 @@
 :where(:is(.AirMat, .AiryMat)) {
-  color: var(--txt-1);
+  color: var(--text-1);
   background: transparent;
   border: 0;
   outline: 0;
@@ -24,7 +24,7 @@
 }
 
 :where(.AirMat:is(:disabled, [aria-disabled='true'],.disabled)) {
-  color: var(--txt-3);
+  color: var(--text-3);
 }
 
 :where(.AirMat:focus-visible) {
@@ -84,7 +84,7 @@
 .mat\:air-crown,
 .mat\:solid,
 .mat\:solid-crown {
-  color: var(--txt-1);
+  color: var(--text-1);
   @include ActiveQuery() {
     color: var(---ink);
   }
@@ -92,14 +92,14 @@
 
 .mat\:airy,
 .mat\:solidity {
-  color: var(--txt-2);
+  color: var(--text-2);
   @include ActiveQuery() {
-    color: var(---txt-1);
+    color: var(---text-1);
   }
 }
 
 .mat\:ruby {
-  color: var(--txt-1);
+  color: var(--text-1);
   border: 0;
   background: var(--mat-air-0);
   outline: 0;
@@ -121,9 +121,9 @@
       background: color-mix(in oklab, var(---main), #000 13%);
     }
 
-    --txt-1: #fff;
-    --txt-2: #fff;
-    --txt-3: #fff;
+    --text-1: #fff;
+    --text-2: #fff;
+    --text-3: #fff;
   }
 }
 
@@ -151,7 +151,7 @@
 }
 
 .mat\:dust {
-  color: var(--txt-1);
+  color: var(--text-1);
   @include ActiveQuery() {
     color: var(---ink);
   }
@@ -189,7 +189,7 @@
 .mat\:dust,
 .mat\:dusty {
   @include DisabledQuery() {
-    color: var(--txt-3);
+    color: var(--text-3);
   }
 }
 

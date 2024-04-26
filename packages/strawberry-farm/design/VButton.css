@@ -5,7 +5,7 @@
   min-width: var(---size);
   padding-inline: 15px;
   appearance: none;
-  color: var(---txt-1);
+  color: var(---text-1);
   text-decoration: none;
   background: transparent;
   font-size: var(---f);
@@ -28,7 +28,7 @@
 }
 
 :where(.TextButton:is(:disabled, [aria-disabled='true'])) {
-  color: var(--txt-3);
+  color: var(--text-3);
 }
 
 :where(.TextButton:focus-visible) {
@@ -71,7 +71,7 @@
 }
 
 :where(.GrayButton:is(:disabled, [aria-disabled='true'])) {
-  color: var(--txt-3);
+  color: var(--text-3);
 }
 
 :where(.GrayButton:focus-visible) {
@@ -97,7 +97,7 @@
 }
 
 :where(.OutlinedButton:is(:disabled, [aria-disabled='true'])) {
-  color: var(--txt-3);
+  color: var(--text-3);
 }
 
 :where(.OutlinedButton:focus-visible) {
@@ -141,7 +141,7 @@
 }
 
 :where(.TonalButton:is(:disabled, [aria-disabled='true'])) {
-  color: var(--txt-3);
+  color: var(--text-3);
 }
 
 :where(.TonalButton:focus-visible) {

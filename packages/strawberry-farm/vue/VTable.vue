@@ -110,7 +110,7 @@ const data = [
 
   th {
     font-size: var(--f2);
-    color: var(--txt-2);
+    color: var(--text-2);
     font-weight: 600;
   }
 

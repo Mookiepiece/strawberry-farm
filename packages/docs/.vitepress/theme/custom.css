@@ -6,7 +6,7 @@ body {
 
   --vp-font-family-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco,
     Consolas, 'Liberation Mono', 'Courier New', monospace;
-  color: var(--txt-1);
+  color: var(--text-1);
   /* This prevents our white-space:pre-wrap from reset.scss applied to <body>, which will cause a gap  */
   font-size: 0;
 }

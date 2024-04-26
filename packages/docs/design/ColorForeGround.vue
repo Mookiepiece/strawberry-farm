@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const colors = ref(['var(--txt-1)', 'var(--txt-2)', 'var(--txt-3)']);
+const colors = ref(['var(--text-1)', 'var(--text-2)', 'var(--text-3)']);
 </script>
 
 <template>
