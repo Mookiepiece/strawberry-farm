@@ -1,12 +1,11 @@
 import { Bag } from './collection';
 import { on } from './on';
 
-type Direction = 'top' | 'right' | 'bottom' | 'left';
-type Alignment = 'start' | 'end';
+export type Direction = 'top' | 'right' | 'bottom' | 'left';
+export type Alignment = 'start' | 'end';
 
 type Levitate = typeof _levitate & {
   auto: typeof auto;
-  plugins: typeof plugins;
 };
 
 export type PopConfigs = {
@@ -64,7 +63,7 @@ const auto = (el: Element, cb: () => void) => {
 const clamp = (min = 0, a: number, max = 100) =>
   Math.min(max, Math.max(a, min));
 
-const availableSpace4: Record<
+export const availableSpace4: Record<
   Direction,
   ([[ref], view]: [[DOMRect], DOMRect], offset: number) => DOMRect
 > = {
@@ -77,68 +76,6 @@ const availableSpace4: Record<
   // prettier-ignore
   left: ([[ref], viewport], offset) => { const width = clamp(0, ref.left - viewport.left - offset, viewport.width); const right = viewport.left + width; return ({ ...viewport, right, width }) },
 };
-
-type LogicalBox = {
-  main: number;
-  cross: number;
-};
-
-const logicalBoxes: Record<Direction, (rect: DOMRect) => LogicalBox> = {
-  top: ({ width, height }) => ({ main: height, cross: width }),
-  bottom: ({ width, height }) => ({ main: height, cross: width }),
-
-  left: ({ width, height }) => ({ main: width, cross: height }),
-  right: ({ width, height }) => ({ main: width, cross: height }),
-};
-
-const allFlipFallbacks: Record<Direction, Direction[]> = {
-  top: ['bottom', 'left', 'right'],
-  bottom: ['top', 'left', 'right'],
-  left: ['right', 'top', 'bottom'],
-  right: ['left', 'top', 'bottom'],
-};
-
-const mainAxisFlipFallbacks: Record<Direction, Direction[]> = {
-  top: ['bottom'],
-  bottom: ['top'],
-  left: ['right'],
-  right: ['left'],
-};
-
-const flipAny =
-  (
-    settings?: (config: PopConfigs) => {
-      limit?: number;
-      fallback?: Direction[];
-    },
-  ) =>
-  (config: PopConfigs): PopConfigs => {
-    let { ref, pop, viewport, dir, offset } = config;
-    let map = availableSpace4[dir]([[ref], viewport], offset);
-
-    const _settings = settings?.(config);
-    const limit = _settings?.limit ?? logicalBoxes[dir](pop).main;
-    const fallbacks = _settings?.fallback ?? allFlipFallbacks[dir];
-
-    if (logicalBoxes[dir](map).main < limit) {
-      for (const _dir of fallbacks) {
-        let _map = availableSpace4[_dir]([[ref], viewport], offset);
-        if (_map.width * _map.height > map.width * map.height) {
-          map = _map;
-          dir = _dir;
-          break;
-        }
-      }
-    }
-
-    return { ...config, dir, map };
-  };
-
-const flip: typeof flipAny = settings =>
-  flipAny(config => ({
-    fallback: mainAxisFlipFallbacks[config.dir],
-    ...settings?.(config),
-  }));
 
 const align = (config: PopConfigs): PopConfigs => {
   let { ref, pop, dir, alignment } = config;
@@ -172,11 +109,6 @@ const align = (config: PopConfigs): PopConfigs => {
   }
 
   return { ...config, x, y };
-};
-
-const plugins = {
-  flip,
-  flipAny,
 };
 
 const _levitate = (
@@ -237,4 +169,4 @@ const _levitate = (
   return config;
 };
 
-export const levitate: Levitate = Object.assign(_levitate, { auto, plugins });
+export const levitate: Levitate = Object.assign(_levitate, { auto });

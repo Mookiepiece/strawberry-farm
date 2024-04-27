@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { levitate } from '@mookiepiece/strawberry-farm/functions';
-
-const flip = levitate.plugins.flip();
+import { flip, levitate } from '@mookiepiece/strawberry-farm/functions';
 
 const open = ref(false);
 const leaving = ref(false);
@@ -17,7 +15,7 @@ watchEffect(onCleanup => {
   if ($ref && $popper && $open) {
     onCleanup(
       levitate.auto($ref, () => {
-        levitate($ref, $popper, { offset: 100 }, flip);
+        levitate($ref, $popper, { offset: 100 }, flip());
       }),
     );
   }

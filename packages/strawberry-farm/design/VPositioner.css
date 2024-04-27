@@ -1,17 +1,6 @@
 .VPositioner:not([data-pop-dir]) {
   visibility: hidden;
 }
-/* 
-.VPositioner[data-pop-dir='top'] {
-  .VPopperBody {
-    transform-origin: bottom;
-  }
-}
-.VPositioner[data-pop-dir='bottom'] {
-  .VPopperBody {
-    transform-origin: top;
-  }
-} */
 
 :where(.VPopperBody) {
   max-height: var(--max-height, auto);

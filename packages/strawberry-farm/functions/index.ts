@@ -10,3 +10,4 @@ export * from './gesture';
 export * from './trap';
 export * from './fx';
 export * from './levitate';
+export * from './levitatePlugins';

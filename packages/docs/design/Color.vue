@@ -20,12 +20,10 @@
       70deg,
       var(---ink) 40px,
       var(---main) 41px,
-      var(---main) 80px,
-      var(---flame) 81px,
-      var(---flame) 120px,
-      var(---foam) 121px,
-      var(---foam) 160px,
-      transparent 161px
+      var(---flame) 80px,
+      var(---foam) 81px,
+      var(---foam) 120px,
+      transparent 121px
     ),
     linear-gradient(
       10deg,

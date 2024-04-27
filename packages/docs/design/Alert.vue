@@ -14,6 +14,34 @@ const b = ref<HTMLDivElement>();
       voluptates velit, sunt voluptas pariatur culpa quaerat dolor repellendus!
     </div>
   </div>
+  <div class="AlertV2 mt-4">
+    <i-feather i="shopping-bag" />
+    <div clas="[A] gap-1">
+      <div class="pb-1 fw6">Your Orders</div>
+      <div class="f2 clr-2">Introducing Our Dynamic Orders Dashboard for Seamless Management and Insightful Analysis.</div>
+    </div>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.AlertV2 {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding: 20px;
+  padding-left: 40px;
+  font-size: 15px;
+  background: var(--mat-solid-1);
+  border: 1px solid var(---main);
+  border-radius: 6px;
+
+  > i-feather {
+    position: absolute;
+    top: 20px;
+    left: 14px;
+    color: var(---main);
+    width: 1lh;
+    aspect-ratio: 1;
+  }
+}
+</style>

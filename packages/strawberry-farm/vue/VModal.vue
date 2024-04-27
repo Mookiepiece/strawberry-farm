@@ -35,20 +35,19 @@ const handlePointerUp = () => down && close();
 <template>
   <Teleport to="body">
     <Transition
-      name="scale"
       @after-enter="afterEnter"
       @after-leave="() => bag()"
     >
       <div
         v-if="model"
         @keydown.esc="close"
-        class="SFCurtain"
+        class="VCurtain"
         @pointerdown.self.prevent="handlePointerDown"
         @pointerup.self.prevent="handlePointerUp"
         tabindex="-1"
         ref="surface"
       >
-        <div class="SFModal">
+        <div class="VModal">
           <slot />
         </div>
       </div>

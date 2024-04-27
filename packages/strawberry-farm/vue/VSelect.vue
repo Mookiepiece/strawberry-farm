@@ -1,7 +1,7 @@
 c
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { PopPlugin, levitate } from '../functions';
+import { PopPlugin, flip } from '../functions';
 import { CommonOptionsInput, flatCommonOptionsInput } from './misc';
 import VListbox from './VListbox.vue';
 import { usePopper } from './usePopper';
@@ -26,10 +26,6 @@ defineSlots<{
 
 const reference = ref<HTMLElement>();
 const popper = ref<HTMLElement>();
-
-const flip = levitate.plugins.flip(() => ({
-  limit: 200,
-}));
 
 const sameWidth: PopPlugin = config => {
   let width: any = config.$pop.style.getPropertyValue('width');
@@ -68,7 +64,14 @@ const { open, visible } = usePopper({
     trap: true,
     clickAway: true,
   },
-  plugins: [sameWidth, flip, dataAttr, maxHeight],
+  plugins: [
+    sameWidth,
+    flip(() => ({
+      limit: 200,
+    })),
+    dataAttr,
+    maxHeight,
+  ],
 });
 
 const erase = () => {

@@ -19,29 +19,29 @@
   padding-inline: 0;
 }
 
-:where(.TextButton:not(:disabled, [aria-disabled='true']):hover) {
+:where(.GhostButton:not(:disabled, [aria-disabled='true']):hover) {
   background-color: var(--mat-solid-1);
 }
 
-:where(.TextButton:not(:disabled, [aria-disabled='true']):active) {
+:where(.GhostButton:not(:disabled, [aria-disabled='true']):active) {
   background-color: var(--mat-solid-2);
 }
 
-:where(.TextButton:is(:disabled, [aria-disabled='true'])) {
+:where(.GhostButton:is(:disabled, [aria-disabled='true'])) {
   color: var(--text-3);
 }
 
-:where(.TextButton:focus-visible) {
+:where(.GhostButton:focus-visible) {
   outline: 2px solid var(---main);
   outline-offset: -1px;
 }
 
-:where(.TextButton[aria-pressed='true']) {
+:where(.GhostButton[aria-pressed='true']) {
   background-color: var(--mat-solid-1);
 }
 
 :where(
-    .TextButton[aria-pressed='true']:not(
+    .GhostButton[aria-pressed='true']:not(
         :disabled,
         [aria-disabled='true']
       ):hover
@@ -50,7 +50,7 @@
 }
 
 :where(
-    .TextButton[aria-pressed='true']:not(
+    .GhostButton[aria-pressed='true']:not(
         :disabled,
         [aria-disabled='true']
       ):active
@@ -79,7 +79,7 @@
   outline-offset: -1px;
 }
 
-:where(.TextButton[aria-pressed='true']) {
+:where(.GhostButton[aria-pressed='true']) {
   color: var(---main);
 }
 

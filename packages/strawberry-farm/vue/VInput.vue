@@ -76,7 +76,7 @@ defineExpose({ el });
       <slot name="suffix"></slot>
     </div>
     <i-feather
-      v-if="props.clearable && output"
+      v-if="clearable && output"
       i="x"
       class="VInputEraser"
       tabindex="-1"
@@ -84,13 +84,13 @@ defineExpose({ el });
       aria-hidden="true"
     />
     <component
-      :is="props.textarea ? 'textarea' : 'input'"
+      :is="textarea ? 'textarea' : 'input'"
       ref="inputEl"
       class="VInputTrunk"
-      :readonly="props.readonly"
-      :placeholder="props.placeholder"
-      :id="props.id"
-      :name="props.name"
+      :readonly="readonly"
+      :placeholder="placeholder"
+      :id="id"
+      :name="name"
       :value="output"
       @input="handleInput"
       @focus="emit('focus')"

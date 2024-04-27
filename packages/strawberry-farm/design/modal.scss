@@ -1,4 +1,4 @@
-.SFCurtain {
+.VCurtain {
   position: fixed;
   inset: 0;
   z-index: 1;
@@ -15,7 +15,7 @@
   }
 }
 
-.SFModal {
+.VModal {
   position: relative;
   margin: auto;
   --w: 800px;
@@ -33,21 +33,21 @@
 }
 
 @media (min-width: 700px) {
-  .SFCurtain:has(.SFModal:only-child) {
+  .VCurtain:has(.VModal:only-child) {
     padding: 20px 0;
   }
 }
 
-.scale-enter-from,
-.scale-leave-to {
+.VCurtain.v-enter-from,
+.VCurtain.v-leave-to {
   background-color: var(--mat-air-0);
   .SFModal {
     transform: scale(0);
   }
 }
 
-.scale-enter-active,
-.scale-leave-active {
+.VCurtain.v-enter-active,
+.VCurtain.v-leave-active {
   transition: background-color 0.3s;
   .SFModal {
     transition: transform 0.3s var(--curve-wave);

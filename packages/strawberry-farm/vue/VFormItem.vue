@@ -118,6 +118,7 @@ const vn = computed(() =>
   cloneVNode(
     slots.default?.()[0] ?? unref(descriptor.value?.render)?.() ?? h(VInput),
     {
+      id,
       modelValue: model.value,
       'onUpdate:modelValue': (v: any) => {
         model.value = v;

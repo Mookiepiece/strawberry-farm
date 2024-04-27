@@ -4,49 +4,49 @@ import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
 
 <template>
   <div class="good">
-    <VButton class="TextButton size-s">
+    <VButton class="GhostButton size-s">
       <template #prefix>
         <i-feather i="airplay" />
       </template>
     </VButton>
-    <VButton class="TextButton size-s">Button</VButton>
-    <VButton class="TextButton size-s">
-      <template #prefix>
-        <i-feather i="airplay" />
-      </template>
-      Button
-    </VButton>
-    <VButton class="TextButton">
-      <template #prefix>
-        <i-feather i="airplay" />
-      </template>
-    </VButton>
-    <VButton class="TextButton">Button</VButton>
-    <VButton class="TextButton">
+    <VButton class="GhostButton size-s">Button</VButton>
+    <VButton class="GhostButton size-s">
       <template #prefix>
         <i-feather i="airplay" />
       </template>
       Button
     </VButton>
-    <VButton class="TextButton size-l">
+    <VButton class="GhostButton">
       <template #prefix>
         <i-feather i="airplay" />
       </template>
     </VButton>
-    <VButton class="TextButton size-l">Button</VButton>
-    <VButton class="TextButton size-l">
+    <VButton class="GhostButton">Button</VButton>
+    <VButton class="GhostButton">
       <template #prefix>
         <i-feather i="airplay" />
       </template>
       Button
     </VButton>
-    <VButton class="TextButton" :disabled="true">
+    <VButton class="GhostButton size-l">
       <template #prefix>
         <i-feather i="airplay" />
       </template>
     </VButton>
-    <VButton class="TextButton" :disabled="true">Button</VButton>
-    <VButton class="TextButton" :disabled="true">
+    <VButton class="GhostButton size-l">Button</VButton>
+    <VButton class="GhostButton size-l">
+      <template #prefix>
+        <i-feather i="airplay" />
+      </template>
+      Button
+    </VButton>
+    <VButton class="GhostButton" :disabled="true">
+      <template #prefix>
+        <i-feather i="airplay" />
+      </template>
+    </VButton>
+    <VButton class="GhostButton" :disabled="true">Button</VButton>
+    <VButton class="GhostButton" :disabled="true">
       <template #prefix>
         <i-feather i="airplay" />
       </template>
@@ -105,13 +105,13 @@ import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
       Button
     </VButton>
 
-    <a href="#6" class="VButton TextButton">
+    <a href="#6" class="VButton GhostButton">
       <i-feather i="arrow-left" />
     </a>
-    <a href="#6" class="VButton TextButton">
+    <a href="#6" class="VButton GhostButton">
       <div class="Trunk">Anchor</div>
     </a>
-    <a href="#6" class="VButton TextButton">
+    <a href="#6" class="VButton GhostButton">
       <i-feather i="arrow-left" />
       <div class="Trunk">Anchor</div>
     </a>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Bag, levitate } from '@mookiepiece/strawberry-farm/functions';
+import { Bag, flip, levitate } from '@mookiepiece/strawberry-farm/functions';
 import { onUnmounted, ref } from 'vue';
 import { onMounted } from 'vue';
 
@@ -9,18 +9,18 @@ const b = ref<HTMLElement>();
 let bag = Bag();
 onUnmounted(bag);
 
-const dirRef = ref<'top' | 'left' | 'right' | 'bottom'>('bottom');
+const dir = ref<'top' | 'left' | 'right' | 'bottom'>('bottom');
 
 onMounted(() => {
   bag(levitate.auto(a.value!, update));
 });
 
 const update = () => {
-  levitate(a.value!, b.value!, { dir: dirRef.value }, levitate.plugins.flip());
+  levitate(a.value!, b.value!, { dir: dir.value }, flip());
 };
 
-const changeDir = (dir: 'top' | 'left' | 'right' | 'bottom') => {
-  dirRef.value = dir;
+const changeDir = (_dir: 'top' | 'left' | 'right' | 'bottom') => {
+  dir.value = _dir;
   update();
 };
 </script>

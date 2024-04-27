@@ -39,7 +39,7 @@ export const Lift = <A = undefined, B = undefined>(payload: A) => {
     //   <ul><li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quisquam cum excepturi dolor impedit a ex, voluptatibus laborum fugit necessitatibus, illum ab minima deserunt aliquid, veniam rem debitis. Incidunt, assumenda?` +
     //   `</li></ul>
     //   </details>`;
-    const { bag } = Toast.error(span);
-    bag(app.unmount);
+    // const { bag } = Toast.error(span);
+    // bag(app.unmount);
   };
 };
