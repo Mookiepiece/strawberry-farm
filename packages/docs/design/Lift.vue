@@ -1,5 +1,12 @@
-<script setup></script>
+<script setup>
+import { Lift } from '@mookiepiece/strawberry-farm/vue/Lift';
+import VLift from '@mookiepiece/strawberry-farm/vue/VLift.vue';
+
+const click = () => {
+  Lift(VLift);
+};
+</script>
 
 <template>
-  <div>foo</div>
+  <button @click="click">foo</button>
 </template>

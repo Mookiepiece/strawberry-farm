@@ -6,6 +6,7 @@ import {
   createApp,
   defineComponent,
   h,
+  inject,
   provide,
 } from 'vue';
 
@@ -28,36 +29,37 @@ const LiftProvider = defineComponent<{
       open: props.open,
     });
 
-    cloneVNode(h(props.as), {
-      modelValue: props.open,
-      'update:modelValue': () => void (props.open = false),
-    });
-
     return () =>
-      h('details', {}, [
-        h('summary', {}, 'Click To expand'),
-        h('ul', {}, [
-          h(
-            'li',
-            {},
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quisquam cum excepturi dolor impedit a ex, voluptatibus laborum fugit necessitatibus, illum ab minima deserunt aliquid, veniam rem debitis. Incidunt, assumenda?',
-          ),
-        ]),
-      ]);
+      cloneVNode(h(props.as), {
+        modelValue: props.open,
+        'update:modelValue': () =>
+          void props.reject(new DOMException('', 'AbortError')),
+      });
   },
 });
 
-export const Lift = <A = undefined, B = undefined>(payload: A) => {
+export const Lift = <A = undefined, B = undefined>(
+  payload: A,
+  signal?: AbortSignal,
+) => {
   let resolve: (res: B) => void = () => {};
   let reject: (err?: any) => void = () => {};
   const promise = new Promise<B>((_, __) => ([resolve, reject] = [_, __]));
 
-  const complex = () => {
+  signal?.addEventListener('abort', () =>
+    reject(new DOMException('', 'AbortError')),
+  );
+
+  const up = () => {
     const app = createApp(LiftProvider, { resolve, reject });
     app.mount(document.body);
   };
 
-  return {
-    reject,
-  };
+  return promise;
 };
+
+export const useLift = () =>
+  inject(LIFT_IN, {
+    resolve(args) {},
+    reject(args) {},
+  });

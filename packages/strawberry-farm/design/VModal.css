@@ -32,12 +32,6 @@
   }
 }
 
-@media (min-width: 700px) {
-  .VCurtain:has(.VModal:only-child) {
-    padding: 20px 0;
-  }
-}
-
 .VCurtain.v-enter-from,
 .VCurtain.v-leave-to {
   background-color: var(--mat-air-0);

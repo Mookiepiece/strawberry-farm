@@ -4,11 +4,9 @@ import { Bag, onTimeout, trap } from '../functions';
 
 const model = defineModel();
 
-const { strong } = defineProps({
-  strong: {
-    default: false,
-  },
-});
+const props = defineProps<{
+  strong?: boolean;
+}>();
 
 const bag = Bag();
 onUnmounted(() => bag());
@@ -22,7 +20,7 @@ const afterEnter = () => {
   }
 };
 
-const close = () => void (!strong && (model.value = false));
+const close = () => void (!props.strong && (model.value = false));
 
 let down = false;
 const _bag = Bag();
@@ -34,10 +32,7 @@ const handlePointerUp = () => down && close();
 
 <template>
   <Teleport to="body">
-    <Transition
-      @after-enter="afterEnter"
-      @after-leave="() => bag()"
-    >
+    <Transition @after-enter="afterEnter" @after-leave="() => bag()">
       <div
         v-if="model"
         @keydown.esc="close"

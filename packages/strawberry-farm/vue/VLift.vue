@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { inject } from 'vue';
-import { LIFT_IN } from './Lift';
+import { useLift } from './Lift';
+import VButton from './VButton.vue';
+import VDialog from './VDialog.vue';
 
-const lift = inject(LIFT_IN);
-
+const { resolve, reject } = useLift();
 </script>
 
 <template>
-  <div>Foo</div>
+  <VDialog title="Foo">
+    <div class="[B] gap-1">
+      <VButton @click="resolve(1)">Resolve</VButton>
+      <VButton @reject="reject(2)">Reject</VButton>
+    </div>
+  </VDialog>
 </template>
