@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import VModal from '@mookiepiece/strawberry-farm/vue/VModal.vue';
+import VDialog from '@mookiepiece/strawberry-farm/vue/VDialog.vue';
 import { onUnmounted } from 'vue';
 import { ref } from 'vue';
 
@@ -19,7 +20,7 @@ onUnmounted(() => {
 <template>
   <button class="mat:solid" @click="bodyPro">body pro</button>
   <button class="mat:solid" @click="visible = !visible">a</button>
-  <VModal v-model="visible">
+  <VDialog title="M" v-model="visible">
     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis, deserunt
     autem ipsum voluptatum fugia
     <br /><br />
@@ -49,7 +50,7 @@ onUnmounted(() => {
     <br /><br />
     error ex recusandae, ea magnam! Dolores fugiat eaque facilis ducimus sunt
     facere omnis vitae. Maiores est suscipit veritatis quam!
-  </VModal>
+  </VDialog>
 </template>
 
 <style scoped>

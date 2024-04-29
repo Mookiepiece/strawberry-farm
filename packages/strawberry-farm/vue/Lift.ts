@@ -1,65 +1,51 @@
-import {
-  Component,
-  InjectionKey,
-  Ref,
-  cloneVNode,
-  createApp,
-  defineComponent,
-  h,
-  inject,
-  provide,
-} from 'vue';
+import { Component, createApp, h, onMounted, onUnmounted, ref } from 'vue';
 
-export const LIFT_IN: InjectionKey<{
-  resolve: (args: any) => void;
-  reject: (args: any) => void;
-  open?: Ref<boolean>;
-}> = Symbol('LIFT_IN');
-
-const LiftProvider = defineComponent<{
-  as: Component;
-  resolve: (args: any) => void;
-  reject: (args: any) => void;
-  open?: Ref<boolean>;
-}>({
-  setup(props) {
-    provide(LIFT_IN, {
-      resolve: props.resolve,
-      reject: props.reject,
-      open: props.open,
-    });
-
-    return () =>
-      cloneVNode(h(props.as), {
-        modelValue: props.open,
-        'update:modelValue': () =>
-          void props.reject(new DOMException('', 'AbortError')),
-      });
-  },
-});
-
-export const Lift = <A = undefined, B = undefined>(
-  payload: A,
+export const Lift = <A = any, B = undefined>(
+  as: Component<{
+    args: A;
+    resolve: B extends undefined ? (ans?: B) => void : (ans: B) => void;
+  }>,
+  args: A,
   signal?: AbortSignal,
 ) => {
-  let resolve: (res: B) => void = () => {};
-  let reject: (err?: any) => void = () => {};
-  const promise = new Promise<B>((_, __) => ([resolve, reject] = [_, __]));
-
-  signal?.addEventListener('abort', () =>
-    reject(new DOMException('', 'AbortError')),
+  const open = ref(false);
+  let resolve: any = undefined as any;
+  let reject: () => void = undefined as any;
+  const promise = new Promise<B>(
+    (_resolve, _reject) =>
+      ([resolve, reject] = [
+        (ans: any) => (_resolve(ans), (open.value = false)),
+        () => (
+          _reject(new DOMException('', 'AbortError')), (open.value = false)
+        ),
+      ]),
   );
 
-  const up = () => {
-    const app = createApp(LiftProvider, { resolve, reject });
-    app.mount(document.body);
-  };
+  signal?.addEventListener('abort', reject);
+
+  const app = createApp({
+    name: 'LiftRoot',
+    setup: () => {
+      onMounted(() => {
+        open.value = true;
+      });
+      onUnmounted(() => {
+        div.remove();
+      });
+
+      return () =>
+        h(as, {
+          args,
+          resolve,
+          reject,
+          modelValue: open.value,
+          'onUpdate:modelValue': reject,
+        });
+    },
+  });
+  const div = document.createElement('div');
+  app.mount(div);
+  document.body.appendChild(div);
 
   return promise;
 };
-
-export const useLift = () =>
-  inject(LIFT_IN, {
-    resolve(args) {},
-    reject(args) {},
-  });

@@ -35,7 +35,7 @@
 .VCurtain.v-enter-from,
 .VCurtain.v-leave-to {
   background-color: var(--mat-air-0);
-  .SFModal {
+  .VModal {
     transform: scale(0);
   }
 }
@@ -43,7 +43,7 @@
 .VCurtain.v-enter-active,
 .VCurtain.v-leave-active {
   transition: background-color 0.3s;
-  .SFModal {
+  .VModal {
     transition: transform 0.3s var(--curve-wave);
   }
 }

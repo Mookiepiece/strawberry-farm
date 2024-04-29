@@ -2,6 +2,10 @@
 import { onUnmounted, ref } from 'vue';
 import { Bag, onTimeout, trap } from '../functions';
 
+defineOptions({
+  inheritAttrs: false,
+});
+
 const model = defineModel();
 
 const props = defineProps<{
@@ -32,7 +36,7 @@ const handlePointerUp = () => down && close();
 
 <template>
   <Teleport to="body">
-    <Transition @after-enter="afterEnter" @after-leave="() => bag()">
+    <Transition @enter="afterEnter" @leave="() => bag()">
       <div
         v-if="model"
         @keydown.esc="close"
@@ -42,7 +46,7 @@ const handlePointerUp = () => down && close();
         tabindex="-1"
         ref="surface"
       >
-        <div class="VModal">
+        <div class="VModal" v-bind="$attrs">
           <slot />
         </div>
       </div>
