@@ -77,7 +77,7 @@ const _validate = async () => {
   const value = model.value;
   const $rules = rules.value;
   const $label = label.value;
-  if ($rules) {
+  if ($rules.length) {
     let ans: void | string;
     for (const rule of $rules) {
       ans = await validate(value, rule, $label);
