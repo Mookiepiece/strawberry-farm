@@ -1,4 +1,4 @@
-import { Bag, inc, nextFrame, on } from '../functions';
+import { Bag, fx, inc, nextFrame, on } from '../functions';
 import { type ToastBarElement } from '../html/ToastBarElement';
 
 const uuid = inc('ToastItem');
@@ -26,12 +26,17 @@ export const toastPrimitive = ({
 
   const close = () => {
     onClose();
-    div.classList.add('leaving');
-    on(div).transitionend.once(() => {
-      bag();
-      div.remove();
+
+    fx.transition(div, {
+      from() {
+        div.classList.add('leaving');
+      },
+      done() {
+        bag();
+        div.remove();
+        bar.sort();
+      },
     });
-    bar.sort();
   };
 
   const mo = new MutationObserver(() => {

@@ -142,10 +142,10 @@
     background: var(---foam);
 
     &:hover {
-      background: color-mix(in oklab, var(---foam), var(---flame) 12%);
+      background: color-mix(in oklab, var(---foam), var(---main) 12%);
     }
     &:active {
-      background: color-mix(in oklab, var(---foam), var(---flame) 24%);
+      background: color-mix(in oklab, var(---foam), var(---main) 24%);
     }
   }
 }
@@ -171,10 +171,10 @@
     background: var(---foam);
 
     &:hover {
-      background: color-mix(in oklab, var(---foam), var(---flame) 12%);
+      background: color-mix(in oklab, var(---foam), var(---main) 12%);
     }
     &:active {
-      background: color-mix(in oklab, var(---foam), var(---flame) 24%);
+      background: color-mix(in oklab, var(---foam), var(---main) 24%);
     }
   }
 }

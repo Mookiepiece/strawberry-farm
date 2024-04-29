@@ -1,4 +1,4 @@
-import { Direction, PopConfigs, availableSpace4 } from "./levitate";
+import { Direction, PopConfigs, PopPlugin, availableSpace4 } from './levitate';
 
 type LogicalBox = {
   main: number;
@@ -19,7 +19,6 @@ const allFlipFallbacks: Record<Direction, Direction[]> = {
   left: ['right', 'top', 'bottom'],
   right: ['left', 'top', 'bottom'],
 };
-
 
 const mainAxisFlipFallbacks: Record<Direction, Direction[]> = {
   top: ['bottom'],
@@ -62,3 +61,31 @@ export const flip: typeof flipAny = settings =>
     fallback: mainAxisFlipFallbacks[config.dir],
     ...settings?.(config),
   }));
+
+export const sameWidth: PopPlugin = config => {
+  let width: any = config.$pop.style.getPropertyValue('width');
+  if (!width.endsWith('px')) width = '';
+  width = Number(width.slice(0, -2));
+
+  const shouldBe = config.$ref.getBoundingClientRect().width;
+
+  if (width !== shouldBe) {
+    config.$pop.style.setProperty('width', shouldBe + 'px');
+
+    const pop = config.$pop.getBoundingClientRect();
+    return { ...config, pop };
+  }
+  return config;
+};
+
+export const dataAttr: PopPlugin = config => {
+  const { $pop, dir } = config;
+  $pop.setAttribute('data-pop-dir', dir);
+  return config;
+};
+
+export const maxHeight: PopPlugin = config => {
+  const { $pop, map } = config;
+  $pop.style.setProperty('--max-height', Math.floor(map.height - 20) + 'px');
+  return { ...config, pop: $pop.getBoundingClientRect() };
+};

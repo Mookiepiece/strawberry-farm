@@ -110,12 +110,12 @@ export const deleter = <T, P extends Path<T>>(object: T, path: P) => {
 };
 
 type FieldDescriptor<T, K extends keyof T> = {
-  label?: MaybeRef<string>;
+  label?: string;
   visible?: Ref<boolean>;
 
-  render?: MaybeRef<() => VNode>;
+  render?: () => VNode;
 
-  rules?: MaybeRef<RuleSlim<keyof IRuleType, T[K]>[]>;
+  rules?: RuleSlim<keyof IRuleType, T[K]>[];
 
   init?: T[K] extends Array<infer I> ? () => I : never;
   children?: T[K] extends Array<infer I>
@@ -207,7 +207,7 @@ const init = <T extends object>(
       while (pathes.length) {
         const i = pathes.shift()!;
         p = p[i]?.children ?? p[i];
-        if(!p) return {}
+        if (!p) return {};
       }
       return p;
     },

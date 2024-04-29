@@ -1,10 +1,14 @@
 c
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { PopPlugin, flip } from '../functions';
+import { dataAttr, flip, maxHeight, sameWidth } from '../functions';
 import { CommonOptionsInput, flatCommonOptionsInput } from './misc';
 import VListbox from './VListbox.vue';
 import { usePopper } from './usePopper';
+
+defineOptions({
+  inheritAttrs: false,
+});
 
 const model = defineModel<any>();
 
@@ -27,34 +31,6 @@ defineSlots<{
 const reference = ref<HTMLElement>();
 const popper = ref<HTMLElement>();
 
-const sameWidth: PopPlugin = config => {
-  let width: any = config.$pop.style.getPropertyValue('width');
-  if (!width.endsWith('px')) width = '';
-  width = Number(width.slice(0, -2));
-
-  const shouldBe = config.$ref.getBoundingClientRect().width;
-
-  if (width !== shouldBe) {
-    config.$pop.style.setProperty('width', shouldBe + 'px');
-
-    const pop = config.$pop.getBoundingClientRect();
-    return { ...config, pop };
-  }
-  return config;
-};
-
-const dataAttr: PopPlugin = config => {
-  const { $pop, dir } = config;
-  $pop.setAttribute('data-pop-dir', dir);
-  return config;
-};
-
-const maxHeight: PopPlugin = config => {
-  const { $pop, map } = config;
-  $pop.style.setProperty('--max-height', Math.floor(map.height - 20) + 'px');
-  return { ...config, pop: $pop.getBoundingClientRect() };
-};
-
 const { open, visible } = usePopper({
   popper,
   reference,
@@ -64,14 +40,7 @@ const { open, visible } = usePopper({
     trap: true,
     clickAway: true,
   },
-  plugins: [
-    sameWidth,
-    flip(() => ({
-      limit: 200,
-    })),
-    dataAttr,
-    maxHeight,
-  ],
+  plugins: [sameWidth, flip(() => ({ limit: 200 })), dataAttr, maxHeight],
 });
 
 const erase = () => {
@@ -84,16 +53,21 @@ const pickerModel = computed({
     return model.value;
   },
   set(value) {
-    open.value = false;
+    if (!props.multi) open.value = false;
     model.value = value;
   },
 });
 
 const label = computed(() => {
   if (!props.options) return model.value;
-  return flatCommonOptionsInput(props.options).find(
-    o => o.value === model.value,
-  )?.label;
+
+  const choices = flatCommonOptionsInput(props.options);
+  return props.multi
+    ? choices
+        .filter(o => model.value?.includes(o.value))
+        .map(o => o.label)
+        .join(', ')
+    : choices.find(o => o.value === model.value)?.label;
 });
 
 defineExpose({
@@ -148,6 +122,7 @@ defineExpose({
     >
       <div class="VPopperBody">
         <VListbox
+          :mode="multi ? 'multi' : undefined"
           power-pointer
           v-model="pickerModel"
           :options="options"

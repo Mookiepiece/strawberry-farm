@@ -58,7 +58,7 @@ samp {
 .z {
   position: relative;
   min-height: 250px;
-  box-shadow: inset 0 0 0 2px var(---flame);
+  box-shadow: inset 0 0 0 2px var(---main);
   border-radius: 10px;
 }
 

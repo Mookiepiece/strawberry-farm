@@ -45,6 +45,7 @@ import VSelect from '@mookiepiece/strawberry-farm/vue/VSelect.vue';
     </VSelect>
 
     <VSelect
+      multi
       style="max-width: 200px"
       :options="
         [

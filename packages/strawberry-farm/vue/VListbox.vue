@@ -46,7 +46,7 @@ const tree = computed(() => {
       disabled: typeof o === 'object' && o ? o.disabled || false : false,
       index,
       selected: multi.value
-        ? model.value.includes(value)
+        ? model.value?.includes(value)
         : value === model.value,
       current: current.value === index,
     };

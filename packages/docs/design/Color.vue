@@ -20,7 +20,7 @@
       70deg,
       var(---ink) 40px,
       var(---main) 41px,
-      var(---flame) 80px,
+      var(---main) 80px,
       var(---foam) 81px,
       var(---foam) 120px,
       transparent 121px

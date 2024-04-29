@@ -11,7 +11,7 @@
 .i {
   position: relative;
   height: 30px;
-  background: var(--tone-rasp-flame);
+  background: var(--tone-rasp-main);
 
   &::after {
     position: absolute;
