@@ -15,17 +15,17 @@
 
 和 Emmet 差不多。
 
-| Class  | CSS                                            |
-| ------ | ---------------------------------------------- |
-| `mt-1` | `margin-top: var(--1)`                         |
-| `mr-1` | `margin-right: var(--1)`                       |
-| `mb-1` | `margin-bottom: var(--1)`                      |
-| `ml-1` | `margin-left: var(--1)`                        |
-| `mx-1` | `margin-right: var(--1); margin-left: var(--1)` |
-| `my-1` | `margin-top: var(--1); margin-bottom: var(--1)` |
-| `m-1` | `margin-top: var(--1); margin-right: var(--1); margin-bottom: var(--1); margin-left: var(--1)`                         |
+| Class  | CSS                       |
+| ------ | ------------------------- |
+| `m-1`  | `margin: var(--1)`        |
+| `mx-1` | `margin-inline: var(--1)` |
+| `my-1` | `margin-block: var(--1)`  |
+| `mt-1` | `margin-top: var(--1)`    |
+| `mr-1` | `margin-right: var(--1)`  |
+| `mb-1` | `margin-bottom: var(--1)` |
+| `ml-1` | `margin-left: var(--1)`   |
 
-没有使用 `margin` `margin-inline` `margin-block` 简写是因为多个简写会互相覆盖而无法组合。(e.g. `class="m-1 mr-3"`)
+定义顺序为 `['m',['mx','my'],['mt','mr','mb','ml']]`，以保证后声明的属性能与前一项属性组合使用而不被覆盖 e.g. `m-1 mx-2 mt-3`。
 
 ### 盒模型数值修饰
 

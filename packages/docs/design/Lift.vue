@@ -35,7 +35,7 @@ const Lifted = defineComponent<{
                     class: 'GhostButton',
                     onClick: () => props.resolve('a'),
                   },
-                  'Resolve',
+                  ()=>'Resolve',
                 ),
                 h(
                   VButton,
@@ -43,7 +43,7 @@ const Lifted = defineComponent<{
                     class: 'GhostButton',
                     onClick: () => emit('update:modelValue', false),
                   },
-                  'Reject',
+                  ()=>'Reject',
                 ),
                 h('span', {}, JSON.stringify(props.args)),
               ],
