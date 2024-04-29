@@ -11,7 +11,7 @@ import {
   watchEffect,
 } from 'vue';
 import { Form, FormModel, V_FORM_IN, V_FORM_ITEM_LABEL_IN } from './Form';
-import { validate } from '../functions/validator';
+import { RuleSlim, validate } from '../functions/validator';
 import { Bag } from '../functions';
 import { unref } from 'vue';
 import VFormLabel from './VFormLabel.vue';
@@ -20,6 +20,8 @@ import VInput from './VInput.vue';
 const props = defineProps<{
   name?: string;
   label?: string;
+  rules?: RuleSlim[];
+  visible?: boolean;
 }>();
 
 const slots = defineSlots<{
@@ -37,7 +39,10 @@ const descriptor = computed(() =>
 
 const label = computed(() => unref(descriptor.value?.label) ?? props.label);
 
-const rules = computed(() => unref(descriptor.value?.rules));
+const rules = computed(() => [
+  ...(unref(descriptor.value?.rules) ?? []),
+  ...(props.rules ?? []),
+]);
 
 const asterisk = computed(
   () =>
@@ -48,7 +53,11 @@ const asterisk = computed(
     }),
 );
 
-const visible = computed(() => descriptor.value?.visible?.value !== false);
+const visible = computed(() =>
+  typeof props.visible === 'boolean'
+    ? props.visible
+    : descriptor.value?.visible?.value !== false,
+);
 
 provide(V_FORM_ITEM_LABEL_IN, reactive({ id, label, asterisk }));
 
