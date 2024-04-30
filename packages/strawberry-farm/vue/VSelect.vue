@@ -70,6 +70,10 @@ const label = computed(() => {
     : choices.find(o => o.value === model.value)?.label;
 });
 
+const empty = computed(() =>
+  props.multi ? model.value?.length : model.value == null,
+);
+
 defineExpose({
   el: reference,
 });
@@ -97,7 +101,7 @@ defineExpose({
       <slot name="suffix"></slot>
     </div>
     <i-feather
-      v-if="props.clearable && model != null"
+      v-if="props.clearable && empty"
       i="x"
       class="VInputEraser"
       tabindex="-1"
@@ -106,7 +110,7 @@ defineExpose({
     />
     <div
       class="VInputTrunk"
-      :class="model == null ? 'VInputTrunkPlaceholder' : undefined"
+      :class="empty ? 'VInputTrunkPlaceholder' : undefined"
     >
       {{ label ?? props.placeholder }}
     </div>
