@@ -53,7 +53,6 @@ export const usePopper = ({
     onCleanup(
       onClickAway([$pop, $ref], () => {
         open.value = false;
-        console.log(1);
       }),
     );
   });
@@ -64,8 +63,8 @@ export const usePopper = ({
     if (!configs?.animated) {
       if (!open.value) {
         visible.value = false;
-        return;
       }
+      return;
     }
 
     const body = popper.value.querySelector('.VPopperBody') as
