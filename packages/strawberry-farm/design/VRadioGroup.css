@@ -15,14 +15,13 @@
 
   min-height: 40px;
 
-  outline: 1px solid var(--mat-solid-15);
-  outline-offset: -1px;
+  border: 1px solid var(--mat-solid-15);
   cursor: pointer;
   user-select: none;
 }
 
 :where(.VRadioTrunk) {
-  padding-inline: 20px;
+  padding-inline: 19px;
 }
 
 :where(.VRadioGroup [role='option']:not([aria-disabled='true']):hover) {

@@ -7,8 +7,9 @@ defineProps<{
   disabled?: boolean;
 }>();
 
-const el = ref<HTMLDivElement>();
+const toggle = () => (model.value = !model.value);
 
+const el = ref<HTMLDivElement>();
 defineExpose({ el });
 </script>
 
@@ -18,6 +19,9 @@ defineExpose({ el });
     class="VSwitch"
     :aria-disabled="disabled"
     :aria-pressed="model ? 'true' : 'false'"
+    @click="toggle"
+    @keydown.enter="toggle"
+    @keydown.space="toggle"
   >
     <slot />
     <div class="VSwitchIndicator"></div>

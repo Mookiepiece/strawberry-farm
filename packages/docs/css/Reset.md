@@ -1,18 +1,18 @@
 # Reset
 
+::: source/
+
+:::
+
 本章节解释 `strawberry-farm` 如何重置样式表。
 
-## Box Sizing
+其它替代：https://unocss.dev/guide/style-reset
 
-```css
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-```
+### Box Sizing
 
-## Img
+/
+
+### Img
 
 ```scss
 img {
@@ -48,45 +48,18 @@ img {
 
 注： `<video />` 元素同理。
 
-## Table
+### Pre
 
-```scss
-table {
-  border-collapse: collapse;
-}
-```
+`<pre />` 标签拥有特殊的格式化规则，优先考虑使用这个标签。
 
-## Typography
+### Table
 
-仅在 `article` 角色或元素内，恢复默认 `margin` 。
+/
 
-```scss
-// Remove default margin
-:where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd) {
-  margin: 0;
-}
+### Typography
 
-:where(ul, ol) {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+/
 
-// Restore default margin and list style inside an article element
-:where(article, [role='article'])
-  :where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd) {
-  margin-block: 1em;
-}
+### Form
 
-:where(article, [role='article']) :where(ul) {
-  list-style: disc;
-  margin-block: 1em;
-  margin-inline-start: 40px;
-}
-
-:where(article, [role='article']) :where(ol) {
-  list-style: decimal;
-  margin-block: 1em;
-  margin-inline-start: 40px;
-}
-```
+/

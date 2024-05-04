@@ -17,12 +17,17 @@ import { unref } from 'vue';
 import VFormLabel from './VFormLabel.vue';
 import VInput from './VInput.vue';
 
-const props = defineProps<{
-  name?: string;
-  label?: string;
-  rules?: RuleSlim[];
-  visible?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    name?: string;
+    label?: string;
+    rules?: RuleSlim[];
+    visible?: boolean;
+  }>(),
+  {
+    visible: undefined,
+  },
+);
 
 const slots = defineSlots<{
   default?(): any;
@@ -101,16 +106,14 @@ const input = ref<any>();
 const focus = () =>
   (input.value.el ?? input.value.$el ?? input.value)?.focus?.();
 
-const state = reactive<
-  NonNullable<(typeof form.items)[keyof typeof form.items]>
->({
+const state = reactive({
   focus,
   validate: () => {
     bag();
     return _validate();
   },
-  _visible: visible.value,
-  message: undefined,
+  _visible: visible,
+  message: undefined as string | undefined,
 });
 watch(visible, v => (state._visible = v), { immediate: true });
 
@@ -141,7 +144,7 @@ const vn = computed(() =>
   <div
     class="VFormItem"
     :class="{ invalid: typeof message === 'string' }"
-    v-if="name && descriptor && visible"
+    v-if="name && visible"
   >
     <div class="VFormItemTitle">
       <slot name="title">

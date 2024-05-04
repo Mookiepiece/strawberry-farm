@@ -83,7 +83,7 @@ const checkCursorOnFocus = () => {
     current.value = choices.value.findIndex(
       i =>
         i.value ===
-        (multi.value ? (model.value as any[]).includes(i.value) : model.value),
+        (multi.value ? model.value?.includes(i.value) : model.value),
     );
 
     if (current.value === -1 && choices.value.length) current.value = 0;
@@ -104,6 +104,16 @@ const toggle = (value: any) => {
 
 const el = ref<HTMLDivElement | null>(null);
 
+const io = new IntersectionObserver(enteries => {
+  if ((enteries[0].intersectionRatio || 0) < 1) {
+    enteries[0].target.scrollIntoView({
+      block: 'nearest',
+      inline: 'nearest',
+    });
+  }
+  io.disconnect();
+});
+
 const nav = (delta: -1 | 1) => {
   const before = choices.value.slice(0, current.value);
   const after = choices.value.slice(current.value + 1);
@@ -116,7 +126,8 @@ const nav = (delta: -1 | 1) => {
     const index = choices.value.indexOf(option);
     current.value = index;
 
-    document.getElementById(id + current.value)?.scrollIntoView();
+    io.disconnect();
+    io.observe(document.getElementById(id + current.value)!);
 
     if (cursor.value) toggle(option.value);
 

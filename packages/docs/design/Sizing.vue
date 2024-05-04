@@ -11,7 +11,7 @@
 .i {
   position: relative;
   height: 30px;
-  background: var(--tone-rasp-main);
+  background: var(--tone-rasp);
 
   &::after {
     position: absolute;

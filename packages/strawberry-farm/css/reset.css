@@ -1,0 +1,86 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+body {
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+pre {
+  font-family: inherit;
+  white-space: pre-wrap;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+tr,
+td {
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  font-weight: normal;
+  margin: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+:where(article, [role='article']) {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd {
+    margin-block: 1em;
+  }
+
+  ul {
+    list-style: disc;
+    margin-block: 1em;
+    margin-inline-start: 40px;
+  }
+
+  ol {
+    list-style: decimal;
+    margin-block: 1em;
+    margin-inline-start: 40px;
+  }
+}
+
+button,
+input {
+  font-family: inherit;
+}
