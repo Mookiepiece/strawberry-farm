@@ -126,8 +126,8 @@ defineExpose({
     >
       <div class="VPopperBody">
         <VListbox
-          :mode="multi ? 'multi' : undefined"
-          power-pointer
+          :multi="multi"
+          magnetic
           v-model="pickerModel"
           :options="options"
           class="VSelectPicker"

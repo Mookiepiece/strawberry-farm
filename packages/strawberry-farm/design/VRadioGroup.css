@@ -1,3 +1,7 @@
+:where(.VRadioTrunk) {
+  padding-inline: 19px;
+}
+
 :where(.VRadioGroup) {
   display: flex;
   flex-wrap: wrap;
@@ -6,77 +10,64 @@
   font-size: var(--f2);
   line-height: 1.6;
   outline: none;
+
+  :where([role='option']) {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    min-height: 40px;
+
+    border: 1px solid var(--mat-solid-15);
+    cursor: pointer;
+    user-select: none;
+
+    &:where(:not([aria-disabled='true'])) {
+      &:where(:hover) {
+        background: var(--mat-solid-1);
+      }
+      &:where(:active) {
+        background: var(--mat-solid-2);
+      }
+    }
+
+    &:where([aria-selected='true']) {
+      color: var(---ink);
+      outline: 2px solid var(---main);
+
+      &:where(:not([aria-disabled='true'])) {
+        &:where(:hover) {
+          background: color-mix(in oklab, var(---foam), transparent 75%);
+        }
+        &:where(:active) {
+          background: color-mix(in oklab, var(---foam), transparent 50%);
+        }
+      }
+    }
+
+    &:where([aria-disabled='true']) {
+      color: var(--text-3);
+      background: var(--mat-solid-05);
+      cursor: not-allowed;
+    }
+  }
 }
 
-:where(.VRadioGroup [role='option']) {
-  position: relative;
-  display: flex;
-  align-items: center;
-
-  min-height: 40px;
-
-  border: 1px solid var(--mat-solid-15);
-  cursor: pointer;
-  user-select: none;
-}
-
-:where(.VRadioTrunk) {
-  padding-inline: 19px;
-}
-
-:where(.VRadioGroup [role='option']:not([aria-disabled='true']):hover) {
-  background: var(--mat-solid-1);
-}
-
-:where(.VRadioGroup [role='option']:not([aria-disabled='true']):active) {
-  background: var(--mat-solid-2);
-}
-
-:where(.VRadioGroup [role='option']):where([aria-selected='true']) {
-  color: var(---ink);
-  outline: 2px solid var(---main);
-}
-
-:where(
-    .VRadioGroup
-      [role='option']:not([aria-disabled='true'])[aria-selected='true']:hover
-  ) {
-  background: color-mix(in oklab, var(---foam), transparent 75%);
-}
-
-:where(
-    .VRadioGroup
-      [role='option']:not([aria-disabled='true'])[aria-selected='true']:active
-  ) {
-  background: color-mix(in oklab, var(---foam), transparent 50%);
-}
-
-:where(.VRadioGroup [role='option'][aria-disabled='true']) {
-  color: var(--text-3);
-  background: var(--mat-solid-05);
-  cursor: not-allowed;
-}
-
-:where(.VRadioGroup:focus-visible [role='option']):where(
-    [aria-current='true']
-  ) {
-  outline-width: 2px;
-}
-
-:where(.VRadioGroup:focus-visible [role='option'][aria-current='true']) {
+:where(.VRadioGroup:focus-visible [role='option'].current) {
   outline-width: 2px;
   box-shadow: 0 0 0 6px var(--mat-air-1);
 }
 
 :where(
-    .VRadioGroup:focus-visible
-      [role='option'][aria-selected='true'][aria-current='true']
+    .VRadioGroup:focus-visible [role='option'][aria-selected='true'].current
   ) {
   outline-width: 2px;
   box-shadow: 0 0 0 6px var(---foam);
 }
 
-:where(.VRadioGroup [role='option']:not([aria-selected='true']) .VCheckboxIndicator) {
+:where(
+    .VRadioGroup [role='option']:not([aria-selected='true']) .VCheckboxIndicator
+  ) {
   display: none;
 }
 

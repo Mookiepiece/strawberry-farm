@@ -5,6 +5,7 @@ import {
   CommonOptionInput,
   CommonOptionsInput,
   NormalizedCommonOption,
+  flatCommonOptionsInput,
 } from './misc';
 import { wai } from '../functions';
 
@@ -12,15 +13,18 @@ const model = defineModel<any>();
 
 const props = defineProps<{
   /**
-   *  - 'clearable' Single option, select the same option will unselect it.
-   *  - 'cursor' Single option, select current option when navigating, this is to simulate `<input type="radio"/>` behaviour
-   *  - 'multi' Multiselectable, model must be an array.
+   * Multiselectable, model must be an array.
    */
-  mode?: 'clearable' | 'cursor' | 'multi';
+  multi?: boolean;
+  /**
+   * Single option, select the same option will unselect it.
+   */
+  clearable?: boolean;
   /**
    * Pointer move events will change current option
    */
-  powerPointer?: boolean;
+  magnetic?: boolean;
+
   options?: CommonOptionsInput;
   disabled?: boolean;
   class?: any;
@@ -32,6 +36,24 @@ const slots = defineSlots<{
   title?(props: { group: CommonOptionGroup }): any;
 }>();
 const id = wai();
+
+const length = computed(
+  () =>
+    flatCommonOptionsInput(props.options ?? []).filter(i => !i.disabled).length,
+);
+
+const _current = ref(0);
+const current = computed({
+  get() {
+    if (!length.value) return -1;
+    if (_current.value >= 0 && _current.value < length.value)
+      return _current.value;
+    return 0;
+  },
+  set(v) {
+    _current.value = v;
+  },
+});
 
 const tree = computed(() => {
   let _index = 0;
@@ -45,7 +67,7 @@ const tree = computed(() => {
       value,
       disabled: typeof o === 'object' && o ? o.disabled || false : false,
       index,
-      selected: multi.value
+      selected: props.multi
         ? model.value?.includes(value)
         : value === model.value,
       current: current.value === index,
@@ -68,48 +90,24 @@ const choices = computed(() =>
   ),
 );
 
-const current = ref(-1);
-
-const currentValid = computed(
-  () => current.value >= 0 && current.value < choices.value.length,
-);
-
-const clearable = computed(() => props.mode === 'clearable');
-const multi = computed(() => props.mode === 'multi');
-const cursor = computed(() => props.mode === 'cursor');
-
-const checkCursorOnFocus = () => {
-  if (!currentValid.value) {
-    current.value = choices.value.findIndex(
-      i =>
-        i.value ===
-        (multi.value ? model.value?.includes(i.value) : model.value),
-    );
-
-    if (current.value === -1 && choices.value.length) current.value = 0;
-  }
-};
-
 const toggle = (value: any) => {
-  if (multi.value) {
-    const set = new Set(model.value);
-    set.has(value) ? set.delete(value) : set.add(value);
-    model.value = [...set];
+  if (props.multi) {
+    if (!model.value) return;
+    model.value.includes(value)
+      ? model.value.splice(model.value.indexOf(value), 1)
+      : model.value.push(value);
     return;
   }
 
-  if (clearable.value && model.value === value) model.value = null;
+  if (props.clearable && model.value === value) model.value = null;
   else model.value = value;
 };
 
 const el = ref<HTMLDivElement | null>(null);
 
-const io = new IntersectionObserver(enteries => {
-  if ((enteries[0].intersectionRatio || 0) < 1) {
-    enteries[0].target.scrollIntoView({
-      block: 'nearest',
-      inline: 'nearest',
-    });
+const io = new IntersectionObserver(([entry]) => {
+  if ((entry.intersectionRatio || 0) < 1) {
+    entry.target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
   io.disconnect();
 });
@@ -129,7 +127,8 @@ const nav = (delta: -1 | 1) => {
     io.disconnect();
     io.observe(document.getElementById(id + current.value)!);
 
-    if (cursor.value) toggle(option.value);
+    // Select current option when navigating
+    if (!props.multi) toggle(option.value);
 
     return index;
   }
@@ -137,7 +136,7 @@ const nav = (delta: -1 | 1) => {
 };
 
 const toggleCurrent = () => {
-  if (currentValid.value) toggle(choices.value[current.value].value);
+  if (current.value > -1) toggle(choices.value[current.value].value);
 };
 
 const onKeyDownExact = (e: KeyboardEvent) => {
@@ -174,8 +173,8 @@ const renderOption = (i: NormalizedCommonOption) =>
       onClick: !i.disabled ? () => toggle(i.value) : undefined,
       role: 'option',
       'aria-selected': i.selected || undefined,
-      'aria-current': i.current || undefined,
-      onPointermove: props.powerPointer
+      class: i.current && 'current',
+      onPointermove: props.magnetic
         ? () => void (current.value = i.index)
         : undefined,
       'aria-disabled': props.disabled || i.disabled || undefined,
@@ -190,12 +189,11 @@ const renderOption = (i: NormalizedCommonOption) =>
     :id="id"
     :style="props.style"
     :class="props.class"
-    @focus="checkCursorOnFocus"
     @keydown.self.exact="onKeyDownExact"
     role="listbox"
     :tabindex="props.disabled ? -1 : 0"
     :aria-disabled="props.disabled"
-    :aria-activedescendant="currentValid ? id + current : undefined"
+    :aria-activedescendant="current > -1 ? id + current : undefined"
     :aria-multiselectable="multi"
   >
     <template
@@ -211,9 +209,9 @@ const renderOption = (i: NormalizedCommonOption) =>
         :aria-label="g.label"
         v-if="g && typeof g === 'object' && 'options' in g"
       >
-        <div role="none">
+        <h6>
           <slot name="title" :group="g">{{ g.label }}</slot>
-        </div>
+        </h6>
         <component
           v-for="i in g.options"
           :key="i.index"

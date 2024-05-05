@@ -21,62 +21,50 @@
   box-shadow: 0 0 0 4px var(---foam);
 }
 
-:where(.VSelectPicker) {
+.VSelectPicker {
   background-color: var(--mat-solid-0);
   outline: 0;
-}
 
-:where(.VSelectPicker [role='group'] > [role='none']) {
-  padding: 10px 10px 5px;
-  font-size: 13px;
-  line-height: 1.6;
-  font-weight: 600;
-}
+  :where([role='option']) {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    height: var(---size);
+    padding: 10px;
+    font-size: var(---f);
+    line-height: 1.6;
 
-:where(.VSelectPicker [role='option']) {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  height: var(---size);
-  padding: 10px;
-  font-size: var(---f);
-  line-height: 1.6;
+    white-space: nowrap;
+    /* text-overflow: ellipsis; unavailable */
+    overflow: hidden;
 
-  white-space: nowrap;
-  /* text-overflow: ellipsis; unavailable */
-  overflow: hidden;
-}
+    &:where(:not([aria-diabled='true'])) {
+      cursor: pointer;
+    }
+    &:where(:not([aria-diabled='true'])[aria-current='true']) {
+      background-color: var(--mat-solid-1);
+    }
+    &:where(:not([aria-diabled='true']):active) {
+      background-color: var(--mat-solid-2);
+    }
+    &:where([aria-selected='true']) {
+      color: var(---ink);
+      background: color-mix(in oklab, var(---foam), transparent 50%);
+    }
+    &:where([aria-selected='true']:not([aria-diabled='true']):hover) {
+      background: color-mix(in oklab, var(---foam), transparent 25%);
+    }
 
-:where(.VSelectPicker [role='option']:not([aria-diabled='true'])) {
-  cursor: pointer;
-}
+    &:where([aria-selected='true']:not([aria-diabled='true']):active) {
+      background: color-mix(in oklab, var(---foam), transparent 0%);
+    }
+  }
 
-:where(
-    .VSelectPicker
-      [role='option']:not([aria-diabled='true'])[aria-current='true']
-  ) {
-  background-color: var(--mat-solid-1);
-}
-
-:where(.VSelectPicker [role='option']:not([aria-diabled='true']):active) {
-  background-color: var(--mat-solid-2);
-}
-
-:where(.VSelectPicker [role='option'][aria-selected='true']) {
-  color: var(---ink);
-  background: color-mix(in oklab, var(---foam), transparent 50%);
-}
-
-:where(
-    .VSelectPicker
-      [role='option'][aria-selected='true']:not([aria-diabled='true']):hover
-  ) {
-  background: color-mix(in oklab, var(---foam), transparent 25%);
-}
-
-:where(
-    .VSelectPicker
-      [role='option'][aria-selected='true']:not([aria-diabled='true']):active
-  ) {
-  background: color-mix(in oklab, var(---foam), transparent 0%);
+  :where([role='group'] > h6) {
+    display: block;
+    padding: 10px 10px 5px;
+    font-size: 13px;
+    line-height: 1.6;
+    font-weight: 600;
+  }
 }

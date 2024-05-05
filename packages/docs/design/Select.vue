@@ -1,10 +1,15 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
 import VSelect from '@mookiepiece/strawberry-farm/vue/VSelect.vue';
+
+const single = ref(null);
+const multiple = ref([]);
 </script>
 
 <template>
   <div class="good">
     <VSelect
+      v-model="single"
       placeholder="Spell Card"
       :options="[
         {
@@ -18,6 +23,7 @@ import VSelect from '@mookiepiece/strawberry-farm/vue/VSelect.vue';
       ]"
     />
     <VSelect
+      v-model="single"
       :options="[
         '名誉「十二階の色彩」	Easy / Normal',
         '名誉「十二階の冠位」	Hard / Lunatic',
@@ -46,6 +52,7 @@ import VSelect from '@mookiepiece/strawberry-farm/vue/VSelect.vue';
 
     <VSelect
       multi
+      v-model="multiple"
       style="max-width: 200px"
       :options="
         [

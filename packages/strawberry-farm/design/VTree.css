@@ -1,0 +1,17 @@
+.VTree {
+  [role='treeitem'][aria-expanded] > div:first-child:before {
+    content: '>';
+  }
+
+  [role='treeitem'][aria-expanded='true'] > div:first-child:before {
+    content: 'v';
+  }
+  [role='treeitem'] {
+    padding-left: 10px;
+  }
+
+  [role='treeitem']:focus-visible {
+    outline: 2px solid var(---main);
+
+  }
+}

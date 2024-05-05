@@ -24,13 +24,6 @@ export type CommonOptionGroupInput = {
 
 export type CommonOptionsInput = (CommonOptionInput | CommonOptionGroupInput)[];
 
-export type CommonTreeItem = {
-  label?: string;
-  value: any;
-  disabled?: boolean;
-  items?: CommonTreeItem[];
-};
-
 export type NormalizedCommonOption = {
   label: any;
   value: any;
@@ -50,3 +43,11 @@ export const flatCommonOptionsInput = (i: CommonOptionsInput): CommonOption[] =>
         ? o
         : { value: o, label: '' + o },
     );
+
+export type CommonTreeItem = {
+  label?: string;
+  value: any;
+  disabled?: boolean;
+  items?: (CommonTreeItem[]);
+  open?: boolean;
+};

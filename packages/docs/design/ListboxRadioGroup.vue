@@ -49,18 +49,18 @@ const optionsProPlus: Record<
 <template>
   <div class="[B] gap-2 pb-6">
     <div>
-      <VRadioGroup mode="clearable" v-model="v" :options="options" />
+      <VRadioGroup clearable v-model="v" :options="options" />
     </div>
     <div>
       <VRadioGroup v-model="v" :options="options" />
     </div>
     <div>
-      <VRadioGroup disabled mode="clearable" v-model="v" :options="options" />
+      <VRadioGroup disabled clearable v-model="v" :options="options" />
     </div>
   </div>
   <div class="[B] gap-2">
     <VRadioGroup
-      mode="clearable"
+      clearable
       v-model="v"
       :options="optionsPro"
       v-slot="{ option }"

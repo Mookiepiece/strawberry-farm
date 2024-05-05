@@ -17,6 +17,7 @@ defineExpose({ el });
   <div
     :tabindex="disabled ? '-1' : '0'"
     class="VSwitch"
+    role="button"
     :aria-disabled="disabled"
     :aria-pressed="model ? 'true' : 'false'"
     @click="toggle"

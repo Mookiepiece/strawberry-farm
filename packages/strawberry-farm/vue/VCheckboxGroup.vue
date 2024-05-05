@@ -24,7 +24,7 @@ defineExpose({ el: computed(() => el.value?.el) });
 <template>
   <VListbox
     ref="el"
-    mode="multi"
+    multi
     :class="[props.class, 'VRadioGroup']"
     :style="style"
     :disabled="disabled"
