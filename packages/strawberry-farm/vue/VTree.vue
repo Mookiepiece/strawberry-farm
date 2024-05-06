@@ -6,18 +6,15 @@ import { V_TREE_IN } from './Tree';
 import VTreeItem from './VTreeItem.vue';
 
 const model = defineModel<any>();
+const tree = defineModel<CommonTreeItem[]>('tree', {
+  default: () => [],
+});
 
-const props = withDefaults(
-  defineProps<{
-    multi?: boolean;
+const props = defineProps<{
+  multi?: boolean;
 
-    items?: CommonTreeItem[];
-    load?: (value: any) => CommonTreeItem[];
-  }>(),
-  {
-    items: () => [],
-  },
-);
+  load?: (value: any) => CommonTreeItem[];
+}>();
 
 const slots = defineSlots<{
   default?(props: CommonTreeItem): any;
@@ -30,27 +27,21 @@ const allChoices = computed(() => {
     choices.push(i);
     i.items?.forEach(each);
   };
-  props.items?.forEach(each);
+  tree.value?.forEach(each);
 
   return choices;
 });
-
-const opens = reactive(
-  new Map<any, boolean>(
-    allChoices.value.map(({ value, open = false }) => [value, open]),
-  ),
-);
 
 const choices = computed(() => {
   let choices: CommonTreeItem[] = [];
 
   const each = (i: CommonTreeItem) => {
     choices.push(i);
-    if (opens.get(i.value)) {
+    if (i.open) {
       i.items?.forEach(each);
     }
   };
-  props.items?.forEach(each);
+  tree.value?.forEach(each);
 
   return choices;
 });
@@ -80,9 +71,8 @@ provide(
   V_TREE_IN,
   reactive({
     model,
-    items: computed(() => props.items),
+    tree,
     load: computed(() => props.load),
-    opens,
     current,
     nav,
   }),
@@ -123,10 +113,9 @@ defineExpose({ el });
     @focus="onFocus"
   >
     <VTreeItem
-      v-for="i in items"
+      v-for="(i, index) in tree"
       :key="i.value"
-      :item="i"
-      :open="false"
+      v-model="tree[index]"
       v-slot="_"
     >
       <slot v-bind="_">

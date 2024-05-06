@@ -3,50 +3,73 @@ import { computed, inject, ref, watchEffect } from 'vue';
 import { CommonTreeItem } from './misc';
 import { V_TREE_IN } from './Tree';
 
-const props = defineProps<{
-  item: CommonTreeItem;
-}>();
+const model = defineModel<CommonTreeItem>({
+  required: true,
+});
 
 const tree = inject(V_TREE_IN);
 if (!tree) throw new Error();
 
 const el = ref<HTMLDivElement>();
 
-const current = computed(() => tree.current === props.item.value);
+const current = computed(() => tree.current === model.value.value);
 watchEffect(() => {
   if (current.value) el.value?.focus();
 });
 
 const selected = computed(() =>
   Array.isArray(tree.model)
-    ? tree.model.includes(props.item.value)
-    : tree.model === props.item.value,
+    ? tree.model.includes(model.value.value)
+    : tree.model === model.value.value,
 );
 
 const toggle = () => {
-  const $value = props.item.value;
+  const $value = model.value.value;
 
   Array.isArray(tree.model)
     ? tree.model.includes($value)
       ? tree.model.splice(tree.model.indexOf($value), 1)
       : tree.model.push($value)
-    : (tree.model = props.item.value);
+    : (tree.model = $value);
 };
 
 const open = computed({
   get() {
-    return Array.isArray(props.item.items)
-      ? tree.opens.get(props.item.value)
-      : undefined;
+    return !!model.value.open;
+    // return Array.isArray(model.items)
+    //   ? tree.opens.get(model.value)
+    //   : undefined;
   },
   set(v) {
-    tree.opens.set(props.item.value, v as boolean);
+    model.value.open = v as boolean;
+    // tree.opens.set(model.value, v as boolean);
   },
 });
 
 const slots = defineSlots<{
   default?(props: CommonTreeItem): any;
 }>();
+
+const expandable = computed(
+  () => model.value.lazy || model.value.items?.length,
+);
+
+const loading = ref(false);
+const load = async () => {
+  try {
+    loading.value = true;
+    const $item = model;
+    $item.value.items = await tree.load?.($item.value);
+    delete $item.value.lazy;
+  } finally {
+    loading.value = false;
+  }
+};
+
+const expand = () => {
+  open.value = true;
+  if (model.value.lazy) load();
+};
 
 const handleKeydown = (e: KeyboardEvent) => {
   switch (e.key) {
@@ -60,7 +83,7 @@ const handleKeydown = (e: KeyboardEvent) => {
       open.value = false;
       break;
     case 'ArrowRight':
-      open.value = true;
+      expand();
       break;
     case 'Enter':
     case ' ':
@@ -68,28 +91,30 @@ const handleKeydown = (e: KeyboardEvent) => {
       break;
   }
 };
-
-// const expandable = computed(()=>{
-//   props.item.lazy || props.item.items?.length
-// })
 </script>
 
 <template>
   <div
     ref="el"
     role="treeitem"
-    :aria-expanded="item.items?.length ? open : undefined"
+    :aria-expanded="expandable ? open : undefined"
+    :aria-busy="loading"
     :aria-selected="selected"
     @keydown.self.exact="handleKeydown"
     :tabindex="current ? '0' : '-1'"
   >
     <div @click="open = !open">
-      <slot v-bind="{ ...item, open }">
-        {{ item.label ?? item.value }}
+      <slot v-bind="{ ...model, open }">
+        {{ model.label ?? model.value }}
       </slot>
     </div>
-    <div role="group" v-if="open && item.items?.length">
-      <VTreeItem v-for="i in item.items" :key="i.value" :item="i" />
+    <div role="group" v-if="open && model.items?.length">
+      <VTreeItem
+        v-for="(i, index) in model.items"
+        v-model="model.items[index]"
+        :key="i.value"
+        :item="i"
+      />
     </div>
   </div>
 </template>

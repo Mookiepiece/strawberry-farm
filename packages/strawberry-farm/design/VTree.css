@@ -14,7 +14,7 @@
     outline: 2px solid var(---main);
   }
 
-  [role='treeitem'][aria-selected='true'] {
-    color:var(---ink)
+  [role='treeitem'][aria-selected='true'] > div:first-child:after{
+    content: '✓';
   }
 }
