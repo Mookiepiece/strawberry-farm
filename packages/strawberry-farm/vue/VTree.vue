@@ -12,6 +12,7 @@ const props = withDefaults(
     multi?: boolean;
 
     items?: CommonTreeItem[];
+    load?: (value: any) => CommonTreeItem[];
   }>(),
   {
     items: () => [],
@@ -80,6 +81,7 @@ provide(
   reactive({
     model,
     items: computed(() => props.items),
+    load: computed(() => props.load),
     opens,
     current,
     nav,

@@ -48,6 +48,7 @@ export type CommonTreeItem = {
   label?: string;
   value: any;
   disabled?: boolean;
-  items?: (CommonTreeItem[]);
+  items?: CommonTreeItem[];
+  lazy?: boolean;
   open?: boolean;
 };

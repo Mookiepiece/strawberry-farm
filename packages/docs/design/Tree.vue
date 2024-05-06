@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import VTree from '@mookiepiece/strawberry-farm/vue/VTree.vue';
 import { CommonTreeItem } from '@mookiepiece/strawberry-farm/vue/misc';
+import { ref } from 'vue';
 
 const tree: CommonTreeItem[] = [
   {
@@ -54,10 +55,14 @@ const tree: CommonTreeItem[] = [
     value: 'Letters',
   },
 ];
+
+
+const single =ref(null)
+
 </script>
 
 <template>
-  <VTree :items="tree" />
+  <VTree v-model="single" :items="tree" />
 </template>
 
 <style></style>
