@@ -1,36 +1,35 @@
 <script setup lang="ts">
-import { computed, provide, reactive, ref } from 'vue';
+import { computed, isReactive, provide, reactive, ref } from 'vue';
 import { CommonTreeItem } from './misc';
-import { wai } from '../functions';
 import { V_TREE_IN } from './Tree';
 import VTreeItem from './VTreeItem.vue';
 
 const model = defineModel<any>();
-const tree = defineModel<CommonTreeItem[]>('tree', {
-  default: () => [],
-});
 
-const props = defineProps<{
-  multi?: boolean;
-
-  load?: (value: any) => CommonTreeItem[];
-}>();
+const props = withDefaults(
+  defineProps<{
+    tree?: CommonTreeItem[];
+    load?: (value: any) => CommonTreeItem[];
+  }>(),
+  {
+    tree: () => [],
+  },
+);
 
 const slots = defineSlots<{
-  default?(props: CommonTreeItem): any;
+  default?(
+    props: CommonTreeItem & {
+      current?: boolean;
+      selected?: boolean;
+      loading?: boolean;
+      expand(open?: boolean): Promise<unknown>;
+    },
+  ): any;
 }>();
 
-const allChoices = computed(() => {
-  let choices: CommonTreeItem[] = [];
-
-  const each = (i: CommonTreeItem) => {
-    choices.push(i);
-    i.items?.forEach(each);
-  };
-  tree.value?.forEach(each);
-
-  return choices;
-});
+const tree = computed(() =>
+  isReactive(props.tree) ? props.tree : reactive(props.tree),
+);
 
 const choices = computed(() => {
   let choices: CommonTreeItem[] = [];
@@ -119,7 +118,9 @@ defineExpose({ el });
       v-slot="_"
     >
       <slot v-bind="_">
-        {{ _.label ?? _.value }}
+        <div @click="_.expand(!_.open)">
+          {{ _.label ?? _.value }}
+        </div>
       </slot>
     </VTreeItem>
   </div>

@@ -1,4 +1,4 @@
-.VTree {
+/* .VTree {
   [role='treeitem'][aria-expanded] > div:first-child:before {
     content: '>';
   }
@@ -17,4 +17,4 @@
   [role='treeitem'][aria-selected='true'] > div:first-child:after{
     content: '✓';
   }
-}
+} */

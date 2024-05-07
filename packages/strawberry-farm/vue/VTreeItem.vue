@@ -2,10 +2,22 @@
 import { computed, inject, ref, watchEffect } from 'vue';
 import { CommonTreeItem } from './misc';
 import { V_TREE_IN } from './Tree';
+import { share } from '../functions';
 
 const model = defineModel<CommonTreeItem>({
   required: true,
 });
+
+const slots = defineSlots<{
+  default?(
+    props: CommonTreeItem & {
+      current?: boolean;
+      selected?: boolean;
+      loading?: boolean;
+      expand(open?: boolean): Promise<unknown>;
+    },
+  ): any;
+}>();
 
 const tree = inject(V_TREE_IN);
 if (!tree) throw new Error();
@@ -46,16 +58,12 @@ const open = computed({
   },
 });
 
-const slots = defineSlots<{
-  default?(props: CommonTreeItem): any;
-}>();
-
 const expandable = computed(
   () => model.value.lazy || model.value.items?.length,
 );
 
 const loading = ref(false);
-const load = async () => {
+const load = share(async () => {
   try {
     loading.value = true;
     const $item = model;
@@ -64,11 +72,16 @@ const load = async () => {
   } finally {
     loading.value = false;
   }
+});
+
+const show = async () => {
+  open.value = true;
+  if (model.value.lazy) await load();
 };
 
-const expand = () => {
-  open.value = true;
-  if (model.value.lazy) load();
+const expand = async ($open = !open.value) => {
+  if ($open) show();
+  else open.value = false;
 };
 
 const handleKeydown = (e: KeyboardEvent) => {
@@ -83,7 +96,7 @@ const handleKeydown = (e: KeyboardEvent) => {
       open.value = false;
       break;
     case 'ArrowRight':
-      expand();
+      show();
       break;
     case 'Enter':
     case ' ':
@@ -103,11 +116,11 @@ const handleKeydown = (e: KeyboardEvent) => {
     @keydown.self.exact="handleKeydown"
     :tabindex="current ? '0' : '-1'"
   >
-    <div @click="open = !open">
-      <slot v-bind="{ ...model, open }">
+    <slot v-bind="{ ...model, current, selected, loading, expand }">
+      <div @click="open = !open">
         {{ model.label ?? model.value }}
-      </slot>
-    </div>
+      </div>
+    </slot>
     <div role="group" v-if="open && model.items?.length">
       <VTreeItem
         v-for="(i, index) in model.items"
