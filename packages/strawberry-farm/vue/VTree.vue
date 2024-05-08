@@ -19,10 +19,13 @@ const props = withDefaults(
 const slots = defineSlots<{
   default?(
     props: CommonTreeItem & {
-      current?: boolean;
-      selected?: boolean;
-      loading?: boolean;
-      expand(open?: boolean): Promise<unknown>;
+      current: boolean;
+      selected: boolean;
+      loading: boolean;
+      foldable: boolean;
+      level: number;
+      fold(open?: boolean): Promise<unknown>;
+      toggle(): void;
     },
   ): any;
 }>();
@@ -77,22 +80,6 @@ provide(
   }),
 );
 
-const handleKeydown = (e: KeyboardEvent) => {
-  // if (
-  //   !(e.target instanceof HTMLElement) ||
-  //   !e.target.matches('[role="treeitem"]')
-  // )
-  //   return;
-  // switch (e.key) {
-  //   case 'ArrowDown':
-  //     console.log('down');
-  //     break;
-  //   case 'ArrowUp':
-  //     console.log('up');
-  //     break;
-  // }
-};
-
 const el = ref<HTMLDivElement>();
 const onFocus = () =>
   el.value
@@ -107,7 +94,6 @@ defineExpose({ el });
     ref="el"
     role="tree"
     class="VTree"
-    @keydown.exact="handleKeydown"
     tabindex="-1"
     @focus="onFocus"
   >
@@ -118,7 +104,7 @@ defineExpose({ el });
       v-slot="_"
     >
       <slot v-bind="_">
-        <div @click="_.expand(!_.open)">
+        <div @click="_.fold(!_.open)">
           {{ _.label ?? _.value }}
         </div>
       </slot>

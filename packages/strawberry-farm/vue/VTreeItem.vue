@@ -8,13 +8,25 @@ const model = defineModel<CommonTreeItem>({
   required: true,
 });
 
+withDefaults(
+  defineProps<{
+    level?: number;
+  }>(),
+  {
+    level: 0,
+  },
+);
+
 const slots = defineSlots<{
   default?(
     props: CommonTreeItem & {
-      current?: boolean;
-      selected?: boolean;
-      loading?: boolean;
-      expand(open?: boolean): Promise<unknown>;
+      current: boolean;
+      selected: boolean;
+      loading: boolean;
+      foldable:boolean;
+      level: number;
+      fold(open?: boolean): Promise<unknown>;
+        toggle(): void
     },
   ): any;
 }>();
@@ -48,18 +60,14 @@ const toggle = () => {
 const open = computed({
   get() {
     return !!model.value.open;
-    // return Array.isArray(model.items)
-    //   ? tree.opens.get(model.value)
-    //   : undefined;
   },
   set(v) {
     model.value.open = v as boolean;
-    // tree.opens.set(model.value, v as boolean);
   },
 });
 
-const expandable = computed(
-  () => model.value.lazy || model.value.items?.length,
+const foldable = computed(
+  () => !!(model.value.lazy || model.value.items?.length),
 );
 
 const loading = ref(false);
@@ -79,7 +87,7 @@ const show = async () => {
   if (model.value.lazy) await load();
 };
 
-const expand = async ($open = !open.value) => {
+const fold = async ($open = !open.value) => {
   if ($open) show();
   else open.value = false;
 };
@@ -110,24 +118,24 @@ const handleKeydown = (e: KeyboardEvent) => {
   <div
     ref="el"
     role="treeitem"
-    :aria-expanded="expandable ? open : undefined"
+    :aria-expanded="foldable ? open : undefined"
     :aria-busy="loading"
     :aria-selected="selected"
     @keydown.self.exact="handleKeydown"
     :tabindex="current ? '0' : '-1'"
+    :data-level="level"
   >
-    <slot v-bind="{ ...model, current, selected, loading, expand }">
-      <div @click="open = !open">
-        {{ model.label ?? model.value }}
-      </div>
-    </slot>
+    <slot v-bind="{ ...model, current, selected, foldable, loading, level, fold, toggle }" />
     <div role="group" v-if="open && model.items?.length">
       <VTreeItem
         v-for="(i, index) in model.items"
         v-model="model.items[index]"
+        :level="level + 1"
         :key="i.value"
-        :item="i"
-      />
+        v-slot="_"
+      >
+        <slot v-bind="_" />
+      </VTreeItem>
     </div>
   </div>
 </template>
