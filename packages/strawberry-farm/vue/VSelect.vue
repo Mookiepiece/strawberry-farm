@@ -1,4 +1,3 @@
-c
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { dataAttr, flip, maxHeight, sameWidth } from '../functions';
@@ -44,7 +43,8 @@ const { open, visible } = usePopper({
 });
 
 const erase = () => {
-  model.value = null;
+  if (props.multi) model.value.splice(0, model.value.length);
+  else model.value = null;
   reference.value?.focus();
 };
 
