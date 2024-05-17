@@ -45,10 +45,9 @@ export const flatCommonOptionsInput = (i: CommonOptionsInput): CommonOption[] =>
     );
 
 export type CommonTreeItem = {
-  label?: string;
   value: any;
+  label?: string;
   disabled?: boolean;
-  items?: CommonTreeItem[];
-  lazy?: boolean;
   open?: boolean;
+  children?: boolean | CommonTreeItem[];
 };

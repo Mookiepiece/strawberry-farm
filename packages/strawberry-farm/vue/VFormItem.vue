@@ -6,7 +6,6 @@ import {
   inject,
   provide,
   reactive,
-  ref,
   watch,
   watchEffect,
 } from 'vue';
@@ -16,6 +15,7 @@ import { Bag } from '../functions';
 import { unref } from 'vue';
 import VFormLabel from './VFormLabel.vue';
 import VInput from './VInput.vue';
+import { RenderFunction } from './RenderFunction';
 
 const props = withDefaults(
   defineProps<{
@@ -102,9 +102,7 @@ const validateLocked = async () => {
   return ans;
 };
 
-const input = ref<any>();
-const focus = () =>
-  (input.value.el ?? input.value.$el ?? input.value)?.focus?.();
+const focus = () => document.getElementById(id)?.focus?.();
 
 const state = reactive({
   focus,
@@ -115,7 +113,6 @@ const state = reactive({
   _visible: visible,
   message: undefined as string | undefined,
 });
-watch(visible, v => (state._visible = v), { immediate: true });
 
 watchEffect(onCleanup => {
   const name = props.name;
@@ -126,9 +123,9 @@ watchEffect(onCleanup => {
 
 const message = computed(() => state.message);
 
-const vn = computed(() =>
+const render = () =>
   cloneVNode(
-    slots.default?.()[0] ?? unref(descriptor.value?.render)?.() ?? h(VInput),
+    slots.default?.()[0] ?? descriptor.value?.render?.() ?? h(VInput),
     {
       id,
       modelValue: model.value,
@@ -136,8 +133,7 @@ const vn = computed(() =>
         model.value = v;
       },
     },
-  ),
-);
+  );
 </script>
 
 <template>
@@ -152,7 +148,7 @@ const vn = computed(() =>
       </slot>
     </div>
 
-    <component :name="name" ref="input" :is="vn" />
+    <RenderFunction :render="render" />
 
     <div v-if="$slots.extra" class="f3">
       <slot name="extra" />

@@ -23,10 +23,10 @@ const slots = defineSlots<{
       current: boolean;
       selected: boolean;
       loading: boolean;
-      foldable:boolean;
+      foldable: boolean;
       level: number;
       fold(open?: boolean): Promise<unknown>;
-        toggle(): void
+      toggle(): void;
     },
   ): any;
 }>();
@@ -67,7 +67,10 @@ const open = computed({
 });
 
 const foldable = computed(
-  () => !!(model.value.lazy || model.value.items?.length),
+  () =>
+    !!(Array.isArray(model.value.children)
+      ? model.value.children.length
+      : model.value.children),
 );
 
 const loading = ref(false);
@@ -75,8 +78,7 @@ const load = share(async () => {
   try {
     loading.value = true;
     const $item = model;
-    $item.value.items = await tree.load?.($item.value);
-    delete $item.value.lazy;
+    $item.value.children = await tree.load?.($item.value);
   } finally {
     loading.value = false;
   }
@@ -84,7 +86,7 @@ const load = share(async () => {
 
 const show = async () => {
   open.value = true;
-  if (model.value.lazy) await load();
+  if (model.value.children === true) await load();
 };
 
 const fold = async ($open = !open.value) => {
@@ -125,11 +127,25 @@ const handleKeydown = (e: KeyboardEvent) => {
     :tabindex="current ? '0' : '-1'"
     :data-level="level"
   >
-    <slot v-bind="{ ...model, current, selected, foldable, loading, level, fold, toggle }" />
-    <div role="group" v-if="open && model.items?.length">
+    <slot
+      v-bind="{
+        ...model,
+        current,
+        selected,
+        foldable,
+        loading,
+        level,
+        fold,
+        toggle,
+      }"
+    />
+    <div
+      role="group"
+      v-if="open && Array.isArray(model.children) && model.children.length"
+    >
       <VTreeItem
-        v-for="(i, index) in model.items"
-        v-model="model.items[index]"
+        v-for="(i, index) in model.children"
+        v-model="model.children[index]"
         :level="level + 1"
         :key="i.value"
         v-slot="_"

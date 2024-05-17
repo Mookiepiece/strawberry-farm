@@ -40,7 +40,7 @@ const choices = computed(() => {
   const each = (i: CommonTreeItem) => {
     choices.push(i);
     if (i.open) {
-      i.items?.forEach(each);
+      Array.isArray(i.children) && i.children?.forEach(each);
     }
   };
   tree.value?.forEach(each);
@@ -90,13 +90,7 @@ defineExpose({ el });
 </script>
 
 <template>
-  <div
-    ref="el"
-    role="tree"
-    class="VTree"
-    tabindex="-1"
-    @focus="onFocus"
-  >
+  <div ref="el" role="tree" class="VTree" tabindex="-1" @focus="onFocus">
     <VTreeItem
       v-for="(i, index) in tree"
       :key="i.value"

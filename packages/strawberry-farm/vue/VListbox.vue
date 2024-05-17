@@ -8,6 +8,7 @@ import {
   flatCommonOptionsInput,
 } from './misc';
 import { wai } from '../functions';
+import { RenderFunction } from './RenderFunction';
 
 const model = defineModel<any>();
 
@@ -21,7 +22,7 @@ const props = defineProps<{
    */
   clearable?: boolean;
   /**
-   * Pointer move events will change current option
+   * Pointer move events will change current option, while keyboard navigation won't
    */
   magnetic?: boolean;
 
@@ -37,16 +38,13 @@ const slots = defineSlots<{
 }>();
 const id = wai();
 
-const length = computed(
-  () =>
-    flatCommonOptionsInput(props.options ?? []).filter(i => !i.disabled).length,
-);
-
 const _current = ref(0);
 const current = computed({
   get() {
-    if (!length.value) return -1;
-    if (_current.value >= 0 && _current.value < length.value)
+    const options = flatCommonOptionsInput(props.options ?? []);
+    const available = options.some(i => !i.disabled);
+    if (!available) return -1;
+    if (_current.value >= 0 && _current.value < options.length)
       return _current.value;
     return 0;
   },
@@ -121,18 +119,13 @@ const nav = (delta: -1 | 1) => {
   );
 
   if (option) {
-    const index = choices.value.indexOf(option);
-    current.value = index;
+    current.value = choices.value.indexOf(option);
 
     io.disconnect();
     io.observe(document.getElementById(id + current.value)!);
 
-    // Select current option when navigating
-    if (!props.multi) toggle(option.value);
-
-    return index;
+    if (!props.multi && !props.magnetic) toggle(option.value);
   }
-  return -1;
 };
 
 const toggleCurrent = () => {
@@ -212,13 +205,13 @@ const renderOption = (i: NormalizedCommonOption) =>
         <h6>
           <slot name="title" :group="g">{{ g.label }}</slot>
         </h6>
-        <component
+        <RenderFunction
           v-for="i in g.options"
-          :key="i.index"
-          :is="renderOption(i)"
+          :key="i.value"
+          :render="() => renderOption(i)"
         />
       </div>
-      <component v-else :is="renderOption(g)" />
+      <RenderFunction v-else :render="() => renderOption(g)" />
     </template>
   </div>
 </template>

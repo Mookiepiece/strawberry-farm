@@ -9,7 +9,7 @@
 :::details 更多建议
 
 - `<VFormItem />` 不是泛型组件。
-- 空字符串 `''` 视为校验失败。
+- `validator()` 给出空字符串 `''` 对表单本身视为校验失败，调用方若需校验错误信息，建议做相同判断。
 - HTML 标准规定 `<form />` 元素不能嵌套（可以用（ `<Teleport to="body" />` ）拆分）
 - HTML `<form />` 元素不会提交 `disabled` 的控件（`react-hook-form` 也是这么处理的），但在 `strawberry-farm` 里裁剪的只是 `visible: false`。如果用 `readonly` 替代 `disabled`，诸如 `<select>` `[type="radio"]` `[type="checkbox"]` 反而不支持这个 `readonly` 属性，真是鸡肋。
 - 取决于自定义控件，可支持 <kbd>Enter</kbd> 向上查找表单并发起提交，因为这是 HTML `<form />` 的默认行为。这部分因使用场景而异，存在争议。比如安卓输入法的回车的提示文本和行为很多都是“下一项”。`<VListbox />` 及衍生组件暂不支持<kbd>Enter</kbd>提交，<kbd>Enter</kbd>的行为是选择。

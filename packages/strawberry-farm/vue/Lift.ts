@@ -3,7 +3,7 @@ import { Component, createApp, h, onMounted, onUnmounted, ref } from 'vue';
 export const Lift = <A = any, B = undefined>(
   as: Component<{
     args: A;
-    resolve: B extends undefined ? (ans?: B) => void : (ans: B) => void;
+    resolve: B extends undefined ? any : (ans: B) => void;
   }>,
   args: A,
   signal?: AbortSignal,

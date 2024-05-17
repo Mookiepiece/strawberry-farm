@@ -246,7 +246,7 @@ signupForm.items['charas.0.name'];
     <VFormItem :name="'chara.name'" />
     <VButton type="submit" class="mat:air">
       <template #prefix>
-        <i-feather i="message-circle" />
+        <i-feather i="send" />
       </template>
     </VButton>
   </VForm>

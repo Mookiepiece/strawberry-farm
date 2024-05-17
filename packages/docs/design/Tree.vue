@@ -6,12 +6,12 @@ import { ref } from 'vue';
 const _tree = (): CommonTreeItem[] => [
   {
     value: 'Projects',
-    items: [
+    children: [
       { value: 'Project-1' },
       { value: 'Project-2' },
       {
         value: 'Project-3',
-        items: [
+        children: [
           { value: 'Project-3A' },
           { value: 'Project-3B' },
           { value: 'Project-3C' },
@@ -20,7 +20,7 @@ const _tree = (): CommonTreeItem[] => [
       { value: 'Project-4' },
       {
         value: 'Project-5',
-        items: [
+        children: [
           { value: 'Project-5A' },
           { value: 'Project-5B' },
           { value: 'Project-5C' },
@@ -36,9 +36,13 @@ const tree: CommonTreeItem[] = _tree();
 
 const tree3: CommonTreeItem[] = _tree();
 
-const single = ref([]);
-const checkboxes = ref([]);
-const checkboxes3 = ref([]);
+const tree4: CommonTreeItem[] = _tree();
+
+const single = ref<any>(null);
+const checkboxes = ref<any[]>([]);
+const checkboxes3 = ref<any[]>([]);
+
+const checkboxes4 = ref<any[]>([]);
 </script>
 
 <template>
@@ -72,16 +76,37 @@ const checkboxes3 = ref([]);
           v-if="_.foldable"
           :i="_.open ? 'chevron-down' : 'chevron-right'"
         />
-        <div
-          class="VTreeDemo3C"
-          @keydown.space="_.toggle()"
-          @keydown.enter="_.toggle()"
-          @click="_.toggle()"
-        >
+        <div class="VTreeDemo3C" @click="_.toggle()">
           <div>
             {{ _.label ?? _.value }}
           </div>
           <i-feather :i="_.selected ? 'check-circle' : 'circle'" />
+        </div>
+      </div>
+    </VTree>
+    <VTree class="VTreeDemo3" v-model="checkboxes4" :tree="tree3" v-slot="_">
+      <div class="VTreeDemo3A" :style="{ '--level': _.level }">
+        <i-feather
+          class="VTreeDemo3B"
+          @click="_.fold(!_.open)"
+          v-if="_.foldable"
+          :i="_.open ? 'chevron-down' : 'chevron-right'"
+        />
+        <div class="VTreeDemo3C" @click="_.toggle()">
+          <div>
+            {{ _.label ?? _.value }}
+          </div>
+          <i-feather
+            :i="
+              Array.isArray(_.children)
+                ? _.children.every(i => checkboxes4.includes(i.value))
+                  ? 'check-circle'
+                  : 'circle'
+                : _.selected
+                  ? 'check-circle'
+                  : 'circle'
+            "
+          />
         </div>
       </div>
     </VTree>
