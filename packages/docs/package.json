@@ -21,7 +21,7 @@
     "markdown-it-container": "^4.0.0",
     "markdown-it-shikiji": "^0.10.0",
     "shikiji": "^0.10.2",
-    "vite": "^5.1.6",
+    "vite": "^5.2.0",
     "vitepress": "1.0.0-rc.45",
     "vue-tsc": "^2.0.6"
   }

@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { StyleValue, computed, h, ref, watch } from 'vue';
+<script setup lang="ts" generic="T = undefined">
+import { StyleValue, computed, h, ref } from 'vue';
 import {
   CommonOptionGroup,
   CommonOptionInput,
@@ -14,10 +14,6 @@ const model = defineModel<any>();
 
 const props = defineProps<{
   /**
-   * Multiselectable, model must be an array.
-   */
-  multi?: boolean;
-  /**
    * Single option, select the same option will unselect it.
    */
   clearable?: boolean;
@@ -26,15 +22,15 @@ const props = defineProps<{
    */
   magnetic?: boolean;
 
-  options?: CommonOptionsInput;
+  options?: CommonOptionsInput<T>;
   disabled?: boolean;
   class?: any;
   style?: StyleValue;
 }>();
 
 const slots = defineSlots<{
-  default?(props: { option: NormalizedCommonOption }): any;
-  title?(props: { group: CommonOptionGroup }): any;
+  default?(props: { option: NormalizedCommonOption<T> }): any;
+  title?(props: { group: CommonOptionGroup<T> }): any;
 }>();
 const id = wai();
 
@@ -53,19 +49,22 @@ const current = computed({
   },
 });
 
+const multi = computed(() => Array.isArray(model.value));
+
 const tree = computed(() => {
   let _index = 0;
 
-  const normalize = (o: CommonOptionInput): NormalizedCommonOption => {
+  const normalize = (o: CommonOptionInput<T>): NormalizedCommonOption<T> => {
     const value = typeof o === 'object' && o ? o.value : o;
     const index = _index++;
 
     return {
       label: typeof o === 'object' && o ? o.label ?? o.value : '' + o,
       value,
+      meta: typeof o === 'object' && o ? o.meta : undefined,
       disabled: typeof o === 'object' && o ? o.disabled || false : false,
       index,
-      selected: props.multi
+      selected: multi.value
         ? model.value?.includes(value)
         : value === model.value,
       current: current.value === index,
@@ -89,7 +88,7 @@ const choices = computed(() =>
 );
 
 const toggle = (value: any) => {
-  if (props.multi) {
+  if (multi.value) {
     if (!model.value) return;
     model.value.includes(value)
       ? model.value.splice(model.value.indexOf(value), 1)
@@ -105,7 +104,7 @@ const el = ref<HTMLDivElement | null>(null);
 
 const io = new IntersectionObserver(([entry]) => {
   if ((entry.intersectionRatio || 0) < 1) {
-    entry.target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    entry.target.scrollIntoView({ block: 'center', inline: 'center' });
   }
   io.disconnect();
 });
@@ -124,7 +123,7 @@ const nav = (delta: -1 | 1) => {
     io.disconnect();
     io.observe(document.getElementById(id + current.value)!);
 
-    if (!props.multi && !props.magnetic) toggle(option.value);
+    if (!multi.value && !props.magnetic) toggle(option.value);
   }
 };
 
@@ -158,7 +157,7 @@ defineExpose({
   el,
 });
 
-const renderOption = (i: NormalizedCommonOption) =>
+const renderOption = (i: NormalizedCommonOption<T>) =>
   h(
     'div',
     {

@@ -1,30 +1,31 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T = undefined">
 import { StyleValue, computed, ref } from 'vue';
 import { CommonOptionsInput, NormalizedCommonOption } from './misc';
 import VListbox from './VListbox.vue';
 
-const model = defineModel<any>();
+const model = defineModel<any[]>({
+  default: [],
+});
 
 const props = defineProps<{
-  options?: CommonOptionsInput;
+  options?: CommonOptionsInput<T>;
   disabled?: boolean;
   class?: any;
   style?: StyleValue;
 }>();
 
 defineSlots<{
-  default(props: { option: NormalizedCommonOption }): any;
+  default(props: { option: NormalizedCommonOption<T> }): any;
   indicator: any;
 }>();
 
-const el = ref<InstanceType<typeof VListbox>>();
+const el = ref<any>();
 defineExpose({ el: computed(() => el.value?.el) });
 </script>
 
 <template>
   <VListbox
     ref="el"
-    multi
     :class="[props.class, 'VRadioGroup']"
     :style="style"
     :disabled="disabled"

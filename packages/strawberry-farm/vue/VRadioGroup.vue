@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T = undefined">
 import { StyleValue, computed, ref } from 'vue';
 import { CommonOptionsInput, NormalizedCommonOption } from './misc';
 import VListbox from './VListbox.vue';
@@ -6,7 +6,7 @@ import VListbox from './VListbox.vue';
 const model = defineModel<any>();
 
 const props = defineProps<{
-  options?: CommonOptionsInput;
+  options?: CommonOptionsInput<T>;
   clearable?: boolean;
   disabled?: boolean;
   class?: any;
@@ -14,10 +14,10 @@ const props = defineProps<{
 }>();
 
 defineSlots<{
-  default(props: { option: NormalizedCommonOption }): any;
+  default(props: { option: NormalizedCommonOption<T> }): any;
 }>();
 
-const el = ref<InstanceType<typeof VListbox>>();
+const el = ref<any>();
 defineExpose({ el: computed(() => el.value?.el) });
 </script>
 
