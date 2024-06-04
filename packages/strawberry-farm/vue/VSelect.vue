@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T = undefined">
 import { computed, ref } from 'vue';
 import { dataAttr, flip, maxHeight, sameWidth } from '../functions';
 import { CommonOptionsInput, flatCommonOptionsInput } from './misc';
@@ -13,8 +13,7 @@ const model = defineModel<any>();
 
 const props = withDefaults(
   defineProps<{
-    multi?: boolean;
-    options?: CommonOptionsInput;
+    options?: CommonOptionsInput<T>;
     disabled?: boolean;
     placeholder?: string;
     clearable?: boolean;
@@ -26,6 +25,8 @@ defineSlots<{
   prefix: any;
   suffix: any;
 }>();
+
+const multi = computed(() => Array.isArray(model.value));
 
 const reference = ref<HTMLElement>();
 const popper = ref<HTMLElement>();
@@ -43,7 +44,7 @@ const { open, visible } = usePopper({
 });
 
 const erase = () => {
-  if (props.multi) model.value.splice(0, model.value.length);
+  if (multi.value) model.value.splice(0, model.value.length);
   else model.value = null;
   reference.value?.focus();
 };
@@ -53,7 +54,7 @@ const pickerModel = computed({
     return model.value;
   },
   set(value) {
-    if (!props.multi) open.value = false;
+    if (!multi.value) open.value = false;
     model.value = value;
   },
 });
@@ -62,7 +63,7 @@ const label = computed(() => {
   if (!props.options) return model.value;
 
   const choices = flatCommonOptionsInput(props.options);
-  return props.multi
+  return multi.value
     ? choices
         .filter(o => model.value?.includes(o.value))
         .map(o => o.label)
@@ -71,7 +72,7 @@ const label = computed(() => {
 });
 
 const empty = computed(() =>
-  props.multi ? !model.value?.length : model.value == null,
+  multi.value ? !model.value?.length : model.value == null,
 );
 
 defineExpose({

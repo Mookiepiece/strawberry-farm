@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, inject, ref, watchEffect } from 'vue';
-import { CommonTreeItem } from './misc';
-import { V_TREE_IN } from './Tree';
+import { Ref, computed, inject, ref, watchEffect } from 'vue';
+import { TreeNode } from './misc';
+import { V_TREE_IN, computedSelectedStateForTreeNode } from './Tree';
 import { share } from '../functions';
 
-const model = defineModel<CommonTreeItem>({
+const model = defineModel<TreeNode>({
   required: true,
 });
 
@@ -19,9 +19,11 @@ withDefaults(
 
 const slots = defineSlots<{
   default?(
-    props: CommonTreeItem & {
+    props: TreeNode & {
       current: boolean;
+      unclear: boolean;
       selected: boolean;
+      mixed: boolean;
       loading: boolean;
       foldable: boolean;
       level: number;
@@ -41,14 +43,65 @@ watchEffect(() => {
   if (current.value) el.value?.focus();
 });
 
-const selected = computed(() =>
-  Array.isArray(tree.model)
-    ? tree.model.includes(model.value.value)
-    : tree.model === model.value.value,
-);
+const computeNodeState = <T,>(
+  node: TreeNode<T>,
+): Ref<{
+  unclear: boolean;
+  selected: boolean;
+  mixed: boolean;
+}> => {
+  if (computedSelectedStateForTreeNode.get(node)) {
+    return computedSelectedStateForTreeNode.get(node)!;
+  }
+
+  computedSelectedStateForTreeNode.set(
+    node,
+    computed(() => {
+      let unclear = false;
+      let mixed = false;
+      let selected = false;
+
+      if (Array.isArray(node.children)) {
+        if (tree.connected) {
+          selected = node.children.every(_node => {
+            const t = computeNodeState(_node);
+            return !t.value.unclear && !!t.value.mixed && t.value.selected;
+          });
+          mixed = node.children.some(_node => {
+            const t = computeNodeState(_node);
+            return !t.value.unclear && !!t.value.mixed && t.value.selected;
+          });
+        } else {
+          selected = Array.isArray(tree.model)
+            ? tree.model.includes(model.value.value)
+            : tree.model === model.value.value;
+        }
+      } else if (node.children) {
+        unclear = true;
+      }
+
+      return {
+        unclear,
+        selected,
+        mixed,
+      };
+    }),
+  );
+  return computedSelectedStateForTreeNode.get(node)!;
+};
+
+const state = computeNodeState(model.value);
+const selected = computed(() => state.value.selected);
+const mixed = computed(() => state.value.mixed);
+const unclear = computed(() => state.value.unclear);
 
 const toggle = () => {
   const $value = model.value.value;
+
+  if (tree.connected) {
+    if (unclear.value) return;
+    
+  }
 
   Array.isArray(tree.model)
     ? tree.model.includes($value)
@@ -131,6 +184,8 @@ const handleKeydown = (e: KeyboardEvent) => {
       v-bind="{
         ...model,
         current,
+        unclear,
+        mixed,
         selected,
         foldable,
         loading,
@@ -143,7 +198,7 @@ const handleKeydown = (e: KeyboardEvent) => {
       role="group"
       v-if="open && Array.isArray(model.children) && model.children.length"
     >
-      <VTreeItem
+      <VTreeNode
         v-for="(i, index) in model.children"
         v-model="model.children[index]"
         :level="level + 1"
@@ -151,7 +206,7 @@ const handleKeydown = (e: KeyboardEvent) => {
         v-slot="_"
       >
         <slot v-bind="_" />
-      </VTreeItem>
+      </VTreeNode>
     </div>
   </div>
 </template>

@@ -32,13 +32,18 @@ export const usePopper = ({
     }
   });
 
-  watchEffect(onCleanup => {
-    if (!configs?.trap) return;
-    // visible: make sure the popper receives focus after body inited
-    // open: make sure the reference immediately receive focus when existing
-    if (!open.value || !visible.value || !popper.value) return;
-    onCleanup(trap(popper.value));
-  });
+  watch(
+    () => [configs?.trap, open.value, visible.value, popper.value],
+    (_, __, onCleanup) => {
+      if (!configs?.trap) return;
+      // visible: make sure the popper receives focus after body inited
+      // open: make sure the reference immediately receive focus when existing
+      if (!open.value || !visible.value || !popper.value) return;
+      // NOTE: To avoid tracking mutations called inside focus event listeners
+      // trap() should not be called inside effect scope.
+      onCleanup(trap(popper.value));
+    },
+  );
 
   watchEffect(onCleanup => {
     if (!configs?.clickAway) return;

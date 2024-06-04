@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { computed, isReactive, provide, reactive, ref } from 'vue';
-import { CommonTreeItem } from './misc';
+import { TreeNode } from './misc';
 import { V_TREE_IN } from './Tree';
-import VTreeItem from './VTreeItem.vue';
+import VTreeNode from './VTreeNode.vue';
 
 const model = defineModel<any>();
 
 const props = withDefaults(
   defineProps<{
-    tree?: CommonTreeItem[];
-    load?: (value: any) => CommonTreeItem[];
+    connected?: boolean;
+    tree?: TreeNode[];
+    load?: (value: any) => TreeNode[];
   }>(),
   {
     tree: () => [],
@@ -18,7 +19,7 @@ const props = withDefaults(
 
 const slots = defineSlots<{
   default?(
-    props: CommonTreeItem & {
+    props: TreeNode & {
       current: boolean;
       selected: boolean;
       loading: boolean;
@@ -35,9 +36,9 @@ const tree = computed(() =>
 );
 
 const choices = computed(() => {
-  let choices: CommonTreeItem[] = [];
+  let choices: TreeNode[] = [];
 
-  const each = (i: CommonTreeItem) => {
+  const each = (i: TreeNode) => {
     choices.push(i);
     if (i.open) {
       Array.isArray(i.children) && i.children?.forEach(each);
@@ -74,6 +75,7 @@ provide(
   reactive({
     model,
     tree,
+    connected: computed(() => props.connected),
     load: computed(() => props.load),
     current,
     nav,
@@ -91,7 +93,7 @@ defineExpose({ el });
 
 <template>
   <div ref="el" role="tree" class="VTree" tabindex="-1" @focus="onFocus">
-    <VTreeItem
+    <VTreeNode
       v-for="(i, index) in tree"
       :key="i.value"
       v-model="tree[index]"
@@ -102,6 +104,6 @@ defineExpose({ el });
           {{ _.label ?? _.value }}
         </div>
       </slot>
-    </VTreeItem>
+    </VTreeNode>
   </div>
 </template>

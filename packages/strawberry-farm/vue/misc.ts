@@ -51,11 +51,11 @@ export const flatCommonOptionsInput = <T = undefined>(
         : { value: o, label: '' + o },
     );
 
-export type CommonTreeItem<T = undefined> = {
+export type TreeNode<T = undefined> = {
   value: any;
   label?: string;
   meta?: T;
   disabled?: boolean;
   open?: boolean;
-  children?: boolean | CommonTreeItem<T>[];
+  children?: boolean | TreeNode<T>[];
 };

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import VTree from '@mookiepiece/strawberry-farm/vue/VTree.vue';
-import { CommonTreeItem } from '@mookiepiece/strawberry-farm/vue/misc';
+import { TreeNode } from '@mookiepiece/strawberry-farm/vue/misc';
 import { ref } from 'vue';
 
-const _tree = (): CommonTreeItem[] => [
+const _tree = (): TreeNode[] => [
   {
     value: 'Projects',
     children: [
@@ -32,11 +32,11 @@ const _tree = (): CommonTreeItem[] => [
   { value: 'Letters' },
 ];
 
-const tree: CommonTreeItem[] = _tree();
+const tree: TreeNode[] = _tree();
 
-const tree3: CommonTreeItem[] = _tree();
+const tree3: TreeNode[] = _tree();
 
-const tree4: CommonTreeItem[] = _tree();
+const tree4: TreeNode[] = _tree();
 
 const single = ref<any>(null);
 const checkboxes = ref<any[]>([]);
@@ -84,7 +84,7 @@ const checkboxes4 = ref<any[]>([]);
         </div>
       </div>
     </VTree>
-    <VTree class="VTreeDemo3" v-model="checkboxes4" :tree="tree3" v-slot="_">
+    <VTree class="VTreeDemo3" v-model="checkboxes4" :tree="tree3" v-slot="_" connected>
       <div class="VTreeDemo3A" :style="{ '--level': _.level }">
         <i-feather
           class="VTreeDemo3B"
