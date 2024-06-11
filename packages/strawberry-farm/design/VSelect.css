@@ -38,24 +38,24 @@
     /* text-overflow: ellipsis; unavailable */
     overflow: hidden;
 
-    &:where(:not([aria-diabled='true'])) {
+    &:where(:not([aria-disabled='true'])) {
       cursor: pointer;
     }
-    &:where(:not([aria-diabled='true'])[aria-current='true']) {
+    &:where(:not([aria-disabled='true'])[aria-current='true']) {
       background-color: var(--mat-solid-1);
     }
-    &:where(:not([aria-diabled='true']):active) {
+    &:where(:not([aria-disabled='true']):active) {
       background-color: var(--mat-solid-2);
     }
     &:where([aria-selected='true']) {
       color: var(---ink);
       background: color-mix(in oklab, var(---foam), transparent 50%);
     }
-    &:where([aria-selected='true']:not([aria-diabled='true']):hover) {
+    &:where([aria-selected='true']:not([aria-disabled='true']):hover) {
       background: color-mix(in oklab, var(---foam), transparent 25%);
     }
 
-    &:where([aria-selected='true']:not([aria-diabled='true']):active) {
+    &:where([aria-selected='true']:not([aria-disabled='true']):active) {
       background: color-mix(in oklab, var(---foam), transparent 0%);
     }
   }

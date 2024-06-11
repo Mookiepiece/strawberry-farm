@@ -53,13 +53,14 @@
   }
 }
 
-:where(.VRadioGroup:focus-visible [role='option'].current) {
+:where(.VRadioGroup:focus-visible [role='option'][aria-current='true']) {
   outline-width: 2px;
   box-shadow: 0 0 0 6px var(--mat-air-1);
 }
 
 :where(
-    .VRadioGroup:focus-visible [role='option'][aria-selected='true'].current
+    .VRadioGroup:focus-visible
+      [role='option'][aria-selected='true'][aria-current='true']
   ) {
   outline-width: 2px;
   box-shadow: 0 0 0 6px var(---foam);

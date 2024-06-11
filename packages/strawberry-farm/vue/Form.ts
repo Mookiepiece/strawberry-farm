@@ -1,4 +1,4 @@
-import { InjectionKey, MaybeRef, Ref, VNode, reactive, toRaw } from 'vue';
+import { InjectionKey, Ref, VNode, reactive, toRaw } from 'vue';
 import { IRuleType, RuleSlim } from '../functions/validator';
 import { inc } from '../functions';
 

@@ -1,36 +1,24 @@
 <script setup lang="ts">
-import { Ref, computed, inject, ref, watchEffect } from 'vue';
-import { TreeNode } from './misc';
+import { Ref, computed, inject, reactive, ref, watchEffect } from 'vue';
+import { TreeNode, flatTree } from './misc';
 import { V_TREE_IN, computedSelectedStateForTreeNode } from './Tree';
 import { share } from '../functions';
 
-const model = defineModel<TreeNode>({
-  required: true,
-});
+const model = defineModel<TreeNode>({ required: true });
 
-withDefaults(
-  defineProps<{
-    level?: number;
-  }>(),
-  {
-    level: 0,
-  },
-);
+const props = withDefaults(defineProps<{ level?: number }>(), { level: 0 });
 
 const slots = defineSlots<{
-  default?(
-    props: TreeNode & {
+  default?(props: {
+    model: TreeNode & {
       current: boolean;
       unclear: boolean;
       selected: boolean;
       mixed: boolean;
       loading: boolean;
-      foldable: boolean;
       level: number;
-      fold(open?: boolean): Promise<unknown>;
-      toggle(): void;
-    },
-  ): any;
+    };
+  }): any;
 }>();
 
 const tree = inject(V_TREE_IN);
@@ -43,6 +31,12 @@ watchEffect(() => {
   if (current.value) el.value?.focus();
 });
 
+const collect = <T,>(...nodes: TreeNode<T>[]): TreeNode<T>[] => {
+  const collection: TreeNode<T>[] = [];
+  flatTree(i => collection.push(i), ...nodes);
+  return collection;
+};
+
 const computeNodeState = <T,>(
   node: TreeNode<T>,
 ): Ref<{
@@ -50,6 +44,16 @@ const computeNodeState = <T,>(
   selected: boolean;
   mixed: boolean;
 }> => {
+  if (!tree.connected || !node.children) {
+    return computed(() => ({
+      mixed: false,
+      unclear: false,
+      selected: Array.isArray(tree.model)
+        ? tree.model.includes(node.value)
+        : tree.model === node.value,
+    }));
+  }
+
   if (computedSelectedStateForTreeNode.get(node)) {
     return computedSelectedStateForTreeNode.get(node)!;
   }
@@ -62,21 +66,17 @@ const computeNodeState = <T,>(
       let selected = false;
 
       if (Array.isArray(node.children)) {
-        if (tree.connected) {
-          selected = node.children.every(_node => {
+        selected = node.children.some(_node => {
+          const t = computeNodeState(_node);
+          return t.value.selected;
+        });
+        mixed =
+          selected &&
+          node.children.some(_node => {
             const t = computeNodeState(_node);
-            return !t.value.unclear && !!t.value.mixed && t.value.selected;
+            return !t.value.selected;
           });
-          mixed = node.children.some(_node => {
-            const t = computeNodeState(_node);
-            return !t.value.unclear && !!t.value.mixed && t.value.selected;
-          });
-        } else {
-          selected = Array.isArray(tree.model)
-            ? tree.model.includes(model.value.value)
-            : tree.model === model.value.value;
-        }
-      } else if (node.children) {
+      } else {
         unclear = true;
       }
 
@@ -96,18 +96,41 @@ const mixed = computed(() => state.value.mixed);
 const unclear = computed(() => state.value.unclear);
 
 const toggle = () => {
-  const $value = model.value.value;
-
   if (tree.connected) {
     if (unclear.value) return;
-    
+    if (!selected.value || mixed.value) {
+      const nodes = collect(model.value);
+      if (Array.isArray(tree.model)) {
+        nodes
+          .filter(node => !node.children)
+          .forEach(({ value: $value }) => {
+            tree.model.includes($value) ? void 0 : tree.model.push($value);
+            console.log(tree.model);
+          });
+        tree.model = tree.model;
+      }
+    } else {
+      const nodes = collect(model.value);
+      if (Array.isArray(tree.model)) {
+        nodes
+          .filter(node => !node.children)
+          .forEach(({ value: $value }) => {
+            tree.model.includes($value)
+              ? tree.model.splice(tree.model.indexOf($value), 1)
+              : void 0;
+          });
+        tree.model = tree.model;
+      }
+    }
+  } else {
+    const $value = model.value.value;
+    if (Array.isArray(tree.model)) {
+      tree.model.includes($value)
+        ? tree.model.splice(tree.model.indexOf($value), 1)
+        : tree.model.push($value);
+      tree.model = tree.model;
+    } else tree.model = $value;
   }
-
-  Array.isArray(tree.model)
-    ? tree.model.includes($value)
-      ? tree.model.splice(tree.model.indexOf($value), 1)
-      : tree.model.push($value)
-    : (tree.model = $value);
 };
 
 const open = computed({
@@ -167,6 +190,32 @@ const handleKeydown = (e: KeyboardEvent) => {
       break;
   }
 };
+
+const toBind = reactive({
+  value: computed(() => model.value.value),
+  label: computed(() => model.value.label),
+  meta: computed(() => model.value.meta),
+  disabled: computed(() => model.value.disabled),
+  open: computed({
+    get: () => model.value.open,
+    set(v) {
+      model.value.open = v;
+      model.value = model.value;
+    },
+  }),
+  children: computed(() => model.value.children),
+  current,
+  selected: computed({
+    get: () => selected.value,
+    set(v) {
+      if (v !== selected.value) toggle();
+    },
+  }),
+  mixed,
+  unclear,
+  loading,
+  level: computed(() => props.level),
+});
 </script>
 
 <template>
@@ -182,16 +231,17 @@ const handleKeydown = (e: KeyboardEvent) => {
   >
     <slot
       v-bind="{
-        ...model,
-        current,
-        unclear,
-        mixed,
-        selected,
-        foldable,
-        loading,
-        level,
-        fold,
-        toggle,
+        model: toBind,
+        // ...model,
+        // current,
+        // unclear,
+        // mixed,
+        // selected,
+        // foldable,
+        // loading,
+        // level,
+        // fold,
+        // toggle,
       }"
     />
     <div

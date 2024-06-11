@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, isReactive, provide, reactive, ref } from 'vue';
-import { TreeNode } from './misc';
+import { computed, provide, reactive, ref } from 'vue';
+import { TreeNode, flatTree } from './misc';
 import { V_TREE_IN } from './Tree';
 import VTreeNode from './VTreeNode.vue';
 
@@ -18,36 +18,27 @@ const props = withDefaults(
 );
 
 const slots = defineSlots<{
-  default?(
-    props: TreeNode & {
+  default?(props: {
+    model: TreeNode & {
       current: boolean;
+      unclear: boolean;
       selected: boolean;
+      mixed: boolean;
       loading: boolean;
-      foldable: boolean;
       level: number;
-      fold(open?: boolean): Promise<unknown>;
-      toggle(): void;
-    },
-  ): any;
+    };
+  }): any;
 }>();
 
-const tree = computed(() =>
-  isReactive(props.tree) ? props.tree : reactive(props.tree),
-);
+const tree = computed(() => reactive(props.tree));
 
-const choices = computed(() => {
-  let choices: TreeNode[] = [];
+const collect = <T,>(...nodes: TreeNode<T>[]): TreeNode<T>[] => {
+  const collection: TreeNode<T>[] = [];
+  flatTree(i => collection.push(i), ...nodes);
+  return collection;
+};
 
-  const each = (i: TreeNode) => {
-    choices.push(i);
-    if (i.open) {
-      Array.isArray(i.children) && i.children?.forEach(each);
-    }
-  };
-  tree.value?.forEach(each);
-
-  return choices;
-});
+const choices = computed(() => collect(...tree.value));
 
 const _current = ref(null);
 const current = computed({
@@ -73,7 +64,14 @@ const nav = (delta: 1 | -1) => {
 provide(
   V_TREE_IN,
   reactive({
-    model,
+    model: computed({
+      get() {
+        return model.value;
+      },
+      set(v) {
+        model.value = v;
+      },
+    }),
     tree,
     connected: computed(() => props.connected),
     load: computed(() => props.load),
@@ -100,9 +98,7 @@ defineExpose({ el });
       v-slot="_"
     >
       <slot v-bind="_">
-        <div @click="_.fold(!_.open)">
-          {{ _.label ?? _.value }}
-        </div>
+        {{ _.model.label ?? _.model.value }}
       </slot>
     </VTreeNode>
   </div>

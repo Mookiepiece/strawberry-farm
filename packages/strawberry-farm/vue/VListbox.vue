@@ -93,6 +93,7 @@ const toggle = (value: any) => {
     model.value.includes(value)
       ? model.value.splice(model.value.indexOf(value), 1)
       : model.value.push(value);
+    model.value = model.value;
     return;
   }
 
@@ -165,7 +166,8 @@ const renderOption = (i: NormalizedCommonOption<T>) =>
       onClick: !i.disabled ? () => toggle(i.value) : undefined,
       role: 'option',
       'aria-selected': i.selected || undefined,
-      class: i.current && 'current',
+      'aria-current': i.current || undefined,
+      // class: i.current && 'current',
       onPointermove: props.magnetic
         ? () => void (current.value = i.index)
         : undefined,

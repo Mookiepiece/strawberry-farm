@@ -5,10 +5,6 @@ import { CommonOptionsInput, flatCommonOptionsInput } from './misc';
 import VListbox from './VListbox.vue';
 import { usePopper } from './usePopper';
 
-defineOptions({
-  inheritAttrs: false,
-});
-
 const model = defineModel<any>();
 
 const props = withDefaults(
@@ -44,8 +40,10 @@ const { open, visible } = usePopper({
 });
 
 const erase = () => {
-  if (multi.value) model.value.splice(0, model.value.length);
-  else model.value = null;
+  if (multi.value) {
+    model.value.splice(0, model.value.length);
+    model.value = model.value;
+  } else model.value = null;
   reference.value?.focus();
 };
 

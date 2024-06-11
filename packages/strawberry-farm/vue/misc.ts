@@ -59,3 +59,15 @@ export type TreeNode<T = undefined> = {
   open?: boolean;
   children?: boolean | TreeNode<T>[];
 };
+
+export const flatTree = <T>(
+  cb: (node: TreeNode<T>) => void,
+  ...nodes: TreeNode<T>[]
+): void => {
+  nodes.forEach(node => {
+    cb(node);
+    if (Array.isArray(node.children)) {
+      flatTree(cb, ...node.children);
+    }
+  });
+};

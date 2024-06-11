@@ -49,11 +49,16 @@ const checkboxes4 = ref<any[]>([]);
   {{ tree }}
   <div class="[A] gap-2">
     <VTree class="VTreeDemo" v-model="single" :tree="tree" />
-    <VTree class="VTreeDemo2" v-model="checkboxes" :tree="tree" v-slot="_">
+    <VTree
+      class="VTreeDemo2"
+      v-model="checkboxes"
+      :tree="tree"
+      v-slot="{ model: _ }"
+    >
       <div class="VTreeDemo2A" :style="{ '--level': _.level }">
-        <div class="VTreeDemo2B" @click="_.fold(!_.open)">
+        <div class="VTreeDemo2B" @click="_.open = !_.open">
           <i-feather
-            v-if="_.foldable"
+            v-if="_.children"
             :i="_.open ? 'chevron-down' : 'chevron-right'"
           />
           <div v-else style="width: 1em; aspect-ratio: 1"></div>
@@ -63,20 +68,25 @@ const checkboxes4 = ref<any[]>([]);
         </div>
         <i-feather
           class="VTreeDemo2C"
-          @click="_.toggle()"
+          @click="_.selected = !_.selected"
           :i="_.selected ? 'check-circle' : 'circle'"
         />
       </div>
     </VTree>
-    <VTree class="VTreeDemo3" v-model="checkboxes3" :tree="tree3" v-slot="_">
+    <VTree
+      class="VTreeDemo3"
+      v-model="checkboxes3"
+      :tree="tree3"
+      v-slot="{ model: _ }"
+    >
       <div class="VTreeDemo3A" :style="{ '--level': _.level }">
         <i-feather
           class="VTreeDemo3B"
-          @click="_.fold(!_.open)"
-          v-if="_.foldable"
+          @click="_.open = !_.open"
+          v-if="_.children"
           :i="_.open ? 'chevron-down' : 'chevron-right'"
         />
-        <div class="VTreeDemo3C" @click="_.toggle()">
+        <div class="VTreeDemo3C" @click="_.selected = !_.selected">
           <div>
             {{ _.label ?? _.value }}
           </div>
@@ -84,28 +94,26 @@ const checkboxes4 = ref<any[]>([]);
         </div>
       </div>
     </VTree>
-    <VTree class="VTreeDemo3" v-model="checkboxes4" :tree="tree3" v-slot="_" connected>
+    <VTree
+      class="VTreeDemo3"
+      v-model="checkboxes4"
+      :tree="tree3"
+      v-slot="{ model: _ }"
+      connected
+    >
       <div class="VTreeDemo3A" :style="{ '--level': _.level }">
         <i-feather
           class="VTreeDemo3B"
-          @click="_.fold(!_.open)"
-          v-if="_.foldable"
+          @click="_.open = !_.open"
+          v-if="_.children"
           :i="_.open ? 'chevron-down' : 'chevron-right'"
         />
-        <div class="VTreeDemo3C" @click="_.toggle()">
+        <div class="VTreeDemo3C" @click="_.selected = !_.selected">
           <div>
             {{ _.label ?? _.value }}
           </div>
           <i-feather
-            :i="
-              Array.isArray(_.children)
-                ? _.children.every(i => checkboxes4.includes(i.value))
-                  ? 'check-circle'
-                  : 'circle'
-                : _.selected
-                  ? 'check-circle'
-                  : 'circle'
-            "
+            :i="_.mixed ? 'square' : _.selected ? 'check-circle' : 'circle'"
           />
         </div>
       </div>
