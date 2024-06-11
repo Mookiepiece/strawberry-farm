@@ -1,11 +1,11 @@
 import { cx } from '../functions/cx';
 import { sf7 } from '../html/sf7';
 import {
-  toastPrimitive,
-  ToastPrimitiveConfig,
-} from './ToastPrimitive';
+  rawToast,
+  RawToastConfig,
+} from './rawToast';
 
-type ToastConfig = ToastPrimitiveConfig | string | Node;
+type ToastConfig = RawToastConfig | string | Node;
 type ToastType = 'blank' | 'error' | 'success' | 'loading' | 'custom';
 
 const defaultTimeouts: Record<ToastType, number> = {
@@ -26,7 +26,7 @@ const defaultTones: Partial<Record<ToastType, string>> = {
   error: 'tone:reimu',
 };
 
-const unpackConfig = (_config: ToastConfig): ToastPrimitiveConfig =>
+const unpackConfig = (_config: ToastConfig): RawToastConfig =>
   _config instanceof Node || typeof _config === 'string'
     ? { message: _config }
     : _config;
@@ -58,7 +58,7 @@ const createToast = (_config: ToastConfig, type: ToastType) => {
     default:
   }
 
-  return toastPrimitive({
+  return rawToast({
     message,
     duration: duration ?? defaultTimeouts[type],
     bar,
@@ -71,5 +71,5 @@ export const Toast = {
   success: (config: ToastConfig) => createToast(config, 'success'),
   error: (config: ToastConfig) => createToast(config, 'error'),
   blank: (config: ToastConfig) => createToast(config, 'blank'),
-  custom: (config: ToastConfig) => toastPrimitive(unpackConfig(config)),
+  custom: (config: ToastConfig) => rawToast(unpackConfig(config)),
 };

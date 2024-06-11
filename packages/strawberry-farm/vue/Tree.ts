@@ -1,4 +1,4 @@
-import { InjectionKey, Ref, reactive } from 'vue';
+import { InjectionKey, Ref } from 'vue';
 import { TreeNode } from './misc';
 
 export const V_TREE_IN: InjectionKey<{
@@ -10,12 +10,6 @@ export const V_TREE_IN: InjectionKey<{
   current: any;
 }> = Symbol('VTree');
 
-const useConnectedTree = (_nodes: TreeNode[]) => {
-  const nodes = reactive(_nodes);
-
-  _nodes.forEach(() => {});
-};
-
 export const computedSelectedStateForTreeNode = new WeakMap<
   TreeNode<any>,
   Ref<{
@@ -24,5 +18,3 @@ export const computedSelectedStateForTreeNode = new WeakMap<
     mixed: boolean;
   }>
 >();
-
-const eachChild = (node, cb) => {};

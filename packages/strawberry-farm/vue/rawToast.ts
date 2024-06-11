@@ -3,17 +3,17 @@ import { type ToastBarElement } from '../html/ToastBarElement';
 
 const uuid = inc('ToastItem');
 
-export type ToastPrimitiveConfig = {
+export type RawToastConfig = {
   message: string | Node;
   bar?: string;
   duration?: number;
 };
 
-export const toastPrimitive = ({
+export const rawToast = ({
   message,
   duration = 4000,
   bar: _bar = 'ToastBarTopCenter',
-}: ToastPrimitiveConfig) => {
+}: RawToastConfig) => {
   const bar = document.getElementById(_bar) as ToastBarElement;
   const div = document.createElement('div');
   div.id = uuid();
