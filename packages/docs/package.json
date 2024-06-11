@@ -7,7 +7,7 @@
     "dev": "vitepress dev .",
     "build": "vitepress build .",
     "preview": "vitepress preview .",
-    "gh": "gh-pages -d .vitepress/dist"
+    "gh": "node publish.mjs"
   },
   "dependencies": {
     "vue": "^3"
