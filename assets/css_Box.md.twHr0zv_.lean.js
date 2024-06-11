@@ -1,1 +1,0 @@
-import{J as t,o as d,i as o,K as e}from"./chunks/framework.IkYOgTiJ.js";const b=JSON.parse('{"title":"盒模型 Box","description":"","frontmatter":{},"headers":[],"relativePath":"css/Box.md","filePath":"css/Box.md"}'),r={name:"css/Box.md"},a=e("",11),c=[a];function i(m,n,h,s,l,g){return d(),o("div",null,c)}const _=t(r,[["render",i]]);export{b as __pageData,_ as default};

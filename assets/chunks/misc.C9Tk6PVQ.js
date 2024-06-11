@@ -1,0 +1,1 @@
+const l=t=>t.flatMap(a=>a&&typeof a=="object"&&"options"in a?a.options:a).map(a=>a&&typeof a=="object"&&"value"in a?a:{value:a,label:""+a}),i=(t,...a)=>{a.forEach(e=>{t(e),Array.isArray(e.children)&&i(t,...e.children)})};export{i as a,l as f};

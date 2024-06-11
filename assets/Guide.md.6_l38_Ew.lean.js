@@ -1,1 +1,0 @@
-import{J as s,o as i,i as a,K as t}from"./chunks/framework.IkYOgTiJ.js";const g=JSON.parse('{"title":"Guide","description":"","frontmatter":{},"headers":[],"relativePath":"Guide.md","filePath":"Guide.md"}'),e={name:"Guide.md"},h=t("",9),l=[h];function n(d,k,p,r,E,o){return i(),a("div",null,l)}const u=s(e,[["render",n]]);export{g as __pageData,u as default};

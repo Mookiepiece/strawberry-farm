@@ -1,0 +1,1 @@
+import{_ as e}from"./VSwitch.vue_vue_type_script_setup_true_lang.CHC5XXuG.js";import{d as a,o as t,a as o,b as r,I as s}from"./framework.IAuM8QuA.js";const f=a({__name:"Switch",setup(_){return(c,n)=>(t(),o(e,null,{default:r(()=>[s("Speaker")]),_:1}))}});export{f as default};
