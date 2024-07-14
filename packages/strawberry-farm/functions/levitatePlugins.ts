@@ -27,7 +27,7 @@ const mainAxisFlipFallbacks: Record<Direction, Direction[]> = {
   right: ['left'],
 };
 
-export const flipAny =
+export const autoPlacement =
   (
     settings?: (config: PopConfigs) => {
       limit?: number;
@@ -56,8 +56,8 @@ export const flipAny =
     return { ...config, dir, map };
   };
 
-export const flip: typeof flipAny = settings =>
-  flipAny(config => ({
+export const flip: typeof autoPlacement = settings =>
+  autoPlacement(config => ({
     fallback: mainAxisFlipFallbacks[config.dir],
     ...settings?.(config),
   }));
@@ -78,14 +78,26 @@ export const sameWidth: PopPlugin = config => {
   return config;
 };
 
-export const dataAttr: PopPlugin = config => {
-  const { $pop, dir } = config;
+export const applyTransform: PopPlugin = config => {
+  const $pop = config.$pop as HTMLElement;
+
+  $pop.style.setProperty('--x', config.x + 'px');
+  $pop.style.setProperty('--y', config.y + 'px');
+  $pop.style.setProperty('transform', 'translate(var(--x), var(--y))');
   $pop.setAttribute('data-pop-dir', dir);
+  
+  return config;
+};
+
+export const dataAttr: PopPlugin = config => {
+  const $pop = config.$pop as HTMLElement;
+  const { dir } = config;
   return config;
 };
 
 export const maxHeight: PopPlugin = config => {
-  const { $pop, map } = config;
+  const $pop = config.$pop as HTMLElement;
+  const { map } = config;
   $pop.style.setProperty('--max-height', Math.floor(map.height - 20) + 'px');
   return { ...config, pop: $pop.getBoundingClientRect() };
 };

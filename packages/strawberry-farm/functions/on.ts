@@ -1,9 +1,6 @@
-export interface SFCustomEventMap {
-  sfvoid: { void: string };
-}
+export interface CustomEvents {}
 
-export type SFEventMap = HTMLElementEventMap & SFCustomEventMap;
-type SFEvents = SFEventMap & Record<string, any>;
+export type Events = HTMLElementEventMap & CustomEvents & Record<string, any>;
 
 type EventModifiers =
   | 'stop'
@@ -40,10 +37,10 @@ const modifierGuards: Record<
 export type ON<T extends EventTarget> = (target: T) => ON2;
 
 export type ON2 = {
-  [N in keyof SFEvents]: ON3<N, SFEvents[N]>;
+  [N in keyof Events]: ON3<N, Events[N]>;
 };
 
-export type ON3<N extends keyof SFEvents, E extends SFEvents[N]> = ((
+export type ON3<N extends keyof Events, E extends Events[N]> = ((
   listener: (ev: E) => void,
 ) => () => void) & {
   [K in Modifiers]: ON3<N, E>;

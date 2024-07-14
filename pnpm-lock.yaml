@@ -707,7 +707,7 @@ packages:
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       '@typescript-eslint/parser': ^7.0.0
-      eslint: ^8.56.0
+      eslint: ^8.56.0 
       typescript: '*'
     peerDependenciesMeta:
       typescript:

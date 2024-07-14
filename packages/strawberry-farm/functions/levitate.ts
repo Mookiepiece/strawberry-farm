@@ -9,14 +9,14 @@ type Levitate = typeof _levitate & {
 };
 
 export type PopConfigs = {
-  $ref: HTMLElement | SVGElement;
-  $pop: HTMLElement | SVGElement;
+  $ref: { getBoundingClientRect(): DOMRect };
+  $pop: { getBoundingClientRect(): DOMRect };
   ref: DOMRect;
   pop: DOMRect;
 
   dir: Direction;
   offset: number;
-  alignment?: Alignment;
+  align?: Alignment;
 
   map: DOMRect;
   viewport: DOMRect;
@@ -37,10 +37,6 @@ const isScrollableElement = (p: Element) => {
 const auto = (el: Element, cb: () => void) => {
   const bag = Bag();
 
-  // NOTE: ResizeObserver will firing the callback once the element is being observed
-  // it is probably scheduled after requestAnimationFrame, at next painting https://stackoverflow.com/questions/77943736/order-of-callbacks-settimeout-and-resizeobserver
-  // https://drafts.csswg.org/resize-observer/#intro
-  // > Observation will fire when observation starts if Element is being rendered, and Element’s size is not 0,0.
   const ro = new ResizeObserver(cb);
   bag(() => ro.disconnect());
 
@@ -52,10 +48,6 @@ const auto = (el: Element, cb: () => void) => {
     ro.observe(p); // ancestorResize @floating-ui/core@1.6
     if (isScrollableElement(p)) bag(on(p).scroll(() => cb())); // ancestorScroll @floating-ui/core@1.6
   }
-
-  // Note: Intersection Observer is hard to use...
-  // It didn't pass my test on "multiple scrollable parent", which makes bounding rect "overlays" the element.
-  // https://github.com/floating-ui/floating-ui/blob/2be011f877dd0c56d77b528d9f4422c83f6950b9/packages/dom/src/autoUpdate.ts#L141
 
   return () => bag();
 };
@@ -77,8 +69,8 @@ export const availableSpace4: Record<
   left: ([[ref], viewport], offset) => { const width = clamp(0, ref.left - viewport.left - offset, viewport.width); const right = viewport.left + width; return ({ ...viewport, right, width }) },
 };
 
-const align = (config: PopConfigs): PopConfigs => {
-  let { ref, pop, dir, alignment } = config;
+const Align = (config: PopConfigs): PopConfigs => {
+  let { ref, pop, dir, align: alignment } = config;
   let map = config.map!;
 
   let x = 0,
@@ -112,36 +104,31 @@ const align = (config: PopConfigs): PopConfigs => {
 };
 
 const _levitate = (
-  $ref: HTMLElement | SVGElement,
-  $pop: HTMLElement | SVGElement,
+  $ref: { getBoundingClientRect(): DOMRect },
+  $pop: { getBoundingClientRect(): DOMRect },
   {
     dir = 'bottom',
-    alignment,
+    align,
     offset = 0,
-    viewport: _viewport,
+    viewport = {
+      x: 0,
+      y: 0,
+      top: 0,
+      right: document.body.clientWidth,
+      bottom: document.body.clientHeight,
+      left: 0,
+      width: document.body.clientWidth,
+      height: document.body.clientHeight,
+      toJSON() {},
+    },
   }: {
     dir?: Direction;
     offset?: number;
-    alignment?: Alignment;
+    align?: Alignment;
     viewport?: DOMRect;
-  } = {
-    dir: 'bottom',
-    offset: 0,
-  },
+  } = {},
   ...plugins: PopPlugin[]
 ) => {
-  const viewport = _viewport || {
-    x: 0,
-    y: 0,
-    top: 0,
-    right: document.body.clientWidth,
-    bottom: document.body.clientHeight,
-    left: 0,
-    width: document.body.clientWidth,
-    height: document.body.clientHeight,
-    toJSON() {},
-  };
-
   const ref = $ref.getBoundingClientRect();
   const pop = $pop.getBoundingClientRect();
 
@@ -151,7 +138,7 @@ const _levitate = (
     $ref,
     $pop,
     dir,
-    alignment,
+    align,
     ref,
     pop,
     offset,
@@ -160,7 +147,7 @@ const _levitate = (
   };
 
   for (let p of plugins) config = p(config);
-  config = align(config);
+  config = Align(config);
 
   $pop.style.setProperty('--x', config.x + 'px');
   $pop.style.setProperty('--y', config.y + 'px');

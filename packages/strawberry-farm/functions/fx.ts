@@ -1,4 +1,6 @@
-import { Bag, Bags, onTimeout, nextFrame, on } from '.';
+import { onTimeout, nextFrame } from './scheduler';
+import { Bag, Bags } from './collection';
+import { on } from './on';
 
 const { resetBag } = Bags();
 
@@ -32,12 +34,9 @@ const transition = (el: HTMLElement | SVGElement, options: TransitionInit) => {
       }),
     );
 
-    // If some transition properties didn't get changed during the transition
-    // it will not fires an TransitionEvent.
-    // Thus we need this fallback
     // https://github.com/vuejs/core/blob/9a936aaec489c79433a32791ecf5ddb1739a62bd/packages/runtime-dom/src/components/Transition.ts#L357
     const timeout = Math.max(
-      ...transitionDelays.map((s, index) => {
+      ...transitionDelays.map((s, index) => { 
         let delay = Number(s.slice(0, -1));
         let duration = Number(transitionDurations[index].slice(0, -1));
 
@@ -50,11 +49,8 @@ const transition = (el: HTMLElement | SVGElement, options: TransitionInit) => {
 
     bag(
       onTimeout(() => {
-        if (count < transitionDurations.length) {
-          count = Number.NEGATIVE_INFINITY;
-          bag();
-          options.done?.();
-        }
+        bag();
+        options.done?.();
       }, timeout + 1),
     );
   }, bag(new AbortController()).signal);

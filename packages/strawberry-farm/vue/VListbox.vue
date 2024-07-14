@@ -167,9 +167,8 @@ const renderOption = (i: NormalizedCommonOption<T>) =>
       role: 'option',
       'aria-selected': i.selected || undefined,
       'aria-current': i.current || undefined,
-      // class: i.current && 'current',
       onPointermove: props.magnetic
-        ? () => void (current.value = i.index)
+        ? () => !props.disabled && !i.disabled && (current.value = i.index)
         : undefined,
       'aria-disabled': props.disabled || i.disabled || undefined,
     },
