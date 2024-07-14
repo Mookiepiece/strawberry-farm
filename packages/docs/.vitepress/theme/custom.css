@@ -61,7 +61,7 @@ html {
   }
 }
 
-/* https://shikiji.netlify.app/guide/dual-themes */
+/* https://shiki.style/guide/dual-themes#class-based-dark-mode */
 .shiki {
   background-color: transparent !important;
 }

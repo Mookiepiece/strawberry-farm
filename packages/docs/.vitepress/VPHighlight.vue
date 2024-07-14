@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { highlight } from './_shikiji';
+import { highlight } from './shiki';
 
 const props = defineProps<{
   lang: string;

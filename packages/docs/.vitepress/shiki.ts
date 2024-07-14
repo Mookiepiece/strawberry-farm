@@ -1,4 +1,4 @@
-import { codeToHtml } from 'shikiji';
+import { codeToHtml } from 'shiki';
 
 // const code = '<div data-type="bar">foo</div>'; // input code
 // export const html = await codeToHtml(code, {
