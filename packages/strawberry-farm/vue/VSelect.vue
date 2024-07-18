@@ -1,6 +1,11 @@
 <script setup lang="ts" generic="T = undefined">
 import { computed, ref } from 'vue';
-import { dataAttr, flip, maxHeight, sameWidth } from '../functions';
+import {
+  applyTransform,
+  flip,
+  maxHeight,
+  sameWidth,
+} from '../functions';
 import { CommonOptionsInput, flatCommonOptionsInput } from './misc';
 import VListbox from './VListbox.vue';
 import { usePopper } from './usePopper';
@@ -36,7 +41,7 @@ const { open, visible } = usePopper({
     trap: true,
     clickAway: true,
   },
-  plugins: [sameWidth, flip(() => ({ limit: 200 })), dataAttr, maxHeight],
+  plugins: [sameWidth, flip(), maxHeight, applyTransform],
 });
 
 const erase = () => {
@@ -119,11 +124,11 @@ defineExpose({
     <div
       v-show="open || visible"
       ref="popper"
-      class="VPositioner"
+      data-pop
       @keydown.esc="open = false"
       style="position: fixed; top: 0; left: 0"
     >
-      <div class="VPopperBody">
+      <div data-pop-body>
         <VListbox
           :multi="multi"
           magnetic

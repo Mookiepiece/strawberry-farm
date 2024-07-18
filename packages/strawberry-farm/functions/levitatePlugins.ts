@@ -13,6 +13,11 @@ const logicalBoxes: Record<Direction, (rect: DOMRect) => LogicalBox> = {
   right: ({ width, height }) => ({ main: width, cross: height }),
 };
 
+const scrollInline = (config: PopConfigs) =>
+  (config.$pop as HTMLElement).querySelector('[data-pop-body]')![
+    ['top', 'bottom'].includes(config.dir) ? 'scrollHeight' : 'scrollWidth'
+  ];
+
 const allFlipFallbacks: Record<Direction, Direction[]> = {
   top: ['bottom', 'left', 'right'],
   bottom: ['top', 'left', 'right'],
@@ -39,16 +44,20 @@ export const autoPlacement =
     let map = availableSpace4[dir]([[ref], viewport], offset);
 
     const _settings = settings?.(config);
-    const limit = _settings?.limit ?? logicalBoxes[dir](pop).main;
+    const $scrollInline = scrollInline(config);
+    const limit = _settings?.limit ?? $scrollInline;
     const fallbacks = _settings?.fallback ?? allFlipFallbacks[dir];
 
+    console.log($scrollInline);
     if (logicalBoxes[dir](map).main < limit) {
       for (const _dir of fallbacks) {
         let _map = availableSpace4[_dir]([[ref], viewport], offset);
         if (_map.width * _map.height > map.width * map.height) {
           map = _map;
           dir = _dir;
-          break;
+          if (map.height >= limit) {
+            break;
+          }
         }
       }
     }
@@ -63,16 +72,17 @@ export const flip: typeof autoPlacement = settings =>
   }));
 
 export const sameWidth: PopPlugin = config => {
-  let width: any = config.$pop.style.getPropertyValue('width');
+  const $pop = config.$pop as HTMLElement;
+  let width: any = $pop.style.getPropertyValue('width');
   if (!width.endsWith('px')) width = '';
   width = Number(width.slice(0, -2));
 
   const shouldBe = config.$ref.getBoundingClientRect().width;
 
   if (width !== shouldBe) {
-    config.$pop.style.setProperty('width', shouldBe + 'px');
+    $pop.style.setProperty('width', shouldBe + 'px');
 
-    const pop = config.$pop.getBoundingClientRect();
+    const pop = $pop.getBoundingClientRect();
     return { ...config, pop };
   }
   return config;
@@ -84,14 +94,8 @@ export const applyTransform: PopPlugin = config => {
   $pop.style.setProperty('--x', config.x + 'px');
   $pop.style.setProperty('--y', config.y + 'px');
   $pop.style.setProperty('transform', 'translate(var(--x), var(--y))');
-  $pop.setAttribute('data-pop-dir', dir);
-  
-  return config;
-};
+  $pop.setAttribute('data-pop-dir', config.dir);
 
-export const dataAttr: PopPlugin = config => {
-  const $pop = config.$pop as HTMLElement;
-  const { dir } = config;
   return config;
 };
 

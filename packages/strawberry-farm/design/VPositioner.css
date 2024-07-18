@@ -1,8 +1,8 @@
-.VPositioner:not([data-pop-dir]) {
+[data-pop]:where(:not([data-pop-dir])) {
   visibility: hidden;
 }
 
-:where(.VPopperBody) {
+[data-pop-body] {
   max-height: var(--max-height, auto);
   overflow: auto;
 
@@ -11,18 +11,20 @@
   outline-offset: -1px;
 }
 
-:where(.VPopperBody:is(.v-enter-from, .v-leave-to)) {
+[data-pop-body]:where(:is(.v-enter-from, .v-leave-to)) {
   transform: translateY(-10px);
   opacity: 0;
 }
 
-:where(.VPopperBody:is(.v-enter-to, .v-leave-from)) {
+[data-pop-body]:where(:is(.v-enter-to, .v-leave-from)) {
   transform: translateY(0);
   opacity: 1;
 }
 
-:where(.VPopperBody:is(.v-enter-active:not(.v-enter-from), .v-leave-active:not(.v-leave-from))) {
+[data-pop-body]:where(
+    :is(.v-enter-active:not(.v-enter-from), .v-leave-active:not(.v-leave-from))
+  ) {
   transition:
-    opacity .2s var(--curve-wave),
-    transform .2s var(--curve-wave);
+    opacity 0.2s var(--curve-wave),
+    transform 0.2s var(--curve-wave);
 }
