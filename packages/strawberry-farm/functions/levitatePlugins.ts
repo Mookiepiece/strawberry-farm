@@ -48,7 +48,6 @@ export const autoPlacement =
     const limit = _settings?.limit ?? $scrollInline;
     const fallbacks = _settings?.fallback ?? allFlipFallbacks[dir];
 
-    console.log($scrollInline);
     if (logicalBoxes[dir](map).main < limit) {
       for (const _dir of fallbacks) {
         let _map = availableSpace4[_dir]([[ref], viewport], offset);
