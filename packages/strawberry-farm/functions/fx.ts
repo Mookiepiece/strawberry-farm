@@ -40,7 +40,7 @@ const transition = (el: HTMLElement | SVGElement, options: TransitionInit) => {
         let delay = Number(s.slice(0, -1));
         let duration = Number(transitionDurations[index].slice(0, -1));
 
-        delay = Number.isNaN(delay) ? 0 : delay; // There are some kind of invalid values, see vue.
+        delay = Number.isNaN(delay) ? 0 : delay;
         duration = Number.isNaN(duration) ? 0 : duration;
 
         return (delay + duration) * 1000;

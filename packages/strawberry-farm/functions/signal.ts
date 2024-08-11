@@ -1,6 +1,6 @@
 const PreactSignalsSymbol = Symbol.for('preact-signals');
 
-type Signal<T = any> = {
+export type Signal<T = any> = {
   _value: T;
   value: T;
   peek(): T;
@@ -15,7 +15,7 @@ type Signal<T = any> = {
   valueOf(): T;
 };
 
-type Effect<T = void> = {
+export type Effect<T = void> = {
   run: () => T;
   _signals: Set<Signal>;
   dispose: () => void;
@@ -115,7 +115,7 @@ export const effect = <T = void>(
 
 let activeBatches: (Batch | null)[] = [];
 
-const untracked = (cb: () => void) => {
+export const untracked = (cb: () => void) => {
   activeBatches.push(null);
   cb();
   activeBatches.pop();
