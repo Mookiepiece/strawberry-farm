@@ -1,4 +1,4 @@
-import { fx } from '../functions';
+import { fx } from '../shared';
 
 export const collapse = {
   show(el: HTMLElement | SVGElement) {

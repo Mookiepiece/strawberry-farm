@@ -1,4 +1,4 @@
-import { nextFrame, on } from '../functions';
+import { nextFrame, on } from '../shared';
 import { SFElement } from './SFElement';
 
 class SFModalElement extends SFElement {

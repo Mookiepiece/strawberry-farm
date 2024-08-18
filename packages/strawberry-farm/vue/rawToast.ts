@@ -1,4 +1,4 @@
-import { Bag, fx, inc, nextFrame, on } from '../functions';
+import { Bag, fx, inc, nextFrame, on } from '../shared';
 import { type ToastBarElement } from '../html/ToastBarElement';
 
 const uuid = inc('ToastItem');

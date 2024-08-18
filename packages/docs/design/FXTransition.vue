@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { fx } from '@mookiepiece/strawberry-farm/functions';
+import { fx } from '@mookiepiece/strawberry-farm/shared';
 import { ref } from 'vue';
 
 const open = ref(true);

@@ -1,4 +1,4 @@
-import { Bag, on } from '../functions';
+import { Bag, on } from '../shared';
 import { SFElement } from './SFElement';
 
 

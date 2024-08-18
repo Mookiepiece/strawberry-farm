@@ -1,4 +1,4 @@
-import { Bag, Emitter, Mitt, SFEventMap } from '../functions';
+import { Bag, Emitter, Mitt, SFEventMap } from '../shared';
 
 interface SFEmit {
   <T extends keyof SFEventMap>(

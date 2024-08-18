@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Bag, flip, levitate } from '@mookiepiece/strawberry-farm/functions';
+import { Bag, flip, levitate } from '@mookiepiece/strawberry-farm/shared';
 import { onUnmounted, ref } from 'vue';
 import { onMounted } from 'vue';
 

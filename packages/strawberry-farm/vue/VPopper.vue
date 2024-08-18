@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { flip, levitate } from '../functions';
+import { flip, levitate } from '../shared';
 
 const open = ref(false);
 const leaving = ref(false);

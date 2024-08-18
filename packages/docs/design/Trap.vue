@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { trap } from '@mookiepiece/strawberry-farm/functions';
+import { trap } from '@mookiepiece/strawberry-farm/shared';
 import { ref } from 'vue';
 
 const a = ref<HTMLElement>();

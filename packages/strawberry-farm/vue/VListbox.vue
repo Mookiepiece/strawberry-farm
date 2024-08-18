@@ -7,7 +7,7 @@ import {
   NormalizedCommonOption,
   flatCommonOptionsInput,
 } from './misc';
-import { wai } from '../functions';
+import { wai } from '../shared';
 import { RenderFunction } from './RenderFunction';
 
 const model = defineModel<any>();

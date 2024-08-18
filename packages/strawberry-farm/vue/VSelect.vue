@@ -5,7 +5,7 @@ import {
   flip,
   maxHeight,
   sameWidth,
-} from '../functions';
+} from '../shared';
 import { CommonOptionsInput, flatCommonOptionsInput } from './misc';
 import VListbox from './VListbox.vue';
 import { usePopper } from './usePopper';

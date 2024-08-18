@@ -10,8 +10,8 @@ import {
   watchEffect,
 } from 'vue';
 import { Form, FormModel, V_FORM_IN, V_FORM_ITEM_LABEL_IN } from './Form';
-import { RuleSlim, validate } from '../functions/validator';
-import { Bag } from '../functions';
+import { RuleSlim, validate } from '../shared/validator';
+import { Bag } from '../shared';
 import { unref } from 'vue';
 import VFormLabel from './VFormLabel.vue';
 import VInput from './VInput.vue';

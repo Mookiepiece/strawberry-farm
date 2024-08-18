@@ -6,7 +6,7 @@ import {
   onUnmounted,
   ref,
 } from 'vue';
-import { Bag, on } from '../../../strawberry-farm/functions';
+import { Bag, on } from '../../../strawberry-farm/shared';
 import VPOutline from './VPOutline.vue';
 import VPSidebar from './VPSidebar.vue';
 import VPNav from './VPNav.vue';

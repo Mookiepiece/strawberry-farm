@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watchEffect } from 'vue';
-import { on } from '../../strawberry-farm/functions';
+import { on } from '../../strawberry-farm/shared';
 
 const radiogroup = ref<HTMLElement>();
 

@@ -6,7 +6,7 @@ import {
   onetime,
   share,
   longPress
-} from '@mookiepiece/strawberry-farm/functions/scheduler';
+} from '@mookiepiece/strawberry-farm/shared/scheduler';
 
 
 

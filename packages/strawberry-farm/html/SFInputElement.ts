@@ -1,4 +1,4 @@
-import { on } from '../functions';
+import { on } from '../shared';
 import { SFElement } from './SFElement';
 
 // numberic, decimal

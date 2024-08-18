@@ -2,7 +2,7 @@
 import { onContentUpdated } from 'vitepress';
 import { computed, onMounted, ref, shallowRef } from 'vue';
 import VPLink from './VPLink.vue';
-import { Bag, debounce, on } from '@mookiepiece/strawberry-farm/functions';
+import { Bag, debounce, on } from '@mookiepiece/strawberry-farm/shared';
 
 const props = defineProps<{
   open: boolean;

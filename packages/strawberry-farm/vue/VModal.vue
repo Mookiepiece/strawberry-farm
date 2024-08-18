@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onUnmounted, ref } from 'vue';
-import { Bag, onTimeout, trap } from '../functions';
+import { Bag, onTimeout, trap } from '../shared';
 
 defineOptions({
   inheritAttrs: false,

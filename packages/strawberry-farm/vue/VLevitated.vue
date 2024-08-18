@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Transition, onUnmounted, ref, watch } from 'vue';
-import { Bag, levitate } from '../functions';
+import { Bag, levitate } from '../shared';
 import { sf7 } from '../html/sf7';
 
 const props = withDefaults(

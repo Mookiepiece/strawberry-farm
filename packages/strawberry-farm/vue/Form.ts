@@ -1,6 +1,6 @@
 import { InjectionKey, Ref, VNode, reactive, toRaw } from 'vue';
-import { IRuleType, RuleSlim } from '../functions/validator';
-import { inc } from '../functions';
+import { IRuleType, RuleSlim } from '../shared/validator';
+import { inc } from '../shared';
 
 export const V_FORM_ITEM_LABEL_IN: InjectionKey<{
   id: string;

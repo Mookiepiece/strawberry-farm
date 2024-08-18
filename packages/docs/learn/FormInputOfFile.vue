@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { on } from '../../strawberry-farm/functions/on';
-import { Bag } from '@mookiepiece/strawberry-farm/functions';
+import { on } from '../../strawberry-farm/shared/on';
+import { Bag } from '@mookiepiece/strawberry-farm/shared';
 
 const props = defineProps<{
   disabled?: boolean;

@@ -1,4 +1,4 @@
-import { on } from '../functions';
+import { on } from '../shared';
 
 /**
  * Using pointerdown, otherwise click other interactive elements will lost their focus but focus on the popper reference.

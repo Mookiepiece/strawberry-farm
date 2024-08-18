@@ -2,7 +2,7 @@
 import { Ref, computed, inject, reactive, ref, watchEffect } from 'vue';
 import { TreeNode, flatTree } from './misc';
 import { V_TREE_IN, computedSelectedStateForTreeNode } from './Tree';
-import { share } from '../functions';
+import { share } from '../shared';
 
 const model = defineModel<TreeNode>({ required: true });
 

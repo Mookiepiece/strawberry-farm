@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { levitate } from '@mookiepiece/strawberry-farm/functions';
+import { levitate } from '@mookiepiece/strawberry-farm/shared';
 
 const open = ref(false);
 

@@ -1,5 +1,5 @@
 import { MaybeRef, Ref, ref, watch, watchEffect } from 'vue';
-import { PopPlugin, fx, levitate, trap } from '../functions';
+import { PopPlugin, fx, levitate, trap } from '../shared';
 import { onClickAway } from '../html/onClickAway';
 
 export const usePopper = ({

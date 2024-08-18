@@ -10,7 +10,7 @@ const raw = shallowRef<any>('');
 const [dirname, filename] = props.path.split('/');
 switch (dirname) {
   case 'functions':
-    import(`../functions/${filename}.ts?raw`).then(
+    import(`../shared/${filename}.ts?raw`).then(
       mod => (raw.value = (mod.default as string).replace(/\r\n/g, '\n')), // Windows©️ is awesome
     );
     break;
