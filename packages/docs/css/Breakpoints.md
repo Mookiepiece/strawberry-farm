@@ -16,14 +16,14 @@ import BreakpointsA from './BreakpointsA.vue';
 | 444px      |                           | v          |                  |
 | 450px      | Desktop Firefox           |            |                  |
 | 500px      | Desktop Google Chrome     |            |                  |
-| **700px**  |                           | **w**      | **平板分界线**   |
+| **700px**  |                           | **w**      | **Tablet 平板分界线**   |
 | 744px      | iPad Mini 6 (2x)          |            |                  |
 | 768px      | iPad Mini 4 (2x)          |            |                  |
 | 1000px     |                           | wv         |                  |
 | 1024px     | iPad Mini 4 (2x)          |            |                  |
 | 1133px     | iPad Mini 6 (2x)          |            |                  |
 | 1280px     | HD                        |            |                  |
-| **1300px** |                           | **ww**     | **笔记本分界线** |
+| **1300px** |                           | **ww**     | **Laptop 笔记本分界线** |
 | 1366px     | iPad Pro 12.9' (6th) (2x) |            |                  |
 | 1366px     | 13' Laptop                |            |                  |
 | 1700px     |                           | wwv        |                  |

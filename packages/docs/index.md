@@ -1,5 +1,7 @@
 # Strawberry Farm
 
+Collection of web technologies.
+
 这是一个什锦工具箱。作为各种网页效果的参考。
 
 ::: details Motivation

@@ -1,9 +1,5 @@
 # Reset
 
-::: source/
-
-:::
-
 本章节解释 `strawberry-farm` 如何重置样式表。
 
 其它替代：https://unocss.dev/guide/style-reset
