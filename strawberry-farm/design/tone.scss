@@ -1,0 +1,54 @@
+/* Tone Colors */
+:root {
+  --tone-rasp: #f64972;
+  --tone-rasp-ink: #c62450;
+  --tone-rasp-foam: #f6497233;
+  --tone-iris: #3f67de;
+  --tone-iris-ink: #254fcb;
+  --tone-iris-foam: #5577dd33;
+  --tone-citrus: #fdcc45;
+  --tone-citrus-ink: #d49100;
+  --tone-citrus-foam: #f0b82033;
+  --tone-reimu: #f31313;
+  --tone-reimu-ink: #dd1111;
+  --tone-reimu-foam: #f3131333;
+}
+
+.dark {
+  --tone-rasp-ink: #ea577e;
+  --tone-iris-ink: #6d90f8;
+  --tone-citrus-ink: #ffe449;
+  --tone-reimu-ink: #fd5050;
+}
+
+/* Tone Presets */
+.tone-rasp {
+  ---main: var(--tone-rasp);
+  ---ink: var(--tone-rasp-ink);
+  ---foam: var(--tone-rasp-foam);
+
+  --1: color-mix(in srgb, #0000, var(---main) 20%);
+  --2: color-mix(in srgb, #0000, var(---main) 27.6%);
+  --3: color-mix(in srgb, #0000, var(---main) 39.2%);
+  --4: color-mix(in srgb, #0000, var(---main) 55%);
+  --5: var(---main);
+  --6: var(---ink);
+}
+
+.tone-iris {
+  ---main: var(--tone-iris);
+  ---ink: var(--tone-iris-ink);
+  ---foam: var(--tone-iris-foam);
+}
+
+.tone-citrus {
+  ---main: var(--tone-citrus);
+  ---ink: var(--tone-citrus-ink);
+  ---foam: var(--tone-citrus-foam);
+}
+
+.tone-reimu {
+  ---main: var(--tone-reimu);
+  ---ink: var(--tone-reimu-ink);
+  ---foam: var(--tone-reimu-foam);
+}

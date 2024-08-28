@@ -1,0 +1,8 @@
+{
+    "files": [],
+    "references": [
+      { "path": "./docs/tsconfig.json" },
+      { "path": "./strawberry-farm/tsconfig.json" }
+    ]
+  }
+  

@@ -1,0 +1,22 @@
+vp-kbd {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+
+  :is(.m0, .m1)::before {
+    display: block;
+    width: 9px;
+    height: 13px;
+    border-radius: 9px;
+    border: 1px solid currentColor;
+    background:
+      no-repeat 0 0 / 8px 5px
+        linear-gradient(90deg, red 3px, currentColor 3px, transparent 4px),
+      linear-gradient(transparent 5px, currentColor 6px, transparent 6px);
+    content: '';
+  }
+
+  .m1 {
+    transform: scaleX(-1);
+  }
+}

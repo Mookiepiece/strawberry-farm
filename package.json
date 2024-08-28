@@ -10,6 +10,10 @@
     "gh": "pnpm --filter docs gh",
     "preinstall": "npx only-allow pnpm"
   },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "avoid"
+  },
   "devDependencies": {
     "eslint": "^9.9.0",
     "eslint-plugin-vue": "^9.27.0",

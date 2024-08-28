@@ -1,0 +1,81 @@
+@import './breakpoints.scss';
+
+$spacing: (
+  auto: auto,
+  0: 0,
+  1: 5px,
+  2: 10px,
+  3: 15px,
+  4: 20px,
+  5: 25px,
+  6: 30px,
+  7: 35px,
+  8: 40px,
+) !default;
+
+@each $name, $bp in $breakpoints {
+  @each $s, $p in $spacing {
+    @include up($name) {
+      :where(.#{w($name)}gap-#{$s}) {
+        gap: $p;
+      }
+    }
+  }
+
+  @each $s, $p in $spacing {
+    @include up($name) {
+      :where(.#{w($name)}m-#{$s}) {
+        margin: $p;
+      }
+      :where(.#{w($name)}p-#{$s}) {
+        padding: $p;
+      }
+    }
+  }
+
+  @each $s, $p in $spacing {
+    @include up($name) {
+      :where(.#{w($name)}mx-#{$s}) {
+        margin-inline: $p;
+      }
+      :where(.#{w($name)}my-#{$s}) {
+        margin-block: $p;
+      }
+      :where(.#{w($name)}px-#{$s}) {
+        padding-inline: $p;
+      }
+      :where(.#{w($name)}py-#{$s}) {
+        padding-block: $p;
+      }
+    }
+  }
+
+  @each $s, $p in $spacing {
+    @include up($name) {
+      :where(.#{w($name)}mt-#{$s}) {
+        margin-top: $p;
+      }
+      :where(.#{w($name)}mr-#{$s}) {
+        margin-right: $p;
+      }
+      :where(.#{w($name)}mb-#{$s}) {
+        margin-bottom: $p;
+      }
+      :where(.#{w($name)}ml-#{$s}) {
+        margin-left: $p;
+      }
+      :where(.#{w($name)}pt-#{$s}) {
+        padding-top: $p;
+      }
+      :where(.#{w($name)}pr-#{$s}) {
+        padding-right: $p;
+      }
+      :where(.#{w($name)}pb-#{$s}) {
+        padding-bottom: $p;
+      }
+      :where(.#{w($name)}pl-#{$s}) {
+        padding-left: $p;
+      }
+    }
+  }
+}
