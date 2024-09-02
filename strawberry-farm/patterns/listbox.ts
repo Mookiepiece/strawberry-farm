@@ -144,7 +144,7 @@ export const useListbox = <T = any>(
           typeof o === 'object' && o ? (o as any).disabled || false : false,
         index,
         selected: multi.value
-          ? model.value?.includes(value)
+          ? model.value.includes(value)
           : value === model.value,
         current: current.value === index,
       };
@@ -209,7 +209,7 @@ export const useListbox = <T = any>(
     if (index < 0) return;
     current.value = index;
     scrollCurrentIntoView();
-    if (!multi.value && !props.magnetic) toggle($options[index].value);
+    if (!multi.value && !magnetic) toggle($options[index].value);
   };
 
   const toggle = (value: any) => {
@@ -223,7 +223,7 @@ export const useListbox = <T = any>(
 
   const toggleCurrent = () => {
     if (current.value < 0) return;
-    toggle(options.value[current.value]);
+    toggle(options.value[current.value].value);
   };
 
   const scrollCurrentIntoView = (() => {

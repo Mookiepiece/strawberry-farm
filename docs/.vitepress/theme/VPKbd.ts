@@ -55,8 +55,6 @@ export class VPKbdElement extends HTMLElement {
       }
     };
 
-    console.log(txt);
-
     this.replaceChildren(...txt.map(transform));
   }
 }

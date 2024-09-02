@@ -1,9 +1,20 @@
 <script setup lang="ts">
-import { VListbox } from '@mookiepiece/strawberry-farm';
+import { ListboxInput, VListbox } from '@mookiepiece/strawberry-farm';
+import { title } from 'process';
+
+const options: ListboxInput = [
+  1,
+  2,
+  3,
+  {
+    title: 'Symbols',
+    options: [Symbol('Foo')],
+  },
+];
 </script>
 
 <template>
-  <VListbox :options="[1, 2, 3]" class="Listbox🩷" />
+  <VListbox :options class="Listbox🩷" />
 </template>
 
 <style>

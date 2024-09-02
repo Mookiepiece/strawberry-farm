@@ -5,15 +5,15 @@ import { Listbox, ListboxInput, useListbox } from '../listbox';
 import { computed, reactive, ref } from 'vue';
 
 describe('Listbox', () => {
-  const input: ListboxInput = [
-    {
-      title: 'Group1',
-      options: [{ value: 1 }, 2],
-    },
-    { value: 3, label: '1+2', disabled: false, meta: -1 },
-  ];
-
   it('Flatten options', () => {
+    const input: ListboxInput = [
+      {
+        title: 'Group1',
+        options: [{ value: 1 }, 2],
+      },
+      { value: 3, label: '1+2', disabled: false, meta: -1 },
+    ];
+
     const model = ref(null);
     const { options } = useListbox(model, { options: input });
     expect(options).toEqual([
@@ -70,5 +70,40 @@ describe('Listbox', () => {
     expect(listbox.current).toBe(1);
     listbox.nav(-1);
     expect(listbox.current).toBe(2);
+  });
+
+  it('Toggles', () => {
+    const model = ref(null);
+    const clearable = ref(false);
+    const [a, b] = [Symbol(), Symbol()];
+    const listbox = useListbox(model, reactive({ options: [a, b], clearable }));
+    expect(listbox.current).toBe(0);
+    listbox.toggleCurrent();
+    expect(model.value).toStrictEqual(a);
+    listbox.toggle(b);
+    expect(model.value).toStrictEqual(b);
+
+    // Clearable
+    listbox.toggle(b);
+    expect(model.value).toBe(b);
+    clearable.value = true;
+    listbox.toggle(b);
+    expect(model.value).toBe(null);
+  });
+
+  it('Multiple Toggles', () => {
+    const model = ref([]);
+    const listbox = useListbox(model, {
+      options: [{ value: true, disabled: true }, false],
+    });
+    expect(listbox.current).toBe(-1);
+    const snapshot = model.value;
+    listbox.toggleCurrent();
+    expect(model.value === snapshot).toBeTruthy();
+    listbox.nav(1);
+    listbox.toggleCurrent();
+    expect(model.value).toStrictEqual([false]);
+    listbox.toggle(true);
+    expect(model.value).toStrictEqual([false, true]);
   });
 });
