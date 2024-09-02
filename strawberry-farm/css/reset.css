@@ -52,35 +52,7 @@ ol {
   padding: 0;
 }
 
-:where(article, [role='article']) {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  figure,
-  blockquote,
-  dl,
-  dd {
-    margin-block: 1em;
-  }
-
-  ul {
-    list-style: disc;
-    margin-block: 1em;
-    margin-inline-start: 40px;
-  }
-
-  ol {
-    list-style: decimal;
-    margin-block: 1em;
-    margin-inline-start: 40px;
-  }
-}
-
 button,
 input {
-  font-family: inherit;
+  font: inherit;
 }
