@@ -198,7 +198,7 @@ export const useListbox = <T = any>(
 
           if (_index < 0) return -1;
 
-          return _index <= after.length
+          return _index < after.length
             ? current.value + 1 + _index
             : _index - after.length;
         }
@@ -235,7 +235,7 @@ export const useListbox = <T = any>(
     });
     return () => {
       io.disconnect();
-      io.observe(document.getElementById(id + current.value)!);
+      io.observe(document.getElementById(id + ':' + current.value)!);
     };
   })();
 
