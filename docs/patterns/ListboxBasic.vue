@@ -1,15 +1,10 @@
 <script setup lang="ts">
 import { ListboxInput, VListbox } from '@mookiepiece/strawberry-farm';
-import { title } from 'process';
 
 const options: ListboxInput = [
   1,
   2,
-  3,
-  {
-    title: 'Symbols',
-    options: [Symbol('Foo')],
-  },
+  { title: 'Symbols', options: [Symbol('Foo')] },
 ];
 </script>
 
