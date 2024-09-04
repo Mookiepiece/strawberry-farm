@@ -23,6 +23,12 @@ describe('Listbox', () => {
     ]);
   });
 
+  it('Predicate Current', () => {
+    const options = [1, 2, 3, 4];
+    expect(useListbox(ref([2, 3]), { options }).current).toBe(1);
+    expect(useListbox(ref(2), { options }).current).toBe(1);
+  });
+
   it('Navigates', () => {
     const options = ref<ListboxInput>([1, 2, 3]);
     const listbox = useListbox(ref(), reactive({ options }));
@@ -109,5 +115,20 @@ describe('Listbox', () => {
     expect(model.value).toStrictEqual([false]);
     listbox.toggle(Infinity);
     expect(model.value).toStrictEqual([false, Infinity]);
+  });
+
+  it('Disable', () => {
+    const model = ref();
+    const listbox = useListbox(model, {
+      options: [0, 1],
+      disabled: true,
+    });
+    expect(listbox.disabled).toBe(true);
+    listbox.toggle(listbox);
+    expect(model.value).toBe(undefined);
+    listbox.toggle(0);
+    expect(model.value).toBe(undefined);
+    listbox.nav(0);
+    expect(listbox.current).toBe(0);
   });
 });

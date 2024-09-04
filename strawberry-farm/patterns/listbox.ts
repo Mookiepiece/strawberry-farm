@@ -121,6 +121,10 @@ export const useListbox = <T = any>(
   props: UseListboxProps<T>,
 ): Listbox<T> => {
   const id = wai();
+  const options = computed(() => flatOptions(props.options ?? []));
+  const multi = computed(() => Array.isArray(model.value));
+  const magnetic = computed(() => props.magnetic ?? true);
+  const disabled = computed(() => !!props.disabled);
 
   const tree = computed<Listbox<T>['tree']>(() => {
     let _index = 0;
@@ -156,11 +160,18 @@ export const useListbox = <T = any>(
     });
   });
 
-  const options = computed(() => flatOptions(props.options ?? []));
-  const multi = computed(() => Array.isArray(model.value));
-  const magnetic = computed(() => props.magnetic ?? true);
-
-  const _current = ref(0);
+  const _current = ref(
+    Math.max(
+      0,
+      options.value.findIndex(
+        o =>
+          !o.disabled &&
+          (Array.isArray(model.value)
+            ? model.value.includes(o.value)
+            : model.value === o.value),
+      ),
+    ),
+  );
   const current = computed({
     get() {
       const available = options.value.some(i => !i.disabled);
@@ -176,6 +187,8 @@ export const useListbox = <T = any>(
   });
 
   const nav = (delta: number) => {
+    if (disabled.value) return;
+
     const $options = options.value;
     const index = (() => {
       switch (delta) {
@@ -209,6 +222,8 @@ export const useListbox = <T = any>(
   };
 
   const toggle = (_value: any) => {
+    if (disabled.value) return;
+
     let value = _value;
     if (value === listbox) {
       if (current.value < 0) return;
@@ -230,11 +245,6 @@ export const useListbox = <T = any>(
     current.value = index;
   };
 
-  const toggleCurrent = () => {
-    if (current.value < 0) return;
-    toggle(options.value[current.value].value);
-  };
-
   const scrollCurrentIntoView = (() => {
     const io = new IntersectionObserver(([entry]) => {
       if ((entry.intersectionRatio || 0) < 1) {
@@ -254,10 +264,9 @@ export const useListbox = <T = any>(
     multi,
     options,
     current,
-    disabled: computed(() => !!props.disabled),
+    disabled,
     nav,
     toggle,
-    toggleCurrent,
   });
 
   return listbox;
