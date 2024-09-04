@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { ListboxInput, VListbox } from '@mookiepiece/strawberry-farm';
 
+const model = ref([]);
 const options: ListboxInput = [
   1,
   2,
@@ -9,7 +11,7 @@ const options: ListboxInput = [
 </script>
 
 <template>
-  <VListbox :options class="Listbox🩷" />
+  <VListbox v-model="model" :options class="Listbox🩷" />
 </template>
 
 <style>

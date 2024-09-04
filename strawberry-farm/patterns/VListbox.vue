@@ -27,7 +27,25 @@ defineExpose({ listbox });
 const renderOption = (i: ListboxTreeLeaf<T>) =>
   cloneVNode(slots.default?.({ option: i }) || h('div', i.label), {
     id: listbox.id + ':' + i.index,
-    onClick: !i.disabled ? () => listbox.toggle(i.value) : undefined,
+    onClick: !i.disabled
+      ? (e: MouseEvent) => {
+          if (e.shiftKey && listbox.multi) {
+            const targetIndex = i.index;
+            const currentIndex = listbox.current;
+            if (currentIndex >= 0) {
+              const range =
+                targetIndex < currentIndex
+                  ? listbox.options.slice(targetIndex, currentIndex)
+                  : listbox.options.slice(currentIndex + 1, targetIndex + 1);
+        
+              console.log(range);
+
+              return;
+            }
+          }
+          listbox.toggle(i.value);
+        }
+      : undefined,
     role: 'option',
     'aria-selected': i.selected || undefined,
     class: i.current && 'current',
@@ -51,7 +69,7 @@ const onKeyDownExact = (e: KeyboardEvent) => {
     case ' ':
     case 'Enter':
       e.preventDefault();
-      listbox.toggleCurrent();
+      listbox.toggle(listbox.current);
       break;
   }
 };

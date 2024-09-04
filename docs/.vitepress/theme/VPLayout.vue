@@ -99,7 +99,7 @@ const outline = ref(false);
 
 .VPContent {
   overflow: auto;
-  padding: 0 30px;
+  padding: 30px;
   padding-inline: calc(50px) calc(166px + 50px);
   padding-bottom: 100px;
 

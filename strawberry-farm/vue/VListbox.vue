@@ -194,7 +194,7 @@ const renderOption = (i: NormalizedCommonOption<T>) =>
       :key="
         g && typeof g === 'object' && 'options' in g
           ? 'g' + g.label
-          : 'i' + g.value
+          : 'i' + (typeof g.value + g.value)
       "
     >
       <div
@@ -207,7 +207,7 @@ const renderOption = (i: NormalizedCommonOption<T>) =>
         </slot>
         <RenderFunction
           v-for="i in g.options"
-          :key="i.value"
+          :key="typeof i.value + i.value"
           :render="() => renderOption(i)"
         />
       </div>

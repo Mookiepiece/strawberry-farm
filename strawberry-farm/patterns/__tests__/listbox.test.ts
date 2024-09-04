@@ -78,7 +78,7 @@ describe('Listbox', () => {
     const [a, b] = [Symbol(), Symbol()];
     const listbox = useListbox(model, reactive({ options: [a, b], clearable }));
     expect(listbox.current).toBe(0);
-    listbox.toggleCurrent();
+    listbox.toggle(listbox);
     expect(model.value).toStrictEqual(a);
     listbox.toggle(b);
     expect(model.value).toStrictEqual(b);
@@ -94,16 +94,20 @@ describe('Listbox', () => {
   it('Multiple Toggles', () => {
     const model = ref([]);
     const listbox = useListbox(model, {
-      options: [{ value: true, disabled: true }, false],
+      options: [{ value: true, disabled: true }, false, Infinity],
     });
     expect(listbox.current).toBe(-1);
     const snapshot = model.value;
-    listbox.toggleCurrent();
+    listbox.toggle(listbox);
     expect(model.value === snapshot).toBeTruthy();
     listbox.nav(1);
-    listbox.toggleCurrent();
+    listbox.toggle(listbox);
     expect(model.value).toStrictEqual([false]);
     listbox.toggle(true);
-    expect(model.value).toStrictEqual([false, true]);
+    expect(model.value).toStrictEqual([false]);
+    listbox.toggle(-Infinity);
+    expect(model.value).toStrictEqual([false]);
+    listbox.toggle(Infinity);
+    expect(model.value).toStrictEqual([false, Infinity]);
   });
 });

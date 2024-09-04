@@ -22,6 +22,7 @@ export type ListboxOptionSlim<T = any> =
 export type ListboxGroup<T = any> = {
   title?: string;
   options: ListboxOptionSlim<T>[];
+  meta?: T;
 };
 
 export type ListboxInput<T = any> = (ListboxGroup<T> | ListboxOptionSlim<T>)[];
@@ -107,16 +108,11 @@ export type Listbox<T = any> = {
   /**
    * Toggle selection for value.
    *
-   * This is just manipulating `model.value` with `value`, not affected by `disabled` or `options`
+   * Will validate `disabled` state.
+   *
+   * Passing `listbox.current` will toggle current value.
    */
   toggle(value: any): void;
-  /**
-   * Toggle `current` 's value,
-   *
-   * Will validate `disabled` state for current option before calling `toggle()`
-   *
-   */
-  toggleCurrent(): void;
   disabled: boolean;
 };
 
@@ -209,16 +205,29 @@ export const useListbox = <T = any>(
     if (index < 0) return;
     current.value = index;
     scrollCurrentIntoView();
-    if (!multi.value && !magnetic) toggle($options[index].value);
+    if (!multi.value && !magnetic.value) toggle($options[index].value);
   };
 
-  const toggle = (value: any) => {
+  const toggle = (_value: any) => {
+    let value = _value;
+    if (value === listbox) {
+      if (current.value < 0) return;
+      value = options.value[current.value].value;
+    }
+
+    const index = options.value.findIndex(i => i.value === value);
+    if (index < 0) return;
+    const option = options.value[index];
+    if (option?.disabled) return;
+
     if (Array.isArray(model.value))
       model.value = model.value.includes(value)
         ? model.value.toSpliced(model.value.indexOf(value), 1)
         : [...model.value, value];
     else if (props.clearable && model.value === value) model.value = null;
     else model.value = value;
+
+    current.value = index;
   };
 
   const toggleCurrent = () => {
@@ -239,7 +248,7 @@ export const useListbox = <T = any>(
     };
   })();
 
-  return reactive({
+  const listbox = reactive({
     id,
     tree,
     multi,
@@ -250,4 +259,6 @@ export const useListbox = <T = any>(
     toggle,
     toggleCurrent,
   });
+
+  return listbox;
 };

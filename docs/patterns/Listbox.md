@@ -12,6 +12,7 @@ Spec: https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 <div role="listbox">
   <div role="option"></div>
   <div role="group">
+    <h6>Title</h6>
     <div role="option"></div>
   </div>
 </div>
@@ -26,21 +27,21 @@ Spec: https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 | <vp-kbd k="Space" /> / <vp-kbd k="Enter" /> | Toggle current option. `toggle(value)`            |
 | <vp-kbd k="Shift+m0" />                     | Toggle options between target and current option. |
 
-
 TODO: difference between listbox and explorer.
 
-| Note                                                   | Listbox  | Listbox (Multi) | Explorer       | Explorer(Multi) |
-| ------------------------------------------------------ | -------- | --------------- | -------------- | --------------- |
-| <vp-kbd k="up" /> / <vp-kbd k="Home" /> etc.           | 移动     | 移动            | 移动并赋值单选 | 移动并赋值单选  |
-| <vp-kbd k="Ctrl+up" /> / <vp-kbd k="Ctrl+Home" /> etc. |          |                 | 移动           | 移动            |
-| <vp-kbd k="Space" /> / <vp-kbd k="Enter" />            | 选择     | 选择            | 行为           | 行为            |
-| <vp-kbd k="m0" />                                      | 选择     | 选择            | 单选           | 单选            |
-| <vp-kbd k="Ctrl+m0" />                                 |          |                 | 多选           | 多选            |
-| <vp-kbd k="Shift+m0" />                                | 超级多选 | 超级多选        | 超级多选       | 超级多选        |
+| Note                                                    | Listbox  | Listbox (Multi) | Explorer       | Explorer(Multi) |
+| ------------------------------------------------------- | -------- | --------------- | -------------- | --------------- |
+| <vp-kbd k="up" /> / <vp-kbd k="Home" /> etc.            | 移动     | 移动            | 移动并赋值单选 | 移动并赋值单选  |
+| <vp-kbd k="Ctrl+up" /> / <vp-kbd k="Ctrl+Home" /> etc.  |          |                 | 移动           | 移动            |
+| <vp-kbd k="Space" /> / <vp-kbd k="Enter" />             | 选择     | 选择            | 行为           | 行为            |
+| <vp-kbd k="m0" />                                       | 选择     | 选择            | 单选           | 单选            |
+| <vp-kbd k="Ctrl+m0" />                                  |          |                 | 多选           | 多选            |
+| <vp-kbd k="Shift+m0" />                                 | 超级多选 | 超级多选        | 超级多选       | 超级多选        |
+| <vp-kbd k="Shift+up" />/ <vp-kbd k="Shift+Home" /> etc. | 超级多选 | 超级多选        | 超级多选       | 超级多选        |
 
 ## Basics
 
-Listbox options input supports **any** type of option values, values are `key`s.
+Listbox options input supports **any** type of option values, values are `key`s (`String(typeof value + value)`).
 
 Listbox options input supports one level **grouping**.
 
@@ -68,5 +69,4 @@ Listbox options input supports one level **grouping**.
 | `options`         | List of options after flatten and normalized, which are objects with `value` property.                                                      |
 | `current`         | Current focuing option index (after options are flatted)                                                                                    |
 | `nav()`           | Move focus based on the delta number, skipping `disabled` options. if `magnetic`, movement also toggle target option in single option mode. |
-| `toggle()`        | Toggle selection for value. This is just manipulating `model.value` with `value`, not affected by `disabled` or `options`                   |
-| `toggleCurrent()` | Toggle `current` 's value, Will validate `disabled` state for current option before calling `toggle()`                                      |
+| `toggle()`        | Toggle selection for value. Will validate `disabled` state. Passing `listbox` itself will toggle current value.                            |
