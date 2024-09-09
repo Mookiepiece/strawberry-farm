@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { on } from '../../strawberry-farm/shared/on';
-import { Bag } from '@mookiepiece/strawberry-farm/shared';
 
 const props = defineProps<{
   disabled?: boolean;
@@ -78,8 +77,8 @@ watchEffect(onCleanUp => {
       }),
     );
     onCleanUp(
-      on(document.body).dragleave(() => {
-        dragging.value = false;
+      on(document.body).dragleave(e => {
+        if (!e.relatedTarget) dragging.value = false;
       }),
     );
   }
@@ -97,7 +96,7 @@ const handleDrop = (e: DragEvent) => {
       :data-dragging="dragging || undefined"
       :data-dragover="dragover || undefined"
       @dragover.prevent="!props.disabled && (dragover = true)"
-      @dragleave="dragover = false"
+      @dragleave.prevent="dragover = false"
       @drop.prevent="handleDrop"
     >
       <input type="file" @change="handleChange" />
@@ -119,13 +118,14 @@ label {
   }
 }
 
-label[data-dragging]::before {
-  content: 'drop file here';
+label[data-dragging] {
+  border-color: #8848 !important;
 }
 
-label[data-dragover]::before {
-  content: 'ohhhhh';
+label[data-dragover] {
+  border-color: #a448 !important;
 }
+
 input {
   pointer-events: none;
   outline: none;
