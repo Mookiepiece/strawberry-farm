@@ -11,9 +11,13 @@ const options: ListboxInput = [
 </script>
 
 <template>
+  <VListbox :options class="Listbox🩷" v-slot="{ option: { label } }">
+    <div>- {{ label }}</div>
+  </VListbox>
+  <br />
   <VListbox v-model="model" :options class="Listbox🩷" />
 </template>
-
+  
 <style>
 .Listbox🩷 {
   &:focus-visible {

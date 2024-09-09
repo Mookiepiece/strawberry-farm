@@ -29,15 +29,17 @@ Spec: https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 
 TODO: difference between listbox and explorer.
 
-| Note                                                    | Listbox  | Listbox (Multi) | Explorer       | Explorer(Multi) |
-| ------------------------------------------------------- | -------- | --------------- | -------------- | --------------- |
-| <vp-kbd k="up" /> / <vp-kbd k="Home" /> etc.            | 移动     | 移动            | 移动并赋值单选 | 移动并赋值单选  |
-| <vp-kbd k="Ctrl+up" /> / <vp-kbd k="Ctrl+Home" /> etc.  |          |                 | 移动           | 移动            |
-| <vp-kbd k="Space" /> / <vp-kbd k="Enter" />             | 选择     | 选择            | 行为           | 行为            |
-| <vp-kbd k="m0" />                                       | 选择     | 选择            | 单选           | 单选            |
-| <vp-kbd k="Ctrl+m0" />                                  |          |                 | 多选           | 多选            |
-| <vp-kbd k="Shift+m0" />                                 | 超级多选 | 超级多选        | 超级多选       | 超级多选        |
-| <vp-kbd k="Shift+up" />/ <vp-kbd k="Shift+Home" /> etc. | 超级多选 | 超级多选        | 超级多选       | 超级多选        |
+| Note                                                    | Listbox | Listbox (Multi)           | Explorer       | Explorer(Multi) |
+| ------------------------------------------------------- | ------- | ------------------------- | -------------- | --------------- |
+| <vp-kbd k="up" /> / <vp-kbd k="Home" /> etc.            | 移动    | 移动                      | 移动并赋值单选 | 移动并赋值单选  |
+| <vp-kbd k="Ctrl+up" /> / <vp-kbd k="Ctrl+Home" /> etc.  |         |                           | 移动           | 移动            |
+| <vp-kbd k="Space" /> / <vp-kbd k="Enter" />             | 选择    | 选择                      | 行为           | 行为            |
+| <vp-kbd k="m0" />                                       | 选择    | 选择                      | 单选           | 单选            |
+| <vp-kbd k="Ctrl+m0" />                                  |         |                           | 多选           | 多选            |
+| <vp-kbd k="Shift+m0" />                                 | /       | 超级多选                  | /              | 超级多选        |
+| <vp-kbd k="Shift+up" />/ <vp-kbd k="Shift+Home" /> etc. | /       | 超级多选                  | /              | 超级多选        |
+| navgator                                                | Select  | Radio Multi, Select Multi | Radio, Listbox | Listbox Multi   |
+| action                                                  |         |                           |                |                 |
 
 ## Basics
 
@@ -51,6 +53,12 @@ Listbox options input supports one level **grouping**.
 
 ## Elite
 
+### Radio Group
+
+:::demo patterns/ListboxRadiosPlay
+
+:::
+
 ## Logic
 
 | VListbox    | Description                                                                                                              |
@@ -60,13 +68,14 @@ Listbox options input supports one level **grouping**.
 | `magnetic`  | If `false`, keyboard `nav()` won't update the model. default to `true`, turn it off if the model value is being watched. |
 | `options`   | Listbox inputs support any type of value, support one level grouping.                                                    |
 | `disabled`  |                                                                                                                          |
+| `listbox`   | Omit all other props.                                                                                                    |
 
-| Listbox API       | Description                                                                                                                                 |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`              | The `id` for creating `aria-activedescendant` to indicate current focused option.                                                           |
-| `multi`           | model `isArray()`                                                                                                                           |
-| `tree`            | Contains the original (grouped) hierarchy and extra info to rendering the UI.                                                               |
-| `options`         | List of options after flatten and normalized, which are objects with `value` property.                                                      |
-| `current`         | Current focuing option index (after options are flatted)                                                                                    |
-| `nav()`           | Move focus based on the delta number, skipping `disabled` options. if `magnetic`, movement also toggle target option in single option mode. |
-| `toggle()`        | Toggle selection for value. Will validate `disabled` state. Passing `listbox` itself will toggle current value.                            |
+| Listbox API              | Description                                                                                                                                 |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                     | The `id` for creating `aria-activedescendant` to indicate current focused option.                                                           |
+| `multi`                  | model `isArray()`                                                                                                                           |
+| `tree`                   | Contains the original (grouped) hierarchy and extra info to rendering the UI.                                                               |
+| `options`                | List of options after flatten and normalized, which are objects with `value` property.                                                      |
+| `current`                | Current focuing option index (after options are flatted)                                                                                    |
+| `nav(delta:number)`      | Move focus based on the delta number, skipping `disabled` options. if `magnetic`, movement also toggle target option in single option mode. |
+| `input(...values:any[])` | Toggle selection for value(s). Will validate `disabled` state. Passing `listbox` itself will toggle current value.                          |

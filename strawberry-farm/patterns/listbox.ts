@@ -46,7 +46,7 @@ export const flatOptions = <T = any>(i: ListboxInput<T>): ListboxOption<T>[] =>
       return { value: o, label: String(o) };
     });
 
-export type ListboxTreeLeaf<T = any> = ListboxOption<T> & {
+export type ListboxLeaf<T = any> = ListboxOption<T> & {
   index: number;
   selected: boolean;
   current: boolean;
@@ -79,10 +79,7 @@ export type Listbox<T = any> = {
   /**
    * Contains the original (grouped) hierarchy and extra info to rendering the UI.
    */
-  tree: (
-    | { title?: string; options: ListboxTreeLeaf<T>[] }
-    | ListboxTreeLeaf<T>
-  )[];
+  tree: ({ title?: string; options: ListboxLeaf<T>[] } | ListboxLeaf<T>)[];
   /**
    * List of options after flatten and normalized, which are objects with `value` property.
    */
@@ -106,13 +103,13 @@ export type Listbox<T = any> = {
    */
   nav(delta: number): void;
   /**
-   * Toggle selection for value.
+   * Toggle selection for value(s).
    *
    * Will validate `disabled` state.
    *
    * Passing `listbox.current` will toggle current value.
    */
-  toggle(value: any): void;
+  input(...values: any[]): void;
   disabled: boolean;
 };
 
@@ -129,7 +126,7 @@ export const useListbox = <T = any>(
   const tree = computed<Listbox<T>['tree']>(() => {
     let _index = 0;
 
-    const normalize = (o: ListboxOptionSlim<T>): ListboxTreeLeaf<T> => {
+    const normalize = (o: ListboxOptionSlim<T>): ListboxLeaf<T> => {
       const value = typeof o === 'object' && o ? (o as any).value : o;
       const index = _index++;
 
@@ -177,8 +174,13 @@ export const useListbox = <T = any>(
       const available = options.value.some(i => !i.disabled);
       if (!available) return -1;
       const i = _current.value;
-      if (i < 0 || i >= options.value.length || options.value[i].disabled)
-        return options.value[0]?.disabled ? -1 : 0;
+      try {
+        if (i < 0 || i >= options.value.length || options.value[i].disabled)
+          return options.value[0]?.disabled ? -1 : 0;
+      } catch (e) {
+        console.error(i, options.value, e);
+      }
+
       return i;
     },
     set(v) {
@@ -218,31 +220,35 @@ export const useListbox = <T = any>(
     if (index < 0) return;
     current.value = index;
     scrollCurrentIntoView();
-    if (!multi.value && !magnetic.value) toggle($options[index].value);
+    if (!multi.value && !magnetic.value) input($options[index].value);
   };
 
-  const toggle = (_value: any) => {
+  const input = (..._values: any[]) => {
     if (disabled.value) return;
 
-    let value = _value;
-    if (value === listbox) {
-      if (current.value < 0) return;
-      value = options.value[current.value].value;
-    }
+    let $model = model.value;
 
-    const index = options.value.findIndex(i => i.value === value);
-    if (index < 0) return;
-    const option = options.value[index];
-    if (option?.disabled) return;
+    _values.forEach(_value => {
+      let value = _value;
+      if (value === listbox) {
+        if (current.value < 0) return;
+        value = options.value[current.value].value;
+      }
 
-    if (Array.isArray(model.value))
-      model.value = model.value.includes(value)
-        ? model.value.toSpliced(model.value.indexOf(value), 1)
-        : [...model.value, value];
-    else if (props.clearable && model.value === value) model.value = null;
-    else model.value = value;
+      const index = options.value.findIndex(i => i.value === value);
+      if (index < 0) return;
+      const option = options.value[index];
+      if (option?.disabled) return;
 
-    current.value = index;
+      if (Array.isArray($model))
+        $model = $model.includes(value)
+          ? $model.toSpliced($model.indexOf(value), 1)
+          : [...$model, value];
+      else if (props.clearable && $model === value) $model = null;
+      else $model = value;
+    });
+
+    model.value = $model;
   };
 
   const scrollCurrentIntoView = (() => {
@@ -258,7 +264,7 @@ export const useListbox = <T = any>(
     };
   })();
 
-  const listbox = reactive({
+  const listbox: Listbox<T> = reactive({
     id,
     tree,
     multi,
@@ -266,7 +272,7 @@ export const useListbox = <T = any>(
     current,
     disabled,
     nav,
-    toggle,
+    input,
   });
 
   return listbox;

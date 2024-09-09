@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 
 import { describe, expect, it } from 'vitest';
-import { Listbox, ListboxInput, useListbox } from '../listbox';
-import { computed, reactive, ref } from 'vue';
+import { ListboxInput, useListbox } from '../listbox';
+import { reactive, ref } from 'vue';
 
 describe('Listbox', () => {
   it('Flatten options', () => {
@@ -84,16 +84,16 @@ describe('Listbox', () => {
     const [a, b] = [Symbol(), Symbol()];
     const listbox = useListbox(model, reactive({ options: [a, b], clearable }));
     expect(listbox.current).toBe(0);
-    listbox.toggle(listbox);
+    listbox.input(listbox);
     expect(model.value).toStrictEqual(a);
-    listbox.toggle(b);
+    listbox.input(b);
     expect(model.value).toStrictEqual(b);
 
     // Clearable
-    listbox.toggle(b);
+    listbox.input(b);
     expect(model.value).toBe(b);
     clearable.value = true;
-    listbox.toggle(b);
+    listbox.input(b);
     expect(model.value).toBe(null);
   });
 
@@ -104,16 +104,16 @@ describe('Listbox', () => {
     });
     expect(listbox.current).toBe(-1);
     const snapshot = model.value;
-    listbox.toggle(listbox);
+    listbox.input(listbox);
     expect(model.value === snapshot).toBeTruthy();
     listbox.nav(1);
-    listbox.toggle(listbox);
+    listbox.input(listbox);
     expect(model.value).toStrictEqual([false]);
-    listbox.toggle(true);
+    listbox.input(true);
     expect(model.value).toStrictEqual([false]);
-    listbox.toggle(-Infinity);
+    listbox.input(-Infinity);
     expect(model.value).toStrictEqual([false]);
-    listbox.toggle(Infinity);
+    listbox.input(Infinity);
     expect(model.value).toStrictEqual([false, Infinity]);
   });
 
@@ -124,9 +124,9 @@ describe('Listbox', () => {
       disabled: true,
     });
     expect(listbox.disabled).toBe(true);
-    listbox.toggle(listbox);
+    listbox.input(listbox);
     expect(model.value).toBe(undefined);
-    listbox.toggle(0);
+    listbox.input(0);
     expect(model.value).toBe(undefined);
     listbox.nav(0);
     expect(listbox.current).toBe(0);

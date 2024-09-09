@@ -32,7 +32,7 @@ defineExpose({ el: computed(() => el.value?.el) });
     v-model="model"
     v-slot="{ option }"
   >
-    <slot :option="option">
+    <slot :option>
       <div class="VRadioTrunk">
         {{ option.label }}
       </div>

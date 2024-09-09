@@ -11,3 +11,5 @@ export * from './trap';
 export * from './fx';
 export * from './levitate';
 export * from './levitatePlugins';
+
+export * from './child';

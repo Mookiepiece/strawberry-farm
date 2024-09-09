@@ -1,3 +1,3 @@
-import { inc } from "./inc";
+import { inc } from './inc';
 
-export const wai = inc('SF');
+export const wai = inc('w:');
