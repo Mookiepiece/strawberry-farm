@@ -41,9 +41,7 @@ const ObjKey = (cacheKey: any) => {
   );
 };
 
-export const useListboxEx = weakCache((listbox: Listbox) => {
-  const only = () => {};
-
+export const useListboxEX = weakCache((listbox: Listbox) => {
   const addRange = (a: number, b: number) => {
     if (a < 0 || b < 0) return;
     const range = listbox.options.slice(Math.min(a, b), Math.max(a, b) + 1);
@@ -54,22 +52,95 @@ export const useListboxEx = weakCache((listbox: Listbox) => {
   const findIndex = (v: any) =>
     listbox.options.findIndex(({ value }) => value === v);
 
-  return {
-    addRange,
-    findIndex,
+  let anchor = -1;
+  const handleKeydown = (
+    e: KeyboardEvent,
+    {
+      circular = false,
+      magnetic = true,
+    }: {
+      circular?: boolean;
+      magnetic?: boolean;
+    } = {},
+  ) => {
+    if (listbox.disabled) return;
+
+    if (e.shiftKey) {
+      anchor = listbox.current;
+    } else {
+      anchor = -1;
+    }
+
+    if (e.shiftKey) {
+      if (!listbox.multi) return;
+      const { nav } = listbox;
+      switch (e.key) {
+        case 'ArrowUp':
+        case 'ArrowLeft': {
+          e.preventDefault();
+          nav(-1);
+          addRange(anchor, listbox.current);
+          break;
+        }
+        case 'ArrowDown':
+        case 'ArrowRight': {
+          e.preventDefault();
+          nav(1);
+          addRange(anchor, listbox.current);
+          break;
+        }
+        case 'Home': {
+          e.preventDefault();
+          nav(Number.NEGATIVE_INFINITY);
+          addRange(anchor, listbox.current);
+          break;
+        }
+        case 'End': {
+          e.preventDefault();
+          nav(Number.POSITIVE_INFINITY);
+          addRange(anchor, listbox.current);
+          break;
+        }
+      }
+    } else {
+      const nav = (delta: number) => {
+        if (magnetic === e.ctrlKey) return listbox.nav(delta, circular);
+        const prev = listbox.current;
+        listbox.nav(delta, circular);
+        if (prev !== listbox.current) {
+          listbox.input(...toArray(listbox.model), listbox);
+        }
+      };
+
+      switch (e.key) {
+        case 'ArrowUp':
+        case 'ArrowLeft':
+          e.preventDefault();
+          nav(-1);
+          break;
+        case 'ArrowDown':
+        case 'ArrowRight':
+          e.preventDefault();
+          nav(1);
+          break;
+        case 'Home':
+          e.preventDefault();
+          nav(Number.NEGATIVE_INFINITY);
+          break;
+        case 'End':
+          e.preventDefault();
+          nav(Number.POSITIVE_INFINITY);
+          break;
+        case ' ':
+          // case 'Enter':
+          e.preventDefault();
+          listbox.input(listbox);
+          break;
+      }
+    }
   };
-});
 
-const toArray = (a: any) => (Array.isArray(a) ? a : [a]);
-
-export const handleShiftKeyAnchor = () => {};
-
-export const handleListboxClickAdvanced = (
-  listbox: Listbox,
-  i: ListboxLeaf,
-  anchor = -1,
-) => {
-  return (e: MouseEvent) => {
+  const handlePointerDown = (e: MouseEvent, i: ListboxLeaf) => {
     if (i.disabled) return;
     if (listbox.multi) {
       if (e.shiftKey) {
@@ -77,13 +148,8 @@ export const handleListboxClickAdvanced = (
         const a = i.index;
         const b = (anchor > -1 && anchor) || listbox.current;
         if (b >= 0) {
-          const range = listbox.options.slice(
-            Math.min(a, b),
-            Math.max(a, b) + 1,
-          );
-          const models = new Set(listbox.model);
-          listbox.input(...range.map(r => r.value).filter(i => !models.has(i)));
           listbox.current = a;
+          useListboxEX(listbox).addRange(a, b);
         }
       } else {
         if (e.ctrlKey) {
@@ -99,102 +165,18 @@ export const handleListboxClickAdvanced = (
       listbox.current = i.index;
     }
   };
-};
 
-export const handleListboxKeyDownShiftAdvanced =
-  (listbox: Listbox) => (e: KeyboardEvent) => {
-    if (!listbox.multi) return;
-    const { nav } = listbox;
-    switch (e.key) {
-      case 'ArrowUp':
-      case 'ArrowLeft': {
-        e.preventDefault();
-        const prev = listbox.current;
-        nav(-1);
-        if (prev !== listbox.current) {
-          const value = listbox.options[listbox.current].value;
-          listbox.input(value);
-        }
-        break;
-      }
-      case 'ArrowDown':
-      case 'ArrowRight': {
-        e.preventDefault();
-        const prev = listbox.current;
-        nav(1);
-        if (prev !== listbox.current) {
-          const value = listbox.options[listbox.current].value;
-          listbox.input(value);
-        }
-        break;
-      }
-      case 'Home': {
-        e.preventDefault();
-        const prev = listbox.current;
-        nav(Number.NEGATIVE_INFINITY);
-        if (prev !== listbox.current) {
-          const range =
-            listbox.current < prev
-              ? listbox.options.slice(listbox.current, prev)
-              : listbox.options.slice(prev + 1, listbox.current + 1);
-          listbox.input(...range.map(r => r.value));
-        }
-        break;
-      }
-      case 'End': {
-        e.preventDefault();
-        const prev = listbox.current;
-        nav(Number.POSITIVE_INFINITY);
-        if (prev !== listbox.current) {
-          const range =
-            listbox.current < prev
-              ? listbox.options.slice(listbox.current, prev)
-              : listbox.options.slice(prev + 1, listbox.current + 1);
-          listbox.input(...range.map(r => r.value));
-        }
-        break;
-      }
-    }
+  return {
+    addRange,
+    findIndex,
+    getAnchor: () => anchor,
+
+    handlePointerDown,
+    handleKeydown,
   };
+});
 
-export const handleListboxKeyDownExactAdvanced =
-  (listbox: Listbox, circular: boolean, magnetic: boolean) =>
-  (e: KeyboardEvent) => {
-    const nav = (delta: number) => {
-      if (!magnetic) return listbox.nav(delta, circular);
-      const prev = listbox.current;
-      listbox.nav(delta, circular);
-      if (prev !== listbox.current) {
-        listbox.input(...toArray(listbox.model), listbox);
-      }
-    };
-
-    switch (e.key) {
-      case 'ArrowUp':
-      case 'ArrowLeft':
-        e.preventDefault();
-        nav(-1);
-        break;
-      case 'ArrowDown':
-      case 'ArrowRight':
-        e.preventDefault();
-        nav(1);
-        break;
-      case 'Home':
-        e.preventDefault();
-        nav(Number.NEGATIVE_INFINITY);
-        break;
-      case 'End':
-        e.preventDefault();
-        nav(Number.POSITIVE_INFINITY);
-        break;
-      case ' ':
-      case 'Enter':
-        e.preventDefault();
-        listbox.input(listbox);
-        break;
-    }
-  };
+const toArray = (a: any) => (Array.isArray(a) ? a : [a]);
 </script>
 
 <script setup lang="ts" generic="T = any">
@@ -213,6 +195,7 @@ const slots = defineSlots<{
 }>();
 
 const listbox = useListbox(model, props);
+const listboxEX = useListboxEX(listbox);
 const current = toRef(listbox, 'current');
 
 const renderOption = (i: ListboxLeaf<T>) =>
@@ -220,12 +203,7 @@ const renderOption = (i: ListboxLeaf<T>) =>
     (slots.default && child(slots.default({ option: i }))) || h('div', i.label),
     {
       id: listbox.id + ':' + i.index,
-      onPointerdown: (e: MouseEvent) =>
-        handleListboxClickAdvanced(listbox, i, anchor)(e),
-      onClick: () => {},
-      //       onPointerdown: () => {
-      //         // 1+1
-      // listbox.current=0      },
+      onPointerdown: (e: MouseEvent) => listboxEX.handlePointerDown(e, i),
       'data-key': objKey(i.value),
       role: 'option',
       'aria-selected':
@@ -237,22 +215,8 @@ const renderOption = (i: ListboxLeaf<T>) =>
     },
   );
 
-let anchor = -1;
-
 const onKeyDown = (e: KeyboardEvent) => {
-  if (listbox.disabled) return;
-
-  if (e.shiftKey) {
-    anchor = listbox.current;
-  } else {
-    anchor = -1;
-  }
-
-  if (e.shiftKey) {
-    handleListboxKeyDownShiftAdvanced(listbox)(e);
-  } else if (!e.metaKey) {
-    handleListboxKeyDownExactAdvanced(listbox, false, !e.ctrlKey)(e);
-  }
+  listboxEX.handleKeydown(e);
 };
 
 const objKey = ObjKey(listbox);
