@@ -29,17 +29,17 @@ Spec: https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 
 TODO: difference between listbox and explorer.
 
-| Note                                                    | Listbox | Listbox (Multi)           | Explorer       | Explorer(Multi) |
-| ------------------------------------------------------- | ------- | ------------------------- | -------------- | --------------- |
-| <vp-kbd k="up" /> / <vp-kbd k="Home" /> etc.            | 移动    | 移动                      | 移动并赋值单选 | 移动并赋值单选  |
-| <vp-kbd k="Ctrl+up" /> / <vp-kbd k="Ctrl+Home" /> etc.  |         |                           | 移动           | 移动            |
-| <vp-kbd k="Space" /> / <vp-kbd k="Enter" />             | 选择    | 选择                      | 行为           | 行为            |
-| <vp-kbd k="m0" />                                       | 选择    | 选择                      | 单选           | 单选            |
-| <vp-kbd k="Ctrl+m0" />                                  |         |                           | 多选           | 多选            |
-| <vp-kbd k="Shift+m0" />                                 | /       | 超级多选                  | /              | 超级多选        |
-| <vp-kbd k="Shift+up" />/ <vp-kbd k="Shift+Home" /> etc. | /       | 超级多选                  | /              | 超级多选        |
-| navgator                                                | Select  | Radio Multi, Select Multi | Radio, Listbox | Listbox Multi   |
-| action                                                  |         |                           |                |                 |
+| Note                                                    | Picker | Picker (Multi) / Checkboxes | Radio / Segmented                  | Classic Listbox(Multi)    | Explorer              |
+| ------------------------------------------------------- | ------ | --------------------------- | ---------------------------------- | ------------------------- | --------------------- |
+| <vp-kbd k="up" /> / <vp-kbd k="Home" /> etc.            | Move   | Move                        | Circular & Move & Single Selection | Move & Single Selection   | +Can Move into header |
+| <vp-kbd k="Ctrl+up" /> / <vp-kbd k="Ctrl+Home" /> etc.  |        |                             |                                    | Move                      | +Can Move into header |
+| <vp-kbd k="Space" />                                    | Input  | Input                       | Input                              | Input                     |                       |
+| <vp-kbd k="Enter" />                                    | Input  | Input                       | Action(Submit)                     | Action                    |                       |
+| <vp-kbd k="m0" />                                       | Input  | Input                       | Input                              | Single                    |                       |
+| <vp-kbd k="Ctrl+m0" />                                  |        |                             | Multi                              | Multi                     |                       |
+| <vp-kbd k="Shift+m0" />                                 | /      | Multi                       | /                                  | Multi (Range)             |                       |
+| <vp-kbd k="Shift+up" />/ <vp-kbd k="Shift+Home" /> etc. | /      | Multi                       | /                                  | Multi (RangeX2)           |                       |
+| Note                                                    | /      | Multi                       | /                                  | Only select, no unselect? |                       |
 
 ## Basics
 
@@ -47,9 +47,23 @@ Listbox options input supports **any** type of option values, values are `key`s 
 
 Listbox options input supports one level **grouping**.
 
+### Listbox
+
+- Range Selection is Adding, no removing, which is simpler.
+
 :::demo patterns/ListboxBasic
 
 :::
+
+### Radios / Segmented (Single NotA-Listbox)
+
+- Circular Navigation on demand.
+- Action is Submit the form.
+
+### Picker / Checkboxes (Multiple NotA-Listbox)
+
+- Circular Navigation on demand.
+- Annoying Range Selection (Select / Unselect state into whole)
 
 ## Elite
 
@@ -70,12 +84,12 @@ Listbox options input supports one level **grouping**.
 | `disabled`  |                                                                                                                          |
 | `listbox`   | Omit all other props.                                                                                                    |
 
-| Listbox API              | Description                                                                                                                                 |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                     | The `id` for creating `aria-activedescendant` to indicate current focused option.                                                           |
-| `multi`                  | model `isArray()`                                                                                                                           |
-| `tree`                   | Contains the original (grouped) hierarchy and extra info to rendering the UI.                                                               |
-| `options`                | List of options after flatten and normalized, which are objects with `value` property.                                                      |
-| `current`                | Current focuing option index (after options are flatted)                                                                                    |
-| `nav(delta:number)`      | Move focus based on the delta number, skipping `disabled` options. if `magnetic`, movement also toggle target option in single option mode. |
-| `input(...values:any[])` | Toggle selection for value(s). Will validate `disabled` state. Passing `listbox` itself will toggle current value.                          |
+| Listbox API                            | Description                                                                                                                  |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `id`                                   | The `id` for creating `aria-activedescendant` to indicate current focused option.                                            |
+| `multi`                                | model `isArray()`                                                                                                            |
+| `tree`                                 | Contains the original (grouped) hierarchy and extra info to rendering the UI.                                                |
+| `options`                              | List of options after flatten and normalized, which are objects with `value` property.                                       |
+| `current`                              | Current focuing option index (after options are flatted)                                                                     |
+| `nav(delta:number, circular?:boolean)` | Move focus based on the delta number, skipping `disabled` options. If `circular`, `nav()` will across two edges like radios. |
+| `input(...values:any[])`               | Toggle selection for value(s). Will validate `disabled` state. Passing `listbox` itself will toggle current value.           |

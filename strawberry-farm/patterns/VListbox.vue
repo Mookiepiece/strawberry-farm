@@ -1,62 +1,110 @@
-<script setup lang="ts" generic="T = any">
-import { cloneVNode, h, toRef } from 'vue';
-import { ListboxLeaf, ListboxGroup, Listbox } from './listbox';
-import { useListbox, UseListboxProps } from './listbox';
-import { child } from '../shared';
+<script lang="ts">
+const weakCache = <F extends (param: any) => any>(cb: F): F => {
+  const weakMap = new WeakMap<any, any>();
 
-const model = defineModel();
+  return ((param: any) =>
+    weakMap.get(param) ||
+    (() => {
+      const a = cb(param);
+      weakMap.set(param, a);
+      return a;
+    })()) as F;
+};
 
-const props = defineProps<UseListboxProps<T> & { listbox?: Listbox<T> }>();
+const objKeyBuckets = new WeakMap();
+const ObjKey = (cacheKey: any) => {
+  return (
+    (cacheKey && objKeyBuckets.get(cacheKey)) ||
+    (() => {
+      const key = 0n;
+      const ids = new WeakMap<any, string>();
+      const ans = (i: any) => {
+        if (typeof i === 'symbol') {
+          return i;
+        }
+        if (i && typeof i === 'object') {
+          return (
+            ids.get(i) ||
+            (() => {
+              const ans = 'object' + key.toString();
+              ids.set(i, ans);
+              return ans;
+            })()
+          );
+        }
 
-const slots = defineSlots<{
-  default?(props: { option: ListboxLeaf<T> }): any;
-  group?(props: { group: ListboxGroup<T> }): any;
-}>();
-
-const listbox = useListbox(model, props);
-const current = toRef(listbox, 'current');
-const nav = listbox.nav;
-
-const renderOption = (i: ListboxLeaf<T>) =>
-  cloneVNode(
-    (slots.default && child(slots.default({ option: i }))) || h('div', i.label),
-    {
-      id: listbox.id + ':' + i.index,
-      onClick: !i.disabled
-        ? (e: MouseEvent) => {
-            e.preventDefault();
-            if (e.shiftKey && listbox.multi) {
-              document.getSelection()?.removeAllRanges();
-              const targetIndex = i.index;
-              const currentIndex = listbox.current;
-              if (currentIndex >= 0) {
-                const range =
-                  targetIndex < currentIndex
-                    ? listbox.options.slice(targetIndex, currentIndex)
-                    : listbox.options.slice(currentIndex + 1, targetIndex + 1);
-
-                listbox.input(...range.map(r => r.value));
-                listbox.current = targetIndex;
-                return;
-              }
-            }
-            listbox.input(i.value);
-            listbox.current = listbox.options.findIndex(
-              ({ value }) => value === i.value,
-            );
-          }
-        : undefined,
-      role: 'option',
-      'aria-selected': i.selected || undefined,
-      class: i.current && 'current',
-      'aria-disabled': props.disabled || i.disabled || undefined,
-    },
+        return typeof i + i;
+      };
+      objKeyBuckets.set(cacheKey, ans);
+      return ans;
+    })()
   );
+};
 
-const onKeyDown = (e: KeyboardEvent) => {
-  if (listbox.disabled) return;
+export const useListboxEx = weakCache((listbox: Listbox) => {
+  const only = () => {};
 
-  if (e.shiftKey && listbox.multi) {
+  const addRange = (a: number, b: number) => {
+    if (a < 0 || b < 0) return;
+    const range = listbox.options.slice(Math.min(a, b), Math.max(a, b) + 1);
+    const models = new Set(listbox.model);
+    listbox.input(...range.map(r => r.value).filter(i => !models.has(i)));
+  };
+
+  const findIndex = (v: any) =>
+    listbox.options.findIndex(({ value }) => value === v);
+
+  return {
+    addRange,
+    findIndex,
+  };
+});
+
+const toArray = (a: any) => (Array.isArray(a) ? a : [a]);
+
+export const handleShiftKeyAnchor = () => {};
+
+export const handleListboxClickAdvanced = (
+  listbox: Listbox,
+  i: ListboxLeaf,
+  anchor = -1,
+) => {
+  return (e: MouseEvent) => {
+    if (i.disabled) return;
+    if (listbox.multi) {
+      if (e.shiftKey) {
+        document.getSelection()?.removeAllRanges();
+        const a = i.index;
+        const b = (anchor > -1 && anchor) || listbox.current;
+        if (b >= 0) {
+          const range = listbox.options.slice(
+            Math.min(a, b),
+            Math.max(a, b) + 1,
+          );
+          const models = new Set(listbox.model);
+          listbox.input(...range.map(r => r.value).filter(i => !models.has(i)));
+          listbox.current = a;
+        }
+      } else {
+        if (e.ctrlKey) {
+          listbox.input(i.value);
+          listbox.current = i.index;
+        } else {
+          listbox.input(...listbox.model, i.value);
+          listbox.current = i.index;
+        }
+      }
+    } else {
+      listbox.input(i.value);
+      listbox.current = i.index;
+    }
+  };
+};
+
+export const handleListboxKeyDownShiftAdvanced =
+  (listbox: Listbox) => (e: KeyboardEvent) => {
+    if (!listbox.multi) return;
+    const { nav } = listbox;
     switch (e.key) {
       case 'ArrowUp':
       case 'ArrowLeft': {
@@ -107,8 +155,20 @@ const onKeyDown = (e: KeyboardEvent) => {
         break;
       }
     }
-    return;
-  } else if (!e.metaKey && !e.ctrlKey) {
+  };
+
+export const handleListboxKeyDownExactAdvanced =
+  (listbox: Listbox, circular: boolean, magnetic: boolean) =>
+  (e: KeyboardEvent) => {
+    const nav = (delta: number) => {
+      if (!magnetic) return listbox.nav(delta, circular);
+      const prev = listbox.current;
+      listbox.nav(delta, circular);
+      if (prev !== listbox.current) {
+        listbox.input(...toArray(listbox.model), listbox);
+      }
+    };
+
     switch (e.key) {
       case 'ArrowUp':
       case 'ArrowLeft':
@@ -134,8 +194,68 @@ const onKeyDown = (e: KeyboardEvent) => {
         listbox.input(listbox);
         break;
     }
+  };
+</script>
+
+<script setup lang="ts" generic="T = any">
+import { cloneVNode, h, toRef } from 'vue';
+import { ListboxLeaf, ListboxGroup, Listbox } from './listbox';
+import { useListbox, UseListboxProps } from './listbox';
+import { child } from '../shared';
+
+const model = defineModel();
+
+const props = defineProps<UseListboxProps<T> & { listbox?: Listbox<T> }>();
+
+const slots = defineSlots<{
+  default?(props: { option: ListboxLeaf<T> }): any;
+  group?(props: { group: ListboxGroup<T> }): any;
+}>();
+
+const listbox = useListbox(model, props);
+const current = toRef(listbox, 'current');
+
+const renderOption = (i: ListboxLeaf<T>) =>
+  cloneVNode(
+    (slots.default && child(slots.default({ option: i }))) || h('div', i.label),
+    {
+      id: listbox.id + ':' + i.index,
+      onPointerdown: (e: MouseEvent) =>
+        handleListboxClickAdvanced(listbox, i, anchor)(e),
+      onClick: () => {},
+      //       onPointerdown: () => {
+      //         // 1+1
+      // listbox.current=0      },
+      'data-key': objKey(i.value),
+      role: 'option',
+      'aria-selected':
+        (Array.isArray(listbox.model)
+          ? listbox.model.includes(i.value)
+          : listbox.model === i.value) || undefined,
+      class: listbox.current === i.index && 'current',
+      'aria-disabled': props.disabled || i.disabled || undefined,
+    },
+  );
+
+let anchor = -1;
+
+const onKeyDown = (e: KeyboardEvent) => {
+  if (listbox.disabled) return;
+
+  if (e.shiftKey) {
+    anchor = listbox.current;
+  } else {
+    anchor = -1;
+  }
+
+  if (e.shiftKey) {
+    handleListboxKeyDownShiftAdvanced(listbox)(e);
+  } else if (!e.metaKey) {
+    handleListboxKeyDownExactAdvanced(listbox, false, !e.ctrlKey)(e);
   }
 };
+
+const objKey = ObjKey(listbox);
 
 defineExpose({ listbox });
 </script>
@@ -158,7 +278,7 @@ defineExpose({ listbox });
       :key="
         g && typeof g === 'object' && 'options' in g
           ? 'g' + g.title
-          : 'i' + g.value
+          : objKey(g.value)
       "
     >
       <div
@@ -171,11 +291,11 @@ defineExpose({ listbox });
         </slot>
         <component
           v-for="i in g.options"
-          :key="i.value"
-          :is="() => renderOption(i)"
+          :key="objKey(i.value)"
+          :is="renderOption(i)"
         />
       </div>
-      <component v-else :is="() => renderOption(g)" />
+      <component v-else :is="renderOption(g)" />
     </template>
   </div>
 </template>

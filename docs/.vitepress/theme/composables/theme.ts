@@ -67,7 +67,6 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Input', link: '/design/Input' },
         { text: 'Popper', link: '/design/Popper' },
         { text: 'Select', link: '/design/Select' },
-        { text: 'Listbox', link: '/design/Listbox' },
         { text: 'Tree', link: '/design/Tree' },
         { text: 'Switch', link: '/design/Switch' },
         { text: 'Form', link: '/design/Form' },

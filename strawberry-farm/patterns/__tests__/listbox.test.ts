@@ -23,13 +23,14 @@ describe('Listbox', () => {
     ]);
   });
 
-  it('Predicate Current', () => {
+  it('Predicate current by initial value', () => {
     const options = [1, 2, 3, 4];
     expect(useListbox(ref([2, 3]), { options }).current).toBe(1);
     expect(useListbox(ref(2), { options }).current).toBe(1);
   });
 
   it('Navigates', () => {
+    const circular = true;
     const options = ref<ListboxInput>([1, 2, 3]);
     const listbox = useListbox(ref(), reactive({ options }));
     expect(listbox.current).toBe(0);
@@ -37,13 +38,15 @@ describe('Listbox', () => {
     expect(listbox.current).toBe(2);
     listbox.nav(Number.NEGATIVE_INFINITY);
     expect(listbox.current).toBe(0);
-    listbox.nav(-1);
+    listbox.nav(-1, circular);
     expect(listbox.current).toBe(2);
-    listbox.nav(1);
+    listbox.nav(1, circular);
+    expect(listbox.current).toBe(0);
+    listbox.nav(-1);
     expect(listbox.current).toBe(0);
 
     // Changed options length
-    listbox.nav(-1);
+    listbox.nav(-1, circular);
     options.value = [1, 2];
     expect(listbox.current).toBe(0);
 
@@ -60,7 +63,7 @@ describe('Listbox', () => {
       { value: 3, disabled: true },
     ];
     expect(listbox.current).toBe(-1);
-    listbox.nav(1);
+    listbox.nav(1, circular);
     expect(listbox.current).toBe(-1);
     options.value = [
       { value: 1, disabled: true },
@@ -68,13 +71,13 @@ describe('Listbox', () => {
       3,
       { value: 4, disabled: true },
     ];
-    listbox.nav(1);
+    listbox.nav(1, circular);
     expect(listbox.current).toBe(1);
-    listbox.nav(Number.POSITIVE_INFINITY);
+    listbox.nav(Number.POSITIVE_INFINITY, circular);
     expect(listbox.current).toBe(2);
-    listbox.nav(1);
+    listbox.nav(1, circular);
     expect(listbox.current).toBe(1);
-    listbox.nav(-1);
+    listbox.nav(-1, circular);
     expect(listbox.current).toBe(2);
   });
 
@@ -97,7 +100,7 @@ describe('Listbox', () => {
     expect(model.value).toBe(null);
   });
 
-  it('Multiple Toggles', () => {
+  it('Multiple toggles', () => {
     const model = ref([]);
     const listbox = useListbox(model, {
       options: [{ value: true, disabled: true }, false, Infinity],
@@ -130,5 +133,37 @@ describe('Listbox', () => {
     expect(model.value).toBe(undefined);
     listbox.nav(0);
     expect(listbox.current).toBe(0);
+  });
+
+  it('Tree hierarchy', () => {
+    const listbox = useListbox(ref(2), {
+      options: [
+        { label: '', value: 1, meta: 1 },
+        { title: 'A', options: [2] },
+      ],
+    });
+    expect(listbox.tree).toStrictEqual([
+      {
+        value: 1,
+        label: '',
+        meta: 1,
+
+        disabled: false,
+        index: 0,
+      },
+      {
+        title: 'A',
+        options: [
+          {
+            value: 2,
+            label: '2',
+            meta: undefined,
+
+            disabled: false,
+            index: 1,
+          },
+        ],
+      },
+    ]);
   });
 });

@@ -6,6 +6,9 @@ const model = ref([]);
 const options: ListboxInput = [
   1,
   2,
+  3,
+  4,
+  5,
   { title: 'Symbols', options: [Symbol('Foo')] },
 ];
 </script>
@@ -16,8 +19,9 @@ const options: ListboxInput = [
   </VListbox>
   <br />
   <VListbox v-model="model" :options class="Listbox🩷" />
+  <br />
 </template>
-  
+
 <style>
 .Listbox🩷 {
   &:focus-visible {
@@ -27,7 +31,7 @@ const options: ListboxInput = [
     padding: 10px;
 
     &:is(.Listbox🩷:focus-visible *).current {
-      outline: 2px solid var(--5);
+      outline: 2px solid var(--500);
       outline-offset: -2px;
     }
 
@@ -41,13 +45,13 @@ const options: ListboxInput = [
     }
 
     &[aria-selected='true'] {
-      background-color: var(--1);
+      background-color: var(--100);
 
       &:hover {
-        background-color: var(--2);
+        background-color: var(--200);
       }
       &:active {
-        background-color: var(--3);
+        background-color: var(--300);
       }
     }
   }

@@ -27,12 +27,12 @@
   ---ink: var(--tone-rasp-ink);
   ---foam: var(--tone-rasp-foam);
 
-  --1: color-mix(in srgb, #0000, var(---main) 20%);
-  --2: color-mix(in srgb, #0000, var(---main) 27.6%);
-  --3: color-mix(in srgb, #0000, var(---main) 39.2%);
-  --4: color-mix(in srgb, #0000, var(---main) 55%);
-  --5: var(---main);
-  --6: var(---ink);
+  --100: color-mix(in srgb, #0000, var(---main) 20%);
+  --200: color-mix(in srgb, #0000, var(---main) 27.6%);
+  --300: color-mix(in srgb, #0000, var(---main) 39.2%);
+  --400: color-mix(in srgb, #0000, var(---main) 55%);
+  --500: var(---main);
+  --600: var(---ink);
 }
 
 .tone-iris {

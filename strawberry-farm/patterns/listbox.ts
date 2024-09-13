@@ -48,8 +48,6 @@ export const flatOptions = <T = any>(i: ListboxInput<T>): ListboxOption<T>[] =>
 
 export type ListboxLeaf<T = any> = ListboxOption<T> & {
   index: number;
-  selected: boolean;
-  current: boolean;
 };
 
 export type UseListboxProps<T = any> = {
@@ -67,6 +65,8 @@ export type UseListboxProps<T = any> = {
   clearable?: boolean;
 };
 export type Listbox<T = any> = {
+  model: any;
+
   /**
    * The `id` for creating `aria-activedescendant` to indicate current focused option.
    */
@@ -91,7 +91,7 @@ export type Listbox<T = any> = {
   /**
    * Move focus based on the delta number, skipping `disabled` options.
    *
-   * if `magnetic`, movement also toggle target option in single option mode.
+   * If `circular`, `nav()` will across two edges if receives `1` | `-1` like radios.
    *
    * @example
    * ```js
@@ -101,7 +101,7 @@ export type Listbox<T = any> = {
    * Infinity // End
    * ```
    */
-  nav(delta: number): void;
+  nav(delta: number, circular?: boolean): void;
   /**
    * Toggle selection for value(s).
    *
@@ -131,19 +131,15 @@ export const useListbox = <T = any>(
       const index = _index++;
 
       return {
-        label:
-          typeof o === 'object' && o
-            ? String((o as any).label ?? (o as any).value)
-            : String(o),
         value,
+        // prettier-ignore
+        label: typeof o === 'object' && o ? String((o as any).label ?? (o as any).value) : String(o),
         meta: typeof o === 'object' && o ? (o as any).meta : undefined,
-        disabled:
-          typeof o === 'object' && o ? (o as any).disabled || false : false,
+        // prettier-ignore
+        disabled: typeof o === 'object' && o  &&  (o as any).disabled || false,
         index,
-        selected: multi.value
-          ? model.value.includes(value)
-          : value === model.value,
-        current: current.value === index,
+        // prettier-ignore
+        // selected: multi.value ? model.value.includes(value) : value === model.value,
       };
     };
 
@@ -188,7 +184,7 @@ export const useListbox = <T = any>(
     },
   });
 
-  const nav = (delta: number) => {
+  const nav = (delta: number, circular = false) => {
     if (disabled.value) return;
 
     const $options = options.value;
@@ -200,8 +196,10 @@ export const useListbox = <T = any>(
           return $options.findLastIndex(o => !o.disabled);
         case -1:
         case 1: {
-          const before = $options.slice(0, current.value);
-          const after = $options.slice(current.value + 1);
+          const before =
+            !circular && delta === 1 ? [] : $options.slice(0, current.value);
+          const after =
+            !circular && delta === -1 ? [] : $options.slice(current.value + 1);
 
           const _index = [...after, ...before][
             delta < 0 ? 'findLastIndex' : 'findIndex'
@@ -265,6 +263,7 @@ export const useListbox = <T = any>(
   })();
 
   const listbox: Listbox<T> = reactive({
+    model,
     id,
     tree,
     multi,
