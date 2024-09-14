@@ -31,19 +31,22 @@ const toggleTheme = async (e: MouseEvent) => {
     )}px at ${x}px ${y}px)`,
   ];
 
+  document.documentElement.style.setProperty('view-transition-name', 'carrot');
   await (document as any).startViewTransition?.(async () => {
     isDark.value = !isDark.value;
     await nextTick();
   }).ready;
 
-  document.documentElement.animate(
+  const ani = document.documentElement.animate(
     { clipPath: isDark.value ? clipPath.reverse() : clipPath },
     {
       duration: 300,
       easing: 'cubic-bezier(0.66, 0, 0, 1)',
-      pseudoElement: `::view-transition-${isDark.value ? 'old' : 'new'}(root)`,
+      pseudoElement: `::view-transition-${isDark.value ? 'old' : 'new'}(carrot)`,
     },
   );
+  await ani.finished;
+  document.documentElement.style.removeProperty('view-transition-name');
 };
 
 const isToggledFontFamily = ref(false);
@@ -122,19 +125,19 @@ const _isDark = computed(() => isDark.value);
   }
 }
 
-::view-transition-old(root),
-::view-transition-new(root) {
+::view-transition-old(carrot),
+::view-transition-new(carrot) {
   animation: none;
   mix-blend-mode: normal;
 }
 
-::view-transition-old(root),
-.dark::view-transition-new(root) {
+::view-transition-old(carrot),
+.dark::view-transition-new(carrot) {
   z-index: 1;
 }
 
-::view-transition-new(root),
-.dark::view-transition-old(root) {
+::view-transition-new(carrot),
+.dark::view-transition-old(carrot) {
   z-index: 9999;
 }
 
