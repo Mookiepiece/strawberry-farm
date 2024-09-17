@@ -1,30 +1,23 @@
 <script setup lang="ts">
+import { VListbox } from '@mookiepiece/strawberry-farm';
 import { ref } from 'vue';
-import { ListboxInput, VListbox } from '@mookiepiece/strawberry-farm';
 
-const model = ref([]);
-const options: ListboxInput = [
-  1,
-  2,
-  3,
-  4,
-  5,
-  { title: 'Symbols', options: [Symbol('Foo')] },
+const model = ref(['Grapes']);
+
+const options = [
+  { value: 'Grapes', label: '🍇' },
+  { value: 'Party Popper', label: '🎉' },
 ];
 </script>
 
 <template>
-  <VListbox :options class="Listbox🩷" v-slot="{ option: { label } }">
-    <div>- {{ label }}</div>
-  </VListbox>
-  <br />
-  <VListbox v-model="model" :options class="Listbox🩷" />
-  <br />
+  <VListbox v-model="model" :options class="Listbox🎉" />
 </template>
 
-<style>
-.Listbox🩷 {
-  border: 1px solid var(--mat-air-15);
+<style >
+.Listbox🎉 {
+  /* border: 1px solid var(--mat-air-15); */
+
   &:focus-visible {
     outline: 0;
   }
@@ -36,7 +29,7 @@ const options: ListboxInput = [
   [role='option'] {
     padding: 10px;
 
-    &:is(.Listbox🩷:focus-visible *).current {
+    &:is(.Listbox🎉:focus-visible *).current {
       outline: 2px solid var(--500);
       outline-offset: -2px;
     }

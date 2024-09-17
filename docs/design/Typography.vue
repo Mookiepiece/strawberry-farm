@@ -12,8 +12,7 @@ const classes = [
 <template>
   <div class="good">
     <div class="t (///)" v-for="i of classes" :class="[i]">
-      <span class="fw6">{{ i }}</span> IS
-      <span class="fw3">AWESOME</span>
+      {{ i }}
     </div>
   </div>
 </template>

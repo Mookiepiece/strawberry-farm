@@ -67,16 +67,16 @@ defineExpose({ listbox });
     }
 
     &:where([aria-selected='true']) {
-      color: var(---ink);
+      color: var(--600);
       outline-offset: -1px;
-      outline: 2px solid var(---main);
+      outline: 2px solid var(--500);
 
       &:where(:not([aria-disabled='true'])) {
         &:where(:hover) {
-          background: var(--1);
+          background: var(--100);
         }
         &:where(:active) {
-          background: var(--2);
+          background: var(--200);
         }
       }
     }

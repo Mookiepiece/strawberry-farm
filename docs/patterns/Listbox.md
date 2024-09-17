@@ -4,9 +4,15 @@ Pick option(s) from a list of options.
 
 在一组选项中选择一个或一些。
 
+:::demo patterns/ListboxHL
+
+:::
+
 ## View
 
 Spec: https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
+
+### DOM
 
 ```html
 <div role="listbox">
@@ -18,7 +24,9 @@ Spec: https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 </div>
 ```
 
-| kbd                                                                               |                                                                            |
+### Command List
+
+| Command List                                                                      |                                                                            |
 | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
 | <vp-kbd k="up" /> / <vp-kbd k="left" />                                           | Navigates to prev. Add current option and remove other selection.          |
 | <vp-kbd k="down" /> / <vp-kbd k="right" />                                        | Navigates to next. Add current option and remove other selection.          |
@@ -40,11 +48,13 @@ Spec: https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 
 Listbox options input supports **any** type of option values, values are `key`s (`Symbol || (typeof value + value)`).
 
+Listbox can have **multiple** selection when `model` `Array.isArray()`.
+
 Listbox options input supports one level **grouping**.
 
 ### Listbox
 
-- Interacts with the following listboxes (single and multiple selection) to see how it handles keyboard events and ctrl key and shift key.
+See how it handles keyboard events and <vp-kbd k="Ctrl" /> and <vp-kbd k="Shift" />.
 
 :::demo patterns/ListboxBasic
 
@@ -78,11 +88,11 @@ UX API Reference for `handlePoinerdown` and `handleKeydown`:
 
 :::
 
-## Logic
+## API Reference
 
 | VListbox    | Description                                                            |
 | ----------- | ---------------------------------------------------------------------- |
-| `model`     | Value binding, listbox will in **multiple** mode if model `isArray()`. |
+| `model`     | Value binding, listbox will in **multiple** mode if model `Array.isArray()`. |
 | `clearable` | While in single option mode, select the same option will unselect it.  |
 | `options`   | Listbox inputs support any type of value, support one level grouping.  |
 | `disabled`  |                                                                        |
@@ -91,7 +101,7 @@ UX API Reference for `handlePoinerdown` and `handleKeydown`:
 | Listbox API                            | Description                                                                                                                                                                                      |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `id`                                   | The `id` for creating `aria-activedescendant` to indicate current focused option.                                                                                                                |
-| `multi`                                | model `isArray()`                                                                                                                                                                                |
+| `multi`                                | model `Array.isArray()`                                                                                                                                                                                |
 | `tree`                                 | Contains the original (grouped) hierarchy and extra info to rendering the UI.                                                                                                                    |
 | `options`                              | List of options after flatten and normalized, which are objects with `value` property.                                                                                                           |
 | `current`                              | Current focuing option index (after options are flatted)                                                                                                                                         |

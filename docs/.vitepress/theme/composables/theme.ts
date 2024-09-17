@@ -41,10 +41,8 @@ const theme = shallowRef<ThemeConfig>({
       text: 'Learn',
       items: [
         { text: 'Intro', link: '/learn/Intro' },
-        { text: 'BoxModel', link: '/learn/BoxModel' },
         { text: 'Overflow', link: '/learn/Overflow' },
         { text: 'Sizing', link: '/learn/Sizing' },
-        { text: 'Background', link: '/learn/Background' },
         { text: 'Form', link: '/learn/Form' },
       ],
     },
@@ -59,7 +57,6 @@ const theme = shallowRef<ThemeConfig>({
       items: [
         { text: 'Color', link: '/design/Color' },
         { text: 'Typography', link: '/design/Typography' },
-        { text: 'Sizing', link: '/design/Sizing' },
         { text: 'Interaction', link: '/design/Interaction' },
         { text: 'Collapse', link: '/design/Collapse' },
         { text: 'Alert', link: '/design/Alert' },

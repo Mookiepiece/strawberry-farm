@@ -38,7 +38,10 @@ switch (dirname) {
 
 <style>
 .VPDemo {
+  border-radius: 10px;
   margin: 20px 0;
+
+  box-shadow: inset 0 0 0 1px var(--mat-solid-15);
 
   > div:first-child {
     padding: 20px;
@@ -48,36 +51,51 @@ switch (dirname) {
     --y: 40px;
     --z: 2px;
     background:
-      linear-gradient(var(--a), var(--a)) var(--x) 0 / var(--z) var(--y)
-        no-repeat,
-      linear-gradient(var(--a), var(--a)) 0 var(--x) / var(--y) var(--z)
-        no-repeat,
-      linear-gradient(var(--a), var(--a)) calc(100% - var(--x)) 0 / var(--z)
-        var(--y) no-repeat,
-      linear-gradient(var(--a), var(--a)) 100% var(--x) / var(--y) var(--z)
-        no-repeat,
-      linear-gradient(var(--a), var(--a)) 0 calc(100% - var(--x)) / var(--y)
-        var(--z) no-repeat,
-      linear-gradient(var(--a), var(--a)) var(--x) 100% / var(--z) var(--y)
-        no-repeat,
-      linear-gradient(var(--a), var(--a)) 100% calc(100% - var(--x)) / var(--y)
-        var(--z) no-repeat,
-      linear-gradient(var(--a), var(--a)) calc(100% - var(--x)) 100% / var(--z)
-        var(--y) no-repeat,
+      no-repeat
+        linear-gradient(
+          90deg,
+          transparent 19px,
+          var(--a) 20px,
+          var(--a) 20px,
+          transparent 20px
+        ),
+      no-repeat
+        linear-gradient(
+          180deg,
+          transparent 19px,
+          var(--a) 20px,
+          var(--a) 20px,
+          transparent 20px
+        ),
       transparent;
   }
   summary {
+    position: relative;
+    z-index: 1;
     display: flex;
     gap: 10px;
-    padding: 10px;
+    padding: 10px 20px;
     cursor: pointer;
     user-select: none;
+
+    box-shadow: inset 0 0 0 1px var(--mat-solid-15);
+  }
+  details:not([open]) > summary {
+    border-radius: 0 0 10px 10px;
   }
   summary::marker {
     content: '';
     width: 0;
     height: 0;
     display: none;
+  }
+
+  [class*='language-'] {
+    margin: 0 !important;
+
+    code {
+      font-size: 12px !important;
+    }
   }
 }
 </style>
