@@ -7,7 +7,7 @@ import {
   sameWidth,
 } from '../shared';
 import { CommonOptionsInput, flatCommonOptionsInput } from './misc';
-import VListbox from './VListbox.vue';
+import VListbox from '../patterns/VListbox.vue';
 import { usePopper } from './usePopper';
 
 const model = defineModel<any>();

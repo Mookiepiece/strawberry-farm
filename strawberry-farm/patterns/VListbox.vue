@@ -78,31 +78,27 @@ export const useListboxEX = weakCache((listbox: Listbox) => {
       const { nav } = listbox;
       switch (e.key) {
         case 'ArrowUp':
-        case 'ArrowLeft': {
+        case 'ArrowLeft':
           e.preventDefault();
           nav(-1);
           addRange(anchor, listbox.current);
           break;
-        }
         case 'ArrowDown':
-        case 'ArrowRight': {
+        case 'ArrowRight':
           e.preventDefault();
           nav(1);
           addRange(anchor, listbox.current);
           break;
-        }
-        case 'Home': {
+        case 'Home':
           e.preventDefault();
           nav(Number.NEGATIVE_INFINITY);
           addRange(anchor, listbox.current);
           break;
-        }
-        case 'End': {
+        case 'End':
           e.preventDefault();
           nav(Number.POSITIVE_INFINITY);
           addRange(anchor, listbox.current);
           break;
-        }
       }
     } else {
       const nav = (delta: number) => {
@@ -134,7 +130,6 @@ export const useListboxEX = weakCache((listbox: Listbox) => {
           nav(Number.POSITIVE_INFINITY);
           break;
         case ' ':
-          // case 'Enter':
           e.preventDefault();
           listbox.input(listbox);
           break;
@@ -191,14 +186,24 @@ import { child } from '../shared';
 
 const model = defineModel();
 
-const props = defineProps<UseListboxProps<T> & { listbox?: Listbox<T> }>();
+const props = withDefaults(
+  defineProps<
+    UseListboxProps<T> & {
+      listbox?: Listbox<T>;
+      circular?: boolean;
+      magnetic?: boolean;
+      action?(e: KeyboardEvent, listbox: Listbox): void;
+    }
+  >(),
+  { magnetic: true },
+);
 
 const slots = defineSlots<{
   default?(props: { option: ListboxLeaf<T> }): any;
   group?(props: { group: ListboxGroup<T> }): any;
 }>();
 
-const listbox = useListbox(model, props);
+const listbox = props.listbox || useListbox(model, props);
 const listboxEX = useListboxEX(listbox);
 const current = toRef(listbox, 'current');
 
@@ -220,7 +225,14 @@ const renderOption = (i: ListboxLeaf<T>) =>
   );
 
 const onKeyDown = (e: KeyboardEvent) => {
-  listboxEX.handleKeydown(e);
+  if (e.key === 'Enter') {
+    props.action?.(e, listbox);
+  } else {
+    listboxEX.handleKeydown(e, {
+      circular: props.circular,
+      magnetic: props.magnetic,
+    });
+  }
 };
 
 const objKey = ObjKey(listbox);

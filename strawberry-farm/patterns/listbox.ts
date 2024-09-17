@@ -73,7 +73,7 @@ export type Listbox<T = any> = {
   id: string;
 
   /**
-   * model `isArray`
+   * model `Array.isArray()`
    */
   multi: boolean;
   /**
@@ -107,7 +107,7 @@ export type Listbox<T = any> = {
    *
    * Will validate `disabled` state.
    *
-   * Passing `listbox.current` will toggle current value.
+   * Passing `listbox` will toggle current value.
    */
   input(...values: any[]): void;
   disabled: boolean;

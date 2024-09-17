@@ -23,7 +23,7 @@ defineExpose({ listbox });
 </script>
 
 <template>
-  <VListbox class="VRadios" v-model="model" v-bind="props" v-slot="{ option }">
+  <VListbox class="VRadios🩷" v-model="model" v-bind="props" v-slot="{ option }">
     <slot :option>
       <div data-trunk>
         {{ option.label }}
@@ -33,11 +33,11 @@ defineExpose({ listbox });
 </template>
 
 <style>
-.VRadios :where([data-trunk]) {
+.VRadios🩷 :where([data-trunk]) {
   padding-inline: 15px;
 }
 
-.VRadios {
+.VRadios🩷 {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
@@ -89,31 +89,8 @@ defineExpose({ listbox });
   }
 }
 
-.VRadios:where(:focus-visible) :where([role='option'].current) {
-  /* outline: 2px solid var(--500);
-  outline-offset: -1px; */
+.VRadios🩷:where(:focus-visible)
+  :where([role='option'].current) {
+  box-shadow: 0 0 0 3px var(--mat-solid-0), 0 0 0 5px var(--500);
 }
-
-.VRadios:where(:focus-visible)
-  :where([role='option'][aria-selected='true'].current) {
-  /* outline: 2px solid var(--500);
-  outline-offset: -1px; */
-  box-shadow:  0 0 0 3px var(--mat-solid-0), 0 0 0 5px var(--500);
-}
-
-/* .VRadios
-  :where([role='option']:not([aria-selected='true']) .VCheckboxIndicator) {
-  display: none;
-}
-
-.VCheckboxIndicator {
-  position: absolute;
-  top: -1px;
-  right: -1px;
-  width: 15px;
-  height: 15px;
-  font-size: 15px;
-  color: var(--mat-solid-0);
-  background: var(---main);
-} */
 </style>

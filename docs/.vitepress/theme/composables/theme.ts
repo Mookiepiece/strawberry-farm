@@ -53,6 +53,12 @@ const theme = shallowRef<ThemeConfig>({
       ]
     },
     {
+      text: 'Components',
+      items:[
+        {text: 'Radios', link: '/components/Radios'}
+      ]
+    },
+    {
       text: 'Design',
       items: [
         { text: 'Color', link: '/design/Color' },

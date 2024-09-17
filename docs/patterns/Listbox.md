@@ -65,7 +65,7 @@ This is an simple styled example, see how it handles keyboard events and <vp-kbd
 UX API Reference for `handlePoinerdown` and `handleKeydown`:
 
 - Circular: Navigation (Arrow keys) can teleport between first and last option.
-- Magnetic: default it is `true`. If set to `false`, holding <vp-kbd k="Ctrl" /> or not will be reversed. Which can create an Listbox UI that allows click to add.
+- Magnetic: default it is `true`. If set to `false`, holding <vp-kbd k="Ctrl" /> or not will be reversed. Which can create an Listbox UI that allows click to add. `VRadios.vue` for example, `magnetic` is `!multi`.
 
 |                      | Classic Listbox(Multi) | Radio / Segmented   | Select          |
 | -------------------- | ---------------------- | ------------------- | --------------- |
