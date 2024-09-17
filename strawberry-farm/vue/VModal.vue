@@ -28,7 +28,7 @@ const close = () => void (!props.strong && (model.value = false));
 
 let down = false;
 const _bag = Bag();
-const handlePointerDown = () => (
+const handlePointerdown = () => (
   (down = true), _bag(onTimeout(() => (down = false)))
 );
 const handlePointerUp = () => down && close();
@@ -41,7 +41,7 @@ const handlePointerUp = () => down && close();
         v-if="model"
         @keydown.esc="close"
         class="VCurtain"
-        @pointerdown.self.prevent="handlePointerDown"
+        @pointerdown.self.prevent="handlePointerdown"
         @pointerup.self.prevent="handlePointerUp"
         tabindex="-1"
         ref="surface"

@@ -41,6 +41,8 @@ const ObjKey = (cacheKey: any) => {
   );
 };
 
+const toArray = (a: any) => (Array.isArray(a) ? a : [a]);
+
 export const useListboxEX = weakCache((listbox: Listbox) => {
   const addRange = (a: number, b: number) => {
     if (a < 0 || b < 0) return;
@@ -140,7 +142,11 @@ export const useListboxEX = weakCache((listbox: Listbox) => {
     }
   };
 
-  const handlePointerDown = (e: MouseEvent, i: ListboxLeaf) => {
+  const handlePointerdown = (
+    e: MouseEvent,
+    i: ListboxLeaf,
+    { magnetic = true }: { magnetic?: boolean } = {},
+  ) => {
     if (i.disabled) return;
     if (listbox.multi) {
       if (e.shiftKey) {
@@ -152,7 +158,7 @@ export const useListboxEX = weakCache((listbox: Listbox) => {
           useListboxEX(listbox).addRange(a, b);
         }
       } else {
-        if (e.ctrlKey) {
+        if (e.ctrlKey === magnetic) {
           listbox.input(i.value);
           listbox.current = i.index;
         } else {
@@ -171,12 +177,10 @@ export const useListboxEX = weakCache((listbox: Listbox) => {
     findIndex,
     getAnchor: () => anchor,
 
-    handlePointerDown,
+    handlePointerdown,
     handleKeydown,
   };
 });
-
-const toArray = (a: any) => (Array.isArray(a) ? a : [a]);
 </script>
 
 <script setup lang="ts" generic="T = any">
@@ -203,7 +207,7 @@ const renderOption = (i: ListboxLeaf<T>) =>
     (slots.default && child(slots.default({ option: i }))) || h('div', i.label),
     {
       id: listbox.id + ':' + i.index,
-      onPointerdown: (e: MouseEvent) => listboxEX.handlePointerDown(e, i),
+      onPointerdown: (e: MouseEvent) => listboxEX.handlePointerdown(e, i),
       'data-key': objKey(i.value),
       role: 'option',
       'aria-selected':
