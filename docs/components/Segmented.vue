@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { VRadios } from '@mookiepiece/strawberry-farm';
+import { VSegmented } from '@mookiepiece/strawberry-farm';
 
 const model = ref(3);
 </script>
 
 <template>
-  <VRadios
+  <VSegmented
     v-model="model"
     :options="['Grapes', 'Melon', { value: 'Strawberry', disabled: true }]"
   />

@@ -48,15 +48,14 @@ const theme = shallowRef<ThemeConfig>({
     },
     {
       text: 'Patterns',
-      items:[
-        {text: 'Listbox', link: '/patterns/Listbox'}
-      ]
+      items: [{ text: 'Listbox', link: '/patterns/Listbox' }],
     },
     {
       text: 'Components',
-      items:[
-        {text: 'Radios', link: '/components/Radios'}
-      ]
+      items: [
+        { text: 'Radios', link: '/components/Radios' },
+        { text: 'Segmented', link: '/components/Segmented' },
+      ],
     },
     {
       text: 'Design',
