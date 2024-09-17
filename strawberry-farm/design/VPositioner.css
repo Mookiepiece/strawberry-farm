@@ -2,26 +2,23 @@
   visibility: hidden;
 }
 
-[data-pop-body] {
+[data-pop-box] {
+  max-width: var(--max-width, auto);
   max-height: var(--max-height, auto);
   overflow: auto;
-
-  box-shadow: var(--shadow);
-  outline: 1px solid var(--mat-solid-15);
-  outline-offset: -1px;
 }
 
-[data-pop-body]:where(:is(.v-enter-from, .v-leave-to)) {
+[data-pop-box]:where(:is(.v-enter-from, .v-leave-to)) {
   transform: translateY(-10px);
   opacity: 0;
 }
 
-[data-pop-body]:where(:is(.v-enter-to, .v-leave-from)) {
+[data-pop-box]:where(:is(.v-enter-to, .v-leave-from)) {
   transform: translateY(0);
   opacity: 1;
 }
 
-[data-pop-body]:where(
+[data-pop-box]:where(
     :is(.v-enter-active:not(.v-enter-from), .v-leave-active:not(.v-leave-from))
   ) {
   transition:

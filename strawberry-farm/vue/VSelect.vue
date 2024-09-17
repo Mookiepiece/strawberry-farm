@@ -128,7 +128,7 @@ defineExpose({
       @keydown.esc="open = false"
       style="position: fixed; top: 0; left: 0"
     >
-      <div data-pop-body>
+      <div data-pop-box>
         <VListbox
           :multi="multi"
           magnetic

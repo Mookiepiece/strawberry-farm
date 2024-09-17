@@ -1,27 +1,21 @@
 <script setup lang="ts">
-import { Bag, flip, levitate } from '@mookiepiece/strawberry-farm/shared';
-import { onUnmounted, ref } from 'vue';
-import { onMounted } from 'vue';
+import { applyTransform, levitate } from '@mookiepiece/strawberry-farm/shared';
+import { ref, watchEffect } from 'vue';
 
-const a = ref<HTMLElement>();
-const b = ref<HTMLElement>();
-
-let bag = Bag();
-onUnmounted(bag);
+const refer = ref<HTMLElement>();
+const pop = ref<HTMLElement>();
 
 const dir = ref<'top' | 'left' | 'right' | 'bottom'>('bottom');
 
-onMounted(() => {
-  bag(levitate.auto(a.value!, update));
-});
-
-const update = () => {
-  levitate(a.value!, b.value!, { dir: dir.value }, flip());
+const positioning = () => {
+  levitate(refer.value!, pop.value!, { dir: dir.value }, applyTransform);
 };
+
+watchEffect(onCleanup => onCleanup(levitate.auto(refer.value!, positioning)));
 
 const changeDir = (_dir: 'top' | 'left' | 'right' | 'bottom') => {
   dir.value = _dir;
-  update();
+  positioning();
 };
 </script>
 
@@ -29,24 +23,13 @@ const changeDir = (_dir: 'top' | 'left' | 'right' | 'bottom') => {
   <div style="position: relative">
     <div style="position: relative; height: 300px; width: 100%; overflow: auto">
       <div style="width: 500%; height: 1000px">
-        <div ref="a" class="a 🍒"></div>
+        <div ref="refer" class="a 🍒"></div>
         <Teleport to="body">
-          <div ref="b" class="b 🍒">lorem</div>
+          <div ref="pop" class="b 🍒">lorem</div>
         </Teleport>
       </div>
     </div>
-    <div
-      style="
-        position: absolute;
-        top: 100%;
-        left: 100%;
-        transform: translate(-100%, -100%);
-        width: max-content;
-        max-width: 100%;
-      "
-    >
-      <button @click="update">Place</button>
-      <br />
+    <div class="control (///)">
       <button @click="changeDir('top')">Top</button>
       <button @click="changeDir('right')">Right</button>
       <button @click="changeDir('bottom')">Bottom</button>
@@ -66,5 +49,14 @@ const changeDir = (_dir: 'top' | 'left' | 'right' | 'bottom') => {
   left: 0;
   padding: 10px;
   z-index: 1;
+}
+
+.control {
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  transform: translate(-100%, -100%);
+  width: max-content;
+  max-width: 100%;
 }
 </style>

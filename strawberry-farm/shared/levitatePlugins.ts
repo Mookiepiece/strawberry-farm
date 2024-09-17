@@ -1,4 +1,4 @@
-import { Direction, PopConfigs, PopPlugin, availableSpace4 } from './levitate';
+import { Direction, PopConfigs, PopPlugin, ClipMap } from './levitate';
 
 type LogicalBox = {
   main: number;
@@ -14,7 +14,7 @@ const logicalBoxes: Record<Direction, (rect: DOMRect) => LogicalBox> = {
 };
 
 const scrollInline = (config: PopConfigs) =>
-  (config.$pop as HTMLElement).querySelector('[data-pop-body]')![
+  ((config.$pop as HTMLElement).querySelector('[data-pop-box]') || config.$pop as HTMLElement)[
     ['top', 'bottom'].includes(config.dir) ? 'scrollHeight' : 'scrollWidth'
   ];
 
@@ -41,7 +41,7 @@ export const autoPlacement =
   ) =>
   (config: PopConfigs): PopConfigs => {
     let { ref, pop, viewport, dir, offset } = config;
-    let map = availableSpace4[dir]([[ref], viewport], offset);
+    let map = ClipMap[dir]([[ref], viewport], offset);
 
     const _settings = settings?.(config);
     const $scrollInline = scrollInline(config);
@@ -50,7 +50,7 @@ export const autoPlacement =
 
     if (logicalBoxes[dir](map).main < limit) {
       for (const _dir of fallbacks) {
-        let _map = availableSpace4[_dir]([[ref], viewport], offset);
+        let _map = ClipMap[_dir]([[ref], viewport], offset);
         if (_map.width * _map.height > map.width * map.height) {
           map = _map;
           dir = _dir;
@@ -88,15 +88,18 @@ export const sameWidth: PopPlugin = config => {
 };
 
 export const applyTransform: PopPlugin = config => {
+  const $ref = config.$ref as HTMLElement;
   const $pop = config.$pop as HTMLElement;
 
+  $pop.setAttribute('data-pop-dir', config.dir);
+  $ref.setAttribute('data-pop-dir', config.dir);
   $pop.style.setProperty('--x', config.x + 'px');
   $pop.style.setProperty('--y', config.y + 'px');
   $pop.style.setProperty('transform', 'translate(var(--x), var(--y))');
-  $pop.setAttribute('data-pop-dir', config.dir);
 
   return config;
 };
+applyTransform.post = !0
 
 export const maxHeight: PopPlugin = config => {
   const $pop = config.$pop as HTMLElement;

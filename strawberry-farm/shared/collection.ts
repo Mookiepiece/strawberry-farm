@@ -1,4 +1,4 @@
-interface IBag {
+export interface IBag {
   (cb?: () => void): void;
   (cb: AbortController): AbortController;
 }

@@ -102,6 +102,10 @@
       color 0.3s,
       opacity 0.3s;
     transform: translateX(-25px);
+
+    &:focus-visible{
+      outline: 2px solid var(--500);
+    }
   }
 
   .header-anchor::before {

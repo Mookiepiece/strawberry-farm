@@ -64,7 +64,7 @@ export const usePopper = ({
       return;
     }
 
-    const body = popper.value.querySelector('[data-pop-body]') as
+    const body = popper.value.querySelector('[data-pop-box]') as
       | HTMLElement
       | undefined;
 

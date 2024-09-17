@@ -90,14 +90,15 @@ defineExpose({ listbox });
 }
 
 .VRadios:where(:focus-visible) :where([role='option'].current) {
-  /* outline: 2px solid var(--5);
+  /* outline: 2px solid var(--500);
   outline-offset: -1px; */
 }
 
 .VRadios:where(:focus-visible)
   :where([role='option'][aria-selected='true'].current) {
-  outline: 2px solid var(--5);
-  outline-offset: -1px;
+  /* outline: 2px solid var(--500);
+  outline-offset: -1px; */
+  box-shadow:  0 0 0 3px var(--mat-solid-0), 0 0 0 5px var(--500);
 }
 
 /* .VRadios

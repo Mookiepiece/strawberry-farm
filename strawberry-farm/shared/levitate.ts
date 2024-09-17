@@ -27,6 +27,7 @@ export type PopConfigs = {
 
 export interface PopPlugin {
   (configs: PopConfigs): PopConfigs;
+  post?: boolean;
 }
 
 const isScrollableElement = (p: Element) => {
@@ -55,18 +56,18 @@ const auto = (el: Element, cb: () => void) => {
 const clamp = (min = 0, a: number, max = 100) =>
   Math.min(max, Math.max(a, min));
 
-export const availableSpace4: Record<
+export const ClipMap: Record<
   Direction,
   ([[ref], view]: [[DOMRect], DOMRect], offset: number) => DOMRect
 > = {
   // prettier-ignore
-  top: ([[ref], viewport], offset) => { const height = clamp(0, ref.top - viewport.top - offset, viewport.height); const bottom = viewport.top + height; return ({ ...viewport, bottom, height }) },
+  top: ([[ref], view]) => { const height = clamp(0, ref.top - view.top, view.height); const bottom = view.top + height; return ({ ...view, bottom, height }) },
   // prettier-ignore
-  right: ([[ref], viewport], offset) => { const width = clamp(0, viewport.right - ref.right - offset, viewport.width); const x = viewport.right - width; return ({ ...viewport, left: x, x, width }) },
+  right: ([[ref], view]) => { const width = clamp(0, view.right - ref.right, view.width); const x = view.right - width; return ({ ...view, left: x, x, width }) },
   // prettier-ignore
-  bottom: ([[ref], viewport], offset) => { const height = clamp(0, viewport.bottom - ref.bottom - offset, viewport.height); const y = viewport.bottom - height; return ({ ...viewport, top: y , y, height }) },
+  bottom: ([[ref], view]) => { const height = clamp(0, view.bottom - ref.bottom, view.height); const y = view.bottom - height; return ({ ...view, top: y , y, height }) },
   // prettier-ignore
-  left: ([[ref], viewport], offset) => { const width = clamp(0, ref.left - viewport.left - offset, viewport.width); const right = viewport.left + width; return ({ ...viewport, right, width }) },
+  left: ([[ref], view]) => { const width = clamp(0, ref.left - view.left, view.width); const right = view.left + width; return ({ ...view, right, width }) },
 };
 
 const Align = (config: PopConfigs): PopConfigs => {
@@ -132,7 +133,7 @@ const _levitate = (
   const ref = $ref.getBoundingClientRect();
   const pop = $pop.getBoundingClientRect();
 
-  const map = availableSpace4[dir]([[ref], viewport], offset);
+  const map = ClipMap[dir]([[ref], viewport], offset);
 
   let config: PopConfigs = {
     $ref,
@@ -146,12 +147,9 @@ const _levitate = (
     map,
   };
 
-  for (let p of plugins) config = p(config);
+  for (let p of plugins.filter(_ => !_.post)) config = p(config);
   config = Align(config);
-
-  $pop.style.setProperty('--x', config.x + 'px');
-  $pop.style.setProperty('--y', config.y + 'px');
-  $pop.style.setProperty('transform', 'translate(var(--x), var(--y))');
+  for (let p of plugins.filter(_ => _.post)) config = p(config);
 
   return config;
 };

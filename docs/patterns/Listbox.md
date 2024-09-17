@@ -54,7 +54,7 @@ Listbox options input supports one level **grouping**.
 
 ### Listbox
 
-See how it handles keyboard events and <vp-kbd k="Ctrl" /> and <vp-kbd k="Shift" />.
+This is an simple styled example, see how it handles keyboard events and <vp-kbd k="Ctrl" /> and <vp-kbd k="Shift" />.
 
 :::demo patterns/ListboxBasic
 

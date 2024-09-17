@@ -1,22 +1,18 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { levitate } from '@mookiepiece/strawberry-farm/shared';
+import { applyTransform, levitate } from '@mookiepiece/strawberry-farm';
 
 const open = ref(false);
 
-const button = ref<HTMLElement>();
+const refer = ref<HTMLElement>();
 const popper = ref<HTMLDivElement>();
 
 watchEffect(onCleanup => {
-  const $ref = button.value;
-  const $popper = popper.value;
-  const $open = open.value;
-  if ($ref && $popper && $open) {
+  const [$ref, $pop, $open] = [refer.value, popper.value, open.value];
+  if ($ref && $pop && $open) {
     onCleanup(
       levitate.auto($ref, () => {
-        levitate($ref, $popper, {
-          offset: 100,
-        });
+        levitate($ref, $pop, { offset: 100 }, applyTransform);
       }),
     );
   }
@@ -24,16 +20,12 @@ watchEffect(onCleanup => {
 </script>
 
 <template>
-  <div style="position: relative; height: 300px; width: 100%; overflow: auto">
-    <div style="width: 500%; height: 1000px">
-      <button ref="button" @click="open = !open">Reference</button>
-      <Teleport to="body">
-        <div v-if="open" ref="popper" class="levitated (///)">
-          <div>Content</div>
-        </div>
-      </Teleport>
+  <button ref="refer" @click="open = !open">Reference</button>
+  <Teleport to="body">
+    <div v-if="open" ref="popper" class="levitated (///)">
+      <div data-pop-box>Content</div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <style scoped>
