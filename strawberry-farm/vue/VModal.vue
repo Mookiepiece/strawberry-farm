@@ -15,13 +15,11 @@ const props = defineProps<{
 const bag = Bag();
 onUnmounted(() => bag());
 
-const surface = ref<HTMLElement>();
+const curtain = ref<HTMLElement>();
 
 const afterEnter = () => {
-  const el = surface.value;
-  if (el) {
-    bag(trap(el));
-  }
+  const $ = curtain.value;
+  if ($) bag(trap($));
 };
 
 const close = () => void (!props.strong && (model.value = false));
@@ -44,7 +42,7 @@ const handlePointerUp = () => down && close();
         @pointerdown.self.prevent="handlePointerdown"
         @pointerup.self.prevent="handlePointerUp"
         tabindex="-1"
-        ref="surface"
+        ref="curtain"
       >
         <div class="VModal" v-bind="$attrs">
           <slot />

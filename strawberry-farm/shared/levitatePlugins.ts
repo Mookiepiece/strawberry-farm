@@ -18,14 +18,14 @@ const scrollInline = (config: PopConfigs) =>
     ['top', 'bottom'].includes(config.dir) ? 'scrollHeight' : 'scrollWidth'
   ];
 
-const allFlipFallbacks: Record<Direction, Direction[]> = {
+const AUTO_P_FALLBACKS: Record<Direction, Direction[]> = {
   top: ['bottom', 'left', 'right'],
   bottom: ['top', 'left', 'right'],
   left: ['right', 'top', 'bottom'],
   right: ['left', 'top', 'bottom'],
 };
 
-const mainAxisFlipFallbacks: Record<Direction, Direction[]> = {
+const FLIP_FALLBACKS: Record<Direction, Direction[]> = {
   top: ['bottom'],
   bottom: ['top'],
   left: ['right'],
@@ -46,7 +46,7 @@ export const autoPlacement =
     const _settings = settings?.(config);
     const $scrollInline = scrollInline(config);
     const limit = _settings?.limit ?? $scrollInline;
-    const fallbacks = _settings?.fallback ?? allFlipFallbacks[dir];
+    const fallbacks = _settings?.fallback ?? AUTO_P_FALLBACKS[dir];
 
     if (logicalBoxes[dir](map).main < limit) {
       for (const _dir of fallbacks) {
@@ -66,7 +66,7 @@ export const autoPlacement =
 
 export const flip: typeof autoPlacement = settings =>
   autoPlacement(config => ({
-    fallback: mainAxisFlipFallbacks[config.dir],
+    fallback: FLIP_FALLBACKS[config.dir],
     ...settings?.(config),
   }));
 

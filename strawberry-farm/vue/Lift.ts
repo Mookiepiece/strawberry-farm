@@ -1,13 +1,25 @@
 import { Component, createApp, h, onMounted, onUnmounted, ref } from 'vue';
 
-export const Lift = <A = any, B = undefined>(
-  as: Component<{
-    args: A;
-    resolve: B extends undefined ? any : (ans: B) => void;
-  }>,
-  args: A,
-  signal?: AbortSignal,
+export const Lift = <A = any, B = null>(
+  ...params: B extends null
+    ? [
+        Component<{
+          args: A;
+          resolve: B extends null ? any : (ans: B) => void;
+        }>,
+        args?: A,
+        signal?: AbortSignal,
+      ]
+    : [
+        Component<{
+          args: A;
+          resolve: B extends null ? any : (ans: B) => void;
+        }>,
+        args: A,
+        signal?: AbortSignal,
+      ]
 ) => {
+  const [as, args, signal] = params;
   const open = ref(false);
   let resolve: any = undefined as any;
   let reject: () => void = undefined as any;
@@ -35,7 +47,7 @@ export const Lift = <A = any, B = undefined>(
 
       return () =>
         h(as, {
-          args,
+          args: (args || null) as any,
           resolve,
           reject,
           modelValue: open.value,

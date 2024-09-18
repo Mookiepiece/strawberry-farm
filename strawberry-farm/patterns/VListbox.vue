@@ -43,7 +43,7 @@ const ObjKey = (cacheKey: any) => {
 
 const toArray = (a: any) => (Array.isArray(a) ? a : [a]);
 
-export const useListboxEX = weakCache((listbox: Listbox) => {
+export const useListboxExtra = weakCache((listbox: Listbox) => {
   const addRange = (a: number, b: number) => {
     if (a < 0 || b < 0) return;
     const range = listbox.options.slice(Math.min(a, b), Math.max(a, b) + 1);
@@ -150,7 +150,7 @@ export const useListboxEX = weakCache((listbox: Listbox) => {
         const b = (anchor > -1 && anchor) || listbox.current;
         if (b >= 0) {
           listbox.current = a;
-          useListboxEX(listbox).addRange(a, b);
+          useListboxExtra(listbox).addRange(a, b);
         }
       } else {
         if (e.ctrlKey === magnetic) {
@@ -204,7 +204,7 @@ const slots = defineSlots<{
 }>();
 
 const listbox = props.listbox || useListbox(model, props);
-const listboxEX = useListboxEX(listbox);
+const listboxEX = useListboxExtra(listbox);
 const current = toRef(listbox, 'current');
 
 const renderOption = (i: ListboxLeaf<T>) =>

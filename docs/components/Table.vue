@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VTable from '@mookiepiece/strawberry-farm/vue/VTable.vue';
+import {VTable} from '@mookiepiece/strawberry-farm';
 
 </script>
 

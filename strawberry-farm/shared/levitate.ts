@@ -15,7 +15,6 @@ export type PopConfigs = {
   pop: DOMRect;
 
   dir: Direction;
-  offset: number;
   align?: Alignment;
 
   map: DOMRect;
@@ -58,7 +57,7 @@ const clamp = (min = 0, a: number, max = 100) =>
 
 export const ClipMap: Record<
   Direction,
-  ([[ref], view]: [[DOMRect], DOMRect], offset: number) => DOMRect
+  ([[ref], view]: [[DOMRect], DOMRect]) => DOMRect
 > = {
   // prettier-ignore
   top: ([[ref], view]) => { const height = clamp(0, ref.top - view.top, view.height); const bottom = view.top + height; return ({ ...view, bottom, height }) },
@@ -110,7 +109,6 @@ const _levitate = (
   {
     dir = 'bottom',
     align,
-    offset = 0,
     viewport = {
       x: 0,
       y: 0,
@@ -124,7 +122,6 @@ const _levitate = (
     },
   }: {
     dir?: Direction;
-    offset?: number;
     align?: Alignment;
     viewport?: DOMRect;
   } = {},
@@ -133,7 +130,7 @@ const _levitate = (
   const ref = $ref.getBoundingClientRect();
   const pop = $pop.getBoundingClientRect();
 
-  const map = ClipMap[dir]([[ref], viewport], offset);
+  const map = ClipMap[dir]([[ref], viewport]);
 
   let config: PopConfigs = {
     $ref,
@@ -142,7 +139,6 @@ const _levitate = (
     align,
     ref,
     pop,
-    offset,
     viewport,
     map,
   };

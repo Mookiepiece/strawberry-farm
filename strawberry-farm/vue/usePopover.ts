@@ -1,4 +1,4 @@
-import { MaybeRef, Ref, ref, watch, watchEffect } from 'vue';
+import { Ref, ref, watchEffect } from 'vue';
 import { PopPlugin, fx, levitate, trap } from '../shared';
 import { onClickAway } from '../html/onClickAway';
 
@@ -12,7 +12,6 @@ export const usePopper = ({
   popper: Ref<HTMLElement | SVGElement | undefined>;
   configs?: Parameters<typeof levitate>[2] & {
     trap?: boolean;
-    clickAway?: boolean;
     animated?: boolean;
   };
   plugins?: PopPlugin[];
@@ -34,14 +33,13 @@ export const usePopper = ({
 
   watchEffect(onCleanup => {
     if (!configs?.trap) return;
-    // visible: make sure the popper receives focus after body inited
+    // visible: make sure the popper receives focus after [data-pop-box] inited
     // open: make sure the reference immediately receive focus when existing
     if (!open.value || !visible.value || !popper.value) return;
     onCleanup(trap(popper.value));
   });
 
   watchEffect(onCleanup => {
-    if (!configs?.clickAway) return;
     if (!open.value) return;
 
     const [$ref, $pop] = [reference.value, popper.value];

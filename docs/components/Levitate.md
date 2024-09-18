@@ -15,22 +15,22 @@ Words:
 
 `levitate.auto()` is built upon `ResizeObserver` and `onscroll`.
 
-:::demo design/LevitateAuto
+:::demo components/LevitateAuto
 :::
 
 ### Mannual Positioning
 
 If you don't use `levitate.auto()`.
 
-:::demo design/LevitatePassive
+:::demo components/LevitatePassive
 :::
 
 ### Vue
 
-:::demo design/LevitateVueSimple
+:::demo components/LevitateVueSimple
 :::
 
 ### Animated
 
-:::demo design/LevitateVueAnimated
+:::demo components/LevitateVueAnimated
 :::
