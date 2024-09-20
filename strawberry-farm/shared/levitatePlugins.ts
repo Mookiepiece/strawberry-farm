@@ -40,8 +40,8 @@ export const autoPlacement =
     },
   ) =>
   (config: PopConfigs): PopConfigs => {
-    let { ref, pop, viewport, dir, offset } = config;
-    let map = ClipMap[dir]([[ref], viewport], offset);
+    let { ref, pop, viewport, dir } = config;
+    let map = ClipMap[dir]([[ref], viewport]);
 
     const _settings = settings?.(config);
     const $scrollInline = scrollInline(config);
@@ -50,7 +50,7 @@ export const autoPlacement =
 
     if (logicalBoxes[dir](map).main < limit) {
       for (const _dir of fallbacks) {
-        let _map = ClipMap[_dir]([[ref], viewport], offset);
+        let _map = ClipMap[_dir]([[ref], viewport]);
         if (_map.width * _map.height > map.width * map.height) {
           map = _map;
           dir = _dir;
@@ -95,6 +95,8 @@ export const applyTransform: PopPlugin = config => {
   $ref.setAttribute('data-pop-dir', config.dir);
   $pop.style.setProperty('--x', config.x + 'px');
   $pop.style.setProperty('--y', config.y + 'px');
+  $pop.style.setProperty('max-width', config.map.width + 'px');
+  $pop.style.setProperty('max-height', config.map.height + 'px');
   $pop.style.setProperty('transform', 'translate(var(--x), var(--y))');
 
   return config;

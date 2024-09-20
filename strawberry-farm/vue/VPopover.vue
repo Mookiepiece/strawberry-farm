@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { flip, levitate } from '../shared';
 
@@ -68,4 +68,4 @@ const show = () => {
   transform: translateX(200px);
   opacity: 0;
 }
-</style>
+</style> -->

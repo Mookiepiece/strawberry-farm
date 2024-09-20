@@ -8,7 +8,10 @@ const pop = ref<HTMLElement>();
 const dir = ref<'top' | 'left' | 'right' | 'bottom'>('bottom');
 
 const positioning = () => {
-  levitate(refer.value!, pop.value!, { dir: dir.value }, applyTransform);
+  levitate(refer.value!, pop.value!, {
+    dir: dir.value,
+    plugins: [applyTransform],
+  });
 };
 
 const changeDir = (_dir: any) => {

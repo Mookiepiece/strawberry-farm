@@ -26,7 +26,7 @@ const ObjKey = (cacheKey: any) => {
           return (
             ids.get(i) ||
             (() => {
-              const ans = 'object' + key.toString();
+              const ans = 'object' + key.toString(36);
               ids.set(i, ans);
               return ans;
             })()

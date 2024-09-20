@@ -1,8 +1,7 @@
 {
-    "files": [],
-    "references": [
-      { "path": "./docs/tsconfig.json" },
-      { "path": "./strawberry-farm/tsconfig.json" }
-    ]
-  }
-  
+  "files": [],
+  "references": [
+    { "path": "./docs/tsconfig.json" },
+    { "path": "./strawberry-farm/tsconfig.json" }
+  ]
+}

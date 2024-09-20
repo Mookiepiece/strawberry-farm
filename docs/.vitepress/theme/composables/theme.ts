@@ -56,7 +56,7 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Radios', link: '/components/Radios' },
         { text: 'Segmented', link: '/components/Segmented' },
         { text: 'Levitate', link: '/components/Levitate' },
-        { text: 'Popper', link: '/components/Popper' },
+        { text: 'Popover', link: '/components/Popover' },
         { text: 'Table', link: '/components/Table' },
       ],
     },

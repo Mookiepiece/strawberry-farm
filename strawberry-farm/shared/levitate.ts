@@ -120,12 +120,13 @@ const _levitate = (
       height: document.body.clientHeight,
       toJSON() {},
     },
+    plugins = []
   }: {
     dir?: Direction;
     align?: Alignment;
     viewport?: DOMRect;
+    plugins?: PopPlugin[]
   } = {},
-  ...plugins: PopPlugin[]
 ) => {
   const ref = $ref.getBoundingClientRect();
   const pop = $pop.getBoundingClientRect();

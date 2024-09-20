@@ -9,8 +9,6 @@
 }
 
 [data-pop-box] {
-  max-width: var(--max-width, auto);
-  max-height: var(--max-height, auto);
   overflow: auto;
 }
 
@@ -24,6 +22,7 @@
   opacity: 1;
 }
 
+/* FIXME: why using :not() */
 [data-pop-box]:where(
     :is(.v-enter-active:not(.v-enter-from), .v-leave-active:not(.v-leave-from))
   ) {

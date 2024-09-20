@@ -12,7 +12,7 @@ watchEffect(onCleanup => {
   if ($ref && $pop && $open) {
     onCleanup(
       levitate.auto($ref, () => {
-        levitate($ref, $pop, { offset: 100 }, applyTransform);
+        levitate($ref, $pop, { plugins: [applyTransform] });
       }),
     );
   }
