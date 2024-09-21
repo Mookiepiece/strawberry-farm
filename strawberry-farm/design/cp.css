@@ -91,5 +91,6 @@
 
 :root {
   --curve-wave: cubic-bezier(0.66, 0, 0, 1);
+  --wave: cubic-bezier(0.66, 0, 0, 1);
   --shadow: 0 0 10px 0 #0002;
 }

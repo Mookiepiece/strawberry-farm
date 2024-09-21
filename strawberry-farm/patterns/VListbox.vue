@@ -212,7 +212,8 @@ const renderOption = (i: ListboxLeaf<T>) =>
     (slots.default && child(slots.default({ option: i }))) || h('div', i.label),
     {
       id: listbox.id + ':' + i.index,
-      onPointerdown: (e: MouseEvent) => listboxEX.handlePointerdown(e, i),
+      onPointerdown: (e: MouseEvent) =>
+        listboxEX.handlePointerdown(e, i, { magnetic: props.magnetic }),
       'data-key': objKey(i.value),
       role: 'option',
       'aria-selected':
@@ -254,10 +255,12 @@ defineExpose({ listbox });
     :aria-multiselectable="listbox.multi"
   >
     <template
-      v-for="g in listbox.tree"
+      v-for="(g, index) in listbox.tree"
       :key="
         g && typeof g === 'object' && 'options' in g
-          ? 'g' + g.title
+          ? g.title
+            ? 'g' + g.title
+            : 'G' + index
           : objKey(g.value)
       "
     >

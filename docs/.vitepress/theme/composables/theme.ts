@@ -65,7 +65,6 @@ const theme = shallowRef<ThemeConfig>({
       items: [
         { text: 'Color', link: '/design/Color' },
         { text: 'Typography', link: '/design/Typography' },
-        { text: 'Interaction', link: '/design/Interaction' },
         { text: 'Collapse', link: '/design/Collapse' },
         { text: 'Alert', link: '/design/Alert' },
         { text: 'Button', link: '/design/Button' },
@@ -85,7 +84,10 @@ const theme = shallowRef<ThemeConfig>({
     },
     {
       text: 'Experiments',
-      items: [{ text: 'Swipe', link: '/experiments/Swipe' }],
+      items: [
+        { text: 'Experiments', link: '/experiments/Experiments' },
+        { text: 'Swipe', link: '/experiments/Swipe' },
+      ],
     },
     {
       text: 'Examples',

@@ -41,7 +41,7 @@ figure,
 blockquote,
 dl,
 dd {
-  font-weight: normal;
+  font: inherit;
   margin: 0;
 }
 

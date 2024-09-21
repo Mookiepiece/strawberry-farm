@@ -40,15 +40,15 @@ defineExpose({ listbox });
 
 <template>
   <VListbox :listbox :circular :magnetic class="VRadios">
-    <template #default="props">
-      <slot v-bind="props">
+    <template #default="scope">
+      <slot v-bind="scope">
         <div data-trunk>
-          {{ props.option.label }}
+          {{ scope.option.label }}
         </div>
       </slot>
     </template>
-    <template v-if="$slots.group" #default="props">
-      <slot v-bind="props" />
+    <template v-if="$slots.group" #group="scope">
+      <slot name="group" v-bind="scope" />
     </template>
   </VListbox>
 </template>
@@ -59,9 +59,12 @@ defineExpose({ listbox });
 }
 
 .VRadios {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+  &,
+  :where([role='group']) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
 
   font-size: var(--f2);
   line-height: 1.6;
@@ -107,6 +110,15 @@ defineExpose({ listbox });
       background: var(--mat-solid-05);
       cursor: not-allowed;
     }
+  }
+
+  :where([role='group'] > h6) {
+    font-size: 13px;
+    font-weight: 600;
+    width: 100%;
+  }
+  :where([role='group']:not(:first-child) > h6) {
+    margin-top: 10px;
   }
 }
 

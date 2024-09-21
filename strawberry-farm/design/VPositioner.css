@@ -4,9 +4,9 @@
   left: 0;
 }
 
-[data-pop]:where(:not([data-pop-dir])) {
+/* [data-pop]:where(:not([data-pop-dir])) {
   visibility: hidden;
-}
+} */
 
 [data-pop-box] {
   overflow: auto;

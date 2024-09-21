@@ -30,7 +30,15 @@ If you don't use `levitate.auto()`.
 :::demo components/LevitateVueSimple
 :::
 
-### Animated
 
-:::demo components/LevitateVueAnimated
+### Vue Transition
+
+:::demo components/LevitateVueTransition
+:::
+
+### Vue Interactive
+
+Assign `[tabindex='-1']` and `@keydown.esc` and call `trap()` after the pop opened.
+
+:::demo components/LevitateVueTransitionTrap
 :::
