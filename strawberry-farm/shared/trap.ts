@@ -6,31 +6,21 @@ const trapped: (HTMLElement | SVGElement)[] = [];
  * Focus Trap
  *
  * This only detects the `focusin` event inside the document. Catch the run away focus back, you may see browser scrolled to that thief.
- * 
+ *
  * To prevent any scrolls, wrap your target element with two guardian <div tabindex='0'> and make sure they are inside viewport.
  *
  * when a new trap is set, current trap will temperary disabled and will recover when that pop.
- * 
+ *
  * The element itself or one of it's children is required to be focusable. It is recommended to mark the element itself `tabindex="-1"`.
  */
-export const trap = (el: HTMLElement | SVGElement) => {
+export const trap = (
+  el: HTMLElement | SVGElement,
+  details?: (theif: Element) => void | boolean,
+) => {
   trapped.push(el);
   const backTo = document.activeElement;
   trapIn(el);
-  const off = _trap(el);
-
-  return () => {
-    const isTop = el === trapped[trapped.length - 1];
-
-    trapped.splice(trapped.indexOf(el), 1);
-    off();
-
-    if (isTop) (backTo as any)?.focus?.();
-  };
-};
-
-const _trap = (el: HTMLElement | SVGElement) =>
-  on(document).focusin(({ target: thief }) => {
+  const off = on(document).focusin(({ target: thief }) => {
     // Only trap the top most element
     const isTop = el === trapped[trapped.length - 1];
     if (!isTop) return;
@@ -45,10 +35,21 @@ const _trap = (el: HTMLElement | SVGElement) =>
             : 0;
 
       if (direction) {
+        if (details?.(thief) === false) return;
         trapIn(el, direction === -1);
       }
     }
   });
+
+  return () => {
+    const isTop = el === trapped[trapped.length - 1];
+
+    trapped.splice(trapped.indexOf(el), 1);
+    off();
+
+    if (isTop) (backTo as any)?.focus?.();
+  };
+};
 
 export const trapIn = (el: HTMLElement | SVGElement, reversed = false) => {
   // focusable elements modified based on: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/dialog/

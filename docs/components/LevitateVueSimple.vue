@@ -4,11 +4,11 @@ import { applyTransform, levitate } from '@mookiepiece/strawberry-farm';
 
 const open = ref(false);
 
-const refer = ref<HTMLElement>();
-const popper = ref<HTMLDivElement>();
+const anc = ref<HTMLElement>();
+const pop = ref<HTMLDivElement>();
 
 watchEffect(onCleanup => {
-  const [$ref, $pop, $open] = [refer.value, popper.value, open.value];
+  const [$ref, $pop, $open] = [anc.value, pop.value, open.value];
   if ($ref && $pop && $open) {
     onCleanup(
       levitate.auto($ref, () => {
@@ -20,9 +20,9 @@ watchEffect(onCleanup => {
 </script>
 
 <template>
-  <button ref="refer" @click="open = !open">Reference</button>
+  <button ref="anc" @click="open = !open">Reference</button>
   <Teleport to="body">
-    <div v-if="open" ref="popper" class="levitated (///)">
+    <div v-if="open" ref="pop" class="levitated (///)">
       <div data-pop-box>Content</div>
     </div>
   </Teleport>

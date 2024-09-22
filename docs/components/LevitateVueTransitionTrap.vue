@@ -2,19 +2,18 @@
 import { ref, watchEffect } from 'vue';
 import {
   applyTransform,
-  flip,
   levitate,
   trap,
 } from '@mookiepiece/strawberry-farm/shared';
+import { onClickAway } from '@mookiepiece/strawberry-farm/html/onClickAway';
 
 const open = ref(false);
-const leaving = ref(false);
 
-const button = ref<HTMLElement>();
+const anchor = ref<HTMLElement>();
 const popper = ref<HTMLDivElement>();
 
 watchEffect(onCleanup => {
-  const $ref = button.value;
+  const $ref = anchor.value;
   const $popper = popper.value;
   const $open = open.value;
   if ($ref && $popper && $open) {
@@ -29,54 +28,64 @@ watchEffect(onCleanup => {
 const show = () => {
   if (!open.value) {
     open.value = true;
-    leaving.value = true;
   } else {
     open.value = false;
   }
 };
 
 watchEffect(onCleanup => {
+  const $anc = anchor.value;
+  const $pop = popper.value;
+  if ($anc && $pop)
+    onCleanup(
+      onClickAway([$pop, $anc], () => {
+        open.value = false;
+      }),
+    );
+});
+
+watchEffect(onCleanup => {
   const $popper = popper.value;
   const $open = open.value;
-  if ($open && $popper) onCleanup(trap($popper));
+  if ($open && $popper) {
+    onCleanup(trap($popper, theif => theif !== anchor.value));
+  }
 });
 </script>
 
 <template>
-  <div style="position: relative; height: 300px; width: 100%; overflow: auto">
-    <div style="width: 500%; height: 1000px">
-      <button ref="button" @click="show">Reference</button>
+  <button ref="anchor" @click="show()">Reference</button>
 
-      <Teleport to="body">
-        <div tabindex="0" v-if="open" data-stencil></div>
-        <div v-if="open || leaving" ref="popper" data-pop class="(///)">
-          <Transition appear @after-leave="leaving = false">
-            <div
-              v-show="open"
-              class="pop-body 🍒 p-6"
-              tabindex="-1"
-              @keydown.esc.prevent="open = false"
-            >
-              <input />
-              <input />
-              <input />
-            </div>
-          </Transition>
-        </div>
-        <div tabindex="0" v-if="open" data-stencil></div>
-      </Teleport>
-    </div>
-  </div>
+  <Teleport to="body">
+    <i tabindex="0" v-if="open" data-stencil />
+    <Transition appear>
+      <div
+        v-if="open"
+        ref="popper"
+        data-pop
+        class="pop-body 🍒 p-6"
+        tabindex="-1"
+        @keydown.esc.prevent="open = false"
+      >
+        <input />
+        <input />
+        <input />
+      </div>
+    </Transition>
+    <i tabindex="0" v-if="open" data-stencil />
+  </Teleport>
 </template>
 
 <style scoped>
 .pop-body {
-  width: 100px;
-  transition: all 1s var(--curve-wave);
+  width: 150px;
+  transition:
+    transform 1s var(--curve-wave),
+    opacity 1s var(--curve-wave);
 
   &.v-enter-from,
   &.v-leave-to {
-    transform: translateX(200px);
+    transform: scale(0);
     opacity: 0;
   }
 }
@@ -85,10 +94,11 @@ watchEffect(onCleanup => {
   position: fixed;
   top: 0;
   left: 0;
-  display: inline;
-  width: 1px;
-  height: 1px;
   pointer-events: none;
   clip-path: circle(0);
+}
+
+input {
+  width: 100%;
 }
 </style>

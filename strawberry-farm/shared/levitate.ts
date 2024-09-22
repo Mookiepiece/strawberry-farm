@@ -10,9 +10,8 @@ type Levitate = typeof _levitate & {
 
 export type PopConfigs = {
   $ref: { getBoundingClientRect(): DOMRect };
-  $pop: { getBoundingClientRect(): DOMRect };
+  $pop: HTMLElement;
   ref: DOMRect;
-  pop: DOMRect;
 
   dir: Direction;
   align?: Alignment;
@@ -39,13 +38,15 @@ const auto = (el: Element, cb: () => void) => {
 
   const ro = new ResizeObserver(cb);
   bag(() => ro.disconnect());
+  ro.observe(el);
+
+  bag(on(window).resize(cb));
 
   for (
     let p: Element | null = el;
     p && p !== document.documentElement;
     p = p.parentElement
   ) {
-    ro.observe(p); // ancestorResize @floating-ui/core@1.6
     if (isScrollableElement(p)) bag(on(p).scroll(() => cb())); // ancestorScroll @floating-ui/core@1.6
   }
 
@@ -55,22 +56,43 @@ const auto = (el: Element, cb: () => void) => {
 const clamp = (min = 0, a: number, max = 100) =>
   Math.min(max, Math.max(a, min));
 
-export const ClipMap: Record<
-  Direction,
-  ([[ref], view]: [[DOMRect], DOMRect]) => DOMRect
-> = {
-  // prettier-ignore
-  top: ([[ref], view]) => { const height = clamp(0, ref.top - view.top, view.height); const bottom = view.top + height; return ({ ...view, bottom, height }) },
-  // prettier-ignore
-  right: ([[ref], view]) => { const width = clamp(0, view.right - ref.right, view.width); const x = view.right - width; return ({ ...view, left: x, x, width }) },
-  // prettier-ignore
-  bottom: ([[ref], view]) => { const height = clamp(0, view.bottom - ref.bottom, view.height); const y = view.bottom - height; return ({ ...view, top: y , y, height }) },
-  // prettier-ignore
-  left: ([[ref], view]) => { const width = clamp(0, ref.left - view.left, view.width); const right = view.left + width; return ({ ...view, right, width }) },
+export const clipMap = ({
+  dir,
+  ref,
+  viewport: view,
+}: Pick<PopConfigs, 'dir' | 'ref' | 'viewport'>) => {
+  switch (dir) {
+    case 'top': {
+      const height = clamp(0, ref.top - view.top, view.height);
+      const bottom = view.top + height;
+      return { ...view, bottom, height };
+    }
+    case 'right': {
+      const width = clamp(0, view.right - ref.right, view.width);
+      const x = view.right - width;
+      return { ...view, left: x, x, width };
+    }
+    case 'bottom': {
+      const height = clamp(0, view.bottom - ref.bottom, view.height);
+      const y = view.bottom - height;
+      return { ...view, top: y, y, height };
+    }
+    case 'left': {
+      const width = clamp(0, ref.left - view.left, view.width);
+      const right = view.left + width;
+      return { ...view, right, width };
+    }
+  }
 };
 
 const Align = (config: PopConfigs): PopConfigs => {
-  let { ref, pop, dir, align: alignment } = config;
+  let { ref, $pop, dir, align: alignment } = config;
+
+  const pop = {
+    width: $pop.offsetWidth - $pop.clientWidth + $pop.scrollWidth,
+    height: $pop.offsetHeight - $pop.clientHeight + $pop.scrollHeight,
+  };
+
   let map = config.map!;
 
   let x = 0,
@@ -105,7 +127,7 @@ const Align = (config: PopConfigs): PopConfigs => {
 
 const _levitate = (
   $ref: { getBoundingClientRect(): DOMRect },
-  $pop: { getBoundingClientRect(): DOMRect },
+  $pop: HTMLElement,
   {
     dir = 'bottom',
     align,
@@ -120,18 +142,17 @@ const _levitate = (
       height: document.body.clientHeight,
       toJSON() {},
     },
-    plugins = []
+    plugins = [],
   }: {
     dir?: Direction;
     align?: Alignment;
     viewport?: DOMRect;
-    plugins?: PopPlugin[]
+    plugins?: PopPlugin[];
   } = {},
 ) => {
   const ref = $ref.getBoundingClientRect();
-  const pop = $pop.getBoundingClientRect();
 
-  const map = ClipMap[dir]([[ref], viewport]);
+  const map = clipMap({ dir, ref, viewport });
 
   let config: PopConfigs = {
     $ref,
@@ -139,7 +160,6 @@ const _levitate = (
     dir,
     align,
     ref,
-    pop,
     viewport,
     map,
   };

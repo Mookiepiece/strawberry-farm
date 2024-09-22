@@ -4,12 +4,24 @@ Positioning floating(fixed) elements.
 
 Words:
 
-- Ref: The **reference** Element/DOMRect.
-- Pop: The **popper** Element/DOMRect that to be positioned.
-- View(viewport): The **viewport** boundary that will contains the pop.
-- Map: The **clipped viewport** output by direction and padding(if has). which will be the maximum size of the popper.
+- Anchor: The **Reference** / **Anchor** Element/DOMRect.
+- Pop: The **Popper** Element/DOMRect that to be positioned.
+- View(viewport): The **Viewport** boundary that will be clipped into Map.
+- Dir: four direction `top` | `right` | `bottom` | `left`.
+- Map: The **Clipped Viewport** based on direction and margin(if has) and anchor's `getBoundingClientRect()`. which is almost the maximum size of the popper. This concept is used by the built-in `autoPlacement` and `flip` plugins to assess the map's area and decide whether to flip to the largest available space.
+- Align: This is the last step that place and align the popper into the Map. output with `x` and `y`. Will uses the popper's `width = el.offsetWidth - clientWidth + scrollWidth` to calc Alignment. Align prop accepts `start` | `center`(default) | `end` .
 
-- `[data-pop-box]`: this attr will make `flip` and `autoPlacement` plugins to measure the `scrollHeight` in order to judge whether to perform the flip. and if the map is too small, `[data-pop-box]` will accept an `--max-height` from `applyTransform` to be scrollable, other directions are vice versa. In most case it is **required**.
+Note:
+
+Your Popper Element will receive an `max-height` from `applyTransform` to be scrollable when Map is too small. In most case `overflow: auto` is **required**.
+
+<script setup>
+import LevitateAlgo from './LevitateAlgo.vue'
+</script>
+
+<LevitateAlgo />
+
+## Positioning
 
 ### Auto Positioning
 
@@ -20,25 +32,59 @@ Words:
 
 ### Mannual Positioning
 
-If you don't use `levitate.auto()`.
+No `levitate.auto()`.
 
 :::demo components/LevitatePassive
 :::
 
-### Vue
+## Tooltip
+
+Learn how to conditional rendering.
+
+### Tooltip Basics
 
 :::demo components/LevitateVueSimple
 :::
 
-
-### Vue Transition
+### Tooltip Transition
 
 :::demo components/LevitateVueTransition
 :::
 
-### Vue Interactive
+### Tooltip Trap
 
 Assign `[tabindex='-1']` and `@keydown.esc` and call `trap()` after the pop opened.
 
+The keyboard focus is trapped inside. 
+
+Anchor is focusable (see how we call `trap()`) to prevent the focus from bling bling when you click upon the anchor, but it is not required.
+
 :::demo components/LevitateVueTransitionTrap
 :::
+
+## Plugins
+
+Learn advanced usage of customized positioning.
+
+### ApplyTransform
+
+The `applyTransform` plugin will assign `top` `left` `max-width` `max-height` `[data-pop-dir="bottom"]` etc to your elements.
+
+It is a `post` plugin which will run after `Align`(positioning process).
+
+Here's another example of mannually transform.
+
+:::demo components/LevitatePluginsApplytransform
+:::
+
+### Margin
+
+The algo is shown at the top of this page.
+
+`5px` is enough.
+
+### AutoPlacement / Flip
+
+If target direction's main axis length does not satisfies `limit` (default to `pop.width (offsetWidth - clientWidth + scrollWidth)` or `pop.height`), try other directions which has more area `x * y`. `autoPlacement` will try all other directions while `flip` will only try the opposite direction.
+
+If your pop body **contains** other **scrollable elements** which makes it impossible to get the maximum proper width/height by just calculating `offsetWidth - clientWidth + scrollWidth` of the popper body itself, you should assign a fixed number to `limit`. This is required when uses with `applyTransform` which will assign `max-width` / `max-height` to make the popper smaller to stay inside the viewport, otherwise you'll see the popper not flipped because it automatically taken less space when you makes the map smaller thus the `limit` will never reach, if you algorithm does not have conflict with the algorithm shown above, skip this.

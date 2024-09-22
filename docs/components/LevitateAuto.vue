@@ -2,19 +2,22 @@
 import { applyTransform, levitate } from '@mookiepiece/strawberry-farm/shared';
 import { ref, watchEffect } from 'vue';
 
-const refer = ref<HTMLElement>();
+const anchor = ref<HTMLElement>();
 const pop = ref<HTMLElement>();
 
 const dir = ref<'top' | 'left' | 'right' | 'bottom'>('bottom');
 
 const positioning = () => {
-  levitate(refer.value!, pop.value!, {
+  levitate(anchor.value!, pop.value!, {
     dir: dir.value,
     plugins: [applyTransform],
   });
 };
 
-watchEffect(onCleanup => onCleanup(levitate.auto(refer.value!, positioning)));
+watchEffect(
+  onCleanup =>
+    anchor.value && onCleanup(levitate.auto(anchor.value, positioning)),
+);
 
 const changeDir = (_dir: 'top' | 'left' | 'right' | 'bottom') => {
   dir.value = _dir;
@@ -26,9 +29,9 @@ const changeDir = (_dir: 'top' | 'left' | 'right' | 'bottom') => {
   <div style="position: relative">
     <div style="position: relative; height: 300px; width: 100%; overflow: auto">
       <div style="width: 500%; height: 1000px">
-        <div ref="refer" class="a 🍒"></div>
+        <div ref="anchor" class="a 🍒"></div>
         <Teleport to="body">
-          <div ref="pop" class="b 🍒">lorem</div>
+          <div ref="pop" class="b 🍒">🍓</div>
         </Teleport>
       </div>
     </div>

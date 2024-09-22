@@ -1,34 +1,35 @@
 <script setup lang="ts">
 import { applyTransform, levitate } from '@mookiepiece/strawberry-farm/shared';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
-const refer = ref<HTMLElement>();
+const anchor = ref<HTMLElement>();
 const pop = ref<HTMLElement>();
 
-const dir = ref<'top' | 'left' | 'right' | 'bottom'>('bottom');
+const touched = ref(false);
 
-const positioning = () => {
-  levitate(refer.value!, pop.value!, {
-    dir: dir.value,
+const changeDir = (_dir: any) => {
+  touched.value = true;
+
+  levitate(anchor.value!, pop.value!, {
+    dir: _dir,
     plugins: [applyTransform],
   });
 };
-
-const changeDir = (_dir: any) => {
-  dir.value = _dir;
-  positioning();
-};
-
-onMounted(() => positioning());
 </script>
 
 <template>
   <div style="position: relative">
     <div style="position: relative; height: 300px; width: 100%; overflow: auto">
       <div style="width: 500%; height: 1000px">
-        <div ref="refer" class="a 🍒"></div>
+        <div ref="anchor" class="a 🍒"></div>
         <Teleport to="body">
-          <div ref="pop" class="b 🍒">lorem</div>
+          <div
+            ref="pop"
+            class="b 🍒"
+            :style="!touched ? { clipPath: 'circle(0)' } : {}"
+          >
+            🍓
+          </div>
         </Teleport>
       </div>
     </div>
