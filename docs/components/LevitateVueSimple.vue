@@ -8,11 +8,11 @@ const anc = ref<HTMLElement>();
 const pop = ref<HTMLDivElement>();
 
 watchEffect(onCleanup => {
-  const [$ref, $pop, $open] = [anc.value, pop.value, open.value];
-  if ($ref && $pop && $open) {
+  const [$anc, $pop, $open] = [anc.value, pop.value, open.value];
+  if ($anc && $pop && $open) {
     onCleanup(
-      levitate.auto($ref, () => {
-        levitate($ref, $pop, { plugins: [applyTransform] });
+      levitate.auto($anc, () => {
+        levitate($anc, $pop, { plugins: [applyTransform] });
       }),
     );
   }

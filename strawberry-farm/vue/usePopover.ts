@@ -5,8 +5,8 @@ import { bagEffect } from './bagEffect';
 
 export type UsePopperProps = {
   trigger?: 'focus' | 'hover' | 'click';
-  reference: HTMLElement | SVGElement | undefined;
-  popper: HTMLElement | SVGElement | undefined;
+  anchor: HTMLElement | SVGElement | undefined;
+  popper: HTMLElement | undefined;
   trap?: boolean;
   animated?: boolean;
   delay?: [number, number] | number;
@@ -21,7 +21,7 @@ export const usePopper = (props: UsePopperProps) => {
   const visible = ref(false);
 
   watchEffect(onCleanup => {
-    const [$open, $ref, $pop] = [open.value, props.reference, props.popper];
+    const [$open, $ref, $pop] = [open.value, props.anchor, props.popper];
     if ($open && $pop && $ref) {
       const { dir, align, viewport, plugins = [applyTransform] } = props;
 
@@ -45,7 +45,7 @@ export const usePopper = (props: UsePopperProps) => {
   watchEffect(onCleanup => {
     if (!open.value) return;
 
-    const [$ref, $pop] = [props.reference, props.popper];
+    const [$ref, $pop] = [props.anchor, props.popper];
     if (!$ref || !$pop) return;
     onCleanup(onClickAway([$pop, $ref], () => (open.value = false)));
   });
@@ -60,9 +60,7 @@ export const usePopper = (props: UsePopperProps) => {
       return;
     }
 
-    const body = props.popper.querySelector('[data-pop-box]') as
-      | HTMLElement
-      | undefined;
+    const body = props.popper;
 
     if (!body) return;
 
@@ -99,13 +97,13 @@ export const usePopper = (props: UsePopperProps) => {
   };
 
   bagEffect(bag => {
-    const $ref = props.reference;
-    if (!$ref) return;
+    const $anc = props.anchor;
+    if (!$anc) return;
 
     const trigger = props.trigger || 'click';
     if (trigger === 'click') {
       bag(
-        on($ref).keydown.exact(e => {
+        on($anc).keydown.exact(e => {
           switch (e.key) {
             case 'ArrowUp':
             case 'ArrowRight':
@@ -116,25 +114,25 @@ export const usePopper = (props: UsePopperProps) => {
       );
 
       bag(
-        on($ref).click.exact.prevent(() => {
+        on($anc).click.exact.prevent(() => {
           open.value = !open.value;
         }),
       );
     } else if (trigger === 'hover') {
       bag(
-        on($ref).click.exact.prevent(() => {
+        on($anc).click.exact.prevent(() => {
           clearTimeout(i);
           open.value = !open.value;
         }),
       );
 
       bag(
-        on($ref).pointerenter.exact.prevent(() => {
+        on($anc).pointerenter.exact.prevent(() => {
           show();
         }),
       );
       bag(
-        on($ref).pointerout.exact.prevent(() => {
+        on($anc).pointerout.exact.prevent(() => {
           hide();
         }),
       );

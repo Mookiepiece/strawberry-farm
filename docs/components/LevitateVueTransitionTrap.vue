@@ -10,32 +10,24 @@ import { onClickAway } from '@mookiepiece/strawberry-farm/html/onClickAway';
 const open = ref(false);
 
 const anchor = ref<HTMLElement>();
-const popper = ref<HTMLDivElement>();
+const pop = ref<HTMLDivElement>();
 
 watchEffect(onCleanup => {
-  const $ref = anchor.value;
-  const $popper = popper.value;
-  const $open = open.value;
-  if ($ref && $popper && $open) {
+  const [$anc, $pop, $open] = [anchor.value, pop.value, open.value];
+  if ($anc && $pop && $open) {
     onCleanup(
-      levitate.auto($ref, () => {
-        levitate($ref, $popper, { plugins: [applyTransform] });
+      levitate.auto($anc, () => {
+        levitate($anc, $pop, { plugins: [applyTransform] });
       }),
     );
   }
 });
 
-const show = () => {
-  if (!open.value) {
-    open.value = true;
-  } else {
-    open.value = false;
-  }
-};
+const toggle = () => (open.value = !open.value);
 
 watchEffect(onCleanup => {
   const $anc = anchor.value;
-  const $pop = popper.value;
+  const $pop = pop.value;
   if ($anc && $pop)
     onCleanup(
       onClickAway([$pop, $anc], () => {
@@ -45,23 +37,31 @@ watchEffect(onCleanup => {
 });
 
 watchEffect(onCleanup => {
-  const $popper = popper.value;
+  const $pop = pop.value;
   const $open = open.value;
-  if ($open && $popper) {
-    onCleanup(trap($popper, theif => theif !== anchor.value));
+  if ($open && $pop) {
+    onCleanup(trap($pop, theif => theif !== anchor.value));
   }
 });
 </script>
 
 <template>
-  <button ref="anchor" @click="show()">Reference</button>
+  <button
+    ref="anchor"
+    @click="toggle"
+    @keydown.up.prevent="open = true"
+    @keydown.down.prevent="open = true"
+    @keydown.esc.prevent="open = false"
+  >
+    Anchor
+  </button>
 
   <Teleport to="body">
     <i tabindex="0" v-if="open" data-stencil />
     <Transition appear>
       <div
         v-if="open"
-        ref="popper"
+        ref="pop"
         data-pop
         class="pop-body 🍒 p-6"
         tabindex="-1"

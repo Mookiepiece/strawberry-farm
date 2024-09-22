@@ -54,7 +54,6 @@ const changeDir = (_dir: 'top' | 'left' | 'right' | 'bottom') => {
   top: 0;
   left: 0;
   padding: 10px;
-  z-index: 1;
 }
 
 .control {

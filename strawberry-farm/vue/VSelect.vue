@@ -8,7 +8,6 @@ import {
 } from '../shared';
 import { CommonOptionsInput, flatCommonOptionsInput } from './misc';
 import VListbox from '../patterns/VListbox.vue';
-import { usePopper } from './usePopper';
 
 const model = defineModel<any>();
 
@@ -32,17 +31,17 @@ const multi = computed(() => Array.isArray(model.value));
 const reference = ref<HTMLElement>();
 const popper = ref<HTMLElement>();
 
-const { open, visible } = usePopper({
-  popper,
-  reference,
-  configs: {
-    offset: 5,
-    animated: true,
-    trap: true,
-    clickAway: true,
-  },
-  plugins: [sameWidth, flip(), maxHeight, applyTransform],
-});
+// const { open, visible } = usePopper({
+//   popper,
+//   reference,
+//   configs: {
+//     offset: 5,
+//     animated: true,
+//     trap: true,
+//     clickAway: true,
+//   },
+//   plugins: [sameWidth, flip(), maxHeight, applyTransform],
+// });
 
 const erase = () => {
   if (multi.value) {
@@ -84,7 +83,7 @@ defineExpose({
 </script>
 
 <template>
-  <div
+  <!-- <div
     class="VInput VSelect"
     tabindex="0"
     ref="reference"
@@ -138,5 +137,5 @@ defineExpose({
         />
       </div>
     </div>
-  </Teleport>
+  </Teleport> -->
 </template>

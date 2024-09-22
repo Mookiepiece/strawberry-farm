@@ -5,16 +5,14 @@ import { applyTransform, levitate } from '@mookiepiece/strawberry-farm/shared';
 const open = ref(false);
 
 const anchor = ref<HTMLElement>();
-const popper = ref<HTMLDivElement>();
+const pop = ref<HTMLDivElement>();
 
 watchEffect(onCleanup => {
-  const $ref = anchor.value;
-  const $popper = popper.value;
-  const $open = open.value;
-  if ($ref && $popper && $open) {
+  const [$anc, $pop, $open] = [anchor.value, pop.value, open.value];
+  if ($anc && $pop && $open) {
     onCleanup(
-      levitate.auto($ref, () => {
-        levitate($ref, $popper, { plugins: [applyTransform] });
+      levitate.auto($anc, () => {
+        levitate($anc, $pop, { plugins: [applyTransform] });
       }),
     );
   }
@@ -27,7 +25,7 @@ const toggle = () => (open.value = !open.value);
   <button ref="anchor" @click="toggle">Reference</button>
   <Teleport to="body">
     <Transition appear>
-      <div v-if="open" ref="popper" class="pop pop-body 🍒 p-6">Content</div>
+      <div v-if="open" ref="pop" class="pop pop-body 🍒 p-6">Content</div>
     </Transition>
   </Teleport>
 </template>

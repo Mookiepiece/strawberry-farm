@@ -9,9 +9,9 @@ type Levitate = typeof _levitate & {
 };
 
 export type PopConfigs = {
-  $ref: { getBoundingClientRect(): DOMRect };
+  $anc: { getBoundingClientRect(): DOMRect };
   $pop: HTMLElement;
-  ref: DOMRect;
+  anc: DOMRect;
 
   dir: Direction;
   align?: Alignment;
@@ -33,17 +33,19 @@ const isScrollableElement = (p: Element) => {
   return /auto|scroll/.test(overflowY + overflowX);
 };
 
-const auto = (el: Element, cb: () => void) => {
+const auto = (_anc: Element | [Element, Element], cb: () => void) => {
   const bag = Bag();
 
+  const [$anc, $pop] = Array.isArray(_anc) ? _anc : [_anc];
   const ro = new ResizeObserver(cb);
   bag(() => ro.disconnect());
-  ro.observe(el);
+  ro.observe($anc);
+  $pop && ro.observe($pop);
 
   bag(on(window).resize(cb));
 
   for (
-    let p: Element | null = el;
+    let p: Element | null = $anc;
     p && p !== document.documentElement;
     p = p.parentElement
   ) {
@@ -58,27 +60,27 @@ const clamp = (min = 0, a: number, max = 100) =>
 
 export const clipMap = ({
   dir,
-  ref,
+  anc,
   viewport: view,
-}: Pick<PopConfigs, 'dir' | 'ref' | 'viewport'>) => {
+}: Pick<PopConfigs, 'dir' | 'anc' | 'viewport'>) => {
   switch (dir) {
     case 'top': {
-      const height = clamp(0, ref.top - view.top, view.height);
+      const height = clamp(0, anc.top - view.top, view.height);
       const bottom = view.top + height;
       return { ...view, bottom, height };
     }
     case 'right': {
-      const width = clamp(0, view.right - ref.right, view.width);
+      const width = clamp(0, view.right - anc.right, view.width);
       const x = view.right - width;
       return { ...view, left: x, x, width };
     }
     case 'bottom': {
-      const height = clamp(0, view.bottom - ref.bottom, view.height);
+      const height = clamp(0, view.bottom - anc.bottom, view.height);
       const y = view.bottom - height;
       return { ...view, top: y, y, height };
     }
     case 'left': {
-      const width = clamp(0, ref.left - view.left, view.width);
+      const width = clamp(0, anc.left - view.left, view.width);
       const right = view.left + width;
       return { ...view, right, width };
     }
@@ -86,11 +88,11 @@ export const clipMap = ({
 };
 
 const Align = (config: PopConfigs): PopConfigs => {
-  let { ref, $pop, dir, align: alignment } = config;
+  let { anc, $pop, dir, align: alignment } = config;
 
   const pop = {
-    width: $pop.offsetWidth - $pop.clientWidth + $pop.scrollWidth,
-    height: $pop.offsetHeight - $pop.clientHeight + $pop.scrollHeight,
+    width: $pop.offsetWidth,
+    height: $pop.offsetHeight,
   };
 
   let map = config.map!;
@@ -102,22 +104,22 @@ const Align = (config: PopConfigs): PopConfigs => {
     y = dir === 'top' ? map.bottom - pop.height : map.top;
 
     if (alignment === 'start') {
-      x = ref.left;
+      x = anc.left;
     } else if (alignment === 'end') {
-      x = ref.right - pop.width;
+      x = anc.right - pop.width;
     } else {
-      x = Math.round((ref.left + ref.right) / 2 - pop.width / 2);
+      x = Math.round((anc.left + anc.right) / 2 - pop.width / 2);
     }
     x = clamp(map.left, x, map.right - pop.width);
   } else {
     x = dir === 'left' ? map.right - pop.width : map.left;
 
     if (alignment === 'start') {
-      y = ref.top;
+      y = anc.top;
     } else if (alignment === 'end') {
-      y = ref.bottom - pop.height;
+      y = anc.bottom - pop.height;
     } else {
-      y = Math.round((ref.top + ref.bottom) / 2 - pop.height / 2);
+      y = Math.round((anc.top + anc.bottom) / 2 - pop.height / 2);
     }
     y = clamp(map.top, y, map.bottom - pop.height);
   }
@@ -126,7 +128,7 @@ const Align = (config: PopConfigs): PopConfigs => {
 };
 
 const _levitate = (
-  $ref: { getBoundingClientRect(): DOMRect },
+  $anc: { getBoundingClientRect(): DOMRect },
   $pop: HTMLElement,
   {
     dir = 'bottom',
@@ -150,16 +152,16 @@ const _levitate = (
     plugins?: PopPlugin[];
   } = {},
 ) => {
-  const ref = $ref.getBoundingClientRect();
+  const anc = $anc.getBoundingClientRect();
 
-  const map = clipMap({ dir, ref, viewport });
+  const map = clipMap({ dir, anc, viewport });
 
   let config: PopConfigs = {
-    $ref,
+    $anc,
     $pop,
+    anc,
     dir,
     align,
-    ref,
     viewport,
     map,
   };

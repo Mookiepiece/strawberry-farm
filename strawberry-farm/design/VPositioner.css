@@ -3,31 +3,5 @@
   top: 0;
   left: 0;
   overflow: auto;
-}
-
-/* [data-pop]:where(:not([data-pop-dir])) {
-  visibility: hidden;
-} */
-
-[data-pop-box] {
-  overflow: auto;
-}
-
-[data-pop-box]:where(:is(.v-enter-from, .v-leave-to)) {
-  transform: translateY(-10px);
-  opacity: 0;
-}
-
-[data-pop-box]:where(:is(.v-enter-to, .v-leave-from)) {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-/* FIXME: why using :not() */
-[data-pop-box]:where(
-    :is(.v-enter-active:not(.v-enter-from), .v-leave-active:not(.v-leave-from))
-  ) {
-  transition:
-    opacity 0.2s var(--curve-wave),
-    transform 0.2s var(--curve-wave);
+  z-index: 1;
 }

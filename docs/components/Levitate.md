@@ -55,9 +55,9 @@ Learn how to conditional rendering.
 
 Assign `[tabindex='-1']` and `@keydown.esc` and call `trap()` after the pop opened.
 
-The keyboard focus is trapped inside. 
+The keyboard focus is trapped inside.
 
-Anchor is focusable (see how we call `trap()`) to prevent the focus from bling bling when you click upon the anchor, but it is not required.
+Anchor is focusable to prevent the focus from bling bling when you click upon the anchor to close it, but it is not required. an alt way to do this is `onClickAway([$pop, $anc]); trap($pop, undefined)`
 
 :::demo components/LevitateVueTransitionTrap
 :::
@@ -79,12 +79,36 @@ Here's another example of mannually transform.
 
 ### Margin
 
-The algo is shown at the top of this page.
+To make a gap, make the map smaller, The algo is shown at the top of this page.
 
-`5px` is enough.
+`5px` is enough to use.
+
+:::demo components/LevitatePluginsMargin
+:::
 
 ### AutoPlacement / Flip
 
-If target direction's main axis length does not satisfies `limit` (default to `pop.width (offsetWidth - clientWidth + scrollWidth)` or `pop.height`), try other directions which has more area `x * y`. `autoPlacement` will try all other directions while `flip` will only try the opposite direction.
+If target direction's main axis length does not satisfies `limit`, try other directions which has more area `x * y`. `autoPlacement` will try all other directions while `flip` will only try the opposite direction.
 
-If your pop body **contains** other **scrollable elements** which makes it impossible to get the maximum proper width/height by just calculating `offsetWidth - clientWidth + scrollWidth` of the popper body itself, you should assign a fixed number to `limit`. This is required when uses with `applyTransform` which will assign `max-width` / `max-height` to make the popper smaller to stay inside the viewport, otherwise you'll see the popper not flipped because it automatically taken less space when you makes the map smaller thus the `limit` will never reach, if you algorithm does not have conflict with the algorithm shown above, skip this.
+`limit` default to `pop.width (offsetWidth - clientWidth + scrollWidth)`
+
+:::demo components/LevitatePluginsFlip
+:::
+
+### Max Height
+
+Assign `max-width` / `max-height` with the map's dimension to keep the pop in view.
+
+Place it after `autoPlacement` thus get the right map before align.
+
+Useful on Select / Dropdown.
+
+Because `max-width` / `max-height` property is used by this plugin, you'll have to assign your max size limit to it's inner children.
+
+:::demo components/LevitatePluginsMaxHeight
+:::
+
+Note on using with `limit`: Is there any situation where `scrollWidth` cannot repesents the actually maximum size (e.g. contains scrollable elements inside) so that you have to assign `limit` a `number`? In the following example, adding more and more items will makes it's children scroll and overflow other than it self, so the limit never reach, only scale the browser window to make the map bottom minus `1px` will the pop flip.
+
+:::demo components/LevitatePluginsMaxHeightD
+:::
