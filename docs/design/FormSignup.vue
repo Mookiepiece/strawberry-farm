@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { VRadios } from '@mookiepiece/strawberry-farm';
 import { Form } from '@mookiepiece/strawberry-farm/vue/Form';
 import { Toast } from '@mookiepiece/strawberry-farm/vue/Toast';
 import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
@@ -6,7 +7,6 @@ import VForm from '@mookiepiece/strawberry-farm/vue/VForm.vue';
 import VFormItem from '@mookiepiece/strawberry-farm/vue/VFormItem.vue';
 import VFormLabel from '@mookiepiece/strawberry-farm/vue/VFormLabel.vue';
 import VInput from '@mookiepiece/strawberry-farm/vue/VInput.vue';
-import VRadioGroup from '@mookiepiece/strawberry-farm/vue/VRadioGroup.vue';
 import { h } from 'vue';
 
 type LoginFormValue = {
@@ -111,7 +111,7 @@ signupForm.hierarchy({
       name: {
         label: 'Character',
         render() {
-          return h(VRadioGroup, {
+          return h(VRadios, {
             options: ['博麗霊夢', '霧雨魔理沙'],
           });
         },

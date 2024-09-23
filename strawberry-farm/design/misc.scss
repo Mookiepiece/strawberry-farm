@@ -27,3 +27,15 @@
   align-items: center;
   color: var(---ink);
 }
+
+[data-edge],
+i-edge {
+  width: 1px;
+  height: 1px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: block;
+  pointer-events: none;
+  clip-path: circle(0);
+}

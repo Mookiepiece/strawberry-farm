@@ -5,18 +5,21 @@ import { VPopover } from '@mookiepiece/strawberry-farm';
 <template>
   <div class="good">
     <VPopover animated>
-      <template #default>
-        <button>Ref</button>
-      </template>
+      <button>Animated</button>
       <template #popper>
         <button>VIS</button>
       </template>
     </VPopover>
 
     <VPopover trigger="hover">
-      <template #default>
-        <button>Ref</button>
+      <button>Hover</button>
+      <template #popper>
+        <button>VIS</button>
       </template>
+    </VPopover>
+
+    <VPopover trap>
+      <button>Trap</button>
       <template #popper>
         <button>VIS</button>
       </template>

@@ -4,10 +4,10 @@ import { onClickAway } from '../html/onClickAway';
 import { bagEffect } from './bagEffect';
 
 export type UsePopperProps = {
-  trigger?: 'focus' | 'hover' | 'click';
+  trigger?: 'click' | 'hover';
   anchor: HTMLElement | SVGElement | undefined;
   popper: HTMLElement | undefined;
-  trap?: boolean;
+  trap?: ((thief?: any) => boolean | void) | boolean;
   animated?: boolean;
   delay?: [number, number] | number;
   dir?: NonNullable<Parameters<typeof levitate>[2]>['dir'];
@@ -17,8 +17,18 @@ export type UsePopperProps = {
 };
 
 export const usePopper = (props: UsePopperProps) => {
-  const open = ref(false);
+  let i: ReturnType<typeof setTimeout>;
+  const _open = ref(false);
+  const open = computed({
+    get: () => _open.value,
+    set: v => {
+      clearTimeout(i);
+      _open.value = v;
+    },
+  });
   const visible = ref(false);
+
+  const trigger = computed(() => props.trigger || 'click');
 
   watchEffect(onCleanup => {
     const [$open, $ref, $pop] = [open.value, props.anchor, props.popper];
@@ -36,10 +46,16 @@ export const usePopper = (props: UsePopperProps) => {
 
   watchEffect(onCleanup => {
     if (!props?.trap) return;
+    const [$open, $ref, $pop] = [open.value, props.anchor, props.popper];
     // visible: make sure the popper receives focus after [data-pop-box] inited
     // open: make sure the reference immediately receive focus when existing
-    if (!open.value || !visible.value || !props.popper) return;
-    onCleanup(trap(props.popper));
+    if (!$open || !visible.value || !$pop) return;
+    onCleanup(
+      trap(
+        $pop,
+        typeof props.trap === 'function' ? props.trap : thief => thief !== $ref,
+      ),
+    );
   });
 
   watchEffect(onCleanup => {
@@ -60,14 +76,14 @@ export const usePopper = (props: UsePopperProps) => {
       return;
     }
 
-    const body = props.popper;
+    const $pop = props.popper;
 
-    if (!body) return;
+    if (!$pop) return;
 
     if (open.value) {
-      fx.cssTransition(body, 'v-enter');
+      fx.cssTransition($pop, 'v-enter');
     } else {
-      fx.cssTransition(body, 'v-leave', {
+      fx.cssTransition($pop, 'v-leave', {
         done() {
           visible.value = false;
         },
@@ -81,15 +97,14 @@ export const usePopper = (props: UsePopperProps) => {
     return [props.delay, props.delay] as [number, number];
   });
 
-  let i: ReturnType<typeof setTimeout>;
-  const show = () => {
+  const play = () => {
     clearTimeout(i);
     i = setTimeout(() => {
       open.value = true;
     }, delay.value[0]);
   };
 
-  const hide = () => {
+  const pause = () => {
     clearTimeout(i);
     i = setTimeout(() => {
       open.value = false;
@@ -100,25 +115,32 @@ export const usePopper = (props: UsePopperProps) => {
     const $anc = props.anchor;
     if (!$anc) return;
 
-    const trigger = props.trigger || 'click';
-    if (trigger === 'click') {
-      bag(
-        on($anc).keydown.exact(e => {
-          switch (e.key) {
-            case 'ArrowUp':
-            case 'ArrowRight':
-            case 'ArrowDown':
-            case 'ArrowLeft':
-          }
-        }),
-      );
+    bag(
+      on($anc).keydown.exact(e => {
+        switch (e.key) {
+          case 'ArrowUp':
+          case 'ArrowRight':
+          case 'ArrowDown':
+          case 'ArrowLeft':
+          case ' ':
+            e.preventDefault();
+            open.value = !open.value;
+            break;
+          case 'Escape':
+            e.preventDefault();
+            open.value = false;
+            break;
+        }
+      }),
+    );
 
+    if (trigger.value === 'click') {
       bag(
         on($anc).click.exact.prevent(() => {
           open.value = !open.value;
         }),
       );
-    } else if (trigger === 'hover') {
+    } else if (trigger.value === 'hover') {
       bag(
         on($anc).click.exact.prevent(() => {
           clearTimeout(i);
@@ -126,37 +148,37 @@ export const usePopper = (props: UsePopperProps) => {
         }),
       );
 
-      bag(
-        on($anc).pointerenter.exact.prevent(() => {
-          show();
-        }),
-      );
-      bag(
-        on($anc).pointerout.exact.prevent(() => {
-          hide();
-        }),
-      );
+      bag(on($anc).pointerenter.exact.prevent(play));
+      bag(on($anc).pointerout.exact.prevent(pause));
     }
   });
+
   bagEffect(bag => {
     const $pop = props.popper;
     if (!$pop) return;
-    if ($pop) {
-      bag(
-        on($pop).pointerenter.exact.prevent(() => {
-          show();
-        }),
-      );
-      bag(
-        on($pop).pointerout.exact.prevent(() => {
-          hide();
-        }),
-      );
+    bag(
+      on($pop).keydown.exact(e => {
+        switch (e.key) {
+          case 'Escape':
+            e.preventDefault();
+            open.value = false;
+            break;
+        }
+      }),
+    );
+
+    if (trigger.value === 'hover') {
+      if ($pop) {
+        bag(on($pop).pointerenter.exact.prevent(play));
+        bag(on($pop).pointerout.exact.prevent(pause));
+      }
     }
   });
 
   return reactive({
     open,
     visible,
+    play,
+    pause,
   });
 };

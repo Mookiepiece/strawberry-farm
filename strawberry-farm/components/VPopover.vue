@@ -38,6 +38,7 @@ defineExpose({
 <template>
   <component :is="forwardRef($attrs)" />
   <Teleport to="body">
+    <span data-edge tabindex="0" v-if="pop.open"></span>
     <div
       data-pop
       ref="popper"
@@ -46,6 +47,7 @@ defineExpose({
     >
       <slot name="popper"></slot>
     </div>
+    <span data-edge tabindex="0" v-if="pop.open"></span>
   </Teleport>
 </template>
 
