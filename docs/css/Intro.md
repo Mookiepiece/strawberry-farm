@@ -2,7 +2,7 @@
 
 `strawberry-farm` 提供适合解决简单场景的原子 CSS。
 
-## 类名
+## ClassNames
 
 Identifiers 能够使用符号，但是不能以数字或 hyphen (-) 开头。
 

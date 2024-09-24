@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { VSegmented } from '@mookiepiece/strawberry-farm';
 
-const model = ref(3);
+const model = ref('Grapes');
 </script>
 
 <template>
