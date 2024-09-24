@@ -141,13 +141,6 @@ export const usePopper = (props: UsePopperProps) => {
         }),
       );
     } else if (trigger.value === 'hover') {
-      bag(
-        on($anc).click.exact.prevent(() => {
-          clearTimeout(i);
-          open.value = !open.value;
-        }),
-      );
-
       bag(on($anc).pointerenter.exact.prevent(play));
       bag(on($anc).pointerout.exact.prevent(pause));
     }

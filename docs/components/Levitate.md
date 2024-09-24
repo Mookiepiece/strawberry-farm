@@ -105,7 +105,7 @@ Useful on Select / Dropdown.
 
 Because `max-width` / `max-height` property is used by this plugin, you'll have to assign your max size limit to it's inner children.
 
-The following example shows `max-width`.
+The following example shows `max-width` at initial 100 items. Input 1000 to see how both `max-width` / `max-height` take into effect.
 
 :::demo components/LevitatePluginsMaxHeight
 :::

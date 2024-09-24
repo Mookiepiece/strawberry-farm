@@ -130,7 +130,6 @@ defineExpose({ listbox });
 
     &:where([aria-disabled='true']) {
       color: var(--text-3);
-      background: var(--mat-solid-05);
       cursor: not-allowed;
     }
   }
