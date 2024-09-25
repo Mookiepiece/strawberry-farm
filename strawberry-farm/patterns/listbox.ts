@@ -170,12 +170,8 @@ export const useListbox = <T = any>(
       const available = options.value.some(i => !i.disabled);
       if (!available) return -1;
       const i = _current.value;
-      try {
-        if (i < 0 || i >= options.value.length || options.value[i].disabled)
-          return options.value[0]?.disabled ? -1 : 0;
-      } catch (e) {
-        console.error(i, options.value, e);
-      }
+      if (i < 0 || i >= options.value.length || options.value[i].disabled)
+        return options.value.findIndex(i => !i.disabled);
 
       return i;
     },

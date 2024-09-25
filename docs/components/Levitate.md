@@ -114,3 +114,17 @@ Note on using with `limit`: Is there any situation where `scrollWidth` cannot re
 
 :::demo components/LevitatePluginsMaxHeightD
 :::
+
+
+## Elite
+
+In the Elite section, you'll discover complex real-world usage, beyond its basic API References.
+
+
+### CTX MENU
+
+- This example don't cover sub menu.
+
+:::demo components/LevitateEliteCtxMenu
+
+:::

@@ -62,7 +62,6 @@ export const autoPlacement =
       (param?.__flip ? FLIP_FALLBACKS : AUTO_P_FALLBACKS)[dir];
 
     const space = dir === 'left' || dir === 'right' ? map.width : map.height;
-    console.log(_limit, space, $pop.offsetHeight, $pop.scrollHeight);
 
     if (space < limit) {
       for (const _dir of fallbacks) {

@@ -33,24 +33,24 @@ const isScrollableElement = (p: Element) => {
   return /auto|scroll/.test(overflowY + overflowX);
 };
 
-const auto = (_anc: Element | [Element, Element], cb: () => void) => {
+const auto = (_anc: unknown | [unknown, unknown], cb: () => void) => {
   const bag = Bag();
 
   const [$anc, $pop] = Array.isArray(_anc) ? _anc : [_anc];
   const ro = new ResizeObserver(cb);
   bag(() => ro.disconnect());
-  ro.observe($anc);
-  $pop && ro.observe($pop);
+  $anc && $anc instanceof Element && ro.observe($anc);
+  $pop && $pop instanceof Element && ro.observe($pop);
 
   bag(on(window).resize(cb));
 
-  for (
-    let p: Element | null = $anc;
-    p && p !== document.documentElement;
-    p = p.parentElement
-  ) {
-    if (isScrollableElement(p)) bag(on(p).scroll(() => cb())); // ancestorScroll @floating-ui/core@1.6
-  }
+  if ($anc && $anc instanceof Element)
+    for (
+      let p: Element | null = $anc;
+      p && p !== document.documentElement;
+      p = p.parentElement
+    )
+      if (isScrollableElement(p)) bag(on(p).scroll(() => cb())); // ancestorScroll @floating-ui/core@1.6
 
   return () => bag();
 };

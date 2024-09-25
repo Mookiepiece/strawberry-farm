@@ -103,12 +103,9 @@ describe('Listbox', () => {
   it('Multiple toggles', () => {
     const model = ref([]);
     const listbox = useListbox(model, {
-      options: [{ value: true, disabled: true }, false, Infinity],
+      options: [{ value: true, disabled: true },0, false, Infinity],
     });
-    expect(listbox.current).toBe(-1);
-    const snapshot = model.value;
-    listbox.input(listbox);
-    expect(model.value === snapshot).toBeTruthy();
+    expect(listbox.current).toBe(1);
     listbox.nav(1);
     listbox.input(listbox);
     expect(model.value).toStrictEqual([false]);
