@@ -31,6 +31,8 @@ const options: ListboxInput = [
 
   [role='group'] > h6 {
     padding: 10px 10px 0;
+    user-select: none;
+    pointer-events: none;
   }
 
   [role='option'] {

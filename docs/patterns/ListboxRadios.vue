@@ -23,7 +23,7 @@ defineExpose({ listbox });
 </script>
 
 <template>
-  <VListbox class="VRadios🩷" v-model="model" v-bind="props" v-slot="{ option }">
+  <VListbox class="VRadios🩷" circular v-model="model" v-bind="props" v-slot="{ option }">
     <slot :option>
       <div data-trunk>
         {{ option.label }}

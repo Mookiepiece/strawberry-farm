@@ -1,5 +1,6 @@
 import { computed, reactive, Ref, ref } from 'vue';
 import { wai } from '../shared';
+import { useNav } from './nav';
 
 export type ListboxOption<T = any> = {
   value: any;
@@ -53,12 +54,6 @@ export type ListboxLeaf<T = any> = ListboxOption<T> & {
 export type UseListboxProps<T = any> = {
   disabled?: boolean;
   options?: ListboxInput<T>;
-  /**
-   * Keyboard navigations `nav()` will update the model in signle selection mode.
-   *
-   * @default true
-   */
-  magnetic?: boolean;
   /**
    * Toggle the same option will unselect it in signle selection mode.
    */
@@ -120,7 +115,6 @@ export const useListbox = <T = any>(
   const id = wai();
   const options = computed(() => flatOptions(props.options ?? []));
   const multi = computed(() => Array.isArray(model.value));
-  const magnetic = computed(() => props.magnetic ?? true);
   const disabled = computed(() => !!props.disabled);
 
   const tree = computed<Listbox<T>['tree']>(() => {
@@ -153,7 +147,11 @@ export const useListbox = <T = any>(
     });
   });
 
-  const _current = ref(
+  const map = computed(() =>
+    options.value.map((i, index) => (i.disabled ? -1 : index)),
+  );
+
+  const { current, nav: _nav } = useNav(
     Math.max(
       0,
       options.value.findIndex(
@@ -164,57 +162,14 @@ export const useListbox = <T = any>(
             : model.value === o.value),
       ),
     ),
+    map,
   );
-  const current = computed({
-    get() {
-      const available = options.value.some(i => !i.disabled);
-      if (!available) return -1;
-      const i = _current.value;
-      if (i < 0 || i >= options.value.length || options.value[i].disabled)
-        return options.value.findIndex(i => !i.disabled);
 
-      return i;
-    },
-    set(v) {
-      _current.value = v;
-    },
-  });
-
-  const nav = (delta: number, circular = false) => {
+  const nav = (delta: number, circular?: boolean) => {
     if (disabled.value) return;
-
-    const $options = options.value;
-    const index = (() => {
-      switch (delta) {
-        case Number.NEGATIVE_INFINITY:
-          return $options.findIndex(o => !o.disabled);
-        case Number.POSITIVE_INFINITY:
-          return $options.findLastIndex(o => !o.disabled);
-        case -1:
-        case 1: {
-          const before =
-            !circular && delta === 1 ? [] : $options.slice(0, current.value);
-          const after =
-            !circular && delta === -1 ? [] : $options.slice(current.value + 1);
-
-          const _index = [...after, ...before][
-            delta < 0 ? 'findLastIndex' : 'findIndex'
-          ](o => !o.disabled);
-
-          if (_index < 0) return -1;
-
-          return _index < after.length
-            ? current.value + 1 + _index
-            : _index - after.length;
-        }
-        default:
-          return -1;
-      }
-    })();
-    if (index < 0) return;
-    current.value = index;
+    const i = _nav(delta, circular);
+    if (i === undefined) return;
     scrollCurrentIntoView();
-    if (!multi.value && !magnetic.value) input($options[index].value);
   };
 
   const input = (..._values: any[]) => {

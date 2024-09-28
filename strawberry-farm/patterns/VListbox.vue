@@ -179,7 +179,7 @@ export const useListboxExtra = weakCache((listbox: Listbox) => {
 </script>
 
 <script setup lang="ts" generic="T = any">
-import { cloneVNode, h, toRef } from 'vue';
+import { cloneVNode, h, ref, toRef } from 'vue';
 import { ListboxLeaf, ListboxGroup, Listbox } from './listbox';
 import { useListbox, UseListboxProps } from './listbox';
 import { child } from '../shared';
@@ -212,7 +212,8 @@ const renderOption = (i: ListboxLeaf<T>) =>
     (slots.default && child(slots.default({ option: i }))) || h('div', i.label),
     {
       id: listbox.id + ':' + i.index,
-      onPointerdown: (e: MouseEvent) =>
+      onPointerdown: (e: MouseEvent) =>e.shiftKey && e.preventDefault(),
+      onClick: (e: MouseEvent) =>
         listboxEX.handlePointerdown(e, i, { magnetic: props.magnetic }),
       'data-key': objKey(i.value),
       role: 'option',
@@ -227,7 +228,7 @@ const renderOption = (i: ListboxLeaf<T>) =>
 
 const onKeyDown = (e: KeyboardEvent) => {
   if (e.key === 'Enter') {
-    props.action?.(e, listbox);
+    props.action ? props.action(e, listbox) : (root.value as HTMLElement).closest('form')?.submit();
   } else {
     listboxEX.handleKeydown(e, {
       circular: props.circular,
@@ -236,6 +237,8 @@ const onKeyDown = (e: KeyboardEvent) => {
   }
 };
 
+const root = ref()
+
 const objKey = ObjKey(listbox);
 
 defineExpose({ listbox });
@@ -243,7 +246,7 @@ defineExpose({ listbox });
 
 <template>
   <div
-    ref="el"
+    ref="root"
     :id="listbox.id"
     @keydown.self="onKeyDown"
     role="listbox"
