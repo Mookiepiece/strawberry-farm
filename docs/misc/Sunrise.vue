@@ -15,6 +15,7 @@ const toggleTheme = async (e: MouseEvent) => {
 
   if (!enableTransitions) {
     isDark.value = !isDark.value;
+    loading = false;
     return;
   }
 
