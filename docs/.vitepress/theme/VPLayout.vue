@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
   computed,
-  defineAsyncComponent,
   onMounted,
   onUnmounted,
   ref,
@@ -12,11 +11,7 @@ import VPSidebar from './VPSidebar.vue';
 import VPNav from './VPNav.vue';
 import { useData } from './composables';
 
-const AsyncComponent = defineAsyncComponent(
-  () => import('../../examples/AsyncComponentExample.vue'),
-);
-
-const { site, frontmatter } = useData();
+const { frontmatter } = useData();
 
 const full = computed(() => frontmatter.value.layout === 'full');
 
@@ -67,11 +62,7 @@ const outline = ref(false);
       v-model:outline="outline"
       :features="full ? ['sidebar'] : ['sidebar', 'outline']"
     />
-    <div v-if="full" class="VPMain">
-      <AsyncComponent />
-      <!-- <Content class="VPContent" role="article" /> -->
-    </div>
-    <div v-else class="VPMain">
+    <div class="VPMain">
       <Content class="VPContent [A] vp-doc" role="article" />
       <VPOutline :open="outline" />
     </div>
