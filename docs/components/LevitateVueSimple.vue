@@ -22,9 +22,7 @@ watchEffect(onCleanup => {
 <template>
   <button ref="anc" @click="open = !open">Reference</button>
   <Teleport to="body">
-    <div v-if="open" ref="pop" class="levitated (///)">
-      <div data-pop-box>Content</div>
-    </div>
+    <div v-if="open" ref="pop" class="levitated (///)">Content</div>
   </Teleport>
 </template>
 

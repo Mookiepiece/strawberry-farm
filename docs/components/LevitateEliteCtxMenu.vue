@@ -27,7 +27,7 @@ const show = (e: MouseEvent) => {
       right: x + 1,
       toJSON() {},
     }),
-    setAttribute(){},
+    setAttribute() {},
     offsetWidth: 1,
     offsetHeight: 1,
     clientWidth: 1,
@@ -38,17 +38,14 @@ const show = (e: MouseEvent) => {
   open.value = true;
 };
 
-watchEffect(onCleanup => {
+watchEffect(() => {
   const [$pop, $open] = [pop.value, open.value];
   if ($pop && $open) {
-    // onCleanup(
-      // levitate.auto($anc, () => {
-        levitate($anc, $pop, {
-          dir:'right',
-          align:'start',
-          plugins: [applyTransform] })
-      // }),
-    // );
+    levitate($anc, $pop, {
+      dir: 'right',
+      align: 'start',
+      plugins: [applyTransform],
+    });
   }
 });
 
