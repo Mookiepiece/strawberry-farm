@@ -1,7 +1,9 @@
 .VDialog {
   position: relative;
-  margin: max(auto, 10px);
+  margin: 20px;
   padding: 20px;
+  width: var(--v-width);
+  max-width: calc(100% - 40px);
 }
 
 .VDialogHeader {

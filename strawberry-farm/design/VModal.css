@@ -1,9 +1,9 @@
 .VCurtain {
   position: fixed;
   inset: 0;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid: 100% / 100%;
+  place-items: center;
   background-color: var(--mat-air-2);
   overflow: auto;
 
@@ -18,8 +18,6 @@
 .VModal {
   position: relative;
   margin: auto;
-  --w: 800px;
-  width: min(calc(100% - 40px), var(--w));
   background-color: var(--mat-solid-0);
 
   transition: box-shadow 0.2s;
