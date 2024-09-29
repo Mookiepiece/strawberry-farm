@@ -1,0 +1,1 @@
+import{I as t,j as i,o as s,J as a}from"./chunks/framework.BYKI4aRn.js";const g=JSON.parse('{"title":"Sizing","description":"","frontmatter":{},"headers":[],"relativePath":"learn/Sizing.md","filePath":"learn/Sizing.md"}'),e={name:"learn/Sizing.md"},n=a("",8),l=[n];function o(h,p,d,r,k,c){return s(),i("div",null,l)}const E=t(e,[["render",o]]);export{g as __pageData,E as default};

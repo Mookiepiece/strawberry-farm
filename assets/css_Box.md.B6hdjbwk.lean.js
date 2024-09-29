@@ -1,1 +1,0 @@
-import{J as t,i as d,o as e,K as o}from"./chunks/framework.IAuM8QuA.js";const _=JSON.parse('{"title":"盒模型 Box","description":"","frontmatter":{},"headers":[],"relativePath":"css/Box.md","filePath":"css/Box.md"}'),a={name:"css/Box.md"},r=o("",11),c=[r];function m(i,n,h,s,l,p){return e(),d("div",null,c)}const g=t(a,[["render",m]]);export{_ as __pageData,g as default};
