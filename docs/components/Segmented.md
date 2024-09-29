@@ -1,6 +1,6 @@
 # Segmented
 
-Listbox with an `::before`.
+Listbox with `::before`.
 
 ## Basics
 
