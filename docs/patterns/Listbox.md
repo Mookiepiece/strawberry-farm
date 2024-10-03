@@ -4,6 +4,11 @@ Pick option(s) from a list of options.
 
 在一组选项中选择一个或一些。
 
+
+:::source patterns/VListbox.vue
+
+:::
+
 :::demo patterns/ListboxHL
 
 :::

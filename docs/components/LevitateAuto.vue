@@ -2,6 +2,8 @@
 import { applyTransform, levitate } from '@mookiepiece/strawberry-farm/shared';
 import { ref, watchEffect } from 'vue';
 
+const visible = ref(false);
+
 const anchor = ref<HTMLElement>();
 const pop = ref<HTMLElement>();
 
@@ -27,15 +29,23 @@ const changeDir = (_dir: 'top' | 'left' | 'right' | 'bottom') => {
 
 <template>
   <div style="position: relative">
-    <div style="position: relative; height: 300px; width: 100%; overflow: auto">
+    <div style="height: 300px; overflow: auto">
       <div style="width: 500%; height: 1000px">
-        <div ref="anchor" class="a 🍒"></div>
+        <div ref="anchor" class="reference 🍒"></div>
         <Teleport to="body">
-          <div ref="pop" class="b 🍒">🍓</div>
+          <div
+            ref="pop"
+            class="floating 🍒"
+            :style="!visible ? { clipPath: 'circle(0)' } : {}"
+          >
+            🍓
+          </div>
         </Teleport>
       </div>
     </div>
     <div class="control (///)">
+      <button @click="visible = !visible">Show</button>
+      &nbsp;
       <button @click="changeDir('top')">Top</button>
       <button @click="changeDir('right')">Right</button>
       <button @click="changeDir('bottom')">Bottom</button>
@@ -45,11 +55,11 @@ const changeDir = (_dir: 'top' | 'left' | 'right' | 'bottom') => {
 </template>
 
 <style scoped>
-.a {
+.reference {
   width: 100px;
   height: 100px;
 }
-.b {
+.floating {
   position: fixed;
   top: 0;
   left: 0;

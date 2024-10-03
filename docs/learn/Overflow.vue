@@ -10,6 +10,17 @@ defineProps<{
   </div>
 </template>
 
+<style>
+.noscrollbar {
+  scrollbar-width: none;
+}
+
+.noscrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+</style>
+
 <style scoped>
 .a {
   position: relative;

@@ -17,23 +17,17 @@ export const useAsyncFn = <T extends FunctionReturningPromise>(fn: T) => {
     state.loading = true;
     return fn(...args)
       .then(v => {
-        if (_key === key) {
-          return (state.data = v);
-        } else {
-          throw new DOMException('', 'AbortError');
-        }
+        if (_key !== key) throw new DOMException('', 'AbortError');
+        return (state.data = v);
       })
       .catch(e => {
-        if (_key === key) {
-          state.error = e;
-          throw e;
-        }
-        throw new DOMException('', 'AbortError');
+        if (_key !== key) throw new DOMException('', 'AbortError');
+        state.error = e;
+        throw e;
       })
       .finally(() => {
-        if (_key === key) {
-          state.loading = false;
-        }
+        if (_key !== key) return;
+        state.loading = false;
       });
   }) as T;
 

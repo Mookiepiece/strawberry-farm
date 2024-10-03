@@ -10,30 +10,24 @@ export const mdPlugin = (md: MarkdownIt) => {
     render(tokens: any, idx: any) {
       if (tokens[idx].nesting === 1 /* means the tag is opening */) {
         const path = tokens[idx].info.trim().split(' ')[1];
-        return `<VPDemo path="${path}">
-        `;
+        return `<VPDemo path="${path}">`;
       } else {
         return '</VPDemo>';
       }
     },
   });
-  // md.use(mdContainer, 'src', {
-  //   validate(params) {
-  //     return !!params.trim().match(/^src\s*(.*)$/);
-  //   },
+  md.use(mdContainer, 'source', {
+    validate(params: any) {
+      return !!params.trim().match(/^source\s*(.*)$/);
+    },
 
-  //   render(tokens, idx) {
-  //     if (tokens[idx].nesting === 1 /* means the tag is opening */) {
-  //       // if (!source) throw new Error(`Incorrect source file: ${sourceFile}`)
-
-  //       return `<div class="language-html vp-code">
-
-  //       <button title="Copy Code" class="copy"></button><span class="lang">html</span>
-  //       ${html}
-  //       `;
-  //     } else {
-  //       return '</div>';
-  //     }
-  //   },
-  // });
+    render(tokens: any, idx: any) {
+      if (tokens[idx].nesting === 1 /* means the tag is opening */) {
+        const path = tokens[idx].info.trim().split(' ')[1];
+        return `<VPSource path="${path}">`;
+      } else {
+        return '</VPSource>';
+      }
+    },
+  });
 };

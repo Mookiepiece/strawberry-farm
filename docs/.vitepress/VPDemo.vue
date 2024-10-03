@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue';
+import { shallowRef, ref } from 'vue';
 import VPHighlightVue from './VPHighlight.vue';
 const props = defineProps<{
   path: string;
 }>();
 
 const module = shallowRef<any>();
-const raw = shallowRef<any>('');
+const raw = ref('');
 // https://github.com/vitejs/vite/issues/4945
 const [dirname, filename] = props.path.split('/');
 switch (dirname) {
@@ -17,7 +17,6 @@ switch (dirname) {
     import(`../${dirname}/${filename}.vue?raw`).then(
       mod => (raw.value = (mod.default as string).replace(/\r\n/g, '\n')), // Windows©️ is awesome
     );
-    break;
 }
 </script>
 

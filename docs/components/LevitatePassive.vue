@@ -5,10 +5,10 @@ import { ref } from 'vue';
 const anchor = ref<HTMLElement>();
 const pop = ref<HTMLElement>();
 
-const touched = ref(false);
+const visible = ref(false);
 
 const changeDir = (_dir: any) => {
-  touched.value = true;
+  visible.value = !visible.value;
 
   levitate(anchor.value!, pop.value!, {
     dir: _dir,
@@ -18,49 +18,29 @@ const changeDir = (_dir: any) => {
 </script>
 
 <template>
-  <div style="position: relative">
-    <div style="position: relative; height: 300px; width: 100%; overflow: auto">
-      <div style="width: 500%; height: 1000px">
-        <div ref="anchor" class="a 🍒"></div>
-        <Teleport to="body">
-          <div
-            ref="pop"
-            class="b 🍒"
-            :style="!touched ? { clipPath: 'circle(0)' } : {}"
-          >
-            🍓
-          </div>
-        </Teleport>
-      </div>
+  <div ref="anchor" class="reference 🍒" />
+  <Teleport to="body">
+    <div
+      ref="pop"
+      class="floating 🍒"
+      :style="!visible ? { clipPath: 'circle(0)' } : {}"
+    >
+      🍓
     </div>
-    <div class="control (///)">
-      <button @click="changeDir('top')">Top</button>
-      <button @click="changeDir('right')">Right</button>
-      <button @click="changeDir('bottom')">Bottom</button>
-      <button @click="changeDir('left')">Left</button>
-    </div>
-  </div>
+  </Teleport>
+  <button @click="changeDir('top')">Top</button>
 </template>
 
 <style scoped>
-.a {
+.reference {
   width: 100px;
   height: 100px;
 }
-.b {
+.floating {
   position: fixed;
   top: 0;
   left: 0;
   padding: 10px;
   z-index: 1;
-}
-
-.control {
-  position: absolute;
-  top: 100%;
-  left: 100%;
-  transform: translate(-100%, -100%);
-  width: max-content;
-  max-width: 100%;
 }
 </style>

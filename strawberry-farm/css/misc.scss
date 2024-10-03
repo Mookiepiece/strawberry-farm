@@ -1,12 +1,3 @@
-.noscrollbar {
-  scrollbar-width: none;
-}
-
-.noscrollbar::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
 kbd {
   display: inline-block;
   font-size: 12px;

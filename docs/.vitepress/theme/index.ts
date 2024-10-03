@@ -4,7 +4,8 @@ import '../../../strawberry-farm/css/index.scss';
 
 import Layout from './VPLayout.vue';
 import VPDemo from '../VPDemo.vue';
-import { onContentUpdated, Theme } from 'vitepress';
+import VPSource from '../VPSource.vue';
+import { Theme } from 'vitepress';
 
 import './vp-doc.css';
 import './custom.css';
@@ -30,6 +31,7 @@ const theme: Theme = {
   Layout,
   enhanceApp: ({ app }) => {
     app.component('VPDemo', VPDemo);
+    app.component('VPSource', VPSource);
   },
 };
 export default theme;

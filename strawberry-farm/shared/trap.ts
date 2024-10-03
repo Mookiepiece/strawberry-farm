@@ -56,7 +56,7 @@ export const trapIn = (el: HTMLElement | SVGElement, reversed = false) => {
   // those are "maybe focusable" (e.g. <a> without herf attribute cannot be focusd), we have to try them out.
   const children = [
     ...el.querySelectorAll<HTMLElement | SVGElement>(
-      ':is(a,input,button,select,textarea,[tabindex]:not([tabindex="-1"])):not(:disabled)',
+      ':is(a,input,button,select,textarea,summary,[tabindex]:not([tabindex="-1"])):not(:disabled)',
     ),
   ];
 

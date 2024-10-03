@@ -74,6 +74,7 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Switch', link: '/design/Switch' },
         { text: 'Form', link: '/design/Form' },
         { text: 'Farm', link: '/design/Farm' },
+        { text: 'Calendar', link: '/design/Calendar' },
         { text: 'Toast', link: '/design/Toast' },
         { text: 'Trap', link: '/design/Trap' },
         { text: 'Modal', link: '/design/Modal' },

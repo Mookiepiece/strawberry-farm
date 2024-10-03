@@ -54,13 +54,10 @@ export const useNav = (
   };
 };
 
-
 /**
  * FIXME: WIP
  */
 export const useNav2 = (
   __current: MaybeRef<number> = 0,
   map: Ref<(number[] | number)[]>,
-) => {
-
-}
+) => {};
