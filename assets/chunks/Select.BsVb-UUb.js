@@ -1,0 +1,36 @@
+import{f as y}from"./misc.C9Tk6PVQ.js";import{d as V,A as x,B as b,c as s,f as u,o as N,j as _,D as p,b as v,p as f,I as E}from"./framework.BjwmYqAO.js";const m=V({__name:"VSelect",props:x({options:{},disabled:{type:Boolean},placeholder:{},clearable:{type:Boolean}},{modelValue:{},modelModifiers:{}}),emits:["update:modelValue"],setup(r,{expose:o}){const l=b(r,"modelValue"),i=r,e=s(()=>Array.isArray(l.value)),n=u();return u(),s({get(){return l.value},set(a){e.value||(open.value=!1),l.value=a}}),s(()=>{var d;if(!i.options)return l.value;const a=y(i.options);return e.value?a.filter(t=>{var c;return(c=l.value)==null?void 0:c.includes(t.value)}).map(t=>t.label).join(", "):(d=a.find(t=>t.value===l.value))==null?void 0:d.label}),s(()=>{var a;return e.value?!((a=l.value)!=null&&a.length):l.value==null}),o({el:n}),(a,d)=>null}}),H={class:"good"},L=V({__name:"Select",setup(r){const o=u(null),l=u([]);return(i,e)=>(N(),_("div",H,[p(m,{modelValue:o.value,"onUpdate:modelValue":e[0]||(e[0]=n=>o.value=n),placeholder:"Spell Card",options:[{value:0,label:"魔符「ミルキーウェイ」"},{value:1,label:"恋符「マスタースパーク」"}]},null,8,["modelValue"]),p(m,{modelValue:o.value,"onUpdate:modelValue":e[1]||(e[1]=n=>o.value=n),options:["名誉「十二階の色彩」	Easy / Normal","名誉「十二階の冠位」	Hard / Lunatic","仙符「日出ずる処の道士」	Easy / Normal","仙符「日出ずる処の天子」	Hard / Lunatic","召喚「豪族乱舞」	Easy / Normal / Hard / Lunatic","秘宝「斑鳩寺の天球儀」	Easy / Normal / Hard","秘宝「聖徳太子のオーパーツ」	Lunatic","光符「救世観音の光後光」	Easy / Normal","光符「グセフラッシュ」	Hard / Lunatic","眼光「十七条のレーザー」	Easy / Normal","神光「逆らう事なきを宗とせよ」	Hard / Lunatic","「星降る神霊廟」	Easy / Normal","「生まれたての神霊」	Hard / Lunatic","「神霊大宇宙」	OverDrive"],clearable:""},{prefix:v(()=>e[3]||(e[3]=[f("i-feather",{i:"airplay"},null,-1)])),suffix:v(()=>e[4]||(e[4]=[f("i-feather",{i:"airplay"},null,-1)])),_:1},8,["modelValue"]),p(m,{multi:"",modelValue:l.value,"onUpdate:modelValue":e[2]||(e[2]=n=>l.value=n),style:{"max-width":"200px"},options:[["游戏",`东方灵异传
+东方封魔录
+东方梦时空
+东方幻想乡
+东方怪绮谈
+东方红魔乡
+东方妖妖梦
+东方萃梦想
+东方永夜抄
+东方文花帖
+东方花映塚
+东方风神录
+东方绯想天
+东方地灵殿
+东方星莲船
+东方文花帖DS
+东方神灵庙
+东方心绮楼
+东方辉针城
+东方深秘录
+东方绀珠传
+东方凭依华
+东方天空璋
+东方鬼形兽
+东方刚欲异闻
+东方虹龙洞
+东方兽王园`],["出版物",`东方香霖堂
+东方三月精
+东方儚月抄
+东方求闻史纪
+东方茨歌仙
+东方铃奈庵
+东方智灵奇传
+东方醉蝶华`],["CD",`莲台野夜行
+蓬莱人形`]].map(([n,a])=>({label:n,options:a.split(`
+`)})),clearable:""},null,8,["modelValue","options"])]))}}),C=E(L,[["__scopeId","data-v-6d09e0ff"]]);export{C as default};

@@ -1,1 +1,0 @@
-import{o as s}from"./theme.BWMAtRbQ.js";const c=(o,t)=>{const r=Array.isArray(o)?o:[o];return s(document).pointerdown(a=>{r.every(n=>(n==null?void 0:n.contains(a.target))===!1)&&t()})};export{c as o};

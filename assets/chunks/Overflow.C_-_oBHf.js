@@ -1,0 +1,1 @@
+import{d as o,o as a,j as e,F as r,k as n,n as t,p as c,I as l}from"./framework.BjwmYqAO.js";const _={class:"b 🦄"},p=o({__name:"Overflow",props:{i:{}},setup(i){return(s,d)=>(a(),e("div",{class:t(["a",{noscrollbar:s.i===2}])},[(a(),e(r,null,n(5,m=>c("div",_)),64))],2))}}),u=l(p,[["__scopeId","data-v-7aa1aa07"]]);export{u as default};

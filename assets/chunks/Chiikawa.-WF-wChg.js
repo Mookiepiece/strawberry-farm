@@ -1,0 +1,1 @@
+import{I as t,o as c,j as e}from"./framework.BjwmYqAO.js";const a={},o={class:"Chiikawa",title:"https://x.com/ngnchiikawa"};function s(n,i){return c(),e("div",o)}const _=t(a,[["render",s]]);export{_ as default};

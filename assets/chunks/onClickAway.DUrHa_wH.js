@@ -1,0 +1,1 @@
+import{o as s}from"./theme.W1H-0ptT.js";const e=(o,n)=>{const r=Array.isArray(o)?o:[o];return s(document).pointerdown.capture(a=>{r.every(t=>(t==null?void 0:t.contains(a.target))===!1)&&n()})};export{e as o};
