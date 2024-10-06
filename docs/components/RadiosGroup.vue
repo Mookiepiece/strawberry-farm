@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { VRadios } from '@mookiepiece/strawberry-farm';
 
-const model = ref(['Melon']);
+const model = ref(['three']);
 const options = [
   {
     title: 'Colors',

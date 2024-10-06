@@ -29,23 +29,12 @@ const theme = shallowRef<ThemeConfig>({
     {
       text: 'CSS',
       items: [
-        { text: 'Intro', link: '/css/Intro' },
-        { text: 'Reset', link: '/css/Reset' },
         { text: 'Breakpoints', link: '/css/Breakpoints' },
         { text: 'Flexbox', link: '/css/Flexbox' },
         { text: 'Typography', link: '/css/Typography' },
-        { text: 'Box', link: '/css/Box' },
       ],
     },
-    {
-      text: 'Learn',
-      items: [
-        { text: 'Intro', link: '/learn/Intro' },
-        { text: 'Overflow', link: '/learn/Overflow' },
-        { text: 'Sizing', link: '/learn/Sizing' },
-        { text: 'Form', link: '/learn/Form' },
-      ],
-    },
+
     {
       text: 'Patterns',
       items: [{ text: 'Listbox', link: '/patterns/Listbox' }],
@@ -58,6 +47,8 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Levitate', link: '/components/Levitate' },
         { text: 'Popover', link: '/components/Popover' },
         { text: 'Table', link: '/components/Table' },
+        { text: 'Switch', link: '/components/Switch' },
+        { text: 'Calendar', link: '/components/Calendar' },
       ],
     },
     {
@@ -71,10 +62,8 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Input', link: '/design/Input' },
         { text: 'Select', link: '/design/Select' },
         { text: 'Tree', link: '/design/Tree' },
-        { text: 'Switch', link: '/design/Switch' },
         { text: 'Form', link: '/design/Form' },
         { text: 'Farm', link: '/design/Farm' },
-        { text: 'Calendar', link: '/design/Calendar' },
         { text: 'Toast', link: '/design/Toast' },
         { text: 'Trap', link: '/design/Trap' },
         { text: 'Modal', link: '/design/Modal' },
@@ -88,6 +77,13 @@ const theme = shallowRef<ThemeConfig>({
       items: [
         { text: 'Experiments', link: '/experiments/Experiments' },
         { text: 'Swipe', link: '/experiments/Swipe' },
+      ],
+    },
+    {
+      text: 'Learn',
+      items: [
+        { text: 'Overflow', link: '/learn/Overflow' },
+        { text: 'Form', link: '/learn/Form' },
       ],
     },
     {

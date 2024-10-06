@@ -75,33 +75,30 @@ export const useListboxExtra = weakCache((listbox: Listbox) => {
 
     if (e.shiftKey) {
       if (!listbox.multi) return;
-      const { nav } = listbox;
+      const nav = (delta: number) => {
+        e.preventDefault();
+        listbox.nav(delta);
+        addRange(anchor, listbox.current);
+      };
       switch (e.key) {
         case 'ArrowUp':
         case 'ArrowLeft':
-          e.preventDefault();
           nav(-1);
-          addRange(anchor, listbox.current);
           break;
         case 'ArrowDown':
         case 'ArrowRight':
-          e.preventDefault();
           nav(1);
-          addRange(anchor, listbox.current);
           break;
         case 'Home':
-          e.preventDefault();
-          nav(Number.NEGATIVE_INFINITY);
-          addRange(anchor, listbox.current);
+          nav(-Infinity);
           break;
         case 'End':
-          e.preventDefault();
-          nav(Number.POSITIVE_INFINITY);
-          addRange(anchor, listbox.current);
+          nav(Infinity);
           break;
       }
     } else {
       const nav = (delta: number) => {
+        e.preventDefault();
         if (magnetic === e.ctrlKey) return listbox.nav(delta, circular);
         const prev = listbox.current;
         listbox.nav(delta, circular);
@@ -113,21 +110,17 @@ export const useListboxExtra = weakCache((listbox: Listbox) => {
       switch (e.key) {
         case 'ArrowUp':
         case 'ArrowLeft':
-          e.preventDefault();
           nav(-1);
           break;
         case 'ArrowDown':
         case 'ArrowRight':
-          e.preventDefault();
           nav(1);
           break;
         case 'Home':
-          e.preventDefault();
-          nav(Number.NEGATIVE_INFINITY);
+          nav(-Infinity);
           break;
         case 'End':
-          e.preventDefault();
-          nav(Number.POSITIVE_INFINITY);
+          nav(Infinity);
           break;
         case ' ':
           e.preventDefault();
@@ -212,10 +205,9 @@ const renderOption = (i: ListboxLeaf<T>) =>
     (slots.default && child(slots.default({ option: i }))) || h('div', i.label),
     {
       id: listbox.id + ':' + i.index,
-      onPointerdown: (e: MouseEvent) =>e.shiftKey && e.preventDefault(),
+      onPointerdown: (e: MouseEvent) => e.shiftKey && e.preventDefault(),
       onClick: (e: MouseEvent) =>
         listboxEX.handlePointerdown(e, i, { magnetic: props.magnetic }),
-      'data-key': objKey(i.value),
       role: 'option',
       'aria-selected':
         (Array.isArray(listbox.model)
@@ -228,7 +220,9 @@ const renderOption = (i: ListboxLeaf<T>) =>
 
 const onKeyDown = (e: KeyboardEvent) => {
   if (e.key === 'Enter') {
-    props.action ? props.action(e, listbox) : (root.value as HTMLElement).closest('form')?.submit();
+    props.action
+      ? props.action(e, listbox)
+      : (root.value as HTMLElement).closest('form')?.submit();
   } else {
     listboxEX.handleKeydown(e, {
       circular: props.circular,
@@ -237,7 +231,7 @@ const onKeyDown = (e: KeyboardEvent) => {
   }
 };
 
-const root = ref()
+const root = ref();
 
 const objKey = ObjKey(listbox);
 

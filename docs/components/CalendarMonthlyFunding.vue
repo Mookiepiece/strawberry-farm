@@ -1,15 +1,20 @@
+<script lang="ts">
+import 'dayjs/locale/zh';
+import 'dayjs/locale/ja';
+import { useCalendar, VCalendar } from '@mookiepiece/strawberry-farm';
+</script>
+
 <script setup lang="ts">
 import dayjs from 'dayjs';
-import {  h, reactive, ref } from 'vue';
-import CalendarGrid, { useCalendarGrid } from './CalendarGrid.vue';
+import { h, reactive, ref } from 'vue';
 
 const salaDay = ref(15);
-const funds = reactive<(number)[]>([1500, 200]);
+const funds = reactive<number[]>([1500, 200]);
 
 const __today = ref(dayjs());
 
 const month = ref(dayjs().locale('zh'));
-const calendar = useCalendarGrid(month);
+const calendar = useCalendar(month);
 
 const renderCell = (date: number) => {
   const day = month.value.date(date);
@@ -19,7 +24,7 @@ const renderCell = (date: number) => {
   const [passed, total] = (() => {
     const season = day.month(day.month() - +(day.date() < salaDay.value));
     const max = season.daysInMonth();
-    return [day.diff(season.date(Math.min(max, salaDay.value)), 'day'),max];
+    return [day.diff(season.date(Math.min(max, salaDay.value)), 'day'), max];
   })();
 
   const percentage = 1 - passed / total;
@@ -28,7 +33,7 @@ const renderCell = (date: number) => {
   return h('div', { class: { today } }, [
     h('span', day.format('D')),
     h('div', { class: 'funds' }, [
-      h('span',{class: 'f3-3 clr-3'}, passed + ' / ' + total),
+      h('span', { class: 'f3-3 clr-3' }, passed + ' / ' + total),
       ...funds.map(v =>
         h(
           'div',
@@ -58,12 +63,7 @@ const renderCell = (date: number) => {
     <button @click="funds.push(0)">Add</button>
   </div>
 
-  <CalendarGrid
-    class="MonthlyFunding"
-    v-model="month"
-    :calendar
-    change-on-keydown
-  >
+  <VCalendar class="MonthlyFunding" v-model="month" :calendar change-on-keydown>
     <template #header="{ index, name }">
       <div :style="index === 6 || index === 0 ? { color: '#f35e' } : undefined">
         {{ name }}
@@ -72,7 +72,7 @@ const renderCell = (date: number) => {
     <template #default="{ cell }">
       <component :is="renderCell(cell)" />
     </template>
-  </CalendarGrid>
+  </VCalendar>
 </template>
 
 <style scoped>
@@ -94,6 +94,7 @@ input[type='number'] {
     display: grid;
     align-content: end;
     padding: 0 10px;
+    font-size: 12px;
   }
 
   .funds {

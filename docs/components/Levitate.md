@@ -18,14 +18,21 @@ Config Arguments
 
 Other words:
 
-- View(viewport): The **Viewport** boundary that will be clipped into Map.
-- Map: The **Clipped Viewport** based on anchor's `getBoundingClientRect()`. which is almost the maximum size of the popper.
+- View(viewport): The **Viewport** boundary that will be clipped into Map. Default to the window viewport.
+- Map: The **Clipped Viewport** based on anchor's `getBoundingClientRect()`. which is the maximum size of the popper.
 
 <script setup>
 import LevitateAlgo from './LevitateAlgo.vue'
 </script>
 
 <LevitateAlgo />
+
+
+:::source shared/levitate.ts
+:::
+
+:::source shared/levitatePlugins.ts
+:::
 
 ## Positioning
 

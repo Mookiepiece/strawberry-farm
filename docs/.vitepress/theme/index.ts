@@ -9,7 +9,7 @@ import { Theme } from 'vitepress';
 
 import './vp-doc.css';
 import './custom.css';
-import './VPKbd.css';
+import './VPKbdElement.css';
 
 if (!import.meta.env.SSR) {
   import('@mookiepiece/strawberry-farm/html/IFeatherElement').then(
@@ -22,7 +22,7 @@ if (!import.meta.env.SSR) {
     },
   );
 
-  import('./VPKbd').then(({ VPKbdElement }) => {
+  import('./VPKbdElement').then(({ VPKbdElement }) => {
     customElements.define('vp-kbd', VPKbdElement);
   });
 }

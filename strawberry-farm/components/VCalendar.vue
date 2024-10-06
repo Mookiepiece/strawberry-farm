@@ -2,13 +2,12 @@
 import dayjs, { Dayjs } from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import localeData from 'dayjs/plugin/localeData';
-import 'dayjs/locale/zh';
-import 'dayjs/locale/ja';
-import { child, onStepWheel } from '@mookiepiece/strawberry-farm';
+import { child } from '../shared';
+import { onStepWheel } from '../html';
 dayjs.extend(timezone);
 dayjs.extend(localeData);
 
-export const useCalendarGrid = (model: Ref<Dayjs>) => {
+export const useCalendar = (model: Ref<Dayjs>) => {
   const nav = (delta: number) => {
     switch (delta) {
       case -Infinity:
@@ -61,7 +60,7 @@ const model = defineModel<Dayjs>({
 });
 
 const props = defineProps<{
-  calendar?: ReturnType<typeof useCalendarGrid>;
+  calendar?: ReturnType<typeof useCalendar>;
   changeOnWheel?: boolean;
   changeOnKeydown?: boolean;
 }>();
@@ -75,7 +74,7 @@ const firstDayOfWeek = computed(() =>
   model.value.localeData().firstDayOfWeek(),
 );
 
-const calendar = props.calendar || useCalendarGrid(model);
+const calendar = props.calendar || useCalendar(model);
 
 const columns = computed(() => {
   const raw = [...model.value.localeData().weekdaysMin()];
@@ -101,10 +100,7 @@ watchEffect(onCleanup => {
 const handleKeydown = (e: KeyboardEvent) => {
   if (!props.changeOnKeydown) return;
 
-  if (
-    e.target instanceof HTMLElement &&
-    e.target.matches('.VCalendarGrid > *')
-  ) {
+  if (e.target instanceof HTMLElement && e.target.matches('.VCalendar > *')) {
   } else return;
 
   const nav = (delta: number) => {
@@ -136,9 +132,9 @@ const handleKeydown = (e: KeyboardEvent) => {
 watch(
   () => model.value,
   () => {
-    if (document.activeElement?.matches('.VCalendarGrid > *'))
+    if (document.activeElement?.matches('.VCalendar > *'))
       grid.value
-        ?.querySelector<HTMLElement>('.VCalendarGrid > [tabindex="0"]')
+        ?.querySelector<HTMLElement>('.VCalendar > [tabindex="0"]')
         ?.focus();
   },
   { flush: 'post' },
@@ -167,7 +163,7 @@ const renderCell = (cell: number) => {
 </script>
 
 <template>
-  <div class="VCalendarGrid" ref="grid" @keydown.exact="handleKeydown">
+  <div class="VCalendar" ref="grid" @keydown.exact="handleKeydown">
     <component
       v-for="(name, index) in columns"
       :key="name"
@@ -182,23 +178,10 @@ const renderCell = (cell: number) => {
 </template>
 
 <style>
-.VCalendarGrid {
+.VCalendar {
   display: grid;
   grid-template: repeat(7, 35px) / repeat(7, 35px);
 }
 
-.VCalendarGrid > * {
-  /* place-content: center; */
-  /* outline: 1px solid;
-  outline-offset: -1px;
 
-  &[tabindex='0'] {
-    outline: 2px solid #f94;
-    outline-offset: -2px;
-  } */
-}
-
-.columnheader {
-  font-size: 12px;
-}
 </style>
