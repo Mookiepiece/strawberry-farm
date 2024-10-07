@@ -11,36 +11,6 @@ const weakCache = <F extends (param: any) => any>(cb: F): F => {
     })()) as F;
 };
 
-const objKeyBuckets = new WeakMap();
-const ObjKey = (cacheKey: any) => {
-  return (
-    (cacheKey && objKeyBuckets.get(cacheKey)) ||
-    (() => {
-      const key = 0n;
-      const ids = new WeakMap<any, string>();
-      const ans = (i: any) => {
-        if (typeof i === 'symbol') {
-          return i;
-        }
-        if (i && typeof i === 'object') {
-          return (
-            ids.get(i) ||
-            (() => {
-              const ans = 'object' + key.toString(36);
-              ids.set(i, ans);
-              return ans;
-            })()
-          );
-        }
-
-        return typeof i + i;
-      };
-      objKeyBuckets.set(cacheKey, ans);
-      return ans;
-    })()
-  );
-};
-
 const toArray = (a: any) => (Array.isArray(a) ? a : [a]);
 
 export const useListboxExtra = weakCache((listbox: Listbox) => {
@@ -233,8 +203,6 @@ const onKeyDown = (e: KeyboardEvent) => {
 
 const root = ref();
 
-const objKey = ObjKey(listbox);
-
 defineExpose({ listbox });
 </script>
 
@@ -251,16 +219,7 @@ defineExpose({ listbox });
     "
     :aria-multiselectable="listbox.multi"
   >
-    <template
-      v-for="(g, index) in listbox.tree"
-      :key="
-        g && typeof g === 'object' && 'options' in g
-          ? g.title
-            ? 'g' + g.title
-            : 'G' + index
-          : objKey(g.value)
-      "
-    >
+    <template v-for="(g, index) in listbox.tree" :key="index">
       <div
         role="group"
         :aria-label="g.title"
@@ -270,8 +229,8 @@ defineExpose({ listbox });
           <h6>{{ g.title }}</h6>
         </slot>
         <component
-          v-for="i in g.options"
-          :key="objKey(i.value)"
+          v-for="(i, index) in g.options"
+          :key="index"
           :is="renderOption(i)"
         />
       </div>

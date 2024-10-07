@@ -1,3 +1,11 @@
+<!-- 
+Inspired By:
+
+CodePen Home
+3D Emoji Town (Pure CSS)
+George W. Park
+https://codepen.io/GeorgePark/pen/MqVoYP
+-->
 <script setup lang="ts">
 import { useData } from 'vitepress';
 import { nextTick } from 'vue';

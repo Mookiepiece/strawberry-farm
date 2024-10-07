@@ -1,7 +1,6 @@
 i-feather {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-grid;
+  place-content: center;
   flex-shrink: 0;
 }
 
@@ -13,4 +12,14 @@ i-feather svg {
   stroke-width: 2px;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+i-edge {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  clip-path: circle(0);
+  pointer-events: none;
 }

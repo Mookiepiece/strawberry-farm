@@ -50,11 +50,10 @@ watchEffect(() => {
 });
 
 watchEffect(onCleanup => {
-  const $anc = anchor.value;
   const $pop = pop.value;
-  if ($anc && $pop)
+  if ($pop)
     onCleanup(
-      onClickAway([$pop, $anc], () => {
+      onClickAway([$pop], () => {
         open.value = false;
       }),
     );

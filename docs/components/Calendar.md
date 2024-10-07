@@ -1,6 +1,10 @@
 # Calendar
 
-A Month. binding `dayjs` which indicates currently focused day.
+A Month with 42 cells. binding `dayjs` which indicates currently focused day.
+
+:::source components/VCalendar.vue
+
+:::
 
 ## Spec
 
@@ -8,10 +12,7 @@ A Month. binding `dayjs` which indicates currently focused day.
 | ------------------------------------------------------------------------------------ | ---------- |
 | <vp-kbd k="up" /> / <vp-kbd k="left" /> / <vp-kbd k="down" /> / <vp-kbd k="right" /> | Navigates. |
 | <vp-kbd k="Home" /> / <vp-kbd k="End"  />                                            | Navigates. |
-
-:::source components/VCalendar.vue
-
-:::
+| <vp-kbd k="m1" />                                                                    | Navigates. |
 
 :::demo components/Calendar
 :::

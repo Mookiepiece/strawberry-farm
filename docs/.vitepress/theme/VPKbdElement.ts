@@ -46,8 +46,10 @@ export class VPKbdElement extends HTMLElement {
           return feather('arrow-right');
         case 'm0':
           return kbd('', 'm0');
-        case 'm1':
-          return kbd('', 'm1');
+          case 'm1':
+            return kbd('', 'm1');
+        case 'm2':
+          return kbd('', 'm2');
         case '+':
           return '+';
         default:

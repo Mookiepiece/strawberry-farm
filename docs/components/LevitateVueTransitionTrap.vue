@@ -40,7 +40,7 @@ watchEffect(onCleanup => {
   const $pop = pop.value;
   const $open = open.value;
   if ($open && $pop) {
-    onCleanup(trap($pop, theif => theif !== anchor.value));
+    onCleanup(trap($pop, theif => anchor.value?.contains(theif)));
   }
 });
 </script>

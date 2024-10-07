@@ -105,8 +105,8 @@ export const applyTransform: PopPlugin = config => {
   const $ref = config.$anc as HTMLElement;
   const $pop = config.$pop as HTMLElement;
 
-  $pop.setAttribute('data-pop-dir', config.dir);
-  $ref.setAttribute('data-pop-dir', config.dir);
+  $pop.setAttribute('data-dir', config.dir);
+  $ref.setAttribute('data-dir', config.dir);
   $pop.style.setProperty('--x', config.x + 'px');
   $pop.style.setProperty('--y', config.y + 'px');
   $pop.style.setProperty('left', 'var(--x)');

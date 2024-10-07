@@ -182,6 +182,4 @@ const renderCell = (cell: number) => {
   display: grid;
   grid-template: repeat(7, 35px) / repeat(7, 35px);
 }
-
-
 </style>

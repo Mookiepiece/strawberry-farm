@@ -1,11 +1,18 @@
-import { computed, reactive, ref, watchEffect } from 'vue';
+import {
+  computed,
+  InjectionKey,
+  provide,
+  reactive,
+  ref,
+  watchEffect,
+} from 'vue';
 import { applyTransform, fx, levitate, on, trap } from '../shared';
 import { onClickAway } from '../html/onClickAway';
 import { bagEffect } from './bagEffect';
 
 export type UsePopperProps = {
   trigger?: 'click' | 'hover';
-  anchor: HTMLElement | SVGElement | undefined;
+  anchor: { getBoundingClientRect(): DOMRect } | undefined;
   popper: HTMLElement | undefined;
   trap?: ((thief?: any) => boolean | void) | boolean;
   animated?: boolean;
@@ -61,9 +68,13 @@ export const usePopper = (props: UsePopperProps) => {
   watchEffect(onCleanup => {
     if (!open.value) return;
 
-    const [$ref, $pop] = [props.anchor, props.popper];
-    if (!$ref || !$pop) return;
-    onCleanup(onClickAway([$pop, $ref], () => (open.value = false)));
+    const [$anc, $pop] = [props.anchor, props.popper];
+    if (!$anc || !$pop) return;
+
+    const _anc =
+      $anc instanceof HTMLElement || $anc instanceof SVGElement ? [$anc] : [];
+
+    onCleanup(onClickAway([$pop, ..._anc], () => (open.value = false)));
   });
 
   watchEffect(() => {
@@ -114,6 +125,8 @@ export const usePopper = (props: UsePopperProps) => {
   bagEffect(bag => {
     const $anc = props.anchor;
     if (!$anc) return;
+
+    if (!($anc instanceof HTMLElement || $anc instanceof SVGElement)) return;
 
     bag(
       on($anc).keydown.exact(e => {
@@ -174,4 +187,35 @@ export const usePopper = (props: UsePopperProps) => {
     play,
     pause,
   });
+};
+
+const POP_CHAIN_IK: InjectionKey<{
+  chain: Set<Element>;
+}> = Symbol();
+
+const _trap = trap;
+export const usePopperTrapChain = () => {
+  const chain = new Set<Element>();
+
+  const trap: typeof _trap = (el, details) =>
+    _trap(el, theif => {
+      if ([...chain].some(node => node !== el && node.contains(theif)))
+        return false;
+      return details?.(theif);
+    });
+
+  const onClickAway = (cb: () => void) => {
+    return on(document).pointerdown.capture(e => {
+      if ([...chain].every(node => node?.contains(e.target as Node) === false))
+        cb();
+    });
+  };
+
+  provide(POP_CHAIN_IK, { chain });
+
+  return {
+    chain,
+    trap,
+    onClickAway,
+  };
 };

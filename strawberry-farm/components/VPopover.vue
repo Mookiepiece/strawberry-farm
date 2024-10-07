@@ -14,13 +14,7 @@ const slots = defineSlots<{
 
 const anchor = ref();
 const popper = ref();
-const pop = usePopper(
-  reactive({
-    ...toRefs(props),
-    popper,
-    anchor,
-  }),
-);
+const pop = usePopper(reactive({ ...toRefs(props), popper, anchor }));
 
 const forwardRef = ($attrs: any) =>
   cloneVNode(child(slots.default()) || h('i'), {
@@ -43,7 +37,7 @@ defineExpose({
       data-pop
       ref="popper"
       v-if="pop.open || pop.visible"
-      class="--action-sheet"
+      class="VActionSheet"
     >
       <slot name="popper"></slot>
     </div>
@@ -52,15 +46,24 @@ defineExpose({
 </template>
 
 <style>
-[data-pop].--action-sheet {
+[data-pop].VActionSheet {
   &:where(:is(.v-enter-from, .v-leave-to)) {
-    transform: translateY(-10px);
     opacity: 0;
+
+    &:where([data-dir='bottom']) {
+      transform: translateY(-10px);
+    }
+    &:where([data-dir='top']) {
+      transform: translateY(10px);
+    }
+    &:where([data-dir='left']) {
+      transform: translateX(-10px);
+    }
+    &:where([data-dir='right']) {
+      transform: translateX(10px);
+    }
   }
-  &:where(:is(.v-enter-to, .v-leave-from)) {
-    transform: translateY(0);
-    opacity: 1;
-  }
+
   &:where(
       :is(
           .v-enter-active:not(.v-enter-from),

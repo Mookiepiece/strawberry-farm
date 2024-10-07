@@ -2,6 +2,12 @@
 
 Positioning floating(fixed) elements.
 
+:::source shared/levitate.ts
+:::
+
+:::source shared/levitatePlugins.ts
+:::
+
 Basic Arguments:
 
 |        |                   |
@@ -26,13 +32,6 @@ import LevitateAlgo from './LevitateAlgo.vue'
 </script>
 
 <LevitateAlgo />
-
-
-:::source shared/levitate.ts
-:::
-
-:::source shared/levitatePlugins.ts
-:::
 
 ## Positioning
 
@@ -79,7 +78,7 @@ Learn advanced usage of customized positioning.
 
 ### ApplyTransform
 
-The `applyTransform` plugin will assign `top` `left` `max-width` `max-height` `[data-pop-dir="bottom"]` etc to your elements.
+The `applyTransform` plugin will assign `top` `left` `max-width` `max-height` `[data-dir="bottom"]` etc to your elements.
 
 It is a `post` plugin which will run after `Align`(positioning process).
 
