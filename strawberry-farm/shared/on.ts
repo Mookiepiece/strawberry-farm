@@ -86,7 +86,7 @@ export const on = <T extends EventTarget>(el: T) => {
       };
 
       el.addEventListener(type, fn, { capture, once, passive });
-      return () => el.removeEventListener(type, fn);
+      return () => el.removeEventListener(type, fn, { capture });
     },
   }) as any as ON2;
   return polaris;
