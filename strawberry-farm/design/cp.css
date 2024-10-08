@@ -6,44 +6,50 @@
   --f2: 14px;
   --f3: 12px;
 
+  --black-txt-0: #000;
   --black-txt-1: #131314;
   --black-txt-2: #131314aa;
   --black-txt-3: #13133455;
+  --white-txt-0: #fff;
   --white-txt-1: #e6e4e2;
   --white-txt-2: #e6e4e2bb;
   --white-txt-3: #e6e4e255;
-
-  --bg: #ffffff;
-
-  --s: 30px;
-  --m: 40px;
-  --l: 50px;
-  ---size: var(--m);
-  ---f: var(--f2);
 }
 
-:where(.size-s) {
-  ---size: var(--s);
+:where(.size-small) {
+  ---size: 30px;
+  ---size-x: 5px;
   ---f: var(--f3);
 }
 
-:where(.size-m) {
-  ---size: var(--m);
+:where(.size-regular) {
+  ---size: 35px;
+  ---size-x: 10px;
   ---f: var(--f2);
 }
 
-:where(.size-l) {
-  ---size: var(--l);
+:root,
+:where(.size-medium) {
+  ---size: 40px;
+  ---size-x: 10px;
+  ---f: var(--f2);
+}
+
+:where(.size-large) {
+  ---size: 50px;
+  ---size-x: 15px;
   ---f: var(--f1);
 }
 
 :root,
 .light {
+  --text-0: var(--black-txt-0);
   --text-1: var(--black-txt-1);
   --text-2: var(--black-txt-2);
   --text-3: var(--black-txt-3);
 }
 .dark {
+  --text-0: var(--white-txt-0);
   --text-1: var(--white-txt-1);
   --text-2: var(--white-txt-2);
   --text-3: var(--white-txt-3);

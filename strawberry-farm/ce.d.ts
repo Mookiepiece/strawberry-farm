@@ -50,6 +50,7 @@ export type CustomElements = {
    */
   'toast-bar': DefineComponent<ToastBarProps>;
   'i-feather': DefineComponent<IFeatherProps>;
+  'i-edge': DefineComponent;
 };
 
 declare module 'vue' {

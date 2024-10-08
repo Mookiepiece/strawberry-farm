@@ -4,13 +4,13 @@ import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
 
 <template>
   <div class="good">
-    <VButton class="GhostButton size-s">
+    <VButton class="GhostButton size-small">
       <template #prefix>
         <i-feather i="airplay" />
       </template>
     </VButton>
-    <VButton class="GhostButton size-s">Button</VButton>
-    <VButton class="GhostButton size-s">
+    <VButton class="GhostButton size-small">Button</VButton>
+    <VButton class="GhostButton size-small">
       <template #prefix>
         <i-feather i="airplay" />
       </template>
@@ -28,13 +28,13 @@ import VButton from '@mookiepiece/strawberry-farm/vue/VButton.vue';
       </template>
       Button
     </VButton>
-    <VButton class="GhostButton size-l">
+    <VButton class="GhostButton size-large">
       <template #prefix>
         <i-feather i="airplay" />
       </template>
     </VButton>
-    <VButton class="GhostButton size-l">Button</VButton>
-    <VButton class="GhostButton size-l">
+    <VButton class="GhostButton size-large">Button</VButton>
+    <VButton class="GhostButton size-large">
       <template #prefix>
         <i-feather i="airplay" />
       </template>

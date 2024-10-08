@@ -4,18 +4,19 @@ import { VPopover } from '@mookiepiece/strawberry-farm';
 
 <template>
   <div class="good">
-    <VPopover trap>
+    <VPopover trigger="click" trap>
       <button>Menu</button>
       <template #popper>
-        <VPopover trigger="hover" trap>
-          <button>Hover</button>
-          <template #popper>
-            <button>VIS</button>
-          </template>
-        </VPopover>
+        <div>
+          <VPopover trigger="hover" trap>
+            <button>Hover</button>
+            <template #popper>
+              <button>VIS</button>
+            </template>
+          </VPopover>
+        </div>
       </template>
     </VPopover>
-
   </div>
 </template>
 

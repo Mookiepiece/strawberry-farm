@@ -11,20 +11,12 @@ import {
 
 const model = defineModel();
 
-const props = withDefaults(
-  defineProps<
-    UseListboxProps<T> & {
-      listbox?: Listbox<T>;
-      circular?: boolean;
-      magnetic?: boolean;
-      action?(e: KeyboardEvent, listbox: Listbox): void;
-    }
-  >(),
-  {
-    circular: true,
-    magnetic: undefined,
-  },
-);
+const props = defineProps<
+  UseListboxProps<T> & {
+    listbox?: Listbox<T>;
+    action?(e: KeyboardEvent, listbox: Listbox): void;
+  }
+>();
 
 const slots = defineSlots<{
   default?(props: { option: ListboxLeaf<T> }): any;
@@ -33,13 +25,13 @@ const slots = defineSlots<{
 
 const listbox = props.listbox || useListbox(model, props);
 
-const magnetic = computed(() => props.magnetic ?? !listbox.multi);
+const magnetic = computed(() => !listbox.multi);
 
 defineExpose({ listbox });
 </script>
 
 <template>
-  <VListbox :listbox :circular :magnetic class="VRadios">
+  <VListbox :listbox circular :magnetic class="VRadios">
     <template #default="scope">
       <slot v-bind="scope">
         <div data-trunk>

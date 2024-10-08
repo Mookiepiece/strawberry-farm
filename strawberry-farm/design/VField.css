@@ -1,0 +1,27 @@
+:where(.VField) {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(---size);
+  font-size: var(---f);
+  line-height: 1.6;
+  color: var(--text-1);
+  outline: 1px solid var(--mat-solid-15);
+  outline-offset: -1px;
+  box-shadow: 0 0 0 0 var(---foam);
+  transition: box-shadow 0.2s;
+
+  > input,
+  textarea,
+  [data-trunk] {
+    padding: 0 var(---size-x);
+  }
+
+  [data-prefix],[data-prefix-solid] {
+    order: -1;
+  }
+  [data-suffix],[data-suffix-solid] {
+    order: 1;
+  }
+}

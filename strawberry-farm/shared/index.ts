@@ -13,3 +13,4 @@ export * from './levitate';
 export * from './levitatePlugins';
 
 export * from './child';
+export * from './forwardRef';

@@ -1,14 +1,6 @@
-import {
-  computed,
-  InjectionKey,
-  provide,
-  reactive,
-  ref,
-  watchEffect,
-} from 'vue';
+import { computed, reactive, ref, watchEffect } from 'vue';
 import { applyTransform, fx, levitate, on, trap } from '../shared';
-import { onClickAway } from '../html/onClickAway';
-import { bagEffect } from './bagEffect';
+import { bagEffect } from '../shared/bagEffect';
 
 export type UsePopperProps = {
   trigger?: 'click' | 'hover';
@@ -33,7 +25,6 @@ export const usePopper = (props: UsePopperProps) => {
       _open.value = v;
     },
   });
-  const visible = ref(false);
 
   const trigger = computed(() => props.trigger || 'click');
 
@@ -44,8 +35,12 @@ export const usePopper = (props: UsePopperProps) => {
 
       onCleanup(
         levitate.auto($ref, () => {
-          levitate($ref, $pop, { dir, align, viewport, plugins });
-          visible.value = true;
+          levitate($ref, $pop, {
+            dir,
+            align,
+            viewport,
+            plugins,
+          });
         }),
       );
     }
@@ -54,14 +49,12 @@ export const usePopper = (props: UsePopperProps) => {
   watchEffect(onCleanup => {
     if (!props?.trap) return;
     const [$open, $ref, $pop] = [open.value, props.anchor, props.popper];
-    // visible: make sure the popper receives focus after [data-pop-box] inited
-    // open: make sure the reference immediately receive focus when existing
-    if (!$open || !visible.value || !$pop) return;
+    if (!$open || !$pop) return;
     onCleanup(
-      trap(
-        $pop,
-        typeof props.trap === 'function' ? props.trap : thief => thief !== $ref,
-      ),
+      trap($pop, thief => {
+        if ($ref instanceof Element && $ref.contains(thief)) return false;
+        if (typeof props.trap === 'function') return props.trap(thief);
+      }),
     );
   });
 
@@ -71,35 +64,14 @@ export const usePopper = (props: UsePopperProps) => {
     const [$anc, $pop] = [props.anchor, props.popper];
     if (!$anc || !$pop) return;
 
-    const _anc =
-      $anc instanceof HTMLElement || $anc instanceof SVGElement ? [$anc] : [];
-
-    onCleanup(onClickAway([$pop, ..._anc], () => (open.value = false)));
-  });
-
-  watchEffect(() => {
-    if (!visible.value || !props.popper) return;
-
-    if (!props?.animated) {
-      if (!open.value) {
-        visible.value = false;
-      }
-      return;
-    }
-
-    const $pop = props.popper;
-
-    if (!$pop) return;
-
-    if (open.value) {
-      fx.cssTransition($pop, 'v-enter');
-    } else {
-      fx.cssTransition($pop, 'v-leave', {
-        done() {
-          visible.value = false;
-        },
-      });
-    }
+    const _anc = $anc instanceof Element ? [$anc] : [];
+    onCleanup(
+      on(document).pointerdown.capture(({ target }) => {
+        if (target instanceof Node)
+          if ([$pop, ..._anc].every(el => el.contains(target) === false))
+            open.value = false;
+      }),
+    );
   });
 
   const delay = computed(() => {
@@ -135,6 +107,7 @@ export const usePopper = (props: UsePopperProps) => {
           case 'ArrowRight':
           case 'ArrowDown':
           case 'ArrowLeft':
+          case 'Enter':
           case ' ':
             e.preventDefault();
             open.value = !open.value;
@@ -154,8 +127,8 @@ export const usePopper = (props: UsePopperProps) => {
         }),
       );
     } else if (trigger.value === 'hover') {
-      bag(on($anc).pointerenter.exact.prevent(play));
-      bag(on($anc).pointerout.exact.prevent(pause));
+      bag(on($anc).pointerenter.exact(play));
+      bag(on($anc).pointerout.exact(pause));
     }
   });
 
@@ -175,47 +148,15 @@ export const usePopper = (props: UsePopperProps) => {
 
     if (trigger.value === 'hover') {
       if ($pop) {
-        bag(on($pop).pointerenter.exact.prevent(play));
-        bag(on($pop).pointerout.exact.prevent(pause));
+        bag(on($pop).pointerenter.exact(play));
+        bag(on($pop).pointerout.exact(pause));
       }
     }
   });
 
   return reactive({
     open,
-    visible,
     play,
     pause,
   });
-};
-
-const POP_CHAIN_IK: InjectionKey<{
-  chain: Set<Element>;
-}> = Symbol();
-
-const _trap = trap;
-export const usePopperTrapChain = () => {
-  const chain = new Set<Element>();
-
-  const trap: typeof _trap = (el, details) =>
-    _trap(el, theif => {
-      if ([...chain].some(node => node !== el && node.contains(theif)))
-        return false;
-      return details?.(theif);
-    });
-
-  const onClickAway = (cb: () => void) => {
-    return on(document).pointerdown.capture(e => {
-      if ([...chain].every(node => node?.contains(e.target as Node) === false))
-        cb();
-    });
-  };
-
-  provide(POP_CHAIN_IK, { chain });
-
-  return {
-    chain,
-    trap,
-    onClickAway,
-  };
 };

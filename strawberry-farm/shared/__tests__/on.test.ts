@@ -14,7 +14,7 @@ describe('collection', () => {
         code: 'Space',
       });
 
-      const off = on(a).keydown['Space'](event => {
+      const off = on(a).keydown(event => {
         i++;
         expect(event).toEqual(e);
       });

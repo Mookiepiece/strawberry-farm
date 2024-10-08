@@ -10,32 +10,32 @@ const model = ref('');
     <VInput
       v-model="model"
       placeholder="東方神霊廟 〜 Ten Desires."
-      class="size-s"
+      class="size-small"
     />
     <VInput v-model="model" placeholder="東方神霊廟 〜 Ten Desires." />
     <VInput
       v-model="model"
       placeholder="東方神霊廟 〜 Ten Desires."
-      class="size-l"
+      class="size-large"
     />
 
     <VInput
       v-model="model"
       textarea
-      class="size-s"
+      class="size-small"
       placeholder="東方神霊廟 〜 Ten Desires."
     />
     <VInput v-model="model" textarea placeholder="東方神霊廟 〜 Ten Desires." />
     <VInput
       v-model="model"
       textarea
-      class="size-l"
+      class="size-large"
       placeholder="東方神霊廟 〜 Ten Desires."
     />
 
     <VInput
       v-model="model"
-      class="size-s"
+      class="size-small"
       placeholder="東方神霊廟 〜 Ten Desires."
     >
       <template #prefix><i-feather i="compass" /></template>
@@ -45,7 +45,7 @@ const model = ref('');
     </VInput>
     <VInput
       v-model="model"
-      class="size-l"
+      class="size-large"
       placeholder="東方神霊廟 〜 Ten Desires."
     >
       <template #prefix><i-feather i="compass" /></template>
@@ -53,7 +53,7 @@ const model = ref('');
 
     <VInput
       v-model="model"
-      class="size-s"
+      class="size-small"
       placeholder="東方神霊廟 〜 Ten Desires."
     >
       <template #suffix><i-feather i="compass" /></template>
@@ -63,7 +63,7 @@ const model = ref('');
     </VInput>
     <VInput
       v-model="model"
-      class="size-l"
+      class="size-large"
       placeholder="東方神霊廟 〜 Ten Desires."
     >
       <template #suffix><i-feather i="compass" /></template>
@@ -71,7 +71,7 @@ const model = ref('');
 
     <VInput
       v-model="model"
-      class="size-s"
+      class="size-small"
       placeholder="東方神霊廟 〜 Ten Desires."
       clearable
     />
@@ -82,14 +82,14 @@ const model = ref('');
     />
     <VInput
       v-model="model"
-      class="size-l"
+      class="size-large"
       placeholder="東方神霊廟 〜 Ten Desires."
       clearable
     />
 
     <VInput
       v-model="model"
-      class="size-s"
+      class="size-small"
       placeholder="東方神霊廟 〜 Ten Desires."
       clearable
     >
@@ -100,7 +100,7 @@ const model = ref('');
     </VInput>
     <VInput
       v-model="model"
-      class="size-l"
+      class="size-large"
       placeholder="東方神霊廟 〜 Ten Desires."
       clearable
     >
@@ -109,7 +109,7 @@ const model = ref('');
 
     <VInput
       v-model="model"
-      class="size-s"
+      class="size-small"
       placeholder="東方神霊廟 〜 Ten Desires."
       clearable
     >
@@ -126,7 +126,7 @@ const model = ref('');
     </VInput>
     <VInput
       v-model="model"
-      class="size-l"
+      class="size-large"
       placeholder="東方神霊廟 〜 Ten Desires."
       clearable
     >
@@ -135,7 +135,7 @@ const model = ref('');
     </VInput>
     <VInput
       v-model="model"
-      class="size-s"
+      class="size-small"
       placeholder="東方神霊廟 〜 Ten Desires."
       clearable
     >
@@ -152,7 +152,7 @@ const model = ref('');
     </VInput>
     <VInput
       v-model="model"
-      class="size-l"
+      class="size-large"
       placeholder="東方神霊廟 〜 Ten Desires."
       clearable
     >

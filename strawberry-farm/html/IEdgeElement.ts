@@ -1,6 +1,6 @@
 export class IEdgeElement extends HTMLElement {
   connectedCallback() {
-    if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', '-1');
+    if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', '0');
   }
 
   static install() {

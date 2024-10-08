@@ -22,6 +22,12 @@ if (!import.meta.env.SSR) {
     },
   );
 
+  import('@mookiepiece/strawberry-farm/html/IEdgeElement').then(
+    ({ IEdgeElement }) => {
+      IEdgeElement.install();
+    },
+  );
+
   import('./VPKbdElement').then(({ VPKbdElement }) => {
     customElements.define('vp-kbd', VPKbdElement);
   });

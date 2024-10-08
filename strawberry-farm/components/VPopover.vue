@@ -1,25 +1,35 @@
 <script setup lang="ts">
 import { cloneVNode, h, reactive, ref, toRefs } from 'vue';
-import { usePopper, UsePopperProps } from '../vue/usePopover';
-import { child } from '../shared';
+import { usePopper, UsePopperProps } from './VPopover';
+import { child, forwardRef } from '../shared';
 
 defineOptions({ inheritAttrs: false });
 
 const props = defineProps<Omit<UsePopperProps, 'popper' | 'anchor'>>();
 
 const slots = defineSlots<{
-  default: any;
-  popper: any;
+  default: (scope: ReturnType<typeof usePopper>) => any;
+  popper: (scope: ReturnType<typeof usePopper>) => any;
 }>();
 
-const anchor = ref();
-const popper = ref();
+const _anchor = ref();
+const _popper = ref();
+const anchor = forwardRef(_anchor);
+const popper = forwardRef(_popper);
 const pop = usePopper(reactive({ ...toRefs(props), popper, anchor }));
 
-const forwardRef = ($attrs: any) =>
-  cloneVNode(child(slots.default()) || h('i'), {
+const renderDefault = ($attrs: any) =>
+  cloneVNode(child(slots.default(pop)) || h('i'), {
     ...$attrs,
     ref: anchor,
+  });
+
+const renderPopper = ($attrs: any) =>
+  cloneVNode(child(slots.popper(pop)) || h('i'), {
+    ...$attrs,
+    'data-pop': '',
+    // FIXME: extract
+    class: 'VActionSheet',
   });
 
 defineExpose({
@@ -30,23 +40,25 @@ defineExpose({
 </script>
 
 <template>
-  <component :is="forwardRef($attrs)" />
+  <component ref="_anchor" :is="renderDefault($attrs)" />
   <Teleport to="body">
-    <span data-edge tabindex="0" v-if="pop.open"></span>
-    <div
-      data-pop
-      ref="popper"
-      v-if="pop.open || pop.visible"
-      class="VActionSheet"
-    >
-      <slot name="popper"></slot>
-    </div>
-    <span data-edge tabindex="0" v-if="pop.open"></span>
+    <i-edge v-if="pop.open" />
+    <Transition v-if="animated">
+      <component ref="_popper" v-if="pop.open" :is="renderPopper($attrs)" />
+    </Transition>
+    <template v-else>
+      <component ref="_popper" v-if="pop.open" :is="renderPopper($attrs)" />
+    </template>
+    <i-edge v-if="pop.open" />
   </Teleport>
 </template>
 
 <style>
 [data-pop].VActionSheet {
+  box-shadow:
+    var(--shadow),
+    0 0 0 1px var(--mat-air-15);
+
   &:where(:is(.v-enter-from, .v-leave-to)) {
     opacity: 0;
 

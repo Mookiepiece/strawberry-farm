@@ -49,6 +49,7 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Table', link: '/components/Table' },
         { text: 'Switch', link: '/components/Switch' },
         { text: 'Calendar', link: '/components/Calendar' },
+        { text: 'Select', link: '/components/Select' },
       ],
     },
     {
@@ -60,7 +61,6 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Alert', link: '/design/Alert' },
         { text: 'Button', link: '/design/Button' },
         { text: 'Input', link: '/design/Input' },
-        { text: 'Select', link: '/design/Select' },
         { text: 'Tree', link: '/design/Tree' },
         { text: 'Form', link: '/design/Form' },
         { text: 'Farm', link: '/design/Farm' },

@@ -6,7 +6,6 @@ import {
   inject,
   provide,
   reactive,
-  watch,
   watchEffect,
 } from 'vue';
 import { Form, FormModel, V_FORM_IN, V_FORM_ITEM_LABEL_IN } from './Form';
@@ -15,7 +14,6 @@ import { Bag } from '../shared';
 import { unref } from 'vue';
 import VFormLabel from './VFormLabel.vue';
 import VInput from './VInput.vue';
-import { RenderFunction } from './RenderFunction';
 
 const props = withDefaults(
   defineProps<{
@@ -148,7 +146,7 @@ const render = () =>
       </slot>
     </div>
 
-    <RenderFunction :render="render" />
+    <component :is="render" />
 
     <div v-if="$slots.extra" class="f3">
       <slot name="extra" />
