@@ -31,7 +31,7 @@ An opinionated way to use `levitate`.
 
 ## Chain
 
-Not Supported, here's why.
+Based on internal `popoverChain` levitate plugin, `trap` (Focus are trapped inside the popper) and `onClickAway` (Click outside to close) are aware of submenus.
 
 :::demo components/PopoverChain
 :::
