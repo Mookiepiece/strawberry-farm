@@ -21,7 +21,6 @@ const pop = usePopper(reactive({ ...toRefs(props), popper, anchor }));
 const renderDefault = ($attrs: any) =>
   cloneVNode(child(slots.default(pop)) || h('i'), {
     ...$attrs,
-    ref: anchor,
   });
 
 const renderPopper = ($attrs: any) =>
