@@ -1,28 +1,13 @@
 <script lang="ts">
-const weakCache = <F extends (param: any) => any>(cb: F): F => {
-  const weakMap = new WeakMap<any, any>();
-
-  return ((param: any) =>
-    weakMap.get(param) ||
-    (() => {
-      const a = cb(param);
-      weakMap.set(param, a);
-      return a;
-    })()) as F;
-};
-
 const toArray = (a: any) => (Array.isArray(a) ? a : [a]);
 
-export const useListboxExtra = weakCache((listbox: Listbox) => {
+export const useListboxExtra = (listbox: Listbox) => {
   const addRange = (a: number, b: number) => {
     if (a < 0 || b < 0) return;
     const range = listbox.options.slice(Math.min(a, b), Math.max(a, b) + 1);
     const models = new Set(listbox.model);
     listbox.input(...range.map(r => r.value).filter(i => !models.has(i)));
   };
-
-  const findIndex = (v: any) =>
-    listbox.options.findIndex(({ value }) => value === v);
 
   let anchor = -1;
   const handleKeydown = (
@@ -45,26 +30,18 @@ export const useListboxExtra = weakCache((listbox: Listbox) => {
 
     if (e.shiftKey) {
       if (!listbox.multi) return;
+
       const nav = (delta: number) => {
         e.preventDefault();
         listbox.nav(delta);
         addRange(anchor, listbox.current);
       };
+      // prettier-ignore
       switch (e.key) {
-        case 'ArrowUp':
-        case 'ArrowLeft':
-          nav(-1);
-          break;
-        case 'ArrowDown':
-        case 'ArrowRight':
-          nav(1);
-          break;
-        case 'Home':
-          nav(-Infinity);
-          break;
-        case 'End':
-          nav(Infinity);
-          break;
+        case 'ArrowUp':   case 'ArrowLeft':  nav(-1); break;
+        case 'ArrowDown': case 'ArrowRight': nav(1); break;
+        case 'Home':                         nav(-Infinity); break;
+        case 'End':                          nav(Infinity); break;
       }
     } else {
       const nav = (delta: number) => {
@@ -77,21 +54,13 @@ export const useListboxExtra = weakCache((listbox: Listbox) => {
         }
       };
 
+      // prettier-ignore
       switch (e.key) {
-        case 'ArrowUp':
-        case 'ArrowLeft':
-          nav(-1);
-          break;
-        case 'ArrowDown':
-        case 'ArrowRight':
-          nav(1);
-          break;
-        case 'Home':
-          nav(-Infinity);
-          break;
-        case 'End':
-          nav(Infinity);
-          break;
+        case 'ArrowUp':   case 'ArrowLeft':  nav(-1); break;
+        case 'ArrowDown': case 'ArrowRight': nav(1); break;
+        case 'Home':                         nav(-Infinity); break;
+        case 'End':                          nav(Infinity); break;
+
         case ' ':
           e.preventDefault();
           listbox.input(listbox);
@@ -113,7 +82,7 @@ export const useListboxExtra = weakCache((listbox: Listbox) => {
         const b = (anchor > -1 && anchor) || listbox.current;
         if (b >= 0) {
           listbox.current = a;
-          useListboxExtra(listbox).addRange(a, b);
+          addRange(a, b);
         }
       } else {
         if (e.ctrlKey === magnetic) {
@@ -132,13 +101,11 @@ export const useListboxExtra = weakCache((listbox: Listbox) => {
 
   return {
     addRange,
-    findIndex,
-    getAnchor: () => anchor,
 
     handlePointerdown,
     handleKeydown,
   };
-});
+};
 </script>
 
 <script setup lang="ts" generic="T = any">
@@ -160,6 +127,8 @@ const props = withDefaults(
   >(),
   { magnetic: true },
 );
+
+const root = ref();
 
 const slots = defineSlots<{
   default?(props: { option: ListboxLeaf<T> }): any;
@@ -200,8 +169,6 @@ const onKeyDown = (e: KeyboardEvent) => {
     });
   }
 };
-
-const root = ref();
 
 defineExpose({ listbox });
 </script>
