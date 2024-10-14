@@ -1,7 +1,14 @@
 <script setup lang="ts" generic="T">
 import { ListboxInput } from '../patterns';
 import VListbox from '../patterns/VListbox.vue';
-import { applyTransform, flip, margin, PopPlugin, sameWidth } from '../shared';
+import {
+  applyTransform,
+  flip,
+  margin,
+  maxHeight,
+  PopPlugin,
+  sameWidth,
+} from '../shared';
 import VPopover from './VPopover.vue';
 
 const model = defineModel();
@@ -24,13 +31,14 @@ const clickToClose = (e: Event, cb: () => void) =>
   e.target.matches("[role='option']") &&
   cb();
 
-const spaceToClose = (e: Event, cb: () => void) =>
+const spaceToClose = (_: Event, cb: () => void) =>
   !Array.isArray(model) && cb();
 
 const plugins: PopPlugin[] = [
+  sameWidth,
   margin(5),
   flip({ margin: 5 }),
-  sameWidth,
+  maxHeight,
   applyTransform,
 ];
 </script>
@@ -48,11 +56,11 @@ const plugins: PopPlugin[] = [
       </div>
     </template>
     <template #popper="pop">
-      <div>
+      <div class="VActionSheet">
         <VListbox
           v-model="model"
           @click="(e: Event) => clickToClose(e, () => (pop.open = false))"
-          @keydown.space="
+          @keydown.space.prevent="
             (e: Event) => spaceToClose(e, () => (pop.open = false))
           "
           :action="
@@ -78,6 +86,11 @@ const plugins: PopPlugin[] = [
 
 :where(.VSelect .VInputTrunk) {
   pointer-events: none;
+}
+
+:where([data-trunk]::placeholder, [data-placeholder]) {
+  color: var(--text-3);
+  user-select: none;
 }
 
 :where(.VSelect:not([aria-disabled='true']):hover) {

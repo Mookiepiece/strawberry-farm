@@ -6,7 +6,11 @@
 
 :::
 
-## Spec
+## Command List
+
+| Command List |                         |
+| ------------ | ----------------------- |
+| /            | See `Popover` `Listbox` |
 
 :::demo components/Select
 :::
@@ -15,4 +19,3 @@
 
 :::demo components/ComboList
 :::
-

@@ -78,7 +78,7 @@ defineExpose({ el });
     <i-feather
       v-if="clearable && output"
       i="x"
-      class="VInputEraser"
+      class="VEraser"
       tabindex="-1"
       @click="erase"
       aria-hidden="true"

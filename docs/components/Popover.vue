@@ -7,14 +7,14 @@ import { VPopover } from '@mookiepiece/strawberry-farm';
     <VPopover animated>
       <button>Animated</button>
       <template #popper>
-        <button>VIS</button>
+        <button class="VActionSheet">VIS</button>
       </template>
     </VPopover>
 
     <VPopover trigger="hover">
       <button>Hover</button>
       <template #popper>
-        <button>VIS</button>
+        <button class="VActionSheet">VIS</button>
       </template>
     </VPopover>
 

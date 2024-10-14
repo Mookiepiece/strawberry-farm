@@ -13,7 +13,7 @@ const model = defineModel<any>();
 
 const props = withDefaults(
   defineProps<{
-    options?: CommonOptionsInput<T>;
+    options?: CommonOptionsnIput<T>;
     disabled?: boolean;
     placeholder?: string;
     clearable?: boolean;
@@ -106,7 +106,7 @@ defineExpose({
     <i-feather
       v-if="clearable && !disabled && !empty"
       i="x"
-      class="VInputEraser"
+      class="VEraser"
       tabindex="-1"
       @click="erase"
       aria-hidden="true"

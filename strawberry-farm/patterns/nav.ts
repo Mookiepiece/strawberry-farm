@@ -1,5 +1,11 @@
 import { computed, MaybeRef, Ref, ref } from 'vue';
 
+/**
+ * 
+ * @param __current Initial value. default to 0.
+ * @param options The linear dungeon, 0 repesents disabled, otherwise represents the index of the option.
+ * @returns 
+ */
 export const useNav = (
   __current: MaybeRef<number> = 0,
   options: Ref<number[]>,

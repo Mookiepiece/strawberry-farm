@@ -6,15 +6,15 @@ const installGradients = () => {
   defs = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   defs.innerHTML = `
             <defs>
-              <linearGradient id="codeGradientRose" gradientTransform="rotate(40)">
+              <linearGradient id="codeGradientRose" gradientTransform="rotate(40)" gradientUnits="userSpaceOnUse">
                 <stop offset="5%" stop-color="#f50" />
                 <stop offset="95%" stop-color="#f82" />
               </linearGradient>
-              <linearGradient id="codeGradientViolet" gradientTransform="rotate(40)">
+              <linearGradient id="codeGradientViolet" gradientTransform="rotate(40)" gradientUnits="userSpaceOnUse">
                 <stop offset="5%" stop-color="#25e" />
                 <stop offset="95%" stop-color="#18f" />
               </linearGradient>
-              <linearGradient id="codeGradientVue" gradientTransform="rotate(40)">
+              <linearGradient id="codeGradientVue" gradientTransform="rotate(40)" gradientUnits="userSpaceOnUse">
                 <stop offset="5%" stop-color="#3a8" />
                 <stop offset="95%" stop-color="#1c6" />
               </linearGradient>

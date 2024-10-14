@@ -6,7 +6,7 @@ A Month with 42 cells. binding `dayjs` which indicates currently focused day.
 
 :::
 
-## Spec
+## Command List
 
 | Command List                                                                         |            |
 | ------------------------------------------------------------------------------------ | ---------- |

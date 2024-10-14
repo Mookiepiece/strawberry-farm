@@ -29,7 +29,7 @@
   color: var(--text-3);
 }
 
-:where(.VInputEraser) {
+:where(.VEraser) {
   order: 3;
   flex-shrink: 0;
   width: var(---size);
@@ -38,16 +38,16 @@
   pointer-events: none;
 }
 
-:where(.VInputEraser) {
+:where(.VEraser) {
   cursor: pointer;
   pointer-events: initial;
 }
 
-:where(.VInputEraser:hover) {
+:where(.VEraser:hover) {
   background-color: var(--mat-air-1);
 }
 
-:where(.VInputEraser:active) {
+:where(.VEraser:active) {
   background-color: var(--mat-air-2);
 }
 
