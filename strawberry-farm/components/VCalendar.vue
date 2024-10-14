@@ -100,32 +100,21 @@ watchEffect(onCleanup => {
 const handleKeydown = (e: KeyboardEvent) => {
   if (!props.changeOnKeydown) return;
 
-  if (e.target instanceof HTMLElement && e.target.matches('.VCalendar > *')) {
-  } else return;
+  if (!(e.target instanceof HTMLElement && e.target.matches('.VCalendar > *')))
+    return;
 
   const nav = (delta: number) => {
     e.preventDefault();
     calendar.nav(delta);
   };
+  // prettier-ignore
   switch (e.key) {
-    case 'Home':
-      nav(-Infinity);
-      break;
-    case 'End':
-      nav(Infinity);
-      break;
-    case 'ArrowUp':
-      nav(-7);
-      break;
-    case 'ArrowDown':
-      nav(7);
-      break;
-    case 'ArrowLeft':
-      nav(-1);
-      break;
-    case 'ArrowRight':
-      nav(1);
-      break;
+    case 'Home':       nav(-Infinity); break;
+    case 'End':        nav(Infinity); break;
+    case 'ArrowUp':    nav(-7); break;
+    case 'ArrowDown':  nav(7); break;
+    case 'ArrowLeft':  nav(-1); break;
+    case 'ArrowRight': nav(1); break;
   }
 };
 
