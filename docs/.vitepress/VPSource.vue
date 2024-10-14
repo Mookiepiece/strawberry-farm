@@ -30,13 +30,13 @@ const installGradients = () => {
 </script>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import VPHighlightVue from './VPHighlight.vue';
 const props = defineProps<{
   path: string;
 }>();
 
-installGradients();
+onMounted(installGradients);
 
 const raw = ref('');
 const count = computed(() => raw.value.split('\n').length);

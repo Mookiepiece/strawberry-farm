@@ -1,16 +1,27 @@
-import { codeToHtml } from 'shiki';
+import { createHighlighterCore } from 'shiki/core';
+import { createOnigurumaEngine } from 'shiki/engine/oniguruma';
 
-// const code = '<div data-type="bar">foo</div>'; // input code
-// export const html = await codeToHtml(code, {
-//   lang: 'html',
-//   themes: {
-//     light: 'github-light',
-//     dark: 'github-dark',
-//   },
-// });
+const highlighter = await createHighlighterCore({
+  themes: [
+    import('shiki/themes/github-dark.mjs'),
+    import('shiki/themes/github-light.mjs'),
+  ],
+  langs: [
+    import('shiki/langs/html.mjs'),
+    import('shiki/langs/css.mjs'),
+    import('shiki/langs/scss.mjs'),
+    import('shiki/langs/javascript.mjs'),
+    import('shiki/langs/typescript.mjs'),
+    import('shiki/langs/vue.mjs'),
+  ],
+  engine: createOnigurumaEngine(import('shiki/wasm')),
+});
 
-export const highlight = (code:string,lang: Parameters<typeof codeToHtml>[1]['lang']) =>
-  codeToHtml(code, {
+export const highlight = (
+  code: string,
+  lang: Parameters<typeof highlighter.codeToHtml>[1]['lang'],
+) =>
+  highlighter.codeToHtml(code, {
     lang,
     themes: {
       light: 'github-light',
