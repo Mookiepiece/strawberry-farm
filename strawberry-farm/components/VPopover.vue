@@ -1,3 +1,8 @@
+<script lang="ts">
+export type VPopoverProps = Omit<UsePopperProps, 'popper' | 'anchor'> & {
+  unmount?: boolean;
+};
+</script>
 <script setup lang="ts">
 import { cloneVNode, h, reactive, ref, toRefs } from 'vue';
 import { usePopper, UsePopperProps } from './VPopover';
@@ -5,7 +10,7 @@ import { child, forwardRef } from '../shared';
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps<Omit<UsePopperProps, 'popper' | 'anchor'>>();
+const props = withDefaults(defineProps<VPopoverProps>(), { unmount: true });
 
 const slots = defineSlots<{
   default: (scope: ReturnType<typeof usePopper>) => any;
@@ -27,8 +32,6 @@ const renderPopper = ($attrs: any) =>
   cloneVNode(child(slots.popper(pop)) || h('i'), {
     ...$attrs,
     'data-pop': '',
-    // FIXME: extract
-    class: 'VActionSheet',
   });
 
 defineExpose({
@@ -43,10 +46,12 @@ defineExpose({
   <Teleport to="body">
     <i-edge v-if="pop.open" />
     <Transition v-if="animated">
-      <component ref="_popper" v-if="pop.open" :is="renderPopper($attrs)" />
+      <!-- prettier-ignore -->
+      <component ref="_popper" v-if="unmount && pop.open" v-show="unmount || pop.open" :is="renderPopper($attrs)" />
     </Transition>
     <template v-else>
-      <component ref="_popper" v-if="pop.open" :is="renderPopper($attrs)" />
+      <!-- prettier-ignore -->
+      <component ref="_popper" v-if="unmount && pop.open" v-show="unmount || pop.open" :is="renderPopper($attrs)" />
     </template>
     <i-edge v-if="pop.open" />
   </Teleport>
