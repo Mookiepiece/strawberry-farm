@@ -1,7 +1,7 @@
 import { createHighlighterCore } from 'shiki/core';
 import { createOnigurumaEngine } from 'shiki/engine/oniguruma';
 
-const highlighter = await createHighlighterCore({
+const highlighter = createHighlighterCore({
   themes: [
     import('shiki/themes/github-dark.mjs'),
     import('shiki/themes/github-light.mjs'),
@@ -17,11 +17,11 @@ const highlighter = await createHighlighterCore({
   engine: createOnigurumaEngine(import('shiki/wasm')),
 });
 
-export const highlight = (
+export const highlight = async (
   code: string,
-  lang: Parameters<typeof highlighter.codeToHtml>[1]['lang'],
+  lang: Parameters<Awaited<typeof highlighter>['codeToHtml']>[1]['lang'],
 ) =>
-  highlighter.codeToHtml(code, {
+  (await highlighter).codeToHtml(code, {
     lang,
     themes: {
       light: 'github-light',
