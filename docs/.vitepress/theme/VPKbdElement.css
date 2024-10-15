@@ -1,8 +1,12 @@
 vp-kbd {
   position: relative;
   display: inline-grid;
-  place-content: center;
+  grid-auto-flow: column;
+  place-items: center;
   gap: 2px;
+
+  font-size: 12px;
+  line-height: 1.2;
 
   :is(.m0, .m1, .m2)::before {
     display: block;

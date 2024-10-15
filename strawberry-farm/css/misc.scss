@@ -1,10 +1,12 @@
 kbd {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   font-size: 12px;
   line-height: 1.2;
   font-family: inherit;
-  border: 1px solid var(--mat-solid-15);
   padding: 1px 5px;
   border-radius: 3px;
-  box-shadow: 0 2px 0 -1px var(--mat-solid-15);
+  box-shadow:
+    0 2px 0 -1px var(--mat-solid-15),
+    inset 0 0 0 1px var(--mat-solid-15);
 }
