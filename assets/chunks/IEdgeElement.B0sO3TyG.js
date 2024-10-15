@@ -1,0 +1,1 @@
+class e extends HTMLElement{connectedCallback(){this.hasAttribute("tabindex")||this.setAttribute("tabindex","0")}static install(){customElements.get("i-edge")||customElements.define("i-edge",e)}}export{e as IEdgeElement};

@@ -1,0 +1,1 @@
+import"./theme.CGULKHWn.js";import"./VSelect.vue_vue_type_style_index_0_lang.BEOdSXfJ.js";import{d as e,o as a,j as r,a as c,y as n}from"./framework.qiMOmzvi.js";const _={class:"VTable"},p=e({__name:"VTable",props:{columns:{},data:{}},setup(t){return(o,s)=>(a(),r("div",_))}}),i=e({__name:"Table",setup(t){return(o,s)=>(a(),c(n(p)))}});export{i as default};

@@ -1,0 +1,1 @@
+import"./theme.CGULKHWn.js";import{_ as e}from"./VSelect.vue_vue_type_style_index_0_lang.BEOdSXfJ.js";import"./ja.Bzr8dZpV.js";import{d as n,o,a,y as t}from"./framework.qiMOmzvi.js";const f=n({__name:"Calendar",setup(r){return(c,s)=>(o(),a(t(e),{"change-on-keydown":"","change-on-wheel":"",style:{"max-width":"fit-content"}}))}});export{f as default};

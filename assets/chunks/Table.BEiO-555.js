@@ -1,1 +1,0 @@
-import"./theme.W1H-0ptT.js";/* empty css                                                 */import{d as e,o as a,j as r,a as c,y as n}from"./framework.BjwmYqAO.js";const _={class:"VTable"},p=e({__name:"VTable",props:{columns:{},data:{}},setup(t){return(o,s)=>(a(),r("div",_))}}),i=e({__name:"Table",setup(t){return(o,s)=>(a(),c(n(p)))}});export{i as default};
