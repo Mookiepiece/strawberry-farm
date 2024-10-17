@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Toast } from '@mookiepiece/strawberry-farm/vue/Toast';
 
-import { h } from 'vue';
+import { h, watchEffect } from 'vue';
 import { createApp } from 'vue';
 import { ref } from 'vue';
 
@@ -58,7 +58,12 @@ const cll = () => {
     Toast.error('123');
   }, 700);
 };
+
 const infinityToast = ref<ReturnType<typeof Toast.error>>();
+watchEffect(onCleanup => {
+  const _ = infinityToast.value;
+  if (_) onCleanup(() => _.close());
+});
 
 const a = ref(false);
 </script>
