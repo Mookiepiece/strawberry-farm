@@ -1,4 +1,0 @@
-# Scheduler
-
-:::demo design/SchedulerA
-:::

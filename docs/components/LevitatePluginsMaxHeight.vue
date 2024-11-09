@@ -5,7 +5,7 @@ import {
   levitate,
   margin,
   maxHeight,
-} from '@mookiepiece/strawberry-farm/shared';
+} from '@mookiepiece/strawberry-farm';
 import { ref, watchEffect } from 'vue';
 
 const open = ref(false);

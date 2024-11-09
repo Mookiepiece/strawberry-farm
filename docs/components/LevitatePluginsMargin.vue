@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  applyTransform,
-  levitate,
-  margin,
-} from '@mookiepiece/strawberry-farm/shared';
+import { applyTransform, levitate, margin } from '@mookiepiece/strawberry-farm';
 import { ref, watchEffect } from 'vue';
 
 const open = ref(false);

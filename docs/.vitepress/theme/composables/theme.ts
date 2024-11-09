@@ -46,7 +46,6 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Segmented', link: '/components/Segmented' },
         { text: 'Levitate', link: '/components/Levitate' },
         { text: 'Popover', link: '/components/Popover' },
-        { text: 'Table', link: '/components/Table' },
         { text: 'Switch', link: '/components/Switch' },
         { text: 'Calendar', link: '/components/Calendar' },
         { text: 'Select', link: '/components/Select' },

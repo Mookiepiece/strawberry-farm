@@ -9,22 +9,17 @@ dayjs.extend(localeData);
 
 export const useCalendar = (model: Ref<Dayjs>) => {
   const nav = (delta: number) => {
+  // prettier-ignore
     switch (delta) {
-      case -Infinity:
-        model.value = model.value.startOf('M');
-        break;
-      case Infinity:
-        model.value = model.value.endOf('M');
-        break;
-      default:
-        model.value = model.value.add(delta, 'd');
+      case -Infinity: model.value = model.value.startOf('M'); break;
+      case Infinity:  model.value = model.value.endOf('M'); break;
+      default:        model.value = model.value.add(delta, 'd');
     }
   };
-
+    
   const dates = computed(() => {
     const firstDayOfWeek = model.value.localeData().firstDayOfWeek();
     const days = model.value.daysInMonth();
-
     const day = model.value.startOf('M').day();
     const prepend = Array((day - firstDayOfWeek + 7) % 7).fill(0);
     const cells = Array(days)

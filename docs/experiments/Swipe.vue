@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { Bag, swipe } from '@mookiepiece/strawberry-farm/shared';
+import { Bag, swipe } from '@mookiepiece/strawberry-farm';
 
 const elRef = ref<HTMLDivElement>();
 const infoRef = ref<HTMLSpanElement>();

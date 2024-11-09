@@ -28,12 +28,3 @@ An opinionated way to use `levitate`.
 
 :::demo components/Popover
 :::
-
-## Chain
-
-Based on internal `popoverChain` levitate plugin, `trap` (Focus are trapped inside the popper) and `onClickAway` (Click outside to close) are aware of submenus.
-
-FIXME: hover out.
-
-:::demo components/PopoverChain
-:::

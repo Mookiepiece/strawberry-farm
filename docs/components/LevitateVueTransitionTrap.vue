@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import {
-  applyTransform,
-  levitate,
-  trap,
-} from '@mookiepiece/strawberry-farm/shared';
-import { onClickAway } from '@mookiepiece/strawberry-farm/html/onClickAway';
+import { applyTransform, levitate } from '@mookiepiece/strawberry-farm';
+import { trap, onClickAway } from '@mookiepiece/strawberry-farm';
 
 const open = ref(false);
 

@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { ref, watchEffect } from 'vue';
 import {
   applyTransform,
   autoPlacement,
   levitate,
   margin,
-} from '@mookiepiece/strawberry-farm/shared';
-import { ref, watchEffect } from 'vue';
+} from '@mookiepiece/strawberry-farm';
 
 const open = ref(false);
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { applyTransform, levitate } from '@mookiepiece/strawberry-farm/shared';
 import { ref } from 'vue';
+import { applyTransform, levitate } from '@mookiepiece/strawberry-farm';
 
 const anchor = ref<HTMLElement>();
 const pop = ref<HTMLElement>();

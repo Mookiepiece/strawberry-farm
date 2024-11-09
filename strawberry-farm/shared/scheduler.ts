@@ -1,5 +1,3 @@
-import { FunctionReturningPromise } from './misc';
-
 /**
  * Supports AbortSignal for unsubscription (e.g. Vue SFC unmount)
  */
@@ -52,13 +50,13 @@ export const onetime = <T extends (...args: any[]) => void>(fn: T) => {
   }) as T;
 };
 
-export const share = <T extends FunctionReturningPromise>(fn: T) => {
+export const share = <T extends (...args: any[]) => Promise<any>>(fn: T) => {
   let i: Promise<any> | undefined;
   return ((...args: Parameters<T>) =>
     (i = i || fn(...args).finally(() => (i = undefined)))) as T;
 };
 
-export const longPress = <T extends FunctionReturningPromise>(
+export const longPress = <T extends (...args: any[]) => Promise<any>>(
   fn: T,
   signal?: AbortSignal,
 ) => {

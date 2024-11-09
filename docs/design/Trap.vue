@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { trap } from '@mookiepiece/strawberry-farm/shared';
 import { ref } from 'vue';
+import { trap } from '@mookiepiece/strawberry-farm';
 
 const a = ref<HTMLElement>();
 const b = ref<HTMLElement>();

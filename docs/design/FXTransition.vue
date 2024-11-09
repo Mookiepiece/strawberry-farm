@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { fx } from '@mookiepiece/strawberry-farm/shared';
 import { ref } from 'vue';
+import { fx } from '@mookiepiece/strawberry-farm';
 
 const open = ref(true);
 const div = ref<HTMLDivElement>();

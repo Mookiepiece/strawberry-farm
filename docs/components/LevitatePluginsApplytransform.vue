@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { levitate, PopPlugin } from '@mookiepiece/strawberry-farm/shared';
+import { levitate, PopPlugin } from '@mookiepiece/strawberry-farm';
 import { ref, watchEffect } from 'vue';
 
 const open = ref(false);
@@ -12,7 +12,7 @@ const applyTransformPro: PopPlugin = config => {
     pop.value!,
     pop.value!.nextElementSibling as HTMLElement,
     pop.value!.nextElementSibling!.nextElementSibling as HTMLElement,
-  ].forEach((el , index) => {
+  ].forEach((el, index) => {
     el?.style.setProperty(
       'transform',
       `translate(${config.x! + index * 10 + 'px'}, ${config.y! + index * 10 + 'px'})`,

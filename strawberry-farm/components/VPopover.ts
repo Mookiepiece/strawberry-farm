@@ -1,12 +1,12 @@
 import { computed, reactive, Ref, ref, toRef, watchEffect } from 'vue';
-import { applyTransform, levitate, on, PopPlugin, trap } from '../shared';
+import { applyTransform, levitate, on, trap } from '../shared';
 import { bagEffect } from '../shared/bagEffect';
 
 export type UsePopperProps = {
   trigger?: 'click' | 'hover';
   anchor: { getBoundingClientRect(): DOMRect } | undefined;
   popper: HTMLElement | undefined;
-  trap?: ((thief?: any) => boolean | void) | boolean;
+  trap?: boolean;
   animated?: boolean;
   delay?: [number, number] | number;
   dir?: NonNullable<Parameters<typeof levitate>[2]>['dir'];
@@ -68,7 +68,7 @@ export const usePopper = (props: UsePopperProps) => {
             dir,
             align,
             viewport,
-            plugins: [...plugins, popoverChain],
+            plugins: [...plugins],
           });
         }),
       );
@@ -81,14 +81,8 @@ export const usePopper = (props: UsePopperProps) => {
     if (!$open || !$pop) return;
     onCleanup(
       trap($pop, thief => {
-        let p: any = thief;
-        do {
-          if ($pop.contains(p)) return false;
-          p = Chain.get(p.closest('[data-pop]') || document.body);
-        } while (p);
-
+        if ($pop.contains(thief)) return false;
         if ($anc instanceof Element && $anc.contains(thief)) return false;
-        if (typeof props.trap === 'function') return props.trap(thief);
       }),
     );
   });
@@ -103,12 +97,7 @@ export const usePopper = (props: UsePopperProps) => {
       on(document).pointerdown.capture(({ target: thief }) => {
         if (!(thief instanceof Element)) return;
 
-        let p: any = thief;
-        do {
-          if ($pop.contains(p)) return;
-          p = Chain.get(p.closest('[data-pop]') || document.body);
-        } while (p);
-
+        if ($pop.contains(thief)) return;
         if ($anc instanceof Element && $anc.contains(thief)) return;
 
         open.value = false;
@@ -153,16 +142,7 @@ export const usePopper = (props: UsePopperProps) => {
   bagEffect(bag => {
     const $pop = props.popper;
     if (!$pop) return;
-    bag(
-      on($pop).keydown.exact(e => {
-        switch (e.key) {
-          case 'Escape':
-            e.preventDefault();
-            open.value = false;
-            break;
-        }
-      }),
-    );
+    bag(on($pop).keydown.exact.Escape.prevent(() => (open.value = false)));
 
     if (trigger.value === 'hover') {
       if ($pop) {
@@ -174,10 +154,3 @@ export const usePopper = (props: UsePopperProps) => {
 
   return reactive({ open, play, pause });
 };
-
-const Chain = new WeakMap<Element, Element>();
-const popoverChain: PopPlugin = config => {
-  if (config.$anc instanceof Element) Chain.set(config.$pop, config.$anc);
-  return config;
-};
-popoverChain.post = true;
