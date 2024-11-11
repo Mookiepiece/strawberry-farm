@@ -1,16 +1,22 @@
 <script lang="ts">
-export type VPopoverProps = Omit<UsePopperProps, 'popper' | 'anchor'> & {
-  unmount?: boolean;
-};
+export type VPopoverProps = Omit<UsePopperProps, 'popper' | 'anchor'>;
 </script>
 <script setup lang="ts">
-import { cloneVNode, h, reactive, ref, toRefs } from 'vue';
+import {
+  cloneVNode,
+  defineComponent,
+  h,
+  reactive,
+  ref,
+  toRefs,
+  watchEffect,
+} from 'vue';
 import { usePopper, UsePopperProps } from './VPopover';
 import { child, forwardRef } from '../shared';
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<VPopoverProps>(), { unmount: true });
+const props = defineProps<VPopoverProps>();
 
 const slots = defineSlots<{
   default: (scope: ReturnType<typeof usePopper>) => any;
@@ -28,11 +34,12 @@ const renderDefault = ($attrs: any) =>
     ...$attrs,
   });
 
-const renderPopper = ($attrs: any) =>
-  cloneVNode(child(slots.popper(pop)) || h('i'), {
-    ...$attrs,
-    'data-pop': '',
-  });
+const Popover = defineComponent(
+  () => () =>
+    cloneVNode(child(slots.popper(pop)) || h('i'), {
+      'data-pop': '',
+    }),
+);
 
 defineExpose({
   anchor,
@@ -43,15 +50,15 @@ defineExpose({
 
 <template>
   <component ref="_anchor" :is="renderDefault($attrs)" />
-  <Teleport to="body">
+  <Teleport to="body" :disabled="!(pop.open || _popper)">
     <i-edge v-if="pop.open" />
     <Transition v-if="animated">
       <!-- prettier-ignore -->
-      <component ref="_popper" v-if="unmount && pop.open" v-show="unmount || pop.open" :is="renderPopper($attrs)" />
+      <component ref="_popper" v-if="pop.open" :is="Popover" />
     </Transition>
     <template v-else>
       <!-- prettier-ignore -->
-      <component ref="_popper" v-if="unmount && pop.open" v-show="unmount || pop.open" :is="renderPopper($attrs)" />
+      <component ref="_popper" v-if="pop.open" :is="Popover" />
     </template>
     <i-edge v-if="pop.open" />
   </Teleport>
