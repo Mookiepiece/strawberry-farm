@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onUnmounted, ref } from 'vue';
-import { Bag, onTimeout, trap } from '../shared';
+import { ref, watchEffect } from 'vue';
+import { trap } from '../shared';
 
 defineOptions({
   inheritAttrs: false,
@@ -12,35 +12,23 @@ const props = defineProps<{
   strong?: boolean;
 }>();
 
-const bag = Bag();
-onUnmounted(() => bag());
-
 const curtain = ref<HTMLElement>();
-
-const afterEnter = () => {
+watchEffect(onCleanup => {
   const $ = curtain.value;
-  if ($) bag(trap($));
-};
+  $ && onCleanup(trap($));
+});
 
 const close = () => void (!props.strong && (model.value = false));
-
-let down = false;
-const _bag = Bag();
-const handlePointerdown = () => (
-  (down = true), _bag(onTimeout(() => (down = false)))
-);
-const handlePointerUp = () => down && close();
 </script>
 
 <template>
   <Teleport to="body">
-    <Transition @enter="afterEnter" @leave="() => bag()">
+    <Transition>
       <div
         v-if="model"
-        @keydown.esc="close"
         class="VCurtain"
-        @pointerdown.self.prevent="handlePointerdown"
-        @pointerup.self.prevent="handlePointerUp"
+        @keydown.esc.prevent="close"
+        @click.self.prevent="close"
         tabindex="-1"
         ref="curtain"
       >
