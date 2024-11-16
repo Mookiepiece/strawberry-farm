@@ -25,8 +25,6 @@ const slots = defineSlots<{
 
 const listbox = props.listbox || useListbox(model, props);
 
-const magnetic = computed(() => !listbox.multi);
-
 const ready = ref(false);
 const root = ref();
 watchEffect(
@@ -58,7 +56,7 @@ defineExpose({ listbox });
   <VListbox
     :listbox
     circular
-    :magnetic
+    magnetic
     class="VSegmented"
     :class="[ready && '--ready']"
     ref="root"
