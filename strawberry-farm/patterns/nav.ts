@@ -1,10 +1,11 @@
 import { computed, MaybeRef, Ref, ref } from 'vue';
 
 /**
- * 
+ * Navigator for listbox.
+ *
  * @param __current Initial value. default to 0.
  * @param options The linear dungeon, 0 repesents disabled, otherwise represents the index of the option.
- * @returns 
+ * @returns
  */
 export const useNav = (
   __current: MaybeRef<number> = 0,
@@ -59,11 +60,3 @@ export const useNav = (
     nav,
   };
 };
-
-/**
- * FIXME: WIP
- */
-export const useNav2 = (
-  __current: MaybeRef<number> = 0,
-  map: Ref<(number[] | number)[]>,
-) => {};

@@ -4,6 +4,10 @@ Pick option(s) from a list of options. binding `any`.
 
 在一组选项中选择一个或一些。
 
+:::source patterns/listbox.ts
+
+:::
+
 :::source patterns/VListbox.vue
 
 :::

@@ -1,111 +1,5 @@
 <script lang="ts">
 const toArray = (a: any) => (Array.isArray(a) ? a : [a]);
-
-export const useListboxExtra = (listbox: Listbox) => {
-  const addRange = (a: number, b: number) => {
-    if (a < 0 || b < 0) return;
-    const range = listbox.options.slice(Math.min(a, b), Math.max(a, b) + 1);
-    const models = new Set(listbox.model);
-    listbox.input(...range.map(r => r.value).filter(i => !models.has(i)));
-  };
-
-  let anchor = -1;
-  const handleKeydown = (
-    e: KeyboardEvent,
-    {
-      circular = false,
-      magnetic = true,
-    }: {
-      circular?: boolean;
-      magnetic?: boolean;
-    } = {},
-  ) => {
-    if (listbox.disabled) return;
-
-    if (e.shiftKey) {
-      anchor = listbox.current;
-    } else {
-      anchor = -1;
-    }
-
-    if (e.shiftKey) {
-      if (!listbox.multi) return;
-
-      const nav = (delta: number) => {
-        e.preventDefault();
-        listbox.nav(delta);
-        addRange(anchor, listbox.current);
-      };
-      // prettier-ignore
-      switch (e.key) {
-        case 'ArrowUp':   case 'ArrowLeft':  nav(-1); break;
-        case 'ArrowDown': case 'ArrowRight': nav(1); break;
-        case 'Home':                         nav(-Infinity); break;
-        case 'End':                          nav(Infinity); break;
-      }
-    } else {
-      const nav = (delta: number) => {
-        e.preventDefault();
-        if (magnetic === e.ctrlKey) return listbox.nav(delta, circular);
-        const prev = listbox.current;
-        listbox.nav(delta, circular);
-        if (prev !== listbox.current) {
-          listbox.input(...toArray(listbox.model), listbox);
-        }
-      };
-
-      // prettier-ignore
-      switch (e.key) {
-        case 'ArrowUp':   case 'ArrowLeft':  nav(-1); break;
-        case 'ArrowDown': case 'ArrowRight': nav(1); break;
-        case 'Home':                         nav(-Infinity); break;
-        case 'End':                          nav(Infinity); break;
-
-        case ' ':
-          e.preventDefault();
-          listbox.input(listbox);
-          break;
-      }
-    }
-  };
-
-  const handlePointerdown = (
-    e: MouseEvent,
-    i: ListboxLeaf,
-    { magnetic = true }: { magnetic?: boolean } = {},
-  ) => {
-    if (i.disabled) return;
-    if (listbox.multi) {
-      if (e.shiftKey) {
-        document.getSelection()?.removeAllRanges();
-        const a = i.index;
-        const b = (anchor > -1 && anchor) || listbox.current;
-        if (b >= 0) {
-          listbox.current = a;
-          addRange(a, b);
-        }
-      } else {
-        if (e.ctrlKey === magnetic) {
-          listbox.input(i.value);
-          listbox.current = i.index;
-        } else {
-          listbox.input(...listbox.model, i.value);
-          listbox.current = i.index;
-        }
-      }
-    } else {
-      listbox.input(i.value);
-      listbox.current = i.index;
-    }
-  };
-
-  return {
-    addRange,
-
-    handlePointerdown,
-    handleKeydown,
-  };
-};
 </script>
 
 <script setup lang="ts" generic="T = any">
@@ -136,8 +30,105 @@ const slots = defineSlots<{
 }>();
 
 const listbox = props.listbox || useListbox(model, props);
-const listboxEX = useListboxExtra(listbox);
 const current = toRef(listbox, 'current');
+const disabled = toRef(listbox, 'disabled');
+
+const addRange = (a: number, b: number) => {
+  if (a < 0 || b < 0) return;
+  const range = listbox.options.slice(Math.min(a, b), Math.max(a, b) + 1);
+  const models = new Set(listbox.model);
+  listbox.input(...range.map(r => r.value).filter(i => !models.has(i)));
+};
+
+let anchor = -1;
+const handleKeydown = (
+  e: KeyboardEvent,
+  {
+    circular = false,
+    magnetic = true,
+  }: {
+    circular?: boolean;
+    magnetic?: boolean;
+  } = {},
+) => {
+  if (listbox.disabled) return;
+
+  if (e.shiftKey) {
+    anchor = listbox.current;
+  } else {
+    anchor = -1;
+  }
+
+  if (e.shiftKey) {
+    if (!listbox.multi) return;
+
+    const nav = (delta: number) => {
+      e.preventDefault();
+      listbox.nav(delta);
+      addRange(anchor, listbox.current);
+    };
+    // prettier-ignore
+    switch (e.key) {
+        case 'ArrowUp':   case 'ArrowLeft':  nav(-1); break;
+        case 'ArrowDown': case 'ArrowRight': nav(1); break;
+        case 'Home':                         nav(-Infinity); break;
+        case 'End':                          nav(Infinity); break;
+      }
+  } else {
+    const nav = (delta: number) => {
+      e.preventDefault();
+      if (magnetic === e.ctrlKey) return listbox.nav(delta, circular);
+      const prev = listbox.current;
+      listbox.nav(delta, circular);
+      if (prev !== listbox.current) {
+        listbox.input(...toArray(listbox.model), listbox);
+      }
+    };
+
+    // prettier-ignore
+    switch (e.key) {
+        case 'ArrowUp':   case 'ArrowLeft':  nav(-1); break;
+        case 'ArrowDown': case 'ArrowRight': nav(1); break;
+        case 'Home':                         nav(-Infinity); break;
+        case 'End':                          nav(Infinity); break;
+
+        case ' ':
+          e.preventDefault();
+          listbox.input(listbox);
+          break;
+      }
+  }
+};
+
+const handlePointerdown = (
+  e: MouseEvent,
+  i: ListboxLeaf,
+  { magnetic = true }: { magnetic?: boolean } = {},
+) => {
+  if (i.disabled) return;
+  if (listbox.multi) {
+    if (e.shiftKey) {
+      document.getSelection()?.removeAllRanges();
+      const a = i.index;
+      const b = (anchor > -1 && anchor) || listbox.current;
+      if (b >= 0) {
+        listbox.current = a;
+        addRange(a, b);
+      }
+    } else {
+      if (e.ctrlKey === magnetic) {
+        listbox.input(i.value);
+        listbox.current = i.index;
+      } else {
+        listbox.input(...listbox.model, i.value);
+        listbox.current = i.index;
+      }
+    }
+  } else {
+    listbox.input(i.value);
+    listbox.current = i.index;
+  }
+};
 
 const renderOption = (i: ListboxLeaf<T>) =>
   cloneVNode(
@@ -146,7 +137,7 @@ const renderOption = (i: ListboxLeaf<T>) =>
       id: listbox.id + ':' + i.index,
       onPointerdown: (e: MouseEvent) => e.shiftKey && e.preventDefault(),
       onClick: (e: MouseEvent) =>
-        listboxEX.handlePointerdown(e, i, { magnetic: props.magnetic }),
+        handlePointerdown(e, i, { magnetic: props.magnetic }),
       role: 'option',
       'aria-selected':
         (Array.isArray(listbox.model)
@@ -163,7 +154,7 @@ const onKeyDown = (e: KeyboardEvent) => {
       ? props.action(e, listbox)
       : (root.value as HTMLElement).closest('form')?.submit();
   } else {
-    listboxEX.handleKeydown(e, {
+    handleKeydown(e, {
       circular: props.circular,
       magnetic: props.magnetic,
     });
@@ -179,8 +170,8 @@ defineExpose({ listbox });
     :id="listbox.id"
     @keydown.self="onKeyDown"
     role="listbox"
-    :tabindex="props.disabled ? -1 : 0"
-    :aria-disabled="props.disabled"
+    :tabindex="disabled ? -1 : 0"
+    :aria-disabled="disabled"
     :aria-activedescendant="
       current > -1 ? `${listbox.id}:${current}` : undefined
     "

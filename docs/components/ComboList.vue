@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useNav } from '@mookiepiece/strawberry-farm';
-import { watch, computed, ref } from 'vue';
+import { watch, ref } from 'vue';
 
 const links = [
   {
@@ -17,20 +16,17 @@ const links = [
   },
 ];
 
-const { current, nav } = useNav(
-  undefined,
-  computed(() => links.map((_, i) => i)),
-);
+const current = ref(0);
 
 const handleKeydown = (e: KeyboardEvent) => {
   switch (e.key) {
     case 'ArrowUp':
       e.preventDefault();
-      nav(-1);
+      current.value = Math.max(0, current.value - 1);
       break;
     case 'ArrowDown':
       e.preventDefault();
-      nav(1);
+      current.value = Math.min(links.length - 1, current.value + 1);
       break;
     case 'Enter':
       e.preventDefault();
