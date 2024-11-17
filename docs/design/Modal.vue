@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import VModal from '@mookiepiece/strawberry-farm/vue/VModal.vue';
 import VDialog from '@mookiepiece/strawberry-farm/vue/VDialog.vue';
 import { onUnmounted } from 'vue';
 import { ref } from 'vue';
 
 const visible = ref(false);
-
-const bodyPro = () => {
-  const app = document.getElementById('app') as HTMLElement;
-  if (app.style.getPropertyValue('height')) app.style.removeProperty('height');
-  else app.style.setProperty('height', '200vh');
-};
 
 onUnmounted(() => {
   document.body.style.removeProperty('height');
@@ -18,7 +11,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <button class="mat:solid" @click="bodyPro">body pro</button>
   <button class="mat:solid" @click="visible = !visible">a</button>
   <VDialog title="M" v-model="visible">
     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis, deserunt

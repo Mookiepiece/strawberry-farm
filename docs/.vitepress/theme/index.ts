@@ -16,12 +16,6 @@ if (!import.meta.env.SSR) {
     ({ IFeatherElement }) => IFeatherElement.install(),
   );
 
-  import('@mookiepiece/strawberry-farm/html/ToastBarElement').then(
-    ({ ToastBarElement }) => {
-      ToastBarElement.install();
-    },
-  );
-
   import('@mookiepiece/strawberry-farm/html/IEdgeElement').then(
     ({ IEdgeElement }) => {
       IEdgeElement.install();

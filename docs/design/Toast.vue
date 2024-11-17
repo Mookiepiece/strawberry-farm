@@ -29,16 +29,11 @@ const complex = () => {
   });
   app.mount(span);
 
-  // span.innerHTML =
-  //   `<details><summary>Click To expand</summary>
-  //   <ul><li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quisquam cum excepturi dolor impedit a ex, voluptatibus laborum fugit necessitatibus, illum ab minima deserunt aliquid, veniam rem debitis. Incidunt, assumenda?` +
-  //   `</li></ul>
-  //   </details>`;
   const { bag } = Toast.error(span);
   bag(app.unmount);
 };
 
-const cll = () => {
+const many = () => {
   setTimeout(() => {
     Toast.error('123');
   }, 200);
@@ -64,8 +59,6 @@ watchEffect(onCleanup => {
   const _ = infinityToast.value;
   if (_) onCleanup(() => _.close());
 });
-
-const a = ref(false);
 </script>
 
 <template>
@@ -103,11 +96,7 @@ const a = ref(false);
     <button @click="() => Toast.custom('Strawberry Farm')" class="p-4 mat:air">
       Custom Toast
     </button>
-    <button @click="cll" class="p-4 mat:air">Many Toasts</button>
-    <button @click="a = !a" class="p-4 mat:air">Icon</button>
-    <div v-show="a" class="toast-i-error"></div>
-    <div v-show="a" class="toast-i-success"></div>
-    <div v-show="a" class="toast-i-info"></div>
+    <button @click="many" class="p-4 mat:air">Many Toasts</button>
   </div>
 </template>
 
