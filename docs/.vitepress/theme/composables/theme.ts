@@ -87,7 +87,10 @@ const theme = shallowRef<ThemeConfig>({
     },
     {
       text: 'Misc',
-      items: [{ text: 'Paints', link: '/misc/Paints' }],
+      items: [
+        { text: 'Paints', link: '/misc/Paints' },
+        { text: 'Confetti', link: '/misc/Confetti' },
+      ],
     },
   ],
 });
