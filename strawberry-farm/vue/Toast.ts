@@ -32,7 +32,7 @@ export class ToastBarElement extends HTMLElement {
   }
 }
 
-if (document) {
+if (globalThis.window) {
   customElements.define('toast-bar', ToastBarElement);
 }
 

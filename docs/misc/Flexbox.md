@@ -24,7 +24,7 @@
 | [X] |        | **[B]** |     | [x] |               | **[b]** |
 |     |  [A]   |         |     |     |      [a]      |         |
 
-:::demo css/Flexbox1
+:::demo misc/Flexbox1
 :::
 
 ### 单行定位
@@ -46,7 +46,7 @@ place-items =
 | **F** | **stretch** | **Full** |
 | B     | baseline    | Baseline |
 
-:::demo css/Flexbox2
+:::demo misc/Flexbox2
 :::
 
 `justify-content` 的有效值如下表：
@@ -60,7 +60,7 @@ place-items =
 | 1     | space-evenly   | 1/2 to edge |
 | 2     | space-around   | 2/2 to edge |
 
-:::demo css/Flexbox3
+:::demo misc/Flexbox3
 :::
 
 
@@ -87,7 +87,7 @@ place-items =
 | 2     | space-around  | 2/2 to edge |
 | **F** | **stretch**   | **Full**    |
 
-:::demo css/Flexbox4
+:::demo misc/Flexbox4
 :::
 
 ## Flex Item

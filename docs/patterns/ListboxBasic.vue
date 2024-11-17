@@ -33,6 +33,8 @@ const options: ListboxInput = [
     padding: 10px 10px 0;
     user-select: none;
     pointer-events: none;
+    font-weight: 600;
+    font-size: 12px;
   }
 
   [role='option'] {

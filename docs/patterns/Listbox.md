@@ -70,13 +70,13 @@ This is an simple styled example, see how it handles keyboard events and <vp-kbd
 
 ## API Reference
 
-| VListbox    | Description                                                                  |
-| ----------- | ---------------------------------------------------------------------------- |
-| `model`     | Value binding, listbox will in **multiple** mode if model `Array.isArray()`. |
-| `clearable` | While in single option mode, select the same option will unselect it.        |
-| `options`   | Listbox inputs support any type of value, support one level grouping.        |
-| `disabled`  |                                                                              |
-| `listbox`   | Omit all other props.                                                        |
+| VListbox Props | Description                                                                  |
+| -------------- | ---------------------------------------------------------------------------- |
+| `model`        | Value binding, listbox will in **multiple** mode if model `Array.isArray()`. |
+| `clearable`    | While in single option mode, select the same option will unselect it.        |
+| `options`      | Listbox inputs support any type of value, support one level grouping.        |
+| `disabled`     |                                                                              |
+| `listbox`      | Omit all other props.                                                        |
 
 | Listbox API                            | Description                                                                                                                                                                                      |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -87,8 +87,3 @@ This is an simple styled example, see how it handles keyboard events and <vp-kbd
 | `current`                              | Current focuing option index (after options are flatted)                                                                                                                                         |
 | `nav(delta:number, circular?:boolean)` | Move focus based on the delta number, skipping `disabled` options. If `circular`, `nav()` will across two edges like radios. delta can be `-1`(prev) `1`(next) `-Infinity`(Home) `Infinity`(End) |
 | `input(...values:any[])`               | Toggle selection for value(s). Will validate `disabled` state. Passing `listbox` itself will toggle current value.                                                                               |
-
-| Listbox EX API for View                                                              | Description                                                                                 |
-| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
-| `handlePoinerdown(e: MouseEvent, i: ListboxLeaf, opt?: { magnetic?: boolean })`      | Handle Pointer Events, <vp-kbd k="Shift" /> and <vp-kbd k="Ctrl" /> have different behavior |
-| `handleKeydown(e: KeyboardEvent, opt?: { circular?: boolean; magnetic?: boolean; })` | Handle Keydown Events, <vp-kbd k="Shift" /> and <vp-kbd k="Ctrl" /> have different behavior |

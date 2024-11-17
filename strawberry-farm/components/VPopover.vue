@@ -7,9 +7,8 @@ import {
   defineComponent,
   h,
   reactive,
-  ref,
   toRefs,
-  watchEffect,
+  useTemplateRef,
 } from 'vue';
 import { usePopper, UsePopperProps } from './VPopover';
 import { child, forwardRef } from '../shared';
@@ -23,10 +22,8 @@ const slots = defineSlots<{
   popper: (scope: ReturnType<typeof usePopper>) => any;
 }>();
 
-const _anchor = ref();
-const _popper = ref();
-const anchor = forwardRef(_anchor);
-const popper = forwardRef(_popper);
+const anchor = forwardRef(useTemplateRef('_anchor'));
+const popper = forwardRef(useTemplateRef('_popper'));
 const pop = usePopper(reactive({ ...toRefs(props), popper, anchor }));
 
 const renderDefault = ($attrs: any) =>
@@ -50,14 +47,13 @@ defineExpose({
 
 <template>
   <component ref="_anchor" :is="renderDefault($attrs)" />
-  <Teleport to="body" :disabled="!(pop.open || _popper)">
+  <Teleport to="body" :disabled="!(pop.open || popper)">
     <i-edge v-if="pop.open" />
+    <!-- prettier-ignore -->
     <Transition v-if="animated">
-      <!-- prettier-ignore -->
       <component ref="_popper" v-if="pop.open" :is="Popover" />
     </Transition>
     <template v-else>
-      <!-- prettier-ignore -->
       <component ref="_popper" v-if="pop.open" :is="Popover" />
     </template>
     <i-edge v-if="pop.open" />

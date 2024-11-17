@@ -26,14 +26,6 @@ const theme = shallowRef<ThemeConfig>({
         { text: 'Guide', link: '/Guide' },
       ],
     },
-    {
-      text: 'CSS',
-      items: [
-        { text: 'Breakpoints', link: '/css/Breakpoints' },
-        { text: 'Flexbox', link: '/css/Flexbox' },
-        { text: 'Typography', link: '/css/Typography' },
-      ],
-    },
 
     {
       text: 'Patterns',
@@ -90,6 +82,9 @@ const theme = shallowRef<ThemeConfig>({
       items: [
         { text: 'Paints', link: '/misc/Paints' },
         { text: 'Confetti', link: '/misc/Confetti' },
+        { text: 'Breakpoints', link: '/misc/Breakpoints' },
+        { text: 'Flexbox', link: '/misc/Flexbox' },
+        { text: 'Typography', link: '/misc/Typography' },
       ],
     },
   ],

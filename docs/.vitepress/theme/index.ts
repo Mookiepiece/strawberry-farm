@@ -11,6 +11,13 @@ import './vp-doc.css';
 import './custom.css';
 import './VPKbdElement.css';
 
+if (import.meta.env.SSR) {
+  globalThis.HTMLElement = null as any;
+  globalThis.customElements = {
+    get: () => void 0,
+    define() {},
+  } as any;
+}
 if (!import.meta.env.SSR) {
   import('@mookiepiece/strawberry-farm/html/IFeatherElement').then(
     ({ IFeatherElement }) => IFeatherElement.install(),
