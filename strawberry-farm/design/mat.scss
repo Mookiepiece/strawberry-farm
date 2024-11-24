@@ -1,182 +1,191 @@
 :where(:is(.AirMat, .AiryMat)) {
-  color: var(--text-1);
-  background: transparent;
-  border: 0;
-  outline: 0;
-  appearance: none;
+	color: var(--text-1);
+	background: transparent;
+	border: 0;
+	outline: 0;
+	appearance: none;
 }
 
-:where(:is(.AirMat, .AiryMat):not(:disabled, [aria-disabled='true'], .disabled):hover) {
-  background: var(--mat-solid-1);
+:where(
+		:is(.AirMat, .AiryMat):not(
+				:disabled,
+				[aria-disabled='true'],
+				.disabled
+			):hover
+	) {
+	background: var(--mat-solid-1);
 }
 
-:where(:is(.AirMat, .AiryMat):not(:disabled, [aria-disabled='true'], .disabled):active) {
-  background: var(--mat-solid-2);
+:where(
+		:is(.AirMat, .AiryMat):not(
+				:disabled,
+				[aria-disabled='true'],
+				.disabled
+			):active
+	) {
+	background: var(--mat-solid-2);
 }
 
 :where(.AirMat, .AiryMat):where(
-    [aria-selected='true'],
-    [aria-checked='true'],
-    [aria-pressed='true'],
-    .active
-  ) {
-  color: var(---ink);
+		[aria-selected='true'],
+		[aria-checked='true'],
+		[aria-pressed='true'],
+		.active
+	) {
+	color: var(---ink);
 }
 
-:where(.AirMat:is(:disabled, [aria-disabled='true'],.disabled)) {
-  color: var(--text-3);
+:where(.AirMat:is(:disabled, [aria-disabled='true'], .disabled)) {
+	color: var(--text-3);
 }
 
 :where(.AirMat:focus-visible) {
-  outline: 2px solid var(---main);
-  outline-offset: -1px;
+	outline: 2px solid var(---main);
+	outline-offset: -1px;
 }
 
-
-
-
 @mixin ActiveQuery() {
-  @at-root &:where(
-        [aria-selected='true'],
-        [aria-checked='true'],
-        [aria-pressed='true'],
-        .active
-      ) {
-    @content;
-  }
+	@at-root &:where(
+				[aria-selected='true'],
+				[aria-checked='true'],
+				[aria-pressed='true'],
+				.active
+			) {
+		@content;
+	}
 }
 
 @mixin DisabledQuery() {
-  @at-root &:where(:disabled, [aria-disabled='true'], .disabled) {
-    @content;
-  }
+	@at-root &:where(:disabled, [aria-disabled='true'], .disabled) {
+		@content;
+	}
 }
 
 .mat\:air,
 .mat\:airy,
 .mat\:air-crown {
-  border: 0;
-  background: var(--mat-air-0);
+	border: 0;
+	background: var(--mat-air-0);
 
-  &:hover {
-    background: var(--mat-air-1);
-  }
-  &:active {
-    background: var(--mat-air-2);
-  }
+	&:hover {
+		background: var(--mat-air-1);
+	}
+	&:active {
+		background: var(--mat-air-2);
+	}
 }
 
 .mat\:solid,
 .mat\:solidity,
 .mat\:solid-crown {
-  border: 0;
-  background: var(--mat-solid-0);
+	border: 0;
+	background: var(--mat-solid-0);
 
-  &:hover {
-    background: var(--mat-solid-1);
-  }
-  &:active {
-    background: var(--mat-solid-2);
-  }
+	&:hover {
+		background: var(--mat-solid-1);
+	}
+	&:active {
+		background: var(--mat-solid-2);
+	}
 }
 
 .mat\:air,
 .mat\:air-crown,
 .mat\:solid,
 .mat\:solid-crown {
-  color: var(--text-1);
-  @include ActiveQuery() {
-    color: var(---ink);
-  }
+	color: var(--text-1);
+	@include ActiveQuery() {
+		color: var(---ink);
+	}
 }
 
 .mat\:airy,
 .mat\:solidity {
-  color: var(--text-2);
-  @include ActiveQuery() {
-    color: var(---text-1);
-  }
+	color: var(--text-2);
+	@include ActiveQuery() {
+		color: var(---text-1);
+	}
 }
 
 .mat\:ruby {
-  color: var(--text-1);
-  border: 0;
-  background: var(--mat-air-0);
-  outline: 0;
+	color: var(--text-1);
+	border: 0;
+	background: var(--mat-air-0);
+	outline: 0;
 
-  &:hover {
-    background: var(--mat-air-1);
-  }
-  &:active {
-    background: var(--mat-air-2);
-  }
+	&:hover {
+		background: var(--mat-air-1);
+	}
+	&:active {
+		background: var(--mat-air-2);
+	}
 
-  @include ActiveQuery() {
-    background: var(---main);
+	@include ActiveQuery() {
+		background: var(---main);
 
-    &:hover {
-      background: color-mix(in oklab, var(---main), #000 5%);
-    }
-    &:active {
-      background: color-mix(in oklab, var(---main), #000 13%);
-    }
+		&:hover {
+			background: color-mix(in oklab, var(---main), #000 5%);
+		}
+		&:active {
+			background: color-mix(in oklab, var(---main), #000 13%);
+		}
 
-    --text-1: #fff;
-    --text-2: #fff;
-    --text-3: #fff;
-  }
+		--text-1: #fff;
+		--text-2: #fff;
+		--text-3: #fff;
+	}
 }
 
 .mat\:dust {
-  border: 0;
-  background: color-mix(in oklab, var(--mat-air-05), var(--mat-air-1));
+	border: 0;
+	background: color-mix(in oklab, var(--mat-air-05), var(--mat-air-1));
 
-  &:hover {
-    background: color-mix(in oklab, var(--mat-air-05), var(--mat-air-2));
-  }
-  &:active {
-    background: var(--mat-air-2);
-  }
+	&:hover {
+		background: color-mix(in oklab, var(--mat-air-05), var(--mat-air-2));
+	}
+	&:active {
+		background: var(--mat-air-2);
+	}
 
-  @include ActiveQuery() {
-    background: var(---foam);
+	@include ActiveQuery() {
+		background: var(---foam);
 
-    &:hover {
-      background: color-mix(in oklab, var(---foam), var(---main) 12%);
-    }
-    &:active {
-      background: color-mix(in oklab, var(---foam), var(---main) 24%);
-    }
-  }
+		&:hover {
+			background: color-mix(in oklab, var(---foam), var(---main) 12%);
+		}
+		&:active {
+			background: color-mix(in oklab, var(---foam), var(---main) 24%);
+		}
+	}
 }
 
 .mat\:dust {
-  color: var(--text-1);
-  @include ActiveQuery() {
-    color: var(---ink);
-  }
+	color: var(--text-1);
+	@include ActiveQuery() {
+		color: var(---ink);
+	}
 }
 .mat\:dusty {
-  border: 0;
-  background: var(--mat-air-1);
+	border: 0;
+	background: var(--mat-air-1);
 
-  &:hover {
-    background: var(--mat-air-2);
-  }
-  &:active {
-    background: var(--mat-air-3);
-  }
+	&:hover {
+		background: var(--mat-air-2);
+	}
+	&:active {
+		background: var(--mat-air-3);
+	}
 
-  @include ActiveQuery() {
-    background: var(---foam);
+	@include ActiveQuery() {
+		background: var(---foam);
 
-    &:hover {
-      background: color-mix(in oklab, var(---foam), var(---main) 12%);
-    }
-    &:active {
-      background: color-mix(in oklab, var(---foam), var(---main) 24%);
-    }
-  }
+		&:hover {
+			background: color-mix(in oklab, var(---foam), var(---main) 12%);
+		}
+		&:active {
+			background: color-mix(in oklab, var(---foam), var(---main) 24%);
+		}
+	}
 }
 
 .mat\:air,
@@ -188,9 +197,9 @@
 .mat\:ruby,
 .mat\:dust,
 .mat\:dusty {
-  @include DisabledQuery() {
-    color: var(--text-3);
-  }
+	@include DisabledQuery() {
+		color: var(--text-3);
+	}
 }
 
 .mat\:air,
@@ -202,24 +211,24 @@
 .mat\:ruby,
 .mat\:dust,
 .mat\:dusty {
-  outline: 0;
-  text-decoration: none;
+	outline: 0;
+	text-decoration: none;
 
-  --mat-shadow: 0 0 0 0 transparent;
-  --mat-shadow-outline: 0 0 0 0 transparent;
-  box-shadow: var(--mat-shadow), var(--mat-shadow-outline);
-  transition: box-shadow 0.2s;
+	--mat-shadow: 0 0 0 0 transparent;
+	--mat-shadow-outline: 0 0 0 0 transparent;
+	box-shadow: var(--mat-shadow), var(--mat-shadow-outline);
+	transition: box-shadow 0.2s;
 
-  &:focus-visible {
-    outline: 2px solid var(---main);
-    outline-offset: -1px;
-    --mat-shadow-outline: 0 0 0 4px var(---foam);
-  }
+	&:focus-visible {
+		outline: 2px solid var(---main);
+		outline-offset: -1px;
+		--mat-shadow-outline: 0 0 0 4px var(---foam);
+	}
 }
 
 .mat\:air-crown,
 .mat\:solid-crown {
-  @include ActiveQuery() {
-    --mat-shadow: inset 0 0 0 2px var(---main);
-  }
+	@include ActiveQuery() {
+		--mat-shadow: inset 0 0 0 2px var(---main);
+	}
 }

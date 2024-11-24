@@ -4,9 +4,9 @@ import { on } from '../shared';
  * Using pointerdown, otherwise click other interactive elements will lost their focus but focus on the popper reference.
  */
 export const onClickAway = (ref: Element | Element[], cb: () => void) => {
-  const elements = Array.isArray(ref) ? ref : [ref];
+	const elements = Array.isArray(ref) ? ref : [ref];
 
-  return on(document).pointerdown.capture(e => {
-    if (elements.every(el => el.contains(e.target as Node) === false)) cb();
-  });
+	return on(document).pointerdown.capture(e => {
+		if (elements.every(el => el.contains(e.target as Node) === false)) cb();
+	});
 };

@@ -1,29 +1,28 @@
 $breakpoints: (
-  0: 0,
-  w: 700px,
-  ww: 1300px,
+	0: 0,
+	w: 700px,
+	ww: 1300px,
 );
 
 @mixin up($name) {
-  $size: map-get($breakpoints, $name);
-  @if ($size == 0) {
-    @content;
-  } @else {
-    @media (min-width: $size) {
-      @content;
-    }
-  }
+	$size: map-get($breakpoints, $name);
+	@if ($size == 0) {
+		@content;
+	} @else {
+		@media (min-width: $size) {
+			@content;
+		}
+	}
 }
 
 @mixin down($name) {
-  $size: map-get($breakpoints, $name);
-  @media not (min-width: $size) {
-    @content;
-  }
+	$size: map-get($breakpoints, $name);
+	@media not (min-width: $size) {
+		@content;
+	}
 }
 
 @function w($name) {
-  $pixel: map-get($breakpoints, $name);
-  @return if($pixel == 0, '', '#{$name}\\:');
+	$pixel: map-get($breakpoints, $name);
+	@return if($pixel == 0, '', '#{$name}\\:');
 }
-

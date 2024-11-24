@@ -1,134 +1,134 @@
 #ToastBarTopCenter {
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  margin: auto;
-  max-width: 350px;
-  pointer-events: none;
+	position: fixed;
+	inset: 0;
+	z-index: 2;
+	margin: auto;
+	max-width: 350px;
+	pointer-events: none;
 }
 
 #ToastBarTopCenter > div {
-  --toast-offset: 0;
-  position: absolute;
-  top: 20px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
+	--toast-offset: 0;
+	position: absolute;
+	top: 20px;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
 
-  transform: translateY(0) translateY(var(--toast-offset)) scale(1);
-  transform-origin: center;
-  transition: transform 0.3s var(--curve-wave);
+	transform: translateY(0) translateY(var(--toast-offset)) scale(1);
+	transform-origin: center;
+	transition: transform 0.3s var(--curve-wave);
 
-  &.entering {
-    transform: translateY(calc(-30px - 100%)) translateY(var(--toast-offset))
-      scale(0.5);
-  }
+	&.entering {
+		transform: translateY(calc(-30px - 100%)) translateY(var(--toast-offset))
+			scale(0.5);
+	}
 
-  &.leaving {
-    transform: translateY(-20%) translateY(var(--toast-offset)) scale(0);
-    pointer-events: none;
-  }
+	&.leaving {
+		transform: translateY(-20%) translateY(var(--toast-offset)) scale(0);
+		pointer-events: none;
+	}
 }
 
 :where(toast-bar .toast) {
-  margin: auto;
-  pointer-events: initial;
+	margin: auto;
+	pointer-events: initial;
 }
 
 :where(toast-bar .toast--styled) {
-  display: inline-flex;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: var(--mat-solid-0);
-  border-radius: 10px;
-  box-shadow:
-    0 3px 6px 1px var(--mat-air-15),
-    0 0px 1px var(--mat-air-15);
+	display: inline-flex;
+	align-items: center;
+	padding: 10px 20px;
+	background-color: var(--mat-solid-0);
+	border-radius: 10px;
+	box-shadow:
+		0 3px 6px 1px var(--mat-air-15),
+		0 0px 1px var(--mat-air-15);
 }
 
 :where(toast-bar .toast--rich) {
-  padding: 10px 20px 10px 10px;
-  gap: 10px;
+	padding: 10px 20px 10px 10px;
+	gap: 10px;
 }
 
 /** design inspired by react-hot-toast */
 :where(.toast-i-error, .toast-i-success) {
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
-  position: relative;
-  flex-shrink: 0;
+	width: 20px;
+	height: 20px;
+	border-radius: 10px;
+	position: relative;
+	flex-shrink: 0;
 
-  animation: ToastCircleAnimation 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.3) forwards;
-  animation-delay: 0.1s;
-  transform: scale(0);
+	animation: ToastCircleAnimation 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.3) forwards;
+	animation-delay: 0.1s;
+	transform: scale(0);
 }
 
 :where(.toast-i-error) {
-  background: var(---main);
-  &:after,
-  &:before {
-    content: '';
-    animation: ToastLineAnimation 0.3s ease-in forwards;
-    animation-delay: 0.1s;
-    position: absolute;
-    background: #fff;
-    top: 9px;
-    left: 4px;
-    height: 2px;
-    width: 12px;
-    transform: rotate(45deg);
-  }
+	background: var(---main);
+	&:after,
+	&:before {
+		content: '';
+		animation: ToastLineAnimation 0.3s ease-in forwards;
+		animation-delay: 0.1s;
+		position: absolute;
+		background: #fff;
+		top: 9px;
+		left: 4px;
+		height: 2px;
+		width: 12px;
+		transform: rotate(45deg);
+	}
 
-  &:before {
-    animation-delay: 0.05s;
-    transform: rotate(-45deg);
-  }
+	&:before {
+		animation-delay: 0.05s;
+		transform: rotate(-45deg);
+	}
 }
 
 :where(.toast-i-success) {
-  background: var(---main);
-  &:before {
-    content: '';
-    animation: ToastLineBAnimation 0.3s ease-in forwards;
-    animation-delay: 0.1s;
-    position: absolute;
-    background: transparent;
-    color: #fff;
-    border-left: 2px solid;
-    border-bottom: 2px solid;
-    top: 6px;
-    left: 5px;
-    width: 10px;
-    height: 6px;
-    transform: rotate(-45deg);
-  }
+	background: var(---main);
+	&:before {
+		content: '';
+		animation: ToastLineBAnimation 0.3s ease-in forwards;
+		animation-delay: 0.1s;
+		position: absolute;
+		background: transparent;
+		color: #fff;
+		border-left: 2px solid;
+		border-bottom: 2px solid;
+		top: 6px;
+		left: 5px;
+		width: 10px;
+		height: 6px;
+		transform: rotate(-45deg);
+	}
 }
 
 @keyframes ToastCircleAnimation {
-  from {
-    transform: scale(0);
-  }
-  to {
-    transform: scale(1);
-  }
+	from {
+		transform: scale(0);
+	}
+	to {
+		transform: scale(1);
+	}
 }
 
 @keyframes ToastLineAnimation {
-  from {
-    clip-path: circle(0%);
-  }
-  to {
-    clip-path: circle(100%);
-  }
+	from {
+		clip-path: circle(0%);
+	}
+	to {
+		clip-path: circle(100%);
+	}
 }
 
 @keyframes ToastLineBAnimation {
-  from {
-    clip-path: xywh(0 0 0% 100%);
-  }
-  to {
-    clip-path: xywh(0 0 100% 100%);
-  }
+	from {
+		clip-path: xywh(0 0 0% 100%);
+	}
+	to {
+		clip-path: xywh(0 0 100% 100%);
+	}
 }

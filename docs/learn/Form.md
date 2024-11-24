@@ -27,8 +27,8 @@ import FormInputOfFile from './FormInputOfFile.vue';
 
 ```html
 <label>
-  <input type="radio" name="XXX" />
-  <slot>Description</slot>
+	<input type="radio" name="XXX" />
+	<slot>Description</slot>
 </label>
 ```
 
@@ -36,8 +36,8 @@ label CSS 关键点
 
 ```css
 :where(label.\[SF\]) {
-  position: relative;
-  display: flex;
+	position: relative;
+	display: flex;
 }
 ```
 
@@ -48,14 +48,14 @@ input CSS 关键点
 
 ```css
 label.\[SF\] input:where([type='radio'], [type='checkbox'], [type='file']) {
-  position: absolute;
-  inset: 0;
+	position: absolute;
+	inset: 0;
 
-  width: 1px;
-  height: 1px;
+	width: 1px;
+	height: 1px;
 
-  pointer-events: none;
-  opacity: 0;
+	pointer-events: none;
+	opacity: 0;
 }
 ```
 

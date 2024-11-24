@@ -32,8 +32,8 @@ Inspired by Github Markdown Extension.
 
 ```html {3}
 <div class="(///)" style="width: 50px">
-  <div>Lorem ipsum.</div>
-  <div class="[...] 🦄">Lorem ipsum.</div>
+	<div>Lorem ipsum.</div>
+	<div class="[...] 🦄">Lorem ipsum.</div>
 </div>
 ```
 

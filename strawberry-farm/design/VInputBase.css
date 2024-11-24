@@ -1,85 +1,85 @@
 :where(.VInput) {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: var(---size);
-  font-size: var(---f);
-  line-height: 1.6;
-  color: var(--text-1);
-  outline: 1px solid var(--mat-solid-15);
-  outline-offset: -1px;
-  box-shadow: 0 0 0 0 var(---foam);
-  transition: box-shadow 0.2s;
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: var(---size);
+	font-size: var(---f);
+	line-height: 1.6;
+	color: var(--text-1);
+	outline: 1px solid var(--mat-solid-15);
+	outline-offset: -1px;
+	box-shadow: 0 0 0 0 var(---foam);
+	transition: box-shadow 0.2s;
 }
 
 :where(.VInputTrunk) {
-  order: 2;
-  width: 100%;
-  background: transparent;
-  border: 0;
-  color: inherit;
-  font: inherit;
-  outline: 0;
-  appearance: none;
-  padding-inline: 10px;
+	order: 2;
+	width: 100%;
+	background: transparent;
+	border: 0;
+	color: inherit;
+	font: inherit;
+	outline: 0;
+	appearance: none;
+	padding-inline: 10px;
 }
 
 :where(.VInputTrunk::placeholder, .VInputTrunkPlaceholder) {
-  color: var(--text-3);
+	color: var(--text-3);
 }
 
 :where(.VEraser) {
-  order: 3;
-  flex-shrink: 0;
-  width: var(---size);
-  height: var(---size);
-  color: var(--text-3);
-  pointer-events: none;
+	order: 3;
+	flex-shrink: 0;
+	width: var(---size);
+	height: var(---size);
+	color: var(--text-3);
+	pointer-events: none;
 }
 
 :where(.VEraser) {
-  cursor: pointer;
-  pointer-events: initial;
+	cursor: pointer;
+	pointer-events: initial;
 }
 
 :where(.VEraser:hover) {
-  background-color: var(--mat-air-1);
+	background-color: var(--mat-air-1);
 }
 
 :where(.VEraser:active) {
-  background-color: var(--mat-air-2);
+	background-color: var(--mat-air-2);
 }
 
 :where(.VInputPrefix, .VInputSuffix) {
-  flex-shrink: 0;
-  padding-inline: 5px;
-  color: var(--text-2);
-  min-width: var(---size);
-  white-space: nowrap;
+	flex-shrink: 0;
+	padding-inline: 5px;
+	color: var(--text-2);
+	min-width: var(---size);
+	white-space: nowrap;
 }
 
 :where(.VInputPrefix, .VInputSuffix) {
-  user-select: none;
-  pointer-events: none;
+	user-select: none;
+	pointer-events: none;
 }
 
 :where(.VInputPrefix) {
-  order: 1;
+	order: 1;
 }
 
 :where(.VInputSuffix) {
-  order: 4;
+	order: 4;
 }
 
 :where(.VInputPrefix ~ .VInputTrunk) {
-  padding-left: 0;
+	padding-left: 0;
 }
 
 :where(.VInputSuffix ~ .VInputTrunk) {
-  padding-right: 0;
+	padding-right: 0;
 }
 
 :where(.VFormItem.invalid .VInput) {
-  outline: 1px solid var(--tone-reimu);
+	outline: 1px solid var(--tone-reimu);
 }

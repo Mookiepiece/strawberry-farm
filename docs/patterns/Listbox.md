@@ -24,11 +24,11 @@ https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 
 ```html
 <div role="listbox">
-  <div role="option"></div>
-  <div role="group">
-    <h6>Title</h6>
-    <div role="option"></div>
-  </div>
+	<div role="option"></div>
+	<div role="group">
+		<h6>Title</h6>
+		<div role="option"></div>
+	</div>
 </div>
 ```
 

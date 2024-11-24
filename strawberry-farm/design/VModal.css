@@ -1,47 +1,47 @@
 .VCurtain {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  grid: 100% / 100%;
-  place-items: center;
-  background-color: var(--mat-air-2);
-  overflow: auto;
+	position: fixed;
+	inset: 0;
+	display: grid;
+	grid: 100% / 100%;
+	place-items: center;
+	background-color: var(--mat-air-2);
+	overflow: auto;
 
-  transition: box-shadow 0.2s;
+	transition: box-shadow 0.2s;
 
-  outline: 0;
-  &:focus-visible {
-    box-shadow: inset 0 0 0 4px var(---main);
-  }
+	outline: 0;
+	&:focus-visible {
+		box-shadow: inset 0 0 0 4px var(---main);
+	}
 }
 
 .VModal {
-  position: relative;
-  margin: auto;
-  background-color: var(--mat-solid-0);
+	position: relative;
+	margin: auto;
+	background-color: var(--mat-solid-0);
 
-  transition: box-shadow 0.2s;
+	transition: box-shadow 0.2s;
 
-  outline: 0;
-  &:focus-visible {
-    outline: 2px solid var(---main);
-    outline-offset: -1px;
-    box-shadow: 0 0 0 4px var(---foam);
-  }
+	outline: 0;
+	&:focus-visible {
+		outline: 2px solid var(---main);
+		outline-offset: -1px;
+		box-shadow: 0 0 0 4px var(---foam);
+	}
 }
 
 .VCurtain.v-enter-from,
 .VCurtain.v-leave-to {
-  background-color: var(--mat-air-0);
-  .VModal {
-    transform: scale(0);
-  }
+	background-color: var(--mat-air-0);
+	.VModal {
+		transform: scale(0);
+	}
 }
 
 .VCurtain.v-enter-active,
 .VCurtain.v-leave-active {
-  transition: background-color 0.3s;
-  .VModal {
-    transition: transform 0.3s var(--curve-wave);
-  }
+	transition: background-color 0.3s;
+	.VModal {
+		transition: transform 0.3s var(--curve-wave);
+	}
 }

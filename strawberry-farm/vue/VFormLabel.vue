@@ -7,8 +7,8 @@ const focus = () => document.getElementById(_.id!)?.focus();
 </script>
 
 <template>
-  <label v-if="_.id && _.label" :for="_.id" tabindex="-1" @focus="focus"
-    >{{ _.label }}
-    <span class="clr-main" v-if="_.asterisk">*</span>
-  </label>
+	<label v-if="_.id && _.label" :for="_.id" tabindex="-1" @focus="focus"
+		>{{ _.label }}
+		<span class="clr-main" v-if="_.asterisk">*</span>
+	</label>
 </template>

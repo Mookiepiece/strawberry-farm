@@ -9,11 +9,11 @@
 
 ```html
 <button type="VButton">
-  <slot name="icon"></slot>
-  <div v-if="$slots.default" class="Trunk">
-    <slot />
-  </div>
-  <slot name="suffix"></slot>
+	<slot name="icon"></slot>
+	<div v-if="$slots.default" class="Trunk">
+		<slot />
+	</div>
+	<slot name="suffix"></slot>
 </button>
 ```
 

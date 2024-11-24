@@ -1,25 +1,26 @@
 {
-  "name": "strawberry-farm",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "vp": "pnpm --filter docs dev",
-    "dev": "pnpm --filter docs dev",
-    "gg": "pnpm --filter docs build",
-    "preview": "pnpm --filter docs preview",
-    "gh": "pnpm --filter docs gh",
-    "preinstall": "npx only-allow pnpm"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "arrowParens": "avoid"
-  },
-  "devDependencies": {
-    "gh-pages": "^6.2.0",
-    "jsdom": "^25.0.1",
-    "prettier": "^3.3.3",
-    "sass": "^1.77.2",
-    "typescript": "^5.6.3",
-    "vitest": "^2.1.4"
-  }
+	"name": "strawberry-farm",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"vp": "pnpm --filter docs dev",
+		"dev": "pnpm --filter docs dev",
+		"gg": "pnpm --filter docs build",
+		"preview": "pnpm --filter docs preview",
+		"gh": "pnpm --filter docs gh",
+		"preinstall": "npx only-allow pnpm"
+	},
+	"prettier": {
+		"singleQuote": true,
+		"arrowParens": "avoid",
+		"useTabs": true
+	},
+	"devDependencies": {
+		"gh-pages": "^6.2.0",
+		"jsdom": "^25.0.1",
+		"prettier": "^3.3.3",
+		"sass": "^1.77.2",
+		"typescript": "^5.6.3",
+		"vitest": "^2.1.4"
+	}
 }

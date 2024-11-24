@@ -1,26 +1,26 @@
 body {
-  margin: 0;
-  overflow-wrap: break-word;
+	margin: 0;
+	overflow-wrap: break-word;
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 pre {
-  font-family: inherit;
-  white-space: pre-wrap;
+	font-family: inherit;
+	white-space: pre-wrap;
 }
 
 table {
-  border-collapse: collapse;
+	border-collapse: collapse;
 }
 
 tr,
 td {
-  padding: 0;
+	padding: 0;
 }
 
 h1,
@@ -34,18 +34,18 @@ figure,
 blockquote,
 dl,
 dd {
-  font: inherit;
-  margin: 0;
+	font: inherit;
+	margin: 0;
 }
 
 ul,
 ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 button,
 input {
-  font: inherit;
+	font: inherit;
 }

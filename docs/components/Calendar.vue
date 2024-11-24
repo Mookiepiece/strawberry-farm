@@ -8,5 +8,5 @@ import { VCalendar } from '@mookiepiece/strawberry-farm';
 </script>
 
 <template>
-  <VCalendar change-on-keydown change-on-wheel style="max-width: fit-content;" />
+	<VCalendar change-on-keydown change-on-wheel style="max-width: fit-content" />
 </template>

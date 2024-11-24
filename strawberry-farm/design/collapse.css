@@ -1,10 +1,10 @@
 .collapsing {
-  overflow: hidden !important;
-  height: var(--h) !important;
-  transition: height 0.3s var(--curve-wave);
+	overflow: hidden !important;
+	height: var(--h) !important;
+	transition: height 0.3s var(--curve-wave);
 }
 
 .collapsed {
-  display: none !important;
-  height: 0 !important;
+	display: none !important;
+	height: 0 !important;
 }

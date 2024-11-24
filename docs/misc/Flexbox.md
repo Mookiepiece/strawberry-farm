@@ -32,8 +32,8 @@
 参考 place-items 语法，align 在前。
 
 ```
-place-items = 
-  <'align-items'> <'justify-items'>?  
+place-items =
+  <'align-items'> <'justify-items'>?
 ```
 
 `align-items` 的有效值如下表：
@@ -62,7 +62,6 @@ place-items =
 
 :::demo misc/Flexbox3
 :::
-
 
 ### 多行定位
 
@@ -106,4 +105,3 @@ place-items =
 | `[-3]` |                  |
 | `[-4]` |                  |
 | `[-5]` |                  |
-

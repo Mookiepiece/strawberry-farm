@@ -1,8 +1,8 @@
 {
-  "recommendations": [
-    "EditorConfig.EditorConfig",
-    "esbenp.prettier-vscode",
-    "Vue.volar",
-    "vitest.explorer"
-  ]
+	"recommendations": [
+		"EditorConfig.EditorConfig",
+		"esbenp.prettier-vscode",
+		"Vue.volar",
+		"vitest.explorer"
+	]
 }

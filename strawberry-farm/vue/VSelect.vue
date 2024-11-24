@@ -1,29 +1,24 @@
 <script setup lang="ts" generic="T = undefined">
 import { computed, ref } from 'vue';
-import {
-  applyTransform,
-  flip,
-  maxHeight,
-  sameWidth,
-} from '../shared';
+import { applyTransform, flip, maxHeight, sameWidth } from '../shared';
 import { CommonOptionsInput, flatCommonOptionsInput } from './misc';
 import VListbox from '../patterns/VListbox.vue';
 
 const model = defineModel<any>();
 
 const props = withDefaults(
-  defineProps<{
-    options?: CommonOptionsnIput<T>;
-    disabled?: boolean;
-    placeholder?: string;
-    clearable?: boolean;
-  }>(),
-  {},
+	defineProps<{
+		options?: CommonOptionsnIput<T>;
+		disabled?: boolean;
+		placeholder?: string;
+		clearable?: boolean;
+	}>(),
+	{},
 );
 
 defineSlots<{
-  prefix: any;
-  suffix: any;
+	prefix: any;
+	suffix: any;
 }>();
 
 const multi = computed(() => Array.isArray(model.value));
@@ -44,46 +39,46 @@ const popper = ref<HTMLElement>();
 // });
 
 const erase = () => {
-  if (multi.value) {
-    model.value.splice(0, model.value.length);
-    model.value = model.value;
-  } else model.value = null;
-  reference.value?.focus();
+	if (multi.value) {
+		model.value.splice(0, model.value.length);
+		model.value = model.value;
+	} else model.value = null;
+	reference.value?.focus();
 };
 
 const pickerModel = computed({
-  get() {
-    return model.value;
-  },
-  set(value) {
-    if (!multi.value) open.value = false;
-    model.value = value;
-  },
+	get() {
+		return model.value;
+	},
+	set(value) {
+		if (!multi.value) open.value = false;
+		model.value = value;
+	},
 });
 
 const label = computed(() => {
-  if (!props.options) return model.value;
+	if (!props.options) return model.value;
 
-  const choices = flatCommonOptionsInput(props.options);
-  return multi.value
-    ? choices
-        .filter(o => model.value?.includes(o.value))
-        .map(o => o.label)
-        .join(', ')
-    : choices.find(o => o.value === model.value)?.label;
+	const choices = flatCommonOptionsInput(props.options);
+	return multi.value
+		? choices
+				.filter(o => model.value?.includes(o.value))
+				.map(o => o.label)
+				.join(', ')
+		: choices.find(o => o.value === model.value)?.label;
 });
 
 const empty = computed(() =>
-  multi.value ? !model.value?.length : model.value == null,
+	multi.value ? !model.value?.length : model.value == null,
 );
 
 defineExpose({
-  el: reference,
+	el: reference,
 });
 </script>
 
 <template>
-  <!-- <div
+	<!-- <div
     class="VInput VSelect"
     tabindex="0"
     ref="reference"

@@ -6,8 +6,8 @@ const model = ref('Grapes');
 </script>
 
 <template>
-  <VSegmented
-    v-model="model"
-    :options="['Grapes', 'Melon', { value: 'Strawberry', disabled: true }]"
-  />
+	<VSegmented
+		v-model="model"
+		:options="['Grapes', 'Melon', { value: 'Strawberry', disabled: true }]"
+	/>
 </template>

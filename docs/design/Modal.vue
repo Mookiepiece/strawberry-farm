@@ -6,56 +6,56 @@ import { ref } from 'vue';
 const visible = ref(false);
 
 onUnmounted(() => {
-  document.body.style.removeProperty('height');
+	document.body.style.removeProperty('height');
 });
 </script>
 
 <template>
-  <button class="mat:solid" @click="visible = !visible">a</button>
-  <VDialog title="M" v-model="visible">
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis, deserunt
-    autem ipsum voluptatum fugia
-    <br /><br />
-    t error est quisquam numquam, quis dolorem atque. Eos, voluptatibus fug
-    <br /><br />
-    iat? Saepe doloribus sit iste molestiae laboriosam? Lorem ipsum dolo
-    <br /><br />
-    r sit amet consectetur, adipisicing elit. Ut reprehenderit tempore quasi,
-    <br /><br />
-    molestiae earum alias dolor quia! Animi eum vero, non, velit error tempo
-    <br /><br />
-    ra asperiores quas quam magni, corrupti ipsam. Blanditiis voluptate delectu
-    <br /><br />
-    s corporis, quasi eligendi placeat quam dolor tempore ipsam unde, eum eius
-    <br /><br />
-    porro error impedit odit accusamus deleniti ducimus distinctio expedita
-    <br /><br />
-    quis sapiente, in reprehenderit. Nulla, autem recusandae! Corporis similiq
-    <br /><br />
-    ue culpa cumque officiis iure atque itaque. Ab maiores nemo, laudantium ips
-    <br /><br />
-    um cum nam consequuntur excepturi dolorum, numquam voluptatum nisi offi
-    <br /><br />
-    ciis est, a beatae repellat reiciendis deserunt vitae possimus! Adipisci lau
-    <br /><br />
-    dantium architecto, illum ad illo est quaerat corrupti blanditiis facilis
-    <br /><br />
-    error ex recusandae, ea magnam! Dolores fugiat eaque facilis ducimus sunt
-    facere omnis vitae. Maiores est suscipit veritatis quam!
-  </VDialog>
+	<button class="mat:solid" @click="visible = !visible">a</button>
+	<VDialog title="M" v-model="visible">
+		Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis, deserunt
+		autem ipsum voluptatum fugia
+		<br /><br />
+		t error est quisquam numquam, quis dolorem atque. Eos, voluptatibus fug
+		<br /><br />
+		iat? Saepe doloribus sit iste molestiae laboriosam? Lorem ipsum dolo
+		<br /><br />
+		r sit amet consectetur, adipisicing elit. Ut reprehenderit tempore quasi,
+		<br /><br />
+		molestiae earum alias dolor quia! Animi eum vero, non, velit error tempo
+		<br /><br />
+		ra asperiores quas quam magni, corrupti ipsam. Blanditiis voluptate delectu
+		<br /><br />
+		s corporis, quasi eligendi placeat quam dolor tempore ipsam unde, eum eius
+		<br /><br />
+		porro error impedit odit accusamus deleniti ducimus distinctio expedita
+		<br /><br />
+		quis sapiente, in reprehenderit. Nulla, autem recusandae! Corporis similiq
+		<br /><br />
+		ue culpa cumque officiis iure atque itaque. Ab maiores nemo, laudantium ips
+		<br /><br />
+		um cum nam consequuntur excepturi dolorum, numquam voluptatum nisi offi
+		<br /><br />
+		ciis est, a beatae repellat reiciendis deserunt vitae possimus! Adipisci lau
+		<br /><br />
+		dantium architecto, illum ad illo est quaerat corrupti blanditiis facilis
+		<br /><br />
+		error ex recusandae, ea magnam! Dolores fugiat eaque facilis ducimus sunt
+		facere omnis vitae. Maiores est suscipit veritatis quam!
+	</VDialog>
 </template>
 
 <style scoped>
 .table {
-  display: grid;
-  max-width: 300px;
+	display: grid;
+	max-width: 300px;
 }
 .tr {
-  display: grid;
-  grid: 1fr /1fr 1fr 1fr;
+	display: grid;
+	grid: 1fr /1fr 1fr 1fr;
 }
 
 button {
-  padding: 10px;
+	padding: 10px;
 }
 </style>

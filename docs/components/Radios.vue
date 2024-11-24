@@ -6,8 +6,8 @@ const model = ref(3);
 </script>
 
 <template>
-  <VRadios
-    v-model="model"
-    :options="['Grapes', 'Melon', { value: 'Strawberry', disabled: true }]"
-  />
+	<VRadios
+		v-model="model"
+		:options="['Grapes', 'Melon', { value: 'Strawberry', disabled: true }]"
+	/>
 </template>

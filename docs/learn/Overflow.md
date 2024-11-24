@@ -10,16 +10,16 @@ import Overflow from './Overflow.vue';
 
 ```css {4,9}
 .a {
-  display: flex;
-  overflow: auto;
-  scroll-snap-type: x mandatory;
-  border: 5px solid #8883;
+	display: flex;
+	overflow: auto;
+	scroll-snap-type: x mandatory;
+	border: 5px solid #8883;
 }
 
 .b {
-  scroll-snap-align: center;
-  flex: 0 0 100%;
-  height: 300px;
+	scroll-snap-align: center;
+	flex: 0 0 100%;
+	height: 300px;
 }
 ```
 
@@ -29,11 +29,11 @@ import Overflow from './Overflow.vue';
 
 ```css
 .noscrollbar {
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+	}
 }
 ```
 

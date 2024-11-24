@@ -1,7 +1,5 @@
 # Alert
 
-
-
 :::demo design/Alert
 
 :::

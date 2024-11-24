@@ -12,33 +12,33 @@ import './custom.css';
 import './VPKbdElement.css';
 
 if (import.meta.env.SSR) {
-  globalThis.HTMLElement = null as any;
-  globalThis.customElements = {
-    get: () => void 0,
-    define() {},
-  } as any;
+	globalThis.HTMLElement = null as any;
+	globalThis.customElements = {
+		get: () => void 0,
+		define() {},
+	} as any;
 }
 if (!import.meta.env.SSR) {
-  import('@mookiepiece/strawberry-farm/html/IFeatherElement').then(
-    ({ IFeatherElement }) => IFeatherElement.install(),
-  );
+	import('@mookiepiece/strawberry-farm/html/IFeatherElement').then(
+		({ IFeatherElement }) => IFeatherElement.install(),
+	);
 
-  import('@mookiepiece/strawberry-farm/html/IEdgeElement').then(
-    ({ IEdgeElement }) => {
-      IEdgeElement.install();
-    },
-  );
+	import('@mookiepiece/strawberry-farm/html/IEdgeElement').then(
+		({ IEdgeElement }) => {
+			IEdgeElement.install();
+		},
+	);
 
-  import('./VPKbdElement').then(({ VPKbdElement }) => {
-    customElements.define('vp-kbd', VPKbdElement);
-  });
+	import('./VPKbdElement').then(({ VPKbdElement }) => {
+		customElements.define('vp-kbd', VPKbdElement);
+	});
 }
 
 const theme: Theme = {
-  Layout,
-  enhanceApp: ({ app }) => {
-    app.component('VPDemo', VPDemo);
-    app.component('VPSource', VPSource);
-  },
+	Layout,
+	enhanceApp: ({ app }) => {
+		app.component('VPDemo', VPDemo);
+		app.component('VPSource', VPSource);
+	},
 };
 export default theme;

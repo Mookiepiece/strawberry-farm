@@ -5,64 +5,64 @@ import { useData } from './composables';
 import { onMounted } from 'vue';
 
 const props = defineProps<{
-  open: boolean;
+	open: boolean;
 }>();
 
 const { theme, isDark } = useData();
 
 const toggleTheme = async (e: MouseEvent) => {
-  // https://github.com/vuejs/vitepress/blob/20511006dba516ca8c06ed1dd3516547af668a0e/docs/zh/guide/extending-default-theme.md?plain=1#L236
-  const enableTransitions =
-    'startViewTransition' in document &&
-    window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+	// https://github.com/vuejs/vitepress/blob/20511006dba516ca8c06ed1dd3516547af668a0e/docs/zh/guide/extending-default-theme.md?plain=1#L236
+	const enableTransitions =
+		'startViewTransition' in document &&
+		window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
 
-  if (!enableTransitions) {
-    isDark.value = !isDark.value;
-    return;
-  }
+	if (!enableTransitions) {
+		isDark.value = !isDark.value;
+		return;
+	}
 
-  const [x, y] = [e.clientX, e.clientY];
+	const [x, y] = [e.clientX, e.clientY];
 
-  const clipPath = [
-    `circle(0px at ${x}px ${y}px)`,
-    `circle(${Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y),
-    )}px at ${x}px ${y}px)`,
-  ];
+	const clipPath = [
+		`circle(0px at ${x}px ${y}px)`,
+		`circle(${Math.hypot(
+			Math.max(x, window.innerWidth - x),
+			Math.max(y, window.innerHeight - y),
+		)}px at ${x}px ${y}px)`,
+	];
 
-  document.documentElement.style.setProperty('view-transition-name', 'carrot');
-  await (document as any).startViewTransition?.(async () => {
-    isDark.value = !isDark.value;
-    await nextTick();
-  }).ready;
+	document.documentElement.style.setProperty('view-transition-name', 'carrot');
+	await (document as any).startViewTransition?.(async () => {
+		isDark.value = !isDark.value;
+		await nextTick();
+	}).ready;
 
-  const ani = document.documentElement.animate(
-    { clipPath: isDark.value ? clipPath.reverse() : clipPath },
-    {
-      duration: 300,
-      easing: 'cubic-bezier(0.66, 0, 0, 1)',
-      pseudoElement: `::view-transition-${isDark.value ? 'old' : 'new'}(carrot)`,
-    },
-  );
-  await ani.finished;
-  document.documentElement.style.removeProperty('view-transition-name');
+	const ani = document.documentElement.animate(
+		{ clipPath: isDark.value ? clipPath.reverse() : clipPath },
+		{
+			duration: 300,
+			easing: 'cubic-bezier(0.66, 0, 0, 1)',
+			pseudoElement: `::view-transition-${isDark.value ? 'old' : 'new'}(carrot)`,
+		},
+	);
+	await ani.finished;
+	document.documentElement.style.removeProperty('view-transition-name');
 };
 
 const isToggledFontFamily = ref(false);
 
 onMounted(() => {
-  isToggledFontFamily.value = !!sessionStorage.getItem('VPBodyDefaultFont');
-  watch(isToggledFontFamily, _ => {
-    _
-      ? sessionStorage.setItem('VPBodyDefaultFont', '1')
-      : sessionStorage.removeItem('VPBodyDefaultFont');
-  });
-  watch(isToggledFontFamily, _ => {
-    _
-      ? document.body.classList.add('VPBodyDefaultFont')
-      : document.body.classList.remove('VPBodyDefaultFont');
-  });
+	isToggledFontFamily.value = !!sessionStorage.getItem('VPBodyDefaultFont');
+	watch(isToggledFontFamily, _ => {
+		_
+			? sessionStorage.setItem('VPBodyDefaultFont', '1')
+			: sessionStorage.removeItem('VPBodyDefaultFont');
+	});
+	watch(isToggledFontFamily, _ => {
+		_
+			? document.body.classList.add('VPBodyDefaultFont')
+			: document.body.classList.remove('VPBodyDefaultFont');
+	});
 });
 
 const sidebarGroups = theme.value.sidebar;
@@ -72,90 +72,90 @@ const _isDark = computed(() => isDark.value);
 </script>
 
 <template>
-  <aside class="VPSidebar [#]" :class="[props.open && 'open']">
-    <div class="QuickAccess">
-      <button
-        class="mat:dust"
-        title="切换深色模式"
-        :aria-pressed="_isDark"
-        @click="toggleTheme"
-      >
-        <i-feather i="sun" />
-      </button>
-      <button
-        class="mat:dust"
-        title="切换默认字体（调试用，思源在相同行高下汉字的位置会偏下一点）"
-        :aria-pressed="isToggledFontFamily"
-        @click="isToggledFontFamily = !isToggledFontFamily"
-      >
-        <i-feather i="type" />
-      </button>
-    </div>
-    <nav
-      class="nav"
-      id="VPSidebarNav"
-      aria-label="Sidebar Navigation"
-      tabindex="-1"
-    >
-      <VPSidebarItem
-        v-for="item in sidebarGroups"
-        :key="item.text"
-        :item="item"
-        :depth="0"
-      />
-    </nav>
-  </aside>
+	<aside class="VPSidebar [#]" :class="[props.open && 'open']">
+		<div class="QuickAccess">
+			<button
+				class="mat:dust"
+				title="切换深色模式"
+				:aria-pressed="_isDark"
+				@click="toggleTheme"
+			>
+				<i-feather i="sun" />
+			</button>
+			<button
+				class="mat:dust"
+				title="切换默认字体（调试用，思源在相同行高下汉字的位置会偏下一点）"
+				:aria-pressed="isToggledFontFamily"
+				@click="isToggledFontFamily = !isToggledFontFamily"
+			>
+				<i-feather i="type" />
+			</button>
+		</div>
+		<nav
+			class="nav"
+			id="VPSidebarNav"
+			aria-label="Sidebar Navigation"
+			tabindex="-1"
+		>
+			<VPSidebarItem
+				v-for="item in sidebarGroups"
+				:key="item.text"
+				:item="item"
+				:depth="0"
+			/>
+		</nav>
+	</aside>
 </template>
 
 <style>
 .VPSidebar {
-  position: absolute;
-  inset: 0;
-  width: 300px;
-  z-index: 1;
-  padding-top: 50px;
-  border-right: 1px solid var(--mat-solid-15);
-  background-color: var(--mat-solid-0);
-  overflow: clip auto;
+	position: absolute;
+	inset: 0;
+	width: 300px;
+	z-index: 1;
+	padding-top: 50px;
+	border-right: 1px solid var(--mat-solid-15);
+	background-color: var(--mat-solid-0);
+	overflow: clip auto;
 }
 
 @media not (min-width: 1000px) {
-  .VPSidebar:not(.open) {
-    display: none;
-  }
+	.VPSidebar:not(.open) {
+		display: none;
+	}
 }
 
 ::view-transition-old(carrot),
 ::view-transition-new(carrot) {
-  animation: none;
-  mix-blend-mode: normal;
+	animation: none;
+	mix-blend-mode: normal;
 }
 
 ::view-transition-old(carrot),
 .dark::view-transition-new(carrot) {
-  z-index: 1;
+	z-index: 1;
 }
 
 ::view-transition-new(carrot),
 .dark::view-transition-old(carrot) {
-  z-index: 9999;
+	z-index: 9999;
 }
 
 .QuickAccess {
-  display: grid;
-  grid: auto-flow 1fr / repeat(auto-fill, minmax(60px, 1fr));
-  gap: 5px;
-  padding: 10px 30px;
+	display: grid;
+	grid: auto-flow 1fr / repeat(auto-fill, minmax(60px, 1fr));
+	gap: 5px;
+	padding: 10px 30px;
 
-  button {
-    padding: 10px 20px;
-    border: 0;
-    font-size: 20px;
-    border-radius: 5px;
+	button {
+		padding: 10px 20px;
+		border: 0;
+		font-size: 20px;
+		border-radius: 5px;
 
-    svg {
-      stroke: currentColor;
-    }
-  }
+		svg {
+			stroke: currentColor;
+		}
+	}
 }
 </style>

@@ -1,16 +1,16 @@
 :where(.VFormItemHeader) {
-  font-size: var(--f2);
-  line-height: 1.6;
+	font-size: var(--f2);
+	line-height: 1.6;
 }
 
 :where(.VFormItemTitle) {
-  font-size: 13px;
-  font-weight: 600;
+	font-size: 13px;
+	font-weight: 600;
 }
 
 :where(.VFormItem) {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding-bottom: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	padding-bottom: 20px;
 }

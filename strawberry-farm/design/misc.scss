@@ -1,41 +1,41 @@
 :where(.clr-1) {
-  color: var(--text-1);
+	color: var(--text-1);
 }
 
 :where(.clr-2) {
-  color: var(--text-2);
+	color: var(--text-2);
 }
 
 :where(.clr-3) {
-  color: var(--text-3);
+	color: var(--text-3);
 }
 
 :where(.clr-ink) {
-  color: var(---ink);
+	color: var(---ink);
 }
 
 :where(.clr-main) {
-  color: var(---main);
+	color: var(---main);
 }
 
 :where(.Trunk) {
-  padding-inline: 5px;
+	padding-inline: 5px;
 }
 
 :where(.Alert) {
-  display: flex;
-  align-items: center;
-  color: var(---ink);
+	display: flex;
+	align-items: center;
+	color: var(---ink);
 }
 
 [data-edge],
 i-edge {
-  width: 1px;
-  height: 1px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: block;
-  pointer-events: none;
-  clip-path: circle(0);
+	width: 1px;
+	height: 1px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: block;
+	pointer-events: none;
+	clip-path: circle(0);
 }

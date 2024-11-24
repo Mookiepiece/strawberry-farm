@@ -6,7 +6,7 @@ An opinionated way to use `levitate`.
 
 ```html
 <body>
-  <div data-pop><slot name="popper" /></div>
+	<div data-pop><slot name="popper" /></div>
 </body>
 ```
 
