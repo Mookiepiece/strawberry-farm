@@ -122,8 +122,6 @@ export const useListbox = <T = any>(
 
 		const normalize = (o: ListboxOptionSlim<T>): ListboxLeaf<T> => {
 			const value = typeof o === 'object' && o ? (o as any).value : o;
-			const index = _index++;
-
 			return {
 				value,
 				// prettier-ignore
@@ -131,9 +129,7 @@ export const useListbox = <T = any>(
 				meta: typeof o === 'object' && o ? (o as any).meta : undefined,
 				// prettier-ignore
 				disabled: typeof o === 'object' && o  &&  (o as any).disabled || false,
-				index,
-				// prettier-ignore
-				// selected: multi.value ? model.value.includes(value) : value === model.value,
+				index: _index++,
 			};
 		};
 

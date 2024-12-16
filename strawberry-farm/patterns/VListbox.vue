@@ -53,11 +53,7 @@ const handleKeydown = (
 ) => {
 	if (listbox.disabled) return;
 
-	if (e.shiftKey) {
-		anchor = listbox.current;
-	} else {
-		anchor = -1;
-	}
+	anchor = e.shiftKey ? listbox.current : -1;
 
 	if (e.shiftKey) {
 		if (!listbox.multi) return;
