@@ -1,1 +1,0 @@
-import{W as t,o as c,k as e}from"./framework.9Ngx2Imj.js";const a={},o={class:"Chiikawa",title:"https://x.com/ngnchiikawa"};function s(n,i){return c(),e("div",o)}const _=t(a,[["render",s]]);export{_ as default};

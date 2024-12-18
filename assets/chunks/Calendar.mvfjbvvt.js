@@ -1,0 +1,1 @@
+import{_ as e}from"./theme.IbC88Qyz.js";import"./ja.DWEk3uVN.js";import{d as n,o as a,a as o,s as t}from"./framework.DJaSWuUJ.js";const f=n({__name:"Calendar",setup(r){return(s,c)=>(a(),o(t(e),{"change-on-keydown":"","change-on-wheel":"",style:{"max-width":"fit-content"}}))}});export{f as default};

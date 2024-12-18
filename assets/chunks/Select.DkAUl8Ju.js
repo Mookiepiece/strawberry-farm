@@ -1,1 +1,0 @@
-import{k as o}from"./theme.LSXVK-DJ.js";import{d as t,o as r,a as s,s as n}from"./framework.9Ngx2Imj.js";const _=t({__name:"Select",setup(a){const e=[{title:"Colors",options:["red","blue","green","yellow","purple"]},{title:"Numbers",options:["one","two","three","four","five"]}];return(p,c)=>(r(),s(n(o),{options:e}))}});export{_ as default};

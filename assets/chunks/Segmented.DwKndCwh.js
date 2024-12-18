@@ -1,1 +1,0 @@
-import{j as r}from"./theme.LSXVK-DJ.js";import{d as s,f as l,o as n,a as t,s as m}from"./framework.9Ngx2Imj.js";const _=s({__name:"Segmented",setup(u){const e=l("Grapes");return(p,a)=>(n(),t(m(r),{modelValue:e.value,"onUpdate:modelValue":a[0]||(a[0]=o=>e.value=o),options:["Grapes","Melon",{value:"Strawberry",disabled:!0}]},null,8,["modelValue"]))}});export{_ as default};

@@ -1,0 +1,104 @@
+const t=`<script setup lang="ts">
+import { Toast } from '@mookiepiece/strawberry-farm/vue/Toast';
+
+import { h, watchEffect } from 'vue';
+import { createApp } from 'vue';
+import { ref } from 'vue';
+
+const complex = () => {
+	const span = document.createElement('span');
+	const app = createApp({
+		beforeUnmount() {
+			console.log('wa');
+		},
+		unmounted() {
+			console.log('sei');
+		},
+		render() {
+			return h('details', {}, [
+				h('summary', {}, 'Click To expand'),
+				h('ul', {}, [
+					h(
+						'li',
+						{},
+						'Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quisquam cum excepturi dolor impedit a ex, voluptatibus laborum fugit necessitatibus, illum ab minima deserunt aliquid, veniam rem debitis. Incidunt, assumenda?',
+					),
+				]),
+			]);
+		},
+	});
+	app.mount(span);
+
+	const { bag } = Toast.error(span);
+	bag(app.unmount);
+};
+
+const many = () => {
+	setTimeout(() => {
+		Toast.error('123');
+	}, 200);
+
+	setTimeout(() => {
+		const span = document.createElement('span');
+		span.textContent = '123';
+		Toast.error(span);
+		setTimeout(() => {
+			span.innerHTML =
+				\`<div><ul><li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit quisquam cum excepturi dolor impedit a ex, voluptatibus laborum fugit necessitatibus, illum ab minima deserunt aliquid, veniam rem debitis. Incidunt, assumenda?\` +
+				\`</li></ul></div>\`;
+		}, 500);
+	}, 500);
+
+	setTimeout(() => {
+		Toast.error('123');
+	}, 700);
+};
+
+const infinityToast = ref<ReturnType<typeof Toast.error>>();
+watchEffect(onCleanup => {
+	const _ = infinityToast.value;
+	if (_) onCleanup(() => _.close());
+});
+<\/script>
+
+<template>
+	<div class="[A]" style="gap: 10px">
+		<button @click="() => Toast.success('Strawberry Farm')" class="p-4 mat:air">
+			Success Toast
+		</button>
+		<button @click="() => Toast.error('Strawberry Farm')" class="p-4 mat:air">
+			Error Toast
+		</button>
+		<button
+			@click="() => Toast.error({ message: 'Strawberry Farm', duration: 2000 })"
+			class="p-4 mat:air"
+		>
+			Error Toast (2000ms)
+		</button>
+		<button
+			@click="
+				() =>
+					infinityToast
+						? (infinityToast = void infinityToast.close())
+						: (infinityToast = Toast.error({
+								message: 'Strawberry Farm',
+								duration: Infinity,
+							}))
+			"
+			class="p-4 mat:air"
+		>
+			Error Toast (Infinity)
+		</button>
+		<button @click="complex" class="p-4 mat:air">Complex Error Toast</button>
+		<button @click="() => Toast.blank('Strawberry Farm')" class="p-4 mat:air">
+			Blank Toast
+		</button>
+		<button @click="() => Toast.custom('Strawberry Farm')" class="p-4 mat:air">
+			Custom Toast
+		</button>
+		<button @click="many" class="p-4 mat:air">Many Toasts</button>
+	</div>
+</template>
+
+<style scoped></style>
+`;export{t as default};

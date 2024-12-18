@@ -1,1 +1,0 @@
-import{i as r}from"./theme.LSXVK-DJ.js";import{d as s,f as l,o as n,a as t,s as u}from"./framework.9Ngx2Imj.js";const i=s({__name:"Radios",setup(m){const e=l(3);return(d,a)=>(n(),t(u(r),{modelValue:e.value,"onUpdate:modelValue":a[0]||(a[0]=o=>e.value=o),options:["Grapes","Melon",{value:"Strawberry",disabled:!0}]},null,8,["modelValue"]))}});export{i as default};
