@@ -16,9 +16,7 @@ type Modifiers = EventModifiers | SystemKeyModifiers | KeyReconizerModifiers;
 const systemModifiers = ['ctrl', 'shift', 'alt', 'meta'] as const;
 
 type KeyedEvent = MouseEvent | KeyboardEvent | TouchEvent;
-/**
- * https://github.com/vuejs/core/blob/ee4cd78a06e6aa92b12564e527d131d1064c2cd0/packages/runtime-dom/src/directives/vOn.ts#L14
- */
+
 const modifierGuards: Record<
 	string,
 	(e: Event, set: Set<string>) => void | boolean
@@ -51,7 +49,14 @@ export type ON3<N extends keyof Events, E extends Events[N]> = ((
 		: void);
 
 /**
- * Inspired by vue vOn
+ * @license MIT Inspired by vue vOn https://github.com/vuejs/core/blob/ee4cd78a06e6aa92b12564e527d131d1064c2cd0/packages/runtime-dom/src/directives/vOn.ts
+ * 
+ * 
+ * @example Keyboard modifiers uses `e.code` by default.
+ * ```js
+ * // Cannot match `NumpadEnter` unless add `.key` modifier
+ * on(el).keydown.Enter(() => console.log('Enter'))
+ * ```
  */
 export const on = <T extends EventTarget>(el: T) => {
 	const _modifiers: string[] = [];

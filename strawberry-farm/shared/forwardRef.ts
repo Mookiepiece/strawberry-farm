@@ -1,9 +1,9 @@
 import { computed, Ref } from 'vue';
 
 /**
- * Note: `el` is preserved for mannually expose `defineExpose({ el })`.
+ * `defineExpose({ el })` > `componentRef.$el` > `elementRef.value`.
  */
-export const forwardRef = (thing: Ref<any>) =>
+export const forwardRef = (_: Ref<any>) =>
 	computed(
-		() => thing.value && (thing.value.el || thing.value.$el || thing.value),
+		() => _.value && (_.value.el || _.value.$el || _.value),
 	);

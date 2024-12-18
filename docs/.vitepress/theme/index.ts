@@ -20,13 +20,12 @@ if (import.meta.env.SSR) {
 }
 if (!import.meta.env.SSR) {
 	import('@mookiepiece/strawberry-farm/html/IFeatherElement').then(
-		({ IFeatherElement }) => IFeatherElement.install(),
+		({ IFeatherElement }) =>
+			customElements.define('i-feather', IFeatherElement),
 	);
 
 	import('@mookiepiece/strawberry-farm/html/IEdgeElement').then(
-		({ IEdgeElement }) => {
-			IEdgeElement.install();
-		},
+		({ IEdgeElement }) => customElements.define('i-edge', IEdgeElement),
 	);
 
 	import('./VPKbdElement').then(({ VPKbdElement }) => {

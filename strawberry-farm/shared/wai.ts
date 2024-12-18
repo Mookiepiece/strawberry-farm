@@ -1,3 +1,3 @@
 import { inc } from './inc';
 
-export const wai = inc('w:');
+export const wai = inc('::');

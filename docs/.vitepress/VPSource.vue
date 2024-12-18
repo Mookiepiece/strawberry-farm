@@ -141,7 +141,7 @@ switch (extname) {
 		margin: 0 !important;
 
 		code {
-			font-size: 12px !important;
+			font-size: 15px !important;
 		}
 	}
 }

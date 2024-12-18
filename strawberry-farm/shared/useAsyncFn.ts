@@ -1,8 +1,21 @@
 import { reactive } from 'vue';
-import { AsyncState, FunctionReturningPromise } from './misc';
 
 /**
- * @license MIT https://github.com/streamich/react-use/blob/ade8d3905f544305515d010737b4ae604cc51024/src/useAsyncFn.ts#L36
+ * @license MIT FunctionReturningPromise https://github.com/streamich/react-use
+ */
+export type FunctionReturningPromise = (...args: any[]) => Promise<any>;
+
+/**
+ * @license MIT AsyncState https://github.com/streamich/react-use
+ */
+export type AsyncState<T> = {
+	loading: boolean;
+	error?: any;
+	data?: T;
+};
+
+/**
+ * @license MIT https://github.com/streamich/react-use/blob/ade8d3905f544305515d010737b4ae604cc51024/src/useAsyncFn.ts#L36 useAsyncFn
  */
 export const useAsyncFn = <T extends FunctionReturningPromise>(fn: T) => {
 	const state = reactive<AsyncState<Awaited<ReturnType<T>>>>({
@@ -14,6 +27,7 @@ export const useAsyncFn = <T extends FunctionReturningPromise>(fn: T) => {
 
 	const trigger = ((...args: Parameters<T>) => {
 		const _key = ++key;
+		delete state.error;
 		state.loading = true;
 		return fn(...args)
 			.then(v => {
